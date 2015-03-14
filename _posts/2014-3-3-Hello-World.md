@@ -281,8 +281,8 @@ Here, option "3. Connect Device" doesn't show until option "2. Device List" is r
 One last note. &nbsp;If you want to make a sub-menu, you simply use the same code as above, just take the do-while loop out. &nbsp;This states you only want the sub-menu to run once, the return to the main menu.
 
 [1]: http://en.wikipedia.org/wiki/Hercules_Graphics_Card
-[2]: http://letsmakerobots.com/lpc1114-usb-serial-solution-rerolling-boot-uploader
-[3]: http://letsmakerobots.com/files/userpics/u19048/300x260xGCCLogo.png.pagespeed.ic.YZjB3d_p5p.png
+[2]: https://github.com/Ladvien/ladvien.github.io/tree/master/images/lpc1114-usb-serial-solution-rerolling-boot-uploader
+[3]: https://github.com/Ladvien/ladvien.github.io/tree/master/images/300x260xGCCLogo.png.pagespeed.ic.YZjB3d_p5p.png
 [4]: http://www.mingw.org/wiki/HOWTO_Install_the_MinGW_GCC_Compiler_Suite
 [5]: http://www.sublimetext.com/2
 [6]: http://letsmakerobots.com/content/lpc1114-setup-bare-metal-arm

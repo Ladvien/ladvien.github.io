@@ -38,7 +38,7 @@ To setup the environment:
 
 &nbsp;
 
-```
+```c
     #include <stdio.h>
     #include <stdarg.h>
     #include <stdlib.h>
@@ -81,7 +81,7 @@ Hmm. &nbsp;**Not really much to it, not sure it deserves its own post. &nbsp;But
 
 &nbsp;
 
-```
+```c
     void main_menu()
     {
     	char char_choice[3];

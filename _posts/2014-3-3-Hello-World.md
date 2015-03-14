@@ -12,7 +12,9 @@ The easiest way to make your first post is to edit this one. Go into /_posts/ an
 
 ![][12]
 
-{% img class https://github.com/Ladvien/ladvien.github.io/blob/master/images/200x210xSuper_Style_ASCII_by_buddhascii.png.pagespeed.ic.T8JsLoZeGa.png 'title text' 'alt text' %}
+{% img class 'https://github.com/Ladvien/ladvien.github.io/blob/master/images/200x210xSuper_Style_ASCII_by_buddhascii.png.pagespeed.ic.T8JsLoZeGa.png' %}
+
+
 [Source](http://letsmakerobots.com/content/command-line-menu "Permalink to Command Line Menu | Let's Make Robots!")
 
 # Command Line Menu | Let's Make Robots!

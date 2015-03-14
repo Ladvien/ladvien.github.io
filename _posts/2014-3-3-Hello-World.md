@@ -286,7 +286,7 @@ One last note. &nbsp;If you want to make a sub-menu, you simply use the same cod
 [4]: http://www.mingw.org/wiki/HOWTO_Install_the_MinGW_GCC_Compiler_Suite
 [5]: http://www.sublimetext.com/2
 [6]: http://letsmakerobots.com/content/lpc1114-setup-bare-metal-arm
-[7]: ({{ site.baseurl }}/images/200x210xSuper_Style_ASCII_by_buddhascii.png.pagespeed.ic.T8JsLoZeGa.png)
+[7]: {{ site.baseurl }}/images/200x210xSuper_Style_ASCII_by_buddhascii.png.pagespeed.ic.T8JsLoZeGa.png
 [8]: http://en.wikipedia.org/wiki/Do_while_loop
 [9]: http://www.cplusplus.com/reference/cstdio/scanf/
 [10]: http://www.cplusplus.com/reference/cstdlib/atoi/

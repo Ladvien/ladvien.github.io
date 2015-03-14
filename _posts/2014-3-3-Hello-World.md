@@ -28,7 +28,7 @@ This post will be a series of post leading up to the large post I'll make on wri
 
 &nbsp;
 
-**![3]Setting Up the GCC Compiler**
+![]({{ site.url }}/images/200x210xSuper_Style_ASCII_by_buddhascii.png.pagespeed.ic.T8JsLoZeGa.png)**Setting Up the GCC Compiler**
 
 I setup a C environment as basic I could. &nbsp;There may be easier ways to go about this, but&nbsp;I wanted to use GCC to compile. &nbsp;
 

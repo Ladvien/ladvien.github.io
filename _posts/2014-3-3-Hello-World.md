@@ -282,11 +282,11 @@ One last note. &nbsp;If you want to make a sub-menu, you simply use the same cod
 
 [1]: http://en.wikipedia.org/wiki/Hercules_Graphics_Card
 [2]: https://github.com/Ladvien/ladvien.github.io/tree/master/images/lpc1114-usb-serial-solution-rerolling-boot-uploader
-[3]: https://github.com/Ladvien/ladvien.github.io/tree/master/images/300x260xGCCLogo.png.pagespeed.ic.YZjB3d_p5p.png
+[3]: http://github.com/Ladvien/ladvien.github.io/tree/master/images/300x260xGCCLogo.png.pagespeed.ic.YZjB3d_p5p.png
 [4]: http://www.mingw.org/wiki/HOWTO_Install_the_MinGW_GCC_Compiler_Suite
 [5]: http://www.sublimetext.com/2
 [6]: http://letsmakerobots.com/content/lpc1114-setup-bare-metal-arm
-[7]: http://letsmakerobots.com/files/userpics/u19048/426x218xCommand_line_menu.png.pagespeed.ic.56zs5r1auE.png
+[7]: http://github.com/Ladvien/ladvien.github.io/tree/master/images//426x218xCommand_line_menu.png.pagespeed.ic.56zs5r1auE.png
 [8]: http://en.wikipedia.org/wiki/Do_while_loop
 [9]: http://www.cplusplus.com/reference/cstdio/scanf/
 [10]: http://www.cplusplus.com/reference/cstdlib/atoi/

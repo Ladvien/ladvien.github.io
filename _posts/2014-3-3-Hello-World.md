@@ -38,24 +38,7 @@ To setup the environment:
 
 &nbsp;
 
-| ----- |
-|
-
-     1
-     2
-     3
-     4
-     5
-     6
-     7
-     8
-     9
-    10
-    11
-    12
-    13
-
- |
+<pre><code>
 
     #include <stdio.h>
     #include <stdarg.h>
@@ -68,10 +51,8 @@ To setup the environment:
     #include <math.h>
     #include <stdbool.h>
     #include <stdint.h>
-
-    #include <sys time.h="">
-
- |
+    #include <sys time.h>
+</code>
 
 &nbsp;
 

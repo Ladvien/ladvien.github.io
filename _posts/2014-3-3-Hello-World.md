@@ -28,7 +28,7 @@ This post will be a series of post leading up to the large post I'll make on wri
 
 &nbsp;
 
-**![][3]Setting Up the GCC Compiler**
+**![3]Setting Up the GCC Compiler**
 
 I setup a C environment as basic I could. &nbsp;There may be easier ways to go about this, but&nbsp;I wanted to use GCC to compile. &nbsp;
 

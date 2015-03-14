@@ -12,6 +12,7 @@ The easiest way to make your first post is to edit this one. Go into /_posts/ an
 
 
 
+
 [Source](http://letsmakerobots.com/content/command-line-menu "Permalink to Command Line Menu | Let's Make Robots!")
 
 # Command Line Menu | Let's Make Robots!
@@ -28,7 +29,7 @@ This post will be a series of post leading up to the large post I'll make on wri
 
 &nbsp;
 
-![]({{ site.url }}/images/200x210xSuper_Style_ASCII_by_buddhascii.png.pagespeed.ic.T8JsLoZeGa.png)**Setting Up the GCC Compiler**
+**![][3]Setting Up the GCC Compiler**
 
 I setup a C environment as basic I could. &nbsp;There may be easier ways to go about this, but&nbsp;I wanted to use GCC to compile. &nbsp;
 
@@ -362,11 +363,10 @@ Here, option "3. Connect Device" doesn't show until option "2. Device List" is r
 **A Submenu**
 
 One last note. &nbsp;If you want to make a sub-menu, you simply use the same code as above, just take the do-while loop out. &nbsp;This states you only want the sub-menu to run once, the return to the main menu.
-![]({{ site.url }}/images/200x210xSuper_Style_ASCII_by_buddhascii.png.pagespeed.ic.T8JsLoZeGa.png)
 
 [1]: http://en.wikipedia.org/wiki/Hercules_Graphics_Card
 [2]: http://letsmakerobots.com/lpc1114-usb-serial-solution-rerolling-boot-uploader
-[3]: ({{ site.url }}/images/200x210xSuper_Style_ASCII_by_buddhascii.png.pagespeed.ic.T8JsLoZeGa.png)
+[3]: http://letsmakerobots.com/files/userpics/u19048/300x260xGCCLogo.png.pagespeed.ic.YZjB3d_p5p.png
 [4]: http://www.mingw.org/wiki/HOWTO_Install_the_MinGW_GCC_Compiler_Suite
 [5]: http://www.sublimetext.com/2
 [6]: http://letsmakerobots.com/content/lpc1114-setup-bare-metal-arm

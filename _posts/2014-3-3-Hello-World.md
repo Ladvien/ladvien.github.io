@@ -361,7 +361,7 @@ You can also make limit a selection to showing by doing something like the follo
 Here, option "3. Connect Device" doesn't show until option "2. Device List" is run. &nbsp;On line 34 the connect_device() function sets the connected_flag variable to true if the function was successful. &nbsp;Then, after the break is hit and the menu is repainted the option "3. Connect Device" will show. &nbsp;Also, '3' will become a valid user selection.
 
 **A Submenu**
-![](<img src="https://github.com/Ladvien/ladvien.github.io/blob/master/images/200x210xSuper_Style_ASCII_by_buddhascii.png.pagespeed.ic.T8JsLoZeGa.png">)
+<img src="https://github.com/Ladvien/ladvien.github.io/blob/master/images/200x210xSuper_Style_ASCII_by_buddhascii.png.pagespeed.ic.T8JsLoZeGa.png">
 One last note. &nbsp;If you want to make a sub-menu, you simply use the same code as above, just take the do-while loop out. &nbsp;This states you only want the sub-menu to run once, the return to the main menu.
 
 [1]: http://en.wikipedia.org/wiki/Hercules_Graphics_Card

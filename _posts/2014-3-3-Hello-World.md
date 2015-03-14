@@ -376,4 +376,4 @@ One last note. &nbsp;If you want to make a sub-menu, you simply use the same cod
 [10]: http://www.cplusplus.com/reference/cstdlib/atoi/
 [11]: http://www.tutorialspoint.com/cprogramming/switch_statement_in_c.htm
   </sys></stdint.h></stdbool.h></math.h></string.h></winbase.h></winnt.h></windef.h></windows.h></stdlib.h></stdarg.h></stdio.h>
- [12]: (<img src="ladvien.github.io/images/300x260xGCCLogo.png.pagespeed.ic.YZjB3d_p5p.png">)
+ [12]: <img src="ladvien.github.io/images/300x260xGCCLogo.png.pagespeed.ic.YZjB3d_p5p.png">

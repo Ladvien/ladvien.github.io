@@ -14,6 +14,7 @@ The easiest way to make your first post is to edit this one. Go into /_posts/ an
 
 # Command Line Menu | Let's Make Robots!
 
+![](http://ladvien.github.io/images/200x210xSuper_Style_ASCII_by_buddhascii.png.pagespeed.ic.T8JsLoZeGa.png)
 **Nostalgia**
 
 I wanted to post this simply because it working on it brought my a dry nostalgic joy. &nbsp;When I was young, 8-9, my parents got a old computer. &nbsp;All I remember was its screen was orange and black; having a [Hercules graphics card][1]. &nbsp;I quickly learned to get around from the command prompt. &nbsp;But I was always thrilled to run into menu driven program. &nbsp;It was like going to a fancy restaurant of abstractness. &nbsp;Anyway, when I wanted my code to slow down a bit and branch directions based upon user input, a command menu was a natural choice.

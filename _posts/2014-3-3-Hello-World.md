@@ -26,7 +26,7 @@ This post will be a series of post leading up to the large post I'll make on wri
 
 &nbsp;
 
-**![][3]Setting Up the GCC Compiler**
+**!Setting Up the GCC Compiler**
 
 I setup a C environment as basic I could. &nbsp;There may be easier ways to go about this, but&nbsp;I wanted to use GCC to compile. &nbsp;
 
@@ -282,11 +282,11 @@ One last note. &nbsp;If you want to make a sub-menu, you simply use the same cod
 
 [1]: http://en.wikipedia.org/wiki/Hercules_Graphics_Card
 [2]: https://github.com/Ladvien/ladvien.github.io/tree/master/images/lpc1114-usb-serial-solution-rerolling-boot-uploader
-[3]: ![Image]({{ site.baseurl }}/images/200x210xSuper_Style_ASCII_by_buddhascii.png.pagespeed.ic.T8JsLoZeGa.png)
+[3]: 
 [4]: http://www.mingw.org/wiki/HOWTO_Install_the_MinGW_GCC_Compiler_Suite
 [5]: http://www.sublimetext.com/2
 [6]: http://letsmakerobots.com/content/lpc1114-setup-bare-metal-arm
-[7]: http://github.com/Ladvien/ladvien.github.io/tree/master/images//426x218xCommand_line_menu.png.pagespeed.ic.56zs5r1auE.png
+[7]: ({{ site.baseurl }}/images/200x210xSuper_Style_ASCII_by_buddhascii.png.pagespeed.ic.T8JsLoZeGa.png)
 [8]: http://en.wikipedia.org/wiki/Do_while_loop
 [9]: http://www.cplusplus.com/reference/cstdio/scanf/
 [10]: http://www.cplusplus.com/reference/cstdlib/atoi/

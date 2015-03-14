@@ -363,7 +363,7 @@ Here, option "3. Connect Device" doesn't show until option "2. Device List" is r
 **A Submenu**
 
 One last note. &nbsp;If you want to make a sub-menu, you simply use the same code as above, just take the do-while loop out. &nbsp;This states you only want the sub-menu to run once, the return to the main menu.
-
+<img src="ladvien.github.io/images/300x260xGCCLogo.png.pagespeed.ic.YZjB3d_p5p.png">
 [1]: http://en.wikipedia.org/wiki/Hercules_Graphics_Card
 [2]: http://letsmakerobots.com/lpc1114-usb-serial-solution-rerolling-boot-uploader
 [3]: http://letsmakerobots.com/files/userpics/u19048/300x260xGCCLogo.png.pagespeed.ic.YZjB3d_p5p.png

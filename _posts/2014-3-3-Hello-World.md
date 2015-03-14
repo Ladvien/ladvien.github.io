@@ -38,8 +38,7 @@ To setup the environment:
 
 &nbsp;
 
-<pre><code>
-
+```
     #include <stdio.h>
     #include <stdarg.h>
     #include <stdlib.h>
@@ -52,7 +51,7 @@ To setup the environment:
     #include <stdbool.h>
     #include <stdint.h>
     #include <sys time.h>
-</code>
+```
 
 &nbsp;
 

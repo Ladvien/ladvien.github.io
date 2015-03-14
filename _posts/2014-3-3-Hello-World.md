@@ -10,7 +10,7 @@ Next you can update your site name, avatar and other options using the _config.y
 The easiest way to make your first post is to edit this one. Go into /_posts/ and update the Hello World markdown file. For more instructions head over to the [Jekyll Now repository](https://github.com/barryclark/jekyll-now) on GitHub.
 
 
-
+[12]
 
 
 [Source](http://letsmakerobots.com/content/command-line-menu "Permalink to Command Line Menu | Let's Make Robots!")
@@ -376,3 +376,4 @@ One last note. &nbsp;If you want to make a sub-menu, you simply use the same cod
 [10]: http://www.cplusplus.com/reference/cstdlib/atoi/
 [11]: http://www.tutorialspoint.com/cprogramming/switch_statement_in_c.htm
   </sys></stdint.h></stdbool.h></math.h></string.h></winbase.h></winnt.h></windef.h></windows.h></stdlib.h></stdarg.h></stdio.h>
+ [12]: Howdy.

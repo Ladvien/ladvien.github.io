@@ -10,11 +10,11 @@ Next you can update your site name, avatar and other options using the _config.y
 The easiest way to make your first post is to edit this one. Go into /_posts/ and update the Hello World markdown file. For more instructions head over to the [Jekyll Now repository](https://github.com/barryclark/jekyll-now) on GitHub.
 
 
+
 [Source](http://letsmakerobots.com/content/command-line-menu "Permalink to Command Line Menu | Let's Make Robots!")
 
 # Command Line Menu | Let's Make Robots!
 
-![](http://ladvien.github.io/images/200x210xSuper_Style_ASCII_by_buddhascii.png.pagespeed.ic.T8JsLoZeGa.png)
 **Nostalgia**
 
 I wanted to post this simply because it working on it brought my a dry nostalgic joy. &nbsp;When I was young, 8-9, my parents got a old computer. &nbsp;All I remember was its screen was orange and black; having a [Hercules graphics card][1]. &nbsp;I quickly learned to get around from the command prompt. &nbsp;But I was always thrilled to run into menu driven program. &nbsp;It was like going to a fancy restaurant of abstractness. &nbsp;Anyway, when I wanted my code to slow down a bit and branch directions based upon user input, a command menu was a natural choice.
@@ -27,7 +27,7 @@ This post will be a series of post leading up to the large post I'll make on wri
 
 &nbsp;
 
-**!Setting Up the GCC Compiler**
+**![][3]Setting Up the GCC Compiler**
 
 I setup a C environment as basic I could. &nbsp;There may be easier ways to go about this, but&nbsp;I wanted to use GCC to compile. &nbsp;
 
@@ -39,7 +39,25 @@ To setup the environment:
 
 &nbsp;
 
-```c
+| ----- |
+|
+
+     1
+     2
+     3
+     4
+     5
+     6
+     7
+     8
+     9
+    10
+    11
+    12
+    13
+
+ |
+
     #include <stdio.h>
     #include <stdarg.h>
     #include <stdlib.h>
@@ -51,8 +69,10 @@ To setup the environment:
     #include <math.h>
     #include <stdbool.h>
     #include <stdint.h>
-    #include <sys time.h>
-```
+
+    #include <sys time.h="">
+
+ |
 
 &nbsp;
 
@@ -82,7 +102,67 @@ Hmm. &nbsp;**Not really much to it, not sure it deserves its own post. &nbsp;But
 
 &nbsp;
 
-```c
+| ----- |
+|
+
+     1
+     2
+     3
+     4
+     5
+     6
+     7
+     8
+     9
+    10
+    11
+    12
+    13
+    14
+    15
+    16
+    17
+    18
+    19
+    20
+    21
+    22
+    23
+    24
+    25
+    26
+    27
+    28
+    29
+    30
+    31
+    32
+    33
+    34
+    35
+    36
+    37
+    38
+    39
+    40
+    41
+    42
+    43
+    44
+    45
+    46
+    47
+    48
+    49
+    50
+    51
+    52
+    53
+    54
+    55
+
+ |
+
     void main_menu()
     {
     	char char_choice[3];
@@ -138,7 +218,8 @@ Hmm. &nbsp;**Not really much to it, not sure it deserves its own post. &nbsp;But
     		}
     	}while(int_choice !=99);
     }
-```
+
+ |
 
 &nbsp;
 
@@ -282,12 +363,12 @@ Here, option "3. Connect Device" doesn't show until option "2. Device List" is r
 One last note. &nbsp;If you want to make a sub-menu, you simply use the same code as above, just take the do-while loop out. &nbsp;This states you only want the sub-menu to run once, the return to the main menu.
 
 [1]: http://en.wikipedia.org/wiki/Hercules_Graphics_Card
-[2]: https://github.com/Ladvien/ladvien.github.io/tree/master/images/lpc1114-usb-serial-solution-rerolling-boot-uploader
-[3]: 
+[2]: http://letsmakerobots.com/lpc1114-usb-serial-solution-rerolling-boot-uploader
+[3]: ladvien.git.io/images/u19048/300x260xGCCLogo.png.pagespeed.ic.YZjB3d_p5p.png
 [4]: http://www.mingw.org/wiki/HOWTO_Install_the_MinGW_GCC_Compiler_Suite
 [5]: http://www.sublimetext.com/2
 [6]: http://letsmakerobots.com/content/lpc1114-setup-bare-metal-arm
-[7]: {{ site.baseurl }}/images/200x210xSuper_Style_ASCII_by_buddhascii.png.pagespeed.ic.T8JsLoZeGa.png
+[7]: http://letsmakerobots.com/files/userpics/u19048/426x218xCommand_line_menu.png.pagespeed.ic.56zs5r1auE.png
 [8]: http://en.wikipedia.org/wiki/Do_while_loop
 [9]: http://www.cplusplus.com/reference/cstdio/scanf/
 [10]: http://www.cplusplus.com/reference/cstdlib/atoi/

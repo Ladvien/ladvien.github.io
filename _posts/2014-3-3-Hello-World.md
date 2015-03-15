@@ -16,7 +16,11 @@ I thought I'd take some time away from coding my [LPC1114 Uploader](http://lets
 
 This post will be a series of post leading up to the large post I'll make on writing the uploader.  All posts will rely on the GCC compiler.
 
- 
+| Tables        | Are           | Cool  |
+| ------------- |:-------------:| -----:|
+| col 3 is      | right-aligned | $1600 |
+| col 2 is      | centered      |   $12 |
+| zebra stripes | are neat      |    $1 |
 
 **![](/files/userpics/u19048/300x260xGCCLogo.png.pagespeed.ic.YZjB3d_p5p.png)Setting Up the GCC Compiler**
 

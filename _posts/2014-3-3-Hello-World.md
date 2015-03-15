@@ -177,13 +177,13 @@ This is then divided into four 6-bit bytes,
 |------------|--------|--------|--------|--------|
 | Binary:    | 010000 | 110110 | 000101 | 110100 |
 
--   6-bit Byte:     1             2             3              4
--   Binary:      010000   110110    000101   110100
+
 
 The new decimal values are,
 
--   6-bit Byte:        1             2             3              4
--   Decimal:         16           54            5             52
+| 6-bit Byte | 1             2             3              4 |
+|------------|----------------------------------------------|
+| Decimal    | 16           54            5             52  |
 
 At this point the 6-bit (senary) byte gave me a little trouble.  I didn't understand how 6-bits were treated by the 8-bit variable I was putting them in.  For example, how could I get an **int variable** to take only 6 bits, not 8?  The trick is understanding the 8-bit variable is only the width of the allotted space provided in a register, it has no influence on what you put in it.  It finally dawned on me, I didn't need to worry about the empty bits in a register.
 

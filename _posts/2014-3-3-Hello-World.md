@@ -10,6 +10,7 @@ Next you can update your site name, avatar and other options using the _config.y
 The easiest way to make your first post is to edit this one. Go into /_posts/ and update the Hello World markdown file. For more instructions head over to the [Jekyll Now repository](https://github.com/barryclark/jekyll-now) on GitHub.
 
 {% picture 200x210xSuper_Style_ASCII_by_buddhascii.png.pagespeed.ic.T8JsLoZeGa.png %}
+<img style="float: right" src="200x210xSuper_Style_ASCII_by_buddhascii.png.pagespeed.ic.T8JsLoZeGa.png">
 
 
 [Source](http://letsmakerobots.com/content/command-line-menu "Permalink to Command Line Menu | Let's Make Robots!")

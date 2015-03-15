@@ -11,53 +11,67 @@ The easiest way to make your first post is to edit this one. Go into /_posts/ an
 
 
 
+
+[Source](http://letsmakerobots.com/content/uuencode-0 "Permalink to UUEncode | Let's Make Robots!")
+
+# UUEncode | Let's Make Robots!
+
 &nbsp;
 
-<span style="font-size: medium;"><span style="line-height: 22px;">**I want to take a moment to thank [Bdk6](http://letsmakerobots.com/users/bdk6). &nbsp;The man is a walking Stack Overflow, with more patience for stupid. &nbsp;I doubt I'd understand any of this without his guidance.**</span></span>
+**I want to take a moment to thank [Bdk6][1]. &nbsp;The man is a walking Stack Overflow, with more patience for stupid. &nbsp;I doubt I'd understand any of this without his guidance.**
 
-I thought I'd take some time away from coding my&nbsp;[LPC1114 Uploader](http://letsmakerobots.com/lpc1114-usb-serial-solution-rerolling-boot-uploader)&nbsp;and verbally process a few things I've learned. &nbsp;As always, feel free to critique any of it; it'll only serve to make my code more robust in the end. &nbsp;
+I thought I'd take some time away from coding my&nbsp;[LPC1114 Uploader][2]&nbsp;and verbally process a few things I've learned. &nbsp;As always, feel free to critique any of it; it'll only serve to make my code more robust in the end. &nbsp;
 
 This post will be a series of post leading up to the large post I'll make on writing the uploader. &nbsp;All posts will rely on the GCC compiler.
 
 &nbsp;
 
-**![](/files/userpics/u19048/GCCLogo.png)<span style="font-size: large;">Setting Up the GCC Compiler</span>**
+**![][3]Setting Up the GCC Compiler**
 
-I setup a C environment as basic I could. &nbsp;<span style="line-height: 1.231;">There may be easier ways to go about this, but&nbsp;I wanted to use GCC to compile. &nbsp;</span>
+I setup a C environment as basic I could. &nbsp;There may be easier ways to go about this, but&nbsp;I wanted to use GCC to compile. &nbsp;
 
 To setup the environment:
 
-1. I downloaded and setup&nbsp;[MinGW32](http://www.mingw.org/wiki/HOWTO_Install_the_MinGW_GCC_Compiler_Suite).
+1\. I downloaded and setup&nbsp;[MinGW32][4].
 
-2. I added these&nbsp;**includes**&nbsp;to make the code go.
+2\. I added these&nbsp;**includes**&nbsp;to make the code go.
 
 &nbsp;
-<div style="background: #f8f8f8; overflow: auto; width: auto; border: solid gray; border-width: .1em .1em .1em .8em; padding: .2em .6em;"><table><tbody><tr><td><pre style="margin: 0; line-height: 125%;"> 1
- 2
- 3
- 4
- 5
- 6
- 7
- 8
- 9
-10
-11
-12
-13</pre></td><td><pre style="margin: 0; line-height: 125%;"><span style="color: #8f5902; font-style: italic;">#include &lt;stdio.h&gt;</span>
-<span style="color: #8f5902; font-style: italic;">#include &lt;stdarg.h&gt;</span>
-<span style="color: #8f5902; font-style: italic;">#include &lt;stdlib.h&gt; </span>
-<span style="color: #8f5902; font-style: italic;">#include &lt;windows.h&gt;</span>
-<span style="color: #8f5902; font-style: italic;">#include &lt;windef.h&gt;</span>
-<span style="color: #8f5902; font-style: italic;">#include &lt;winnt.h&gt;</span>
-<span style="color: #8f5902; font-style: italic;">#include &lt;winbase.h&gt;</span>
-<span style="color: #8f5902; font-style: italic;">#include &lt;string.h&gt;</span>
-<span style="color: #8f5902; font-style: italic;">#include &lt;math.h&gt;</span>
-<span style="color: #8f5902; font-style: italic;">#include &lt;stdbool.h&gt;</span>
-<span style="color: #8f5902; font-style: italic;">#include &lt;stdint.h&gt;</span>
 
-<span style="color: #8f5902; font-style: italic;">#include &lt;sys/time.h&gt;</span>
-</pre></td></tr></tbody></table></div>
+| ----- |
+|
+
+     1
+     2
+     3
+     4
+     5
+     6
+     7
+     8
+     9
+    10
+    11
+    12
+    13
+
+ |
+
+    #include <stdio.h>
+    #include <stdarg.h>
+    #include <stdlib.h>
+    #include <windows.h>
+    #include <windef.h>
+    #include <winnt.h>
+    #include <winbase.h>
+    #include <string.h>
+    #include <math.h>
+    #include <stdbool.h>
+    #include <stdint.h>
+
+    #include <sys time.h="">
+
+ |
 
 &nbsp;
 
@@ -65,71 +79,77 @@ I used this line to build it:
 
 **$ gcc -o main main.c**
 
-<span style="line-height: 1.231;">As for editing, I've really grown to love&nbsp;</span>[Sublime Text 2](http://www.sublimetext.com/2)<span style="line-height: 1.231;">.</span>
+As for editing, I've really grown to love&nbsp;[Sublime Text 2][5].
 
-If you have issues**, make sure directory containing your files is in your PATH environment variable&nbsp;**(I go over how to add the directory to your environment variables in this&nbsp;[post](http://letsmakerobots.com/content/lpc1114-setup-bare-metal-arm)).
+If you have issues**, make sure directory containing your files is in your PATH environment variable&nbsp;**(I go over how to add the directory to your environment variables in this&nbsp;[post][6]).
 
 &nbsp;
 
-**<span style="font-size: large;">How to Convert Hex Data to UUE</span>**
+**How to Convert Hex Data to UUE**
 
 **"What is 'UUEncoding'?"**
 
-**&nbsp;**<span style="line-height: 1.231;">Unix-to-Unix encoding (UUE) is the process where </span>**binary data is converted to a form which can be represented using ASCII character values from space (32) to underscore (95)**<span style="line-height: 1.231;">. &nbsp;These 64 characters allow us to express any binary stream of data.</span>
+**&nbsp;**Unix-to-Unix encoding (UUE) is the process where **binary data is converted to a form which can be represented using ASCII character values from space (32) to underscore (95)**. &nbsp;These 64 characters allow us to express any binary stream of data.
 
-I will not spend a lot of time explaining&nbsp;**UUEncoding** since the [Wikipedia article is excellent](http://en.wikipedia.org/wiki/Uuencoding).
+I will not spend a lot of time explaining&nbsp;**UUEncoding** since the [Wikipedia article is excellent][7].
 
 **"Why UUEncode?"**
 
 Have you written a program to look for a particular value? &nbsp;Like this,
 
-<!-- HTML generated using hilite.me -->
-<div style="background: #f8f8f8; overflow: auto; width: auto; border: solid gray; border-width: .1em .1em .1em .8em; padding: .2em .6em;"><table><tbody><tr><td><pre style="margin: 0; line-height: 125%;"> 1
- 2
- 3
- 4
- 5
- 6
- 7
- 8
- 9
-10
-11
-12
-13</pre></td><td><pre style="margin: 0; line-height: 125%;"><span style="color: #204a87; font-weight: bold;">int</span> <span style="color: #000000;">i</span><span style="color: #000000; font-weight: bold;">;</span>
-<span style="color: #204a87; font-weight: bold;">char</span> <span style="color: #000000;">tCollection</span><span style="color: #000000; font-weight: bold;">[</span><span style="color: #0000cf; font-weight: bold;">32</span><span style="color: #000000; font-weight: bold;">];</span>
-<span style="color: #204a87; font-weight: bold;">char</span> <span style="color: #000000;">c</span><span style="color: #000000; font-weight: bold;">;</span>
+| ----- |
+|
 
-<span style="color: #204a87; font-weight: bold;">if</span><span style="color: #000000; font-weight: bold;">(</span> <span style="color: #000000;">c</span> <span style="color: #ce5c00; font-weight: bold;">==</span> <span style="color: #4e9a06;">'T'</span><span style="color: #000000; font-weight: bold;">)</span>
-<span style="color: #000000; font-weight: bold;">{</span>
-    <span style="color: #000000;">Serial</span><span style="color: #000000; font-weight: bold;">.</span><span style="color: #000000;">print</span><span style="color: #000000; font-weight: bold;">(</span><span style="color: #4e9a06;">"I found a T!"</span><span style="color: #000000; font-weight: bold;">);</span>
-    <span style="color: #000000;">tCollection</span><span style="color: #000000; font-weight: bold;">[</span><span style="color: #000000;">i</span><span style="color: #000000; font-weight: bold;">]</span> <span style="color: #ce5c00; font-weight: bold;">=</span> <span style="color: #000000;">c</span><span style="color: #000000; font-weight: bold;">;</span>
-<span style="color: #204a87; font-weight: bold;">else</span> <span style="color: #000000;">if</span> <span style="color: #000000; font-weight: bold;">(</span><span style="color: #000000;">c</span> <span style="color: #ce5c00; font-weight: bold;">==</span> <span style="color: #4e9a06;">'\r'</span><span style="color: #000000; font-weight: bold;">)</span>
-<span style="color: #000000; font-weight: bold;">{</span>
-    <span style="color: #000000;">exit</span><span style="color: #000000; font-weight: bold;">();</span>
-<span style="color: #000000; font-weight: bold;">}</span>
+     1
+     2
+     3
+     4
+     5
+     6
+     7
+     8
+     9
+    10
+    11
+    12
+    13
 
-</pre></td></tr></tbody></table></div> 
+ |
+
+    int i;
+    char tCollection[32];
+    char c;
+
+    if( c == 'T')
+    {
+        Serial.print("I found a T!");
+        tCollection[i] = c;
+    else if (c == 'r')
+    {
+        exit();
+    }
+
+ |
 
 &nbsp;
 
 &nbsp;
 
-You begin running your program and everything seems fine. &nbsp;It is inspecting data looking for the letter T (0x54), but then, all of a sudden your program exits without reason. &nbsp;You're upset, because the sensor sending you the data didn't send the exit code, which is a carriage return ('\r', or 0x13), but still, your program ended like it did.
+You begin running your program and everything seems fine. &nbsp;It is inspecting data looking for the letter T (0x54), but then, all of a sudden your program exits without reason. &nbsp;You're upset, because the sensor sending you the data didn't send the exit code, which is a carriage return ('r', or 0x13), but still, your program ended like it did.
 
 Really, we know the reason, your program came across a random 0x13, which it interpreted as an exit command. &nbsp;Maybe a different special character?
 
-![](http://www.bibase.com/images/ascii.gif)
+![][8]
 
 But you realize, if you are dealing with a 8-bit data stream any ASCII character _might_&nbsp;be found in the incoming stream. &nbsp;So, how can the communicating devices know when it is getting data, versus, when it is receiving a command?
 
 &nbsp;
 
-![](/files/userpics/u19048/Super_Style_ASCII_by_buddhascii.png)
+![][9]
 
 &nbsp;
 
-<span style="line-height: 1.231;">This is where UUE comes in. &nbsp;As I stated earlier, UUE is a way to represent the same 8-bit data using only hex values 0x32 through 0x95 (the two middle columns in the ASCII chart above). &nbsp;This means characters 0x00 through 0x1F and 0x60 through 0x7F are free to be used for command functions.</span>
+This is where UUE comes in. &nbsp;As I stated earlier, UUE is a way to represent the same 8-bit data using only hex values 0x32 through 0x95 (the two middle columns in the ASCII chart above). &nbsp;This means characters 0x00 through 0x1F and 0x60 through 0x7F are free to be used for command functions.
 
 Returning to the above example, this means we could now us the CR value to signal the end-of-transmission, since CR is 0x13.
 
@@ -141,34 +161,34 @@ Ok, I hope I've sold you on UUE's utility, let me attempt to explain the basics 
 
 UUE conversion works with three bytes of data at a time and follows this algorithm.
 
-1.  The individual bits of 3 HEX bytes are put into a series.
-2.  The 24-bit series is then divided into four bytes of 6-bits.
-3.  Then, 32 is added to the decimal value representing each of the 6-bit bytes.
-4.  The resulting four values are UUEncoded bytes.
+1. The individual bits of 3 HEX bytes are put into a series.
+2. The 24-bit series is then divided into four bytes of 6-bits.
+3. Then, 32 is added to the decimal value representing each of the 6-bit bytes.
+4. The resulting four values are UUEncoded bytes.
 
-Confused as hell? I was too. &nbsp;Pictures are good. &nbsp;<span style="line-height: 1.231;">Let's follow the Wiki example and use: </span>**Cat**
+Confused as hell? I was too. &nbsp;Pictures are good. &nbsp;Let's follow the Wiki example and use: **Cat**
 
 The first step is to take the binary values for each ASCII character.
 
-*   <span style="line-height: 1.231;">'C' = 01000011</span>
-*   'a' = 01100001
-*   't' = &nbsp;01110100
+* 'C' = 01000011
+* 'a' = 01100001
+* 't' = &nbsp;01110100
 
 This means the resulting 24-bit binary series is,
 
-24-bit:&nbsp;<span style="line-height: 1.231;">01000011</span><span style="line-height: 1.231;">01100001</span><span style="line-height: 1.231;">01110100</span>
+24-bit:&nbsp;010000110110000101110100
 
-<span style="line-height: 1.231;">This is then divided into four 6-bit bytes,</span>
+This is then divided into four 6-bit bytes,
 
-<span style="line-height: 1.231;">&nbsp;</span>
+&nbsp;
 
-*   <span style="line-height: 1.231;">6-bit Byte: &nbsp; &nbsp; 1 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 2 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 3 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;4</span>
-*   <span style="line-height: 1.231;">Binary: &nbsp; &nbsp; &nbsp;010000 &nbsp; 11</span><span style="line-height: 1.231;">0110 &nbsp; &nbsp;0001</span><span style="line-height: 1.231;">01 &nbsp; 110100</span>
+* 6-bit Byte: &nbsp; &nbsp; 1 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 2 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 3 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;4
+* Binary: &nbsp; &nbsp; &nbsp;010000 &nbsp; 110110 &nbsp; &nbsp;000101 &nbsp; 110100
 
 The new decimal values are,
 
-*   <span style="line-height: 1.231;">6-bit Byte: &nbsp; &nbsp; &nbsp; &nbsp;1 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 2 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 3 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;4</span>
-*   <span style="line-height: 1.231;">Decimal: &nbsp; &nbsp; &nbsp; &nbsp; 16 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 54</span><span style="line-height: 1.231;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 5</span><span style="line-height: 1.231;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;52</span>
+* 6-bit Byte: &nbsp; &nbsp; &nbsp; &nbsp;1 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 2 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 3 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;4
+* Decimal: &nbsp; &nbsp; &nbsp; &nbsp; 16 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 54&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 5&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;52
 
 At this point the 6-bit (senary) byte gave me a little trouble. &nbsp;I didn't understand how 6-bits were treated by the 8-bit variable I was putting them in. &nbsp;For example, how could I get an **int variable**&nbsp;to take only 6 bits, not 8? &nbsp;The trick is understanding the 8-bit variable is only the width of the allotted space provided in a register, it has no influence on what you put in it. &nbsp;It finally dawned on me, I didn't need to worry about the empty bits in a register.
 
@@ -176,25 +196,25 @@ Examples are good:
 
 010000 &nbsp; &nbsp; = 16 in Decimal
 
-00<span style="line-height: 1.231;">010000&nbsp;</span><span style="line-height: 1.231;">= 16 in Decimal</span>
+00010000&nbsp;= 16 in Decimal
 
-010000 =&nbsp;<span style="line-height: 1.231;">00</span><span style="line-height: 1.231;">010000</span>
+010000 =&nbsp;00010000
 
 Anyway, this is how I finally made sense of it. &nbsp;As long as when I did my bit manipulations I kept unused bits of the register towards the "left" side, the my 6-bit values could be put into a 8-bit register and there value would remain the same.
 
-<span style="line-height: 1.231;">Alright, back to our example.</span>
+Alright, back to our example.
 
-<span style="line-height: 1.231;">Our next step is to add 32 to each of the decimal value of our new four bytes.</span>
+Our next step is to add 32 to each of the decimal value of our new four bytes.
 
-*   <span style="line-height: 1.231;">6-bit Byte: &nbsp; &nbsp; &nbsp; &nbsp;1 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 2 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 3 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;4</span>
-*   <span style="line-height: 1.231;">Decimal: &nbsp; &nbsp; &nbsp; &nbsp; 16 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 54</span><span style="line-height: 1.231;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 5</span><span style="line-height: 1.231;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;52</span>
-*   <span style="line-height: 1.231;">Add 32 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;+32 &nbsp; &nbsp; &nbsp; &nbsp;+32 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;+32 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; +32</span>
-*   <span style="line-height: 1.231;">New Dec. &nbsp; &nbsp; &nbsp; &nbsp;48 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;86 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;37 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;84</span>
-*   **<span style="line-height: 1.231;">UUE char: &nbsp; &nbsp; &nbsp; 0 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;V &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; % &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; T</span>**
+* 6-bit Byte: &nbsp; &nbsp; &nbsp; &nbsp;1 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 2 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 3 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;4
+* Decimal: &nbsp; &nbsp; &nbsp; &nbsp; 16 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 54&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 5&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;52
+* Add 32 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;+32 &nbsp; &nbsp; &nbsp; &nbsp;+32 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;+32 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; +32
+* New Dec. &nbsp; &nbsp; &nbsp; &nbsp;48 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;86 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;37 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;84
+* **UUE char: &nbsp; &nbsp; &nbsp; 0 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;V &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; % &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; T**
 
 &nbsp;
 
-![](/files/userpics/u19048/schrodingers_cat.jpg)And...that's it. &nbsp;Your data is now UUEncoded. &nbsp;When it is sent through whatever transmission medium it wont be bothered with special character protocals. &nbsp;For our Cat, we have transformed it into:** 0V%T**
+![][10]And...that's it. &nbsp;Your data is now UUEncoded. &nbsp;When it is sent through whatever transmission medium it wont be bothered with special character protocals. &nbsp;For our Cat, we have transformed it into:** 0V%T**
 
 Let's hope for the Cat's sake, there is decoding algorithm.
 
@@ -202,331 +222,129 @@ Let's hope for the Cat's sake, there is decoding algorithm.
 
 The answer? We make nothing up. &nbsp;In the instance of Cats, we simply pad the end of the character series with two nulls on the end. &nbsp;For example,
 
-*   <span style="line-height: 1.231;">'C' = 01000011</span>
-*   'a' = 01100001
-*   't' = &nbsp;01110100
-*   's' =&nbsp;01110011
-*   NUL = 00000000
-*   NUL = 00000000
+* 'C' = 01000011
+* 'a' = 01100001
+* 't' = &nbsp;01110100
+* 's' =&nbsp;01110011
+* NUL = 00000000
+* NUL = 00000000
 
-<span style="line-height: 1.231;">48-bit:&nbsp;</span><span style="line-height: 1.231;">01000011</span><span style="line-height: 1.231;">01100001</span><span style="line-height: 1.231;">01110100</span><span style="line-height: 1.231;">01110011</span><span style="line-height: 1.231;">00000000</span><span style="line-height: 1.231;">00000000</span>
+48-bit:&nbsp;010000110110000101110100011100110000000000000000
 
-*   <span style="line-height: 1.231;">6-bit Byte: &nbsp; &nbsp; 1 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 2 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 3 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;4 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 5 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 6 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;7 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;8</span>
-*   <span style="line-height: 1.231;">Binary: &nbsp; &nbsp;</span><span style="line-height: 1.231;">010000 &nbsp; &nbsp;11</span><span style="line-height: 1.231;">0110 &nbsp; &nbsp;0001</span><span style="line-height: 1.231;">01 &nbsp; &nbsp;110100 &nbsp; &nbsp;</span><span style="line-height: 1.231;">011100 &nbsp; &nbsp;11</span><span style="line-height: 1.231;">0000 &nbsp; &nbsp; 0000</span><span style="line-height: 1.231;">00 &nbsp; &nbsp;000000</span>
+* 6-bit Byte: &nbsp; &nbsp; 1 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 2 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 3 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;4 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 5 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 6 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;7 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;8
+* Binary: &nbsp; &nbsp;010000 &nbsp; &nbsp;110110 &nbsp; &nbsp;000101 &nbsp; &nbsp;110100 &nbsp; &nbsp;011100 &nbsp; &nbsp;110000 &nbsp; &nbsp; 000000 &nbsp; &nbsp;000000
 
 The new decimal values are,
 
-*   <span style="line-height: 1.231;">6-bit Byte: &nbsp; &nbsp; &nbsp; &nbsp;1 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 2 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 3 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;4 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 5 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;6 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;7 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;8</span>
-*   <span style="line-height: 1.231;">Decimal: &nbsp; &nbsp; &nbsp; &nbsp; 16 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 54</span><span style="line-height: 1.231;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 5</span><span style="line-height: 1.231;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;52 &nbsp; &nbsp; &nbsp; &nbsp; 28 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;48 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 0 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;0&nbsp;</span>
+* 6-bit Byte: &nbsp; &nbsp; &nbsp; &nbsp;1 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 2 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 3 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;4 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 5 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;6 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;7 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;8
+* Decimal: &nbsp; &nbsp; &nbsp; &nbsp; 16 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 54&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 5&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;52 &nbsp; &nbsp; &nbsp; &nbsp; 28 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;48 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 0 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;0&nbsp;
+* 6-bit Byte: &nbsp; &nbsp; &nbsp; &nbsp;1 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 2 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 3 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;4 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 5 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;6 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;7 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;8
+* Decimal: &nbsp; &nbsp; &nbsp; &nbsp; 16 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 54&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 5&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;52 &nbsp; &nbsp; &nbsp; &nbsp; 28 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;48 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 0 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;0&nbsp;
+* Add 32 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;+32 &nbsp; &nbsp; &nbsp; &nbsp;+32 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;+32 &nbsp; &nbsp; &nbsp; &nbsp;+32 &nbsp; &nbsp; &nbsp;+32 &nbsp; &nbsp; &nbsp; &nbsp; +32 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;+32 &nbsp; &nbsp; &nbsp; &nbsp; +32
+* New Dec. &nbsp; &nbsp; &nbsp; &nbsp;48 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;86 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;37 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;84 &nbsp; &nbsp; &nbsp; &nbsp;60 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 80 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;32 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;32
+* **UUE char: &nbsp; &nbsp; &nbsp; 0 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;V &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; % &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; T &nbsp; &nbsp; &nbsp; &nbsp;&lt; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; P &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;SPC &nbsp; &nbsp; &nbsp; &nbsp;SPC**
 
-*   <span style="line-height: 1.231;">6-bit Byte: &nbsp; &nbsp; &nbsp; &nbsp;1 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 2 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 3 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;4 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 5 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;6 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;7 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;8</span>
-*   <span style="line-height: 1.231;">Decimal: &nbsp; &nbsp; &nbsp; &nbsp; 16 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 54</span><span style="line-height: 1.231;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 5</span><span style="line-height: 1.231;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;52 &nbsp; &nbsp; &nbsp; &nbsp; 28 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;48 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 0 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;0&nbsp;</span>
-*   <span style="line-height: 1.231;">Add 32 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;+32 &nbsp; &nbsp; &nbsp; &nbsp;+32 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;+32 &nbsp; &nbsp; &nbsp; &nbsp;+32 &nbsp; &nbsp; &nbsp;+32 &nbsp; &nbsp; &nbsp; &nbsp; +32 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;+32 &nbsp; &nbsp; &nbsp; &nbsp; +32</span>
-*   <span style="line-height: 1.231;">New Dec. &nbsp; &nbsp; &nbsp; &nbsp;48 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;86 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;37 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;84 &nbsp; &nbsp; &nbsp; &nbsp;60 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 80 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;32 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;32</span>
-*   **UUE char: &nbsp; &nbsp; &nbsp; 0 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;V &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; % &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; T &nbsp; &nbsp; &nbsp; &nbsp;&lt; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; P &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;SPC &nbsp; &nbsp; &nbsp; &nbsp;SPC**
+We have turned "Cats" into "**0V%T<p  **"=""  well,="" almost,="" we="" aren't="" quite="" done="" here.="" uh-oh.=""  another="" problem.=""  the="" whole="" point="" of="" uue="" was="" to="" stay="" away="" from="" special="" characters="" like="" the="" space="" character="" (0x32).=""  but="" now="" have="" two="" them="" in="" our="" transmission.="" protocol="" addresses="" this.=""  it="" states,="" *="" if="" result="" 6-bit="" encoding="" process="" is="" character,="" convert="" this="" [grave="" characte][11]r,="" **'="" `="" '.=""  **(the="" grave="" accent="" 0x60="" hexadecimal,="" by="" way).="" therefore,="" "cats"="" actually="" becomes.="" **almost="" char:=""  ="" 0=""  v="" %="" t=""  <="" p=""  spc=""  spc**="" **uue=""  0="" `**="" finally!="" encoded="" we've="" turned:="" ![][12] into="" -------------="">&nbsp;**&nbsp;&nbsp;0V%T</p><p ``=""  =""  now,="" _that's_ science="" folks!**="" **hmm,="" what="" else="" are="" you="" going="" to="" need="" know?="" **oh,="" right,="" how="" the="" uue="" data="" is="" stored.****="" stores="" and="" sends="" in="" lines.=""  a="" line="" of="" consist="" a="" start="" character,="" which="" represents="" many="" bytes="" have="" been="" encoded="" (**not** how="" characters="" line)="" by="" using="" 6-bit="" number="" stored="" as="" an="" ascii="" char.=""  the="" ends="" with="" new="" character="" (i.e.,="" 'n').=""  lastly,="" limited="" 45="" data.=""  this="" means,="" maximum="" amount="" on="" should="" be="" no="" more="" than="" 60.=""  or,="" 62,="" if="" count="" end="" character.="" again,="" examples="" good.=""  for="" our="" cats,="" would="" look="" something="" like="" this,="" ![][13]="" let="" me="" take="" moment="" describe="" we="" get=""  basically,="" sending,="" case="" 4,="" add="" 32.="" gives="" us="" decimal="" representation="" will="" use=""  therefore,="" confusing?=""  it'll="" probably="" make="" sense="" when="" at="" code.="" speaking="" which,="" i="" think="" i've="" covered="" basics,="" time="" jump="" into="" implementation.="" **implementing="" uuencoding="" c**="" well,="" here="" it="" is.=""  my="" shoddy="" implementation="" uuencoder="" c.="" function="" takes="" several="" variables.="" 1.="" **uue_data_array**="" pointer="" uint8_t="" array="" where="" stored.="" 2.="" **hex_data_array**="" containing="" hexadecimal="" values="" (to="" learn="" my="" data,="" checkout="" another="" one="" this="" inglorious="" post:="" [intel="" hex="" file="" array][14]).="" 3.="" size="" integer="" representing="" might="" found="" **hex_data_array**.="" 4.="" after="" complete,="" returns="" were="" created.="" meant="" for="" parsing="" later="" time.="" |="" -----="" 1="" 2="" 3="" 4="" 5="" 6="" 7="" 8="" 9="" 10="" 11="" 12="" 13="" 14="" 15="" 16="" 17="" 18="" 19="" 20="" 21="" 22="" 23="" 24="" 25="" 26="" 27="" 28="" 29="" 30="" 31="" 32="" 33="" 34="" 35="" 36="" 37="" 38="" 39="" 40="" 41="" 42="" 43="" 44="" 46="" 47="" 48="" 49="" 50="" 51="" 52="" 53="" 54="" 55="" 56="" 57="" 58="" 59="" 60="" 61="" 62="" 63="" 64="" 65="" 66="" 67="" 68="" 69="" 70="" 71="" 72="" 73="" 74="" 75="" 76="" 77="" 78="" 79="" 80="" 81="" 82="" 83="" 84="" 85="" 86="" 87="" 88="" 89="" 90="" 91="" 92="" 93="" 94="" 95="" 96="" 97="" 98="" 99="" 100="" 101="" 102="" 103="" 104="" 105="" 106="" 107="" 108="" 109="" 110="" 111="" 112="" 113="" int="" uuencode(uint8_t="" *="" uue_data_array,="" hex_data_array,="" hex_data_array_size)="" {="" char="" per="" line.="" load="" array.="" encode="" padding.="" 5.="" replace="" '="" '''="" 6.="" return="" (implicit)="" size.="" byte_to_encode[3];="" uue_char[4];="" uuencoded_array_index="0;" uue_length_char_index="45;" padded_index="0;" bytes_left="0;" if(hex_data_array_size="" <="" 45)="" uue_data_array[uuencoded_array_index]="((hex_data_array_size" &="" 0x3f)="" +="" ');="" }="" ;="" uuencoded_array_index++;="" loop.="" (int="" hex_data_array_index="0;" hex_data_array_size;="" hex_data_array_index)="" 3;="" ++i)="" (hex_data_array_index="" byte_to_encode[i]="hex_data_array[hex_data_array_index];" hex_data_array_index++;="" padded_index++;="" uue_length_char_index--;="" uue_char[0]="((byte_to_encode[0]">&gt; 2) &amp; 0x3f);
+    		uue_char[1] = (((byte_to_encode[0] &lt;&lt; 4) | ((byte_to_encode[1] &gt;&gt; 4) &amp; 0x0f)) &amp; 0x3f);
+    		uue_char[2] = (((byte_to_encode[1] &lt;&lt; 2) | ((byte_to_encode[2] &gt;&gt; 6) &amp; 0x03)) &amp; 0x3f);
+    		uue_char[3] = (byte_to_encode[2] &amp; 0x3f);
 
-We have turned "Cats" into "**0V%T&lt;P &nbsp;**" &nbsp;Well, almost, we aren't quite done here.
+    		for (int i = 0; i &lt; 4; i++)
+    		{
+    			// 5. Replace ' ' with '''
+    			if (uue_char[i] == 0x00)
+    			{
+    				UUE_data_array[UUEncoded_array_index] = 0x60;
+    			}
+    			else
+    			{
+    				UUE_data_array[UUEncoded_array_index] = (uue_char[i] + ' ');
+    			}
 
-Uh-oh. &nbsp;Another problem. &nbsp;The whole point of UUE was to stay away from special characters like the space character (0x32). &nbsp;But now we have two of them in our transmission. &nbsp;Well, the UUE protocol addresses this. &nbsp;It states,
+    			UUEncoded_array_index++;
+    		}
 
-*   If the result of the 6-bit encoding process is the space character, we convert this to the [grave characte](http://en.wikipedia.org/wiki/Grave_accent)r, **' ` '. &nbsp;**(The grave accent character is 0x60 in hexadecimal, by the way).
+    		// Data bytes left.
+    		bytes_left = (hex_data_array_size - hex_data_array_index);
 
-Therefore, our "Cats" actually becomes.
+    		if (uue_length_char_index == 0 &amp;&amp; bytes_left &gt; 0)
+    		{
+    			// NOTE: Could be simplified to include first char
+    			// and additional characters, using a positive index.
+    			// 1. Add char for characters per line.
+    			UUE_data_array[UUEncoded_array_index] = 'n';
+    			UUEncoded_array_index++;
 
-*   **Almost UUE char: &nbsp; &nbsp; &nbsp; 0 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;V &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; % &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; T &nbsp; &nbsp; &nbsp; &nbsp;&lt; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; P &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;SPC &nbsp; &nbsp; &nbsp; &nbsp;SPC**
-*   **UUE char: &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;0 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;V &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; % &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; T &nbsp; &nbsp; &nbsp; &nbsp;&lt; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; P &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ` &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; `**
+    			if(bytes_left &lt; 45)
+    			{
+    				// Find how many characters are left.
+    				UUE_data_array[UUEncoded_array_index] = ((bytes_left &amp; 0x3f) + ' ');
+    			}
+    			else
+    			{
+    				UUE_data_array[UUEncoded_array_index] = 'M';
+    			}
+    			UUEncoded_array_index++;
+    			uue_length_char_index = 45;
+    		}
 
-&nbsp;
+    	} // End UUE loop
+    	UUE_data_array[UUEncoded_array_index] = 'n';
 
-Finally! We have encoded "Cats"
+    	// 6. Return UUE data array (implicit) and size.
+    	return UUEncoded_array_index;
+    }
 
-We've turned:
+    int check_sum(uint8_t * hex_data_array, int hex_data_array_size)
+    {
+    	int check_sum = 0;
+    	int char_index = 0;
 
-![](/files/userpics/u19048/fivekittems1.jpg)&nbsp;into -------------&gt;&nbsp;**&nbsp;&nbsp;0V%T&lt;P `` &nbsp; &nbsp; &nbsp;Now, _that's_&nbsp;science folks!**
+    	while(char_index &lt; hex_data_array_size)
+    	{
+    		check_sum += hex_data_array[char_index];
+    		char_index++;
+    	}
+    	return check_sum;
+    }
 
-&nbsp;
-
-**<span style="font-weight: normal;">Hmm, what else are you going to need to know? <strong>Oh, right, how the UUE data is stored.**</span></strong>
-
-UUE stores and sends data in lines. &nbsp;A line of UUE data consist of a start character, which represents how many bytes have been encoded in the line (**not**&nbsp;how many UUE characters are in the line) by using a 6-bit number stored as an ASCII char. &nbsp;The line of UUE data ends with a new line character (i.e., '\n'). &nbsp;Lastly, a UUE line is limited to 45 bytes of data. &nbsp;This means, the maximum amount of data characters in on line of UUE should be no more than 60. &nbsp;Or, 62, if you count the start character and the end character.
-
-Again, examples are good. &nbsp;For our Cats, the line would look something like this,
-
-*   <span style="line-height: 1.231;">$&nbsp;</span>**0V%T&lt;P `` \n**
-
-![](/files/userpics/u19048/UUE_dump.png)
-
-Let me take a moment to describe how we get the start character. &nbsp;Basically, we count how many bytes we are sending, in our case 4, and we add 32. &nbsp;This gives us the decimal representation of the ASCII character we will use as our start character. &nbsp;Therefore,
-
-*   <span style="line-height: 1.231;">4 + 32 = 36 as ASCII = $</span>
-
-Confusing? &nbsp;It'll probably make more sense when we look at the code.
-
-&nbsp;
-
-Speaking of which, I think I've covered the basics, time to jump into implementation.
-
-&nbsp;
-
-**<span style="font-size: large;">Implementing UUEncoding in C</span>**
-
-Well, here it is. &nbsp;My shoddy implementation of a UUEncoder in C. &nbsp;
-
-The function takes several variables.
-
-1.  <span style="line-height: 1.231;">**UUE_data_array** is a pointer to an uint8_t array where the encoded characters will be stored.</span>
-2.  <span style="line-height: 1.231;">**hex_data_array** is a pointer to an uint8_t array containing the hexadecimal values to be encoded (to learn where I get my hexadecimal data, checkout another one of this inglorious post: [Intel HEX File to Array](http://letsmakerobots.com/content/intel-hexfile-array)).</span>
-3.  <span style="line-height: 1.231;">**hex_data_array** size is an integer representing how many bytes of data might be found in the **hex_data_array**.</span>
-4.  <span style="line-height: 1.231;">After the function is complete, it returns how many ASCII UUE characters were created. &nbsp;This is meant for parsing the UUE array at a later time.</span>
-
-&nbsp;
-
-<!-- HTML generated using hilite.me -->
-<div style="background: #f8f8f8; overflow: auto; width: auto; border: solid gray; border-width: .1em .1em .1em .8em; padding: .2em .6em;"><table><tbody><tr><td><pre style="margin: 0; line-height: 125%;">  1
-  2
-  3
-  4
-  5
-  6
-  7
-  8
-  9
- 10
- 11
- 12
- 13
- 14
- 15
- 16
- 17
- 18
- 19
- 20
- 21
- 22
- 23
- 24
- 25
- 26
- 27
- 28
- 29
- 30
- 31
- 32
- 33
- 34
- 35
- 36
- 37
- 38
- 39
- 40
- 41
- 42
- 43
- 44
- 45
- 46
- 47
- 48
- 49
- 50
- 51
- 52
- 53
- 54
- 55
- 56
- 57
- 58
- 59
- 60
- 61
- 62
- 63
- 64
- 65
- 66
- 67
- 68
- 69
- 70
- 71
- 72
- 73
- 74
- 75
- 76
- 77
- 78
- 79
- 80
- 81
- 82
- 83
- 84
- 85
- 86
- 87
- 88
- 89
- 90
- 91
- 92
- 93
- 94
- 95
- 96
- 97
- 98
- 99
-100
-101
-102
-103
-104
-105
-106
-107
-108
-109
-110
-111
-112
-113</pre></td><td><pre style="margin: 0; line-height: 125%;"><span style="color: #204a87; font-weight: bold;">int</span> <span style="color: #000000;">UUEncode</span><span style="color: #000000; font-weight: bold;">(</span><span style="color: #204a87; font-weight: bold;">uint8_t</span> <span style="color: #ce5c00; font-weight: bold;">*</span> <span style="color: #000000;">UUE_data_array</span><span style="color: #000000; font-weight: bold;">,</span> <span style="color: #204a87; font-weight: bold;">uint8_t</span> <span style="color: #ce5c00; font-weight: bold;">*</span> <span style="color: #000000;">hex_data_array</span><span style="color: #000000; font-weight: bold;">,</span> <span style="color: #204a87; font-weight: bold;">int</span> <span style="color: #000000;">hex_data_array_size</span><span style="color: #000000; font-weight: bold;">)</span>
-<span style="color: #000000; font-weight: bold;">{</span>
-	<span style="color: #8f5902; font-style: italic;">// 1. Add char for characters per line.</span>
-	<span style="color: #8f5902; font-style: italic;">// 2. Load 3 bytes into an array.</span>
-	<span style="color: #8f5902; font-style: italic;">// 3. Encode array.</span>
-	<span style="color: #8f5902; font-style: italic;">// 4. Add padding.</span>
-	<span style="color: #8f5902; font-style: italic;">// 5. Replace ' ' with '''</span>
-	<span style="color: #8f5902; font-style: italic;">// 6. Return UUE data array (implicit) and size.</span>
-	<span style="color: #204a87; font-weight: bold;">uint8_t</span> <span style="color: #000000;">byte_to_encode</span><span style="color: #000000; font-weight: bold;">[</span><span style="color: #0000cf; font-weight: bold;">3</span><span style="color: #000000; font-weight: bold;">];</span>
-	<span style="color: #204a87; font-weight: bold;">uint8_t</span> <span style="color: #000000;">uue_char</span><span style="color: #000000; font-weight: bold;">[</span><span style="color: #0000cf; font-weight: bold;">4</span><span style="color: #000000; font-weight: bold;">];</span>
-
-	<span style="color: #204a87; font-weight: bold;">int</span> <span style="color: #000000;">UUEncoded_array_index</span> <span style="color: #ce5c00; font-weight: bold;">=</span> <span style="color: #0000cf; font-weight: bold;">0</span><span style="color: #000000; font-weight: bold;">;</span>
-	<span style="color: #204a87; font-weight: bold;">int</span> <span style="color: #000000;">uue_length_char_index</span> <span style="color: #ce5c00; font-weight: bold;">=</span> <span style="color: #0000cf; font-weight: bold;">45</span><span style="color: #000000; font-weight: bold;">;</span>
-	<span style="color: #204a87; font-weight: bold;">int</span> <span style="color: #000000;">padded_index</span> <span style="color: #ce5c00; font-weight: bold;">=</span> <span style="color: #0000cf; font-weight: bold;">0</span><span style="color: #000000; font-weight: bold;">;</span>
-	<span style="color: #204a87; font-weight: bold;">int</span> <span style="color: #000000;">bytes_left</span> <span style="color: #ce5c00; font-weight: bold;">=</span> <span style="color: #0000cf; font-weight: bold;">0</span><span style="color: #000000; font-weight: bold;">;</span>
-
-	<span style="color: #8f5902; font-style: italic;">// 1. Add char for characters per line.</span>
-	<span style="color: #204a87; font-weight: bold;">if</span><span style="color: #000000; font-weight: bold;">(</span><span style="color: #000000;">hex_data_array_size</span> <span style="color: #ce5c00; font-weight: bold;">&lt;</span> <span style="color: #0000cf; font-weight: bold;">45</span><span style="color: #000000; font-weight: bold;">)</span>
-	<span style="color: #000000; font-weight: bold;">{</span>
-		 <span style="color: #000000;">UUE_data_array</span><span style="color: #000000; font-weight: bold;">[</span><span style="color: #000000;">UUEncoded_array_index</span><span style="color: #000000; font-weight: bold;">]</span> <span style="color: #ce5c00; font-weight: bold;">=</span> <span style="color: #000000; font-weight: bold;">((</span><span style="color: #000000;">hex_data_array_size</span> <span style="color: #ce5c00; font-weight: bold;">&amp;</span> <span style="color: #0000cf; font-weight: bold;">0x3f</span><span style="color: #000000; font-weight: bold;">)</span> <span style="color: #ce5c00; font-weight: bold;">+</span> <span style="color: #4e9a06;">' '</span><span style="color: #000000; font-weight: bold;">);</span>
-	<span style="color: #000000; font-weight: bold;">}</span>
-	<span style="color: #204a87; font-weight: bold;">else</span>
-	<span style="color: #000000; font-weight: bold;">{</span>
-		<span style="color: #000000;">UUE_data_array</span><span style="color: #000000; font-weight: bold;">[</span><span style="color: #000000;">UUEncoded_array_index</span><span style="color: #000000; font-weight: bold;">]</span> <span style="color: #ce5c00; font-weight: bold;">=</span> <span style="color: #4e9a06;">'M'</span><span style="color: #000000; font-weight: bold;">;</span>
-	<span style="color: #000000; font-weight: bold;">}</span>
-
-	<span style="color: #000000;">UUEncoded_array_index</span><span style="color: #ce5c00; font-weight: bold;">++</span><span style="color: #000000; font-weight: bold;">;</span>
-
-	<span style="color: #8f5902; font-style: italic;">// Encode loop.</span>
-	<span style="color: #204a87; font-weight: bold;">for</span> <span style="color: #000000; font-weight: bold;">(</span><span style="color: #204a87; font-weight: bold;">int</span> <span style="color: #000000;">hex_data_array_index</span> <span style="color: #ce5c00; font-weight: bold;">=</span> <span style="color: #0000cf; font-weight: bold;">0</span><span style="color: #000000; font-weight: bold;">;</span> <span style="color: #000000;">hex_data_array_index</span> <span style="color: #ce5c00; font-weight: bold;">&lt;</span> <span style="color: #000000;">hex_data_array_size</span><span style="color: #000000; font-weight: bold;">;</span> <span style="color: #000000;">hex_data_array_index</span><span style="color: #000000; font-weight: bold;">)</span>
-	<span style="color: #000000; font-weight: bold;">{</span>
-		<span style="color: #8f5902; font-style: italic;">// 2. Load 3 bytes into an array.</span>
-		<span style="color: #204a87; font-weight: bold;">for</span> <span style="color: #000000; font-weight: bold;">(</span><span style="color: #204a87; font-weight: bold;">int</span> <span style="color: #000000;">i</span> <span style="color: #ce5c00; font-weight: bold;">=</span> <span style="color: #0000cf; font-weight: bold;">0</span><span style="color: #000000; font-weight: bold;">;</span> <span style="color: #000000;">i</span> <span style="color: #ce5c00; font-weight: bold;">&lt;</span> <span style="color: #0000cf; font-weight: bold;">3</span><span style="color: #000000; font-weight: bold;">;</span> <span style="color: #ce5c00; font-weight: bold;">++</span><span style="color: #000000;">i</span><span style="color: #000000; font-weight: bold;">)</span>
-		<span style="color: #000000; font-weight: bold;">{</span>
-			<span style="color: #8f5902; font-style: italic;">// Load bytes into array</span>
-			<span style="color: #204a87; font-weight: bold;">if</span> <span style="color: #000000; font-weight: bold;">(</span><span style="color: #000000;">hex_data_array_index</span> <span style="color: #ce5c00; font-weight: bold;">&lt;</span> <span style="color: #000000;">hex_data_array_size</span><span style="color: #000000; font-weight: bold;">)</span>
-			<span style="color: #000000; font-weight: bold;">{</span>
-				<span style="color: #000000;">byte_to_encode</span><span style="color: #000000; font-weight: bold;">[</span><span style="color: #000000;">i</span><span style="color: #000000; font-weight: bold;">]</span> <span style="color: #ce5c00; font-weight: bold;">=</span> <span style="color: #000000;">hex_data_array</span><span style="color: #000000; font-weight: bold;">[</span><span style="color: #000000;">hex_data_array_index</span><span style="color: #000000; font-weight: bold;">];</span>
-				<span style="color: #000000;">hex_data_array_index</span><span style="color: #ce5c00; font-weight: bold;">++</span><span style="color: #000000; font-weight: bold;">;</span>
-			<span style="color: #000000; font-weight: bold;">}</span>
-			<span style="color: #204a87; font-weight: bold;">else</span>
-			<span style="color: #000000; font-weight: bold;">{</span>
-				<span style="color: #8f5902; font-style: italic;">// 4. Add padding.</span>
-				<span style="color: #000000;">byte_to_encode</span><span style="color: #000000; font-weight: bold;">[</span><span style="color: #000000;">i</span><span style="color: #000000; font-weight: bold;">]</span> <span style="color: #ce5c00; font-weight: bold;">=</span> <span style="color: #0000cf; font-weight: bold;">0</span><span style="color: #000000; font-weight: bold;">;</span>
-				<span style="color: #000000;">padded_index</span><span style="color: #ce5c00; font-weight: bold;">++</span><span style="color: #000000; font-weight: bold;">;</span>
-			<span style="color: #000000; font-weight: bold;">}</span>
-			<span style="color: #000000;">uue_length_char_index</span><span style="color: #ce5c00; font-weight: bold;">--</span><span style="color: #000000; font-weight: bold;">;</span>
-		<span style="color: #000000; font-weight: bold;">}</span>
-
-		<span style="color: #8f5902; font-style: italic;">// 3. Encode array.</span>
-		<span style="color: #000000;">uue_char</span><span style="color: #000000; font-weight: bold;">[</span><span style="color: #0000cf; font-weight: bold;">0</span><span style="color: #000000; font-weight: bold;">]</span> <span style="color: #ce5c00; font-weight: bold;">=</span> <span style="color: #000000; font-weight: bold;">((</span><span style="color: #000000;">byte_to_encode</span><span style="color: #000000; font-weight: bold;">[</span><span style="color: #0000cf; font-weight: bold;">0</span><span style="color: #000000; font-weight: bold;">]</span> <span style="color: #ce5c00; font-weight: bold;">&gt;&gt;</span> <span style="color: #0000cf; font-weight: bold;">2</span><span style="color: #000000; font-weight: bold;">)</span> <span style="color: #ce5c00; font-weight: bold;">&amp;</span> <span style="color: #0000cf; font-weight: bold;">0x3f</span><span style="color: #000000; font-weight: bold;">);</span>
-		<span style="color: #000000;">uue_char</span><span style="color: #000000; font-weight: bold;">[</span><span style="color: #0000cf; font-weight: bold;">1</span><span style="color: #000000; font-weight: bold;">]</span> <span style="color: #ce5c00; font-weight: bold;">=</span> <span style="color: #000000; font-weight: bold;">(((</span><span style="color: #000000;">byte_to_encode</span><span style="color: #000000; font-weight: bold;">[</span><span style="color: #0000cf; font-weight: bold;">0</span><span style="color: #000000; font-weight: bold;">]</span> <span style="color: #ce5c00; font-weight: bold;">&lt;&lt;</span> <span style="color: #0000cf; font-weight: bold;">4</span><span style="color: #000000; font-weight: bold;">)</span> <span style="color: #ce5c00; font-weight: bold;">|</span> <span style="color: #000000; font-weight: bold;">((</span><span style="color: #000000;">byte_to_encode</span><span style="color: #000000; font-weight: bold;">[</span><span style="color: #0000cf; font-weight: bold;">1</span><span style="color: #000000; font-weight: bold;">]</span> <span style="color: #ce5c00; font-weight: bold;">&gt;&gt;</span> <span style="color: #0000cf; font-weight: bold;">4</span><span style="color: #000000; font-weight: bold;">)</span> <span style="color: #ce5c00; font-weight: bold;">&amp;</span> <span style="color: #0000cf; font-weight: bold;">0x0f</span><span style="color: #000000; font-weight: bold;">))</span> <span style="color: #ce5c00; font-weight: bold;">&amp;</span> <span style="color: #0000cf; font-weight: bold;">0x3f</span><span style="color: #000000; font-weight: bold;">);</span>
-		<span style="color: #000000;">uue_char</span><span style="color: #000000; font-weight: bold;">[</span><span style="color: #0000cf; font-weight: bold;">2</span><span style="color: #000000; font-weight: bold;">]</span> <span style="color: #ce5c00; font-weight: bold;">=</span> <span style="color: #000000; font-weight: bold;">(((</span><span style="color: #000000;">byte_to_encode</span><span style="color: #000000; font-weight: bold;">[</span><span style="color: #0000cf; font-weight: bold;">1</span><span style="color: #000000; font-weight: bold;">]</span> <span style="color: #ce5c00; font-weight: bold;">&lt;&lt;</span> <span style="color: #0000cf; font-weight: bold;">2</span><span style="color: #000000; font-weight: bold;">)</span> <span style="color: #ce5c00; font-weight: bold;">|</span> <span style="color: #000000; font-weight: bold;">((</span><span style="color: #000000;">byte_to_encode</span><span style="color: #000000; font-weight: bold;">[</span><span style="color: #0000cf; font-weight: bold;">2</span><span style="color: #000000; font-weight: bold;">]</span> <span style="color: #ce5c00; font-weight: bold;">&gt;&gt;</span> <span style="color: #0000cf; font-weight: bold;">6</span><span style="color: #000000; font-weight: bold;">)</span> <span style="color: #ce5c00; font-weight: bold;">&amp;</span> <span style="color: #0000cf; font-weight: bold;">0x03</span><span style="color: #000000; font-weight: bold;">))</span> <span style="color: #ce5c00; font-weight: bold;">&amp;</span> <span style="color: #0000cf; font-weight: bold;">0x3f</span><span style="color: #000000; font-weight: bold;">);</span>
-		<span style="color: #000000;">uue_char</span><span style="color: #000000; font-weight: bold;">[</span><span style="color: #0000cf; font-weight: bold;">3</span><span style="color: #000000; font-weight: bold;">]</span> <span style="color: #ce5c00; font-weight: bold;">=</span> <span style="color: #000000; font-weight: bold;">(</span><span style="color: #000000;">byte_to_encode</span><span style="color: #000000; font-weight: bold;">[</span><span style="color: #0000cf; font-weight: bold;">2</span><span style="color: #000000; font-weight: bold;">]</span> <span style="color: #ce5c00; font-weight: bold;">&amp;</span> <span style="color: #0000cf; font-weight: bold;">0x3f</span><span style="color: #000000; font-weight: bold;">);</span>
-
-		<span style="color: #204a87; font-weight: bold;">for</span> <span style="color: #000000; font-weight: bold;">(</span><span style="color: #204a87; font-weight: bold;">int</span> <span style="color: #000000;">i</span> <span style="color: #ce5c00; font-weight: bold;">=</span> <span style="color: #0000cf; font-weight: bold;">0</span><span style="color: #000000; font-weight: bold;">;</span> <span style="color: #000000;">i</span> <span style="color: #ce5c00; font-weight: bold;">&lt;</span> <span style="color: #0000cf; font-weight: bold;">4</span><span style="color: #000000; font-weight: bold;">;</span> <span style="color: #000000;">i</span><span style="color: #ce5c00; font-weight: bold;">++</span><span style="color: #000000; font-weight: bold;">)</span>
-		<span style="color: #000000; font-weight: bold;">{</span>
-			<span style="color: #8f5902; font-style: italic;">// 5. Replace ' ' with '''</span>
-			<span style="color: #204a87; font-weight: bold;">if</span> <span style="color: #000000; font-weight: bold;">(</span><span style="color: #000000;">uue_char</span><span style="color: #000000; font-weight: bold;">[</span><span style="color: #000000;">i</span><span style="color: #000000; font-weight: bold;">]</span> <span style="color: #ce5c00; font-weight: bold;">==</span> <span style="color: #0000cf; font-weight: bold;">0x00</span><span style="color: #000000; font-weight: bold;">)</span>
-			<span style="color: #000000; font-weight: bold;">{</span>
-				<span style="color: #000000;">UUE_data_array</span><span style="color: #000000; font-weight: bold;">[</span><span style="color: #000000;">UUEncoded_array_index</span><span style="color: #000000; font-weight: bold;">]</span> <span style="color: #ce5c00; font-weight: bold;">=</span> <span style="color: #0000cf; font-weight: bold;">0x60</span><span style="color: #000000; font-weight: bold;">;</span>
-			<span style="color: #000000; font-weight: bold;">}</span>
-			<span style="color: #204a87; font-weight: bold;">else</span>
-			<span style="color: #000000; font-weight: bold;">{</span>
-				<span style="color: #000000;">UUE_data_array</span><span style="color: #000000; font-weight: bold;">[</span><span style="color: #000000;">UUEncoded_array_index</span><span style="color: #000000; font-weight: bold;">]</span> <span style="color: #ce5c00; font-weight: bold;">=</span> <span style="color: #000000; font-weight: bold;">(</span><span style="color: #000000;">uue_char</span><span style="color: #000000; font-weight: bold;">[</span><span style="color: #000000;">i</span><span style="color: #000000; font-weight: bold;">]</span> <span style="color: #ce5c00; font-weight: bold;">+</span> <span style="color: #4e9a06;">' '</span><span style="color: #000000; font-weight: bold;">);</span>
-			<span style="color: #000000; font-weight: bold;">}</span>
-
-			<span style="color: #000000;">UUEncoded_array_index</span><span style="color: #ce5c00; font-weight: bold;">++</span><span style="color: #000000; font-weight: bold;">;</span>
-		<span style="color: #000000; font-weight: bold;">}</span>
-
-		<span style="color: #8f5902; font-style: italic;">// Data bytes left.</span>
-		<span style="color: #000000;">bytes_left</span> <span style="color: #ce5c00; font-weight: bold;">=</span> <span style="color: #000000; font-weight: bold;">(</span><span style="color: #000000;">hex_data_array_size</span> <span style="color: #ce5c00; font-weight: bold;">-</span> <span style="color: #000000;">hex_data_array_index</span><span style="color: #000000; font-weight: bold;">);</span>
-
-		<span style="color: #204a87; font-weight: bold;">if</span> <span style="color: #000000; font-weight: bold;">(</span><span style="color: #000000;">uue_length_char_index</span> <span style="color: #ce5c00; font-weight: bold;">==</span> <span style="color: #0000cf; font-weight: bold;">0</span> <span style="color: #ce5c00; font-weight: bold;">&amp;&amp;</span> <span style="color: #000000;">bytes_left</span> <span style="color: #ce5c00; font-weight: bold;">&gt;</span> <span style="color: #0000cf; font-weight: bold;">0</span><span style="color: #000000; font-weight: bold;">)</span>
-		<span style="color: #000000; font-weight: bold;">{</span>
-			<span style="color: #8f5902; font-style: italic;">// NOTE: Could be simplified to include first char</span>
-			<span style="color: #8f5902; font-style: italic;">// and additional characters, using a positive index.</span>
-			<span style="color: #8f5902; font-style: italic;">// 1. Add char for characters per line.</span>
-			<span style="color: #000000;">UUE_data_array</span><span style="color: #000000; font-weight: bold;">[</span><span style="color: #000000;">UUEncoded_array_index</span><span style="color: #000000; font-weight: bold;">]</span> <span style="color: #ce5c00; font-weight: bold;">=</span> <span style="color: #4e9a06;">'\n'</span><span style="color: #000000; font-weight: bold;">;</span>
-			<span style="color: #000000;">UUEncoded_array_index</span><span style="color: #ce5c00; font-weight: bold;">++</span><span style="color: #000000; font-weight: bold;">;</span>
-
-			<span style="color: #204a87; font-weight: bold;">if</span><span style="color: #000000; font-weight: bold;">(</span><span style="color: #000000;">bytes_left</span> <span style="color: #ce5c00; font-weight: bold;">&lt;</span> <span style="color: #0000cf; font-weight: bold;">45</span><span style="color: #000000; font-weight: bold;">)</span>
-			<span style="color: #000000; font-weight: bold;">{</span>
-				<span style="color: #8f5902; font-style: italic;">// Find how many characters are left.</span>
-				<span style="color: #000000;">UUE_data_array</span><span style="color: #000000; font-weight: bold;">[</span><span style="color: #000000;">UUEncoded_array_index</span><span style="color: #000000; font-weight: bold;">]</span> <span style="color: #ce5c00; font-weight: bold;">=</span> <span style="color: #000000; font-weight: bold;">((</span><span style="color: #000000;">bytes_left</span> <span style="color: #ce5c00; font-weight: bold;">&amp;</span> <span style="color: #0000cf; font-weight: bold;">0x3f</span><span style="color: #000000; font-weight: bold;">)</span> <span style="color: #ce5c00; font-weight: bold;">+</span> <span style="color: #4e9a06;">' '</span><span style="color: #000000; font-weight: bold;">);</span>
-			<span style="color: #000000; font-weight: bold;">}</span>
-			<span style="color: #204a87; font-weight: bold;">else</span>
-			<span style="color: #000000; font-weight: bold;">{</span>
-				<span style="color: #000000;">UUE_data_array</span><span style="color: #000000; font-weight: bold;">[</span><span style="color: #000000;">UUEncoded_array_index</span><span style="color: #000000; font-weight: bold;">]</span> <span style="color: #ce5c00; font-weight: bold;">=</span> <span style="color: #4e9a06;">'M'</span><span style="color: #000000; font-weight: bold;">;</span>
-			<span style="color: #000000; font-weight: bold;">}</span>	
-			<span style="color: #000000;">UUEncoded_array_index</span><span style="color: #ce5c00; font-weight: bold;">++</span><span style="color: #000000; font-weight: bold;">;</span>
-			<span style="color: #000000;">uue_length_char_index</span> <span style="color: #ce5c00; font-weight: bold;">=</span> <span style="color: #0000cf; font-weight: bold;">45</span><span style="color: #000000; font-weight: bold;">;</span>
-		<span style="color: #000000; font-weight: bold;">}</span>
-
-	<span style="color: #000000; font-weight: bold;">}</span> <span style="color: #8f5902; font-style: italic;">// End UUE loop	</span>
-	<span style="color: #000000;">UUE_data_array</span><span style="color: #000000; font-weight: bold;">[</span><span style="color: #000000;">UUEncoded_array_index</span><span style="color: #000000; font-weight: bold;">]</span> <span style="color: #ce5c00; font-weight: bold;">=</span> <span style="color: #4e9a06;">'\n'</span><span style="color: #000000; font-weight: bold;">;</span>
-
-	<span style="color: #8f5902; font-style: italic;">// 6. Return UUE data array (implicit) and size.</span>
-	<span style="color: #204a87; font-weight: bold;">return</span> <span style="color: #000000;">UUEncoded_array_index</span><span style="color: #000000; font-weight: bold;">;</span>
-<span style="color: #000000; font-weight: bold;">}</span>
-
-<span style="color: #204a87; font-weight: bold;">int</span> <span style="color: #000000;">check_sum</span><span style="color: #000000; font-weight: bold;">(</span><span style="color: #204a87; font-weight: bold;">uint8_t</span> <span style="color: #ce5c00; font-weight: bold;">*</span> <span style="color: #000000;">hex_data_array</span><span style="color: #000000; font-weight: bold;">,</span> <span style="color: #204a87; font-weight: bold;">int</span> <span style="color: #000000;">hex_data_array_size</span><span style="color: #000000; font-weight: bold;">)</span>
-<span style="color: #000000; font-weight: bold;">{</span>
-	<span style="color: #204a87; font-weight: bold;">int</span> <span style="color: #000000;">check_sum</span> <span style="color: #ce5c00; font-weight: bold;">=</span> <span style="color: #0000cf; font-weight: bold;">0</span><span style="color: #000000; font-weight: bold;">;</span>
-	<span style="color: #204a87; font-weight: bold;">int</span> <span style="color: #000000;">char_index</span> <span style="color: #ce5c00; font-weight: bold;">=</span> <span style="color: #0000cf; font-weight: bold;">0</span><span style="color: #000000; font-weight: bold;">;</span>
-
-	<span style="color: #204a87; font-weight: bold;">while</span><span style="color: #000000; font-weight: bold;">(</span><span style="color: #000000;">char_index</span> <span style="color: #ce5c00; font-weight: bold;">&lt;</span> <span style="color: #000000;">hex_data_array_size</span><span style="color: #000000; font-weight: bold;">)</span>
-	<span style="color: #000000; font-weight: bold;">{</span>
-		<span style="color: #000000;">check_sum</span> <span style="color: #ce5c00; font-weight: bold;">+=</span> <span style="color: #000000;">hex_data_array</span><span style="color: #000000; font-weight: bold;">[</span><span style="color: #000000;">char_index</span><span style="color: #000000; font-weight: bold;">];</span>
-		<span style="color: #000000;">char_index</span><span style="color: #ce5c00; font-weight: bold;">++</span><span style="color: #000000; font-weight: bold;">;</span>
-	<span style="color: #000000; font-weight: bold;">}</span>
-	<span style="color: #204a87; font-weight: bold;">return</span> <span style="color: #000000;">check_sum</span><span style="color: #000000; font-weight: bold;">;</span>
-<span style="color: #000000; font-weight: bold;">}</span>
-</pre></td></tr></tbody></table></div> 
+ |
 
 &nbsp;
 
-*   3-8: Here, I outline in pseudo-code what I wanted to get done in this function.
-*   17-25: I deal with the start character of the first line. &nbsp;I do this by checking if hex data we were handed is more than the UUE line limit, 45 bytes. &nbsp;If it is, I place an M as the start character (45 + 32 = 77 = ASCII **M**). &nbsp;If the data we've been handed is less than 45 bytes, let's calculate the start character. &nbsp;We take 65 bits of the 8-bit number representing how many bytes are here, then add 32, this will give us our start character.
-*   30-96: This is the main loop where the work is done. &nbsp;We loop through all the hexadecimal data provided us, encoding as we go.
-*   33-48: The loop here deals with 3 bytes of data at a time. &nbsp;It also checks to see if we have less than 3 bytes left, if so, it pads the remaining space with 0 (null).
-*   47: This index is used in combination with the if statement found one lines 82-90. &nbsp;It is in essence repeating the beginning if statement where we determined what the start character for this line will be.&nbsp;
-*   51-54: This is where the magic happens. &nbsp;Here, we are turning the 3 bytes of 8 bits, into 4 bytes of 6 bits. &nbsp;We store the resulting bits in an 8-bit variable. &nbsp;But remember, we can put 6 bit data in a 8 bit jar, as long as we remember to be careful how we place the bits.
-*   56-69: The resulting 6-bit characters are checked to see if they are a space character (0x20), if they are, we turn them into a grave ' ' &nbsp;' character (0x60). &nbsp;If they are not a space, we add 32 to the decimal value (' ' = 32 in decimal), this completes the encoding process.
-*   72: We calculate how many data bytes are left, in preparation for calculating the next line's start character.
-*   74-96: This loop serves two purposes. &nbsp;One, to place a new-line character ('\n') at the end of our last encoded line. &nbsp;Two, to calculate and load the next line's start character.
-*   96: When we've reached the end of our data, we place a new-line character to mark the end.
-*   112: We return the number of ASCII characters used to represent our encoded data.
+* 3-8: Here, I outline in pseudo-code what I wanted to get done in this function.
+* 17-25: I deal with the start character of the first line. &nbsp;I do this by checking if hex data we were handed is more than the UUE line limit, 45 bytes. &nbsp;If it is, I place an M as the start character (45 + 32 = 77 = ASCII **M**). &nbsp;If the data we've been handed is less than 45 bytes, let's calculate the start character. &nbsp;We take 65 bits of the 8-bit number representing how many bytes are here, then add 32, this will give us our start character.
+* 30-96: This is the main loop where the work is done. &nbsp;We loop through all the hexadecimal data provided us, encoding as we go.
+* 33-48: The loop here deals with 3 bytes of data at a time. &nbsp;It also checks to see if we have less than 3 bytes left, if so, it pads the remaining space with 0 (null).
+* 47: This index is used in combination with the if statement found one lines 82-90. &nbsp;It is in essence repeating the beginning if statement where we determined what the start character for this line will be.&nbsp;
+* 51-54: This is where the magic happens. &nbsp;Here, we are turning the 3 bytes of 8 bits, into 4 bytes of 6 bits. &nbsp;We store the resulting bits in an 8-bit variable. &nbsp;But remember, we can put 6 bit data in a 8 bit jar, as long as we remember to be careful how we place the bits.
+* 56-69: The resulting 6-bit characters are checked to see if they are a space character (0x20), if they are, we turn them into a grave ' ' &nbsp;' character (0x60). &nbsp;If they are not a space, we add 32 to the decimal value (' ' = 32 in decimal), this completes the encoding process.
+* 72: We calculate how many data bytes are left, in preparation for calculating the next line's start character.
+* 74-96: This loop serves two purposes. &nbsp;One, to place a new-line character ('n') at the end of our last encoded line. &nbsp;Two, to calculate and load the next line's start character.
+* 96: When we've reached the end of our data, we place a new-line character to mark the end.
+* 112: We return the number of ASCII characters used to represent our encoded data.
 
 And there you go. &nbsp;**UUE!**
 
 Here are some additional resources I found helpful,
 
-1.  [Wikipedia's article on UUEncoding](http://en.wikipedia.org/wiki/Uuencoding)
-2.  [NXP's Application Note on UUEncoded for their uCs](/files/userpics/u19048/UUE__app_note.pdf)
-3.  [Bdk6](http://letsmakerobots.com/users/bdk6)
+1. [Wikipedia's article on UUEncoding][7]
+2. [NXP's Application Note on UUEncoded for their uCs][15]
+3. [Bdk6][1]
+
+[1]: http://letsmakerobots.com/users/bdk6
+[2]: http://letsmakerobots.com/lpc1114-usb-serial-solution-rerolling-boot-uploader
+[3]: http://letsmakerobots.com/files/userpics/u19048/300x260xGCCLogo.png.pagespeed.ic.YZjB3d_p5p.png
+[4]: http://www.mingw.org/wiki/HOWTO_Install_the_MinGW_GCC_Compiler_Suite
+[5]: http://www.sublimetext.com/2
+[6]: http://letsmakerobots.com/content/lpc1114-setup-bare-metal-arm
+[7]: http://en.wikipedia.org/wiki/Uuencoding
+[8]: http://www.bibase.com/images/ascii.gif
+[9]: http://letsmakerobots.com/files/userpics/u19048/200x210xSuper_Style_ASCII_by_buddhascii.png.pagespeed.ic.T8JsLoZeGa.png
+[10]: http://letsmakerobots.com/files/userpics/u19048/250x156xschrodingers_cat.jpg.pagespeed.ic.gMZVCsbORg.jpg
+[11]: http://en.wikipedia.org/wiki/Grave_accent
+[12]: http://letsmakerobots.com/files/userpics/u19048/250x140xfivekittems1.jpg.pagespeed.ic.TE7i7Z-C2Y.jpg
+[13]: http://letsmakerobots.com/files/userpics/u19048/584x261xUUE_dump.png.pagespeed.ic.45j-POMFUZ.png
+[14]: http://letsmakerobots.com/content/intel-hexfile-array
+[15]: /files/userpics/u19048/UUE__app_note.pdf
+  </p></sys></stdint.h></stdbool.h></math.h></string.h></winbase.h></winnt.h></windef.h></windows.h></stdlib.h></stdarg.h></stdio.h>

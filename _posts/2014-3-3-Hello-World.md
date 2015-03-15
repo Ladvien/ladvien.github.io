@@ -10,60 +10,6 @@ Next you can update your site name, avatar and other options using the _config.y
 The easiest way to make your first post is to edit this one. Go into /_posts/ and update the Hello World markdown file. For more instructions head over to the [Jekyll Now repository](https://github.com/barryclark/jekyll-now) on GitHub.
 
 
-
-
-[157 reasons to Chill Out](/chill)
-
-[](/ "Let's Make Robots!")
-
-![Let's Make Robots!](/sites/default/themes/LMRv3/LMRv3/images/375x59xLMR3FlashLogo.png,qt=1.pagespeed.ic.vJPaoRKCfU.png "Let's Make Robots!")
-
--   [Start Here](/start "Are you new to robot building? This may be a good tutorial for you to get started on your first robot.")
--   [Rules](/lmr/rules "DOs and DONTs on LetsMakeRobots")
--   [TopTips](/view/tip/list "LMR's Epic Walk Throughs")
--   [Robots](/view/node/list/robot "List of all robots")
--   [Something else](/view/node/list/something_else)
--   [Blogs](/blog "Users blogs")
--   [Reviews](/reviews/components "Reviews for components, components for reviews!")
--   [3D print club](/forums/lmr-3d-print-club/join-lmr-3d-print-club "Join the LMR 3D Print Club here")
--   [Challenges](/view/challenges/list)
--   [Forums](/forums)
--   [Recent](/tracker)
--   [About](/content/together-we-push-evolution "About LetsMakeRobots")
--   [My account](/user/19048)
--   [My stuff](http://letsmakerobots.com/my "Your stuff sorted by recent activity")
-
-[Home](/)
-
-UUEncode
-========
-
--   [View](/content/uuencode-0)
--   [Edit](/node/43628/edit)
-
--   [by Ladvien](/profile/ladvien "View Ladvien's Profile.")
--   [Add your own Tip/walkthrough](/node/add/robot_tip)
--   [Collect](/flag/flag/bookmarks/43628?destination=node%2F43628&token=d402c582c8b67c1a4fb39aab8b104418 "Add this to your Collection") 
--   [Report Spam](/flag/flag/flag_node_spam/43628?destination=node%2F43628&token=d402c582c8b67c1a4fb39aab8b104418 "Report this post as Spam") 
--   [Subscribe](/node/43628/subscribe#subscribe "Receive notifications about changes and/or comments to this page (and possibly similar pages).")
--   [You can't chill your own stuff :)](/chill)
--   [More](http://letsmakerobots.com/node/43628#null)
--   [Collected by one user](/node/43628/who "Collected by one user")
-
-[Tip/walkthrough](/view/node/list/robot_tip)
-
- 
-
-[![](data:image/webp;base64,UklGRmQIAABXRUJQVlA4IFgIAADQIgCdASpVAFUAPm0qkUWkIiGhLjgNMIANiUAaPg7p05MfMtBsdxHSUYfwb8ZvsqTUcP9Sn1/nJ3v8AL2B/qd/BAF1gGqV4H80vihDM2gH6y/9PuK/rX6ansM/dT2c/2jc300tTifEtxLx2/b4reOc22egCvboQpmN8fT6wzkPZ2RcPwABJACyJQBVHQNjwLh+BYxHvfKryx0+bx1nEHmt+8Bxx/veukqjQWmwX4lOgu06zl49M6Z4S21ciiIUdbn8OISinPfaoYBmfluOK2cCkcfA2ewGtamg+467bP+mifeaa9tKEGf9KEqs7HKEC12sXnELC2cffwHgfHs/3SKdgBtfWasfkvTDYOONlqen9IdqkabXe/7J84EP1h94AAD+/om+Bo6n/4PNAHUW+noqei5dxOy8dqTUTdHvzo6/SpwZZj3tp5iD+SJRTgft5wmL/FgsI+/wUZC68/zqWHyA1ojvsqhbBJIxuesY/A0Z3zw/NwCPGb09b/YZt7C8yo1lYcLe9Vztn81kOeQwDJH0AvikeUlTVkF5xnrQueEIP/bdmkDZr71P9vCbpv6w7a13B3/FbJcbWGCCsvPCl+3bzqWZlqoscNnz1izTyBPa4IDqr9+Ibo73xE3m53ll3qtgSIbY6VrdtxlPTGlgZoknKnolvHuJgV24rH9SeJwH1VXOrvNseAEAU1atLsyd//6MoreoZLVJSMfmf4U3HJILX/kNf7zvBollsP2hrMnVV2+4Wt6c0bss3qBQAJBCcyofnPd/T698frRxNv0WzM6glL5WFt/Zwn2mArfxM2vZuBvt+o6XXqYm7Hkdf4yogooG1Bcin9ZLZbKIKX7uvV7B1dT/ah52RFuS/5i9ezojagjExgd1DlBq0q1l2D0IUiXu1qpy5ByswXZXruAbzW29FH7GOcxKyjwMcYnzNlUSYAoSJIoiXav9kpxS3E68IUP2+bJLZwn/99AxIFjtHuDnLBT6J7ZWNhbCVD7DcdoCLg0D0nfo46XuXkLStnJt1O1CupTjYzuWrkz9loz+XMaDWea2YEKIK/J2QPMSSglHXm6E733qCPwvcR0FGTcfr+2dOiNVPzmsLBhkcbYH5cGhcOxITrjlLCOyqJ6sm3pQ3dR/5EwMNczg/tCZCe6KVKCxSd2zHujeznxMrudL7NZByNyvB7t/wNGAkEgFZjpaGXDTajEwf5eEH0D+lBs3Rm9veQ/BgLHH/vgNOYHPvTRgiGgtKU8vhkUWsYlNHZl7CChTBHiaeVSh88CM0LUtr3ZqrU0183nXPAHZTlV9EJOMd8qvyZj0QYOMtCN8acrZ1lWlTzxlQAEiiCB92d/1xNr7vwyscK+dMKP+h4545YOwGBL3dM/A+BwAfwW3qCzDOQ5kOTBxyJUgM0Dzfh14D8Mcm8XzqFZueW/5zwhYJVOZ+IcSfdJUIV0QWyBEKUngYYDtXXt7resXTRgmNrp4Yxdn7CZhn6Bjqe/ehaq6+B9F+rgZxiGRpryQWODsaZV+9qFurBvi6zo9NbuJUX3Ej2o1iKQB6sHrVVjkCGe/NeNo0eMF8wFDw5taQOO0HJjaPPfdeQLM6ho/ZszgYmIWDiii5J88rpkfJQlWZZRSg4TwFmOciJW+GsENIpnT+PB1IL9H3r/KT9erZvUUKuxQ7xPpOrhKzQoBTx+EwPqW7WTgZihL8lV/QHYEz9SbSf2mDJI1FS1uHBLybuNWx51/9xTJ1ulIhcGXHGvfRdEIqZVAh9V1nEJYFma9xHR4XLkS8X/g8/yQvm4cxycK0rGkcm8EZ1GJYMmeVndgT5Xjmn9gr1t+dKrwo9Ksrp0FJ1tuXiXfLo55wx9yJ0Hz2Nu74gBVvoF41I6FYtc00oNaWkGbBzgQla3sjIFy/XgL/J/i+CH0I271ZD/4X2XLseTeO6x9QKAV62tDLReSll7/iajvsATHpwG4JI7oKe2KB/f5Lkxd4S58m2bwQwFd5Co8EjHgnA79RNDoCaCS/GwxEFnDv+qiBNKvZ+z98+tLPydsvGYan9ehRCYaICk7GceLJTzl3TbqpsxqBcUjBf4OMpH7iS4K5Ktwz0X6HvpaK5sRO95BRH485rNvB94DU7rQScDyHDubQ9+WxMWxisLXuBW0Clf0p46U3UNkRe2fg3TlgQapHDSEfwcHUmbmK77Ax5dE7acuv2QmYIgbajK7fCeh+rbvkXNkvUWHCS49RCHuwqf9pIvbczSsfgQMw9b+ygn4hWD8a28RFYn4YzYaFhGDZ4hDyrSdFtDC09m6v8xVetTSLbbVkNOu4jeCSnPGEnCYS77/pGhNX5w4cqcVlmd/JywS+YrMMBdIiY5u3Nlr8pTFAbqZKe8L4oqNP3N4mlO0+rRKB2WrEJ+iGIpOIDx8bi/YgZTmc8SqqN8peaIR1mSJA+AMAL5odMaoNzPVS+osCSnYhxfUtsBcIF02W+aPh4O5aGthAb6eV6JJ4ncwFYK2ScL7nDT+WQh72jSQVTVAmGeUdqx70obXdEgVX2kIw5cGmADXIgIyvqpCcadAaZDIO4+CNZEolIhoaEwj41PSqpexc/n+N3Z5GChVtwTxKh7Ap2WRq9YYoaO1CwfP99OqEG12i1FgC8iWT7OiEnyM63x+h0/BVtKkPiBIiHeL41nib822fP8uCVjRHnkjaequ3gtt58hihPIKG98bhPZhhZJvO8gCOf+ewfEcPbKGFf8kcbIPP9q7j2GV3lFi2HQOn/Jn9cvntPfLv7qX+wA//uuT7X3Uv9jAvrvsZ/wH+6ZwMP0nNGbXolckBzYuWNMLBAnAAtWHEsBnF4fPohcwaGifld3rMq1cAsxVcs+AAAGmX8YAAAA=)](/user/19048)
-
-By [Ladvien](/user/19048 "View user profile.") @ March 9, 2015
-
-Encodes hex data into UUEncoded data
-
-[![](http://letsmakerobots.com/files/imagecache/robot_fullpage_header/field_primary_image/xmy_uC_icon_9.png.pagespeed.ic.CnGHnTbuv_.webp)](/files/field_primary_image/my_uC_icon_9.png?)
-
- 
-
 **I want to take a moment to thank [Bdk6](http://letsmakerobots.com/users/bdk6).  The man is a walking Stack Overflow, with more patience for stupid.  I doubt I'd understand any of this without his guidance.**
 
 I thought I'd take some time away from coding my [LPC1114 Uploader](http://letsmakerobots.com/lpc1114-usb-serial-solution-rerolling-boot-uploader) and verbally process a few things I've learned.  As always, feel free to critique any of it; it'll only serve to make my code more robust in the end.  

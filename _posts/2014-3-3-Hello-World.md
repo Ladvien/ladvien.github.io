@@ -173,8 +173,9 @@ This means the resulting 24-bit binary series is,
 
 This is then divided into four 6-bit bytes,
 
-1| 6-bit Byte: | 1  | 2  | 3  | 4  |
-2|Binary|010000|110110|000101|110100|
+| 6-bit Byte | 1      | 2      | 3      |        |
+|------------|--------|--------|--------|--------|
+| Binary:    | 010000 | 110110 | 000101 | 110100 |
 
 -   6-bit Byte:     1             2             3              4
 -   Binary:      010000   110110    000101   110100

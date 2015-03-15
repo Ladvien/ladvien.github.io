@@ -200,7 +200,7 @@ Anyway, this is how I finally made sense of it.  As long as when I did my bit m
 Alright, back to our example.
 
 Our next step is to add 32 to each of the decimal value of our new four bytes.
-|            |            |            |            |            |            
+|     a      |    a       |       a    |     a      |     a      |            
 | ---------- | ---------- | ---------- | ---------- | ---------- |
 |6-bit Byte:|1|2|3|4|
 |Decimal:|16|54|5|52|

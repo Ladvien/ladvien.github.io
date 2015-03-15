@@ -200,12 +200,13 @@ Anyway, this is how I finally made sense of it.  As long as when I did my bit m
 Alright, back to our example.
 
 Our next step is to add 32 to each of the decimal value of our new four bytes.
-
--   6-bit Byte:        1             2             3              4
--   Decimal:         16           54            5             52
--   Add 32          +32        +32          +32           +32
--   New Dec.        48          86            37            84
--   **UUE char:       0            V             %             T**
+|          |          |          |          |          |            
+|----------|----------|----------|----------|----------|
+|6-bit Byte:|1|2|3|4|
+|Decimal:|16|54|5|52|
+|Add 32|+32|+32|+32|+32|
+|New Dec.|48|86|37|84|
+|**UUE char:|0|V|%|T|**
 
  
 

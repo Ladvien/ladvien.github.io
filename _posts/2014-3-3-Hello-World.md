@@ -16,11 +16,7 @@ I thought I'd take some time away from coding my [LPC1114 Uploader](http://lets
 
 This post will be a series of post leading up to the large post I'll make on writing the uploader.  All posts will rely on the GCC compiler.
 
-| Tables        | Are           | Cool  |
-| ------------- |:-------------:| -----:|
-| col 3 is      | right-aligned | $1600 |
-| col 2 is      | centered      |   $12 |
-| zebra stripes | are neat      |    $1 |
+<h3>Embed Main View in Navigation Controller 2:</h3><p>We are going to use a Navigation Controller to help us manage the project.  Embed your View Controller into a Navigation Controller by selecting Editor--&gt;Embed In--&gt;Navigation Controller</p><p><img src="http://www.instructables.com/files/deriv/FJI/0JPD/I8FQYHOU/FJI0JPDI8FQYHOU.MEDIUM.jpg"></p><h3>Add a Table View Controller 3:</h3><p>Add a Table View Controller to your project.  This will be used to display discovered BLE devices.</p><p><img src="http://www.instructables.com/files/deriv/FJM/DL2I/I8FQYHP1/FJMDL2II8FQYHP1.MEDIUM.jpg"></p><h3>Setup the Prototype Cell 4:</h3><p>We need to give the prototype cell an Identifier.  Name it "cell"</p><p><img src="http://www.instructables.com/files/deriv/FI3/K650/I8FQYHPD/FI3K650I8FQYHPD.MEDIUM.jpg"></p><p><img src="http://www.instructables.com/files/deriv/FAL/R0CJ/I8FQYJ7G/FALR0CJI8FQYJ7G.MEDIUM.jpg"></p>
 
 **![](/files/userpics/u19048/300x260xGCCLogo.png.pagespeed.ic.YZjB3d_p5p.png)Setting Up the GCC Compiler**
 

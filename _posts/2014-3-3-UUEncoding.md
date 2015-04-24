@@ -3,10 +3,6 @@ layout: post
 title: UUEncoding in C
 ---
 
-Next you can update your site name, avatar and other options using the _config.yml file in the root of your repository (shown below).
-
-![_config.yml]({{ site.baseurl }}/images/config.png)
-
 <p><img alt="" src="http://www.instructables.com/files/deriv/FC5/PDU6/I8BGM5EA/FC5PDU6I8BGM5EA.MEDIUM.jpg" style="float: right;margin: 0.0px 0.0px 10.0px 10.0px;"> </p><p>Setting Up the GCC Compiler</p><p>I setup a C environment as basic I could.  There may be easier ways to go about this, but I wanted to use GCC to compile.   To setup the environment: </p><ol>      
 <li>I downloaded and setup <a href="http://www.mingw.org/wiki/HOWTO_Install_the_MinGW_GCC_Compiler_Suite" rel="nofollow">MinGW32</a>.         
 </li><li>I added these includes to make the code go.</li></ol><pre>#include &lt;stdio.h&gt;

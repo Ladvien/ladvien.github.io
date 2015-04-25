@@ -2,6 +2,8 @@
 layout: blog
 title: UUEncoding in C
 ---
+<link rel="stylesheet" href="css/normalize.css">
+<link rel="stylesheet" href="css/foundation.css">
 
 <p><img alt="" src="http://www.instructables.com/files/deriv/FC5/PDU6/I8BGM5EA/FC5PDU6I8BGM5EA.MEDIUM.jpg" style="float: right;margin: 0.0px 0.0px 10.0px 10.0px;"> </p><p>Setting Up the GCC Compiler</p><p>I setup a C environment as basic I could.  There may be easier ways to go about this, but I wanted to use GCC to compile.   To setup the environment: </p><ol>      
 <li>I downloaded and setup <a href="http://www.mingw.org/wiki/HOWTO_Install_the_MinGW_GCC_Compiler_Suite" rel="nofollow">MinGW32</a>.         

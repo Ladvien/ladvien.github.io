@@ -1,6 +1,7 @@
 ---
 layout: default
 title: UUEncoding in C
+comments: true
 ---
 
 <p><img alt="" src="http://www.instructables.com/files/deriv/FC5/PDU6/I8BGM5EA/FC5PDU6I8BGM5EA.MEDIUM.jpg" style="float: right;margin: 0.0px 0.0px 10.0px 10.0px;"> </p><p>Setting Up the GCC Compiler</p><p>I setup a C environment as basic I could.  There may be easier ways to go about this, but I wanted to use GCC to compile.   To setup the environment: </p><ol>      

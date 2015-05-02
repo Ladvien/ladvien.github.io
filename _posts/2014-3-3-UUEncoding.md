@@ -37,8 +37,7 @@ else if (c == '\r')
 
 <p>The first step is to take the binary values for each ASCII character.</p><pre>'C' = 01000011 
 'a' = 01100001
-'t' =  01110100</pre><p>This means the resulting 24-bit binary series is,</p><p>24-Bit Cat,</p><pre>010000110110000101110100</pre><p>This is then divided into four 6-bit bytes, </p><pre>6-bit Byte:     1        2        3        4
-Binary:      010000    110110   000101   110100</pre>
+'t' =  01110100</pre><p>This means the resulting 24-bit binary series is,</p><p>24-Bit Cat,</p><pre>010000110110000101110100</pre><p>This is then divided into four 6-bit 
 
 <pre>6-bit Byte:     1        2        3        4
 Binary:      010000    110110   000101   110100

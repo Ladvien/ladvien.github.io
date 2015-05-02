@@ -1,20 +1,17 @@
 ---
-layout: default
+layout: splash
 ---
 <link rel="stylesheet" href="css/normalize.css">
 <link rel="stylesheet" href="css/foundation.css">
 
 <div class="posts">
-  {% for post in site.posts %}
-    <article class="post">
-
-      <h1><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></h1>
-
-      <div class="entry">
-        {{ post.excerpt }}
-      </div>
-
-      <a href="{{ site.baseurl }}{{ post.url }}" class="read-more">Read More</a>
-    </article>
-  {% endfor %}
+  <div class="nav-bar right">
+   <ul class="button-group">
+     <li><a href="/index_homeless.html" class="button">Homeless</a></li>
+     <li><a href="/index_robots.html" class="button">Robots</a></li>
+     <!-- <li><a href="http://letsmakerobots.com/user/19048/pages" class="button">Robots</a></li>
+     <!-- <li><a href="#" class="button">Link 4</a></li> -->
+    </ul>
+  </div>
+  <div>
 </div>

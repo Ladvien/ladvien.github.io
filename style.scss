@@ -9,6 +9,16 @@
 @import "variables";
 // Syntax highlighting @import is at the bottom of this file
 
+/****************/
+/* SPLASH RULES */
+/****************/
+
+.splash-main-container{
+    white-space: nowrap;
+    display: inline;
+}
+
+
 /**************/
 /* BASE RULES */
 /**************/
@@ -286,11 +296,11 @@ footer {
 
 .background {
   background-color: $black;
-  //background-image: url("/images/background1.png");
 }
 
+
 @media screen and (min-width: 600px){
-  
+
 }
 
 // Settled on moving the import of syntax highlighting to the bottom of the CSS

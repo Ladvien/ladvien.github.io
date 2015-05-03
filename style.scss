@@ -16,12 +16,12 @@
 .splash-main-container{
     white-space: nowrap;
     display: inline;
-    max-width: 50%;
+  }
+
+.splash-main-image{
+  max-width: 100%;
 }
 
-.splash:hover{
-  .content: "BLAH!";
-}
 
 /**************/
 /* BASE RULES */

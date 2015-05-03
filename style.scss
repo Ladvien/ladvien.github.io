@@ -13,18 +13,21 @@
 /* SPLASH RULES */
 /****************/
 
+
 .splash-main-container{
   white-space: nowrap;
   display: inline;
+
 }
 
 .splash-right-image{
   max-width: 50%;
-  float: right;
+  //float: right;
 }
 
 .splash-left-image{
   max-width: 50%;
+  float: left
 }
 
 /**************/

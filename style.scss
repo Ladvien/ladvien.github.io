@@ -13,7 +13,6 @@
 /* SPLASH RULES */
 /****************/
 
-
 .splash-main-container{
   white-space: nowrap;
   display: inline;
@@ -29,6 +28,23 @@
   max-width: 50%;
   float: left
 }
+
+
+
+
+.splash-banner:hover img {
+
+  transform: scale(2.5);
+
+}
+
+.splash-banner img:hover {
+
+transform: scale(2.25);
+
+}
+
+
 
 /**************/
 /* BASE RULES */

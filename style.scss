@@ -40,13 +40,16 @@
 
 }
 
+
+
 #a:hover +#b{
   visibility: visible;
 }
 
-#b:before{
+#a +#b:before{
   visibility: hidden;
 }
+
 
 /**************/
 /* BASE RULES */

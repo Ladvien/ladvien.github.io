@@ -289,10 +289,19 @@ footer {
   //background-image: url("/images/background1.png");
 }
 
-.test {
-  //max-width: 100%;
-  //background-image: url("/images/background1.png");
+@media screen and (min-width: 600px) {
 
+  .test{
+    Mobile!
+  }
+}
+
+@media screen and (min-width: 900px) { Desktop }
+
+.test {
+  .test{
+    Desktop!
+  }
 }
 
 

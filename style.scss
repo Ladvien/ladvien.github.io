@@ -289,18 +289,21 @@ footer {
   //background-image: url("/images/background1.png");
 }
 
-@media screen and (min-width: 600px) {
+//@media screen and (min-width: 600px) {
+//
+//  .test{
+//    Mobile!
+//  }
+//}
 
-  .test{
-    Mobile!
+@mixin desktop {
+  @media screen and (min-width: 900px) {
+    .test{
+      Desktop!
+    }
   }
 }
 
-@media screen and (min-width: 900px) { 
-  .test{
-    Desktop!
-  }
-}
 
 
 // Settled on moving the import of syntax highlighting to the bottom of the CSS

@@ -1,8 +1,10 @@
-/* Foundation was made by ZURB, an interaction design and design strategy firm in Campbell, CA */
-/* zurb.com */
-/* humanstxt.org */
+/* TEAM */
+  Developer: Daigo Fujiwara
+  Site: daigo.org
+  Twitter: @daigofuji
+  Github: @daigofuji
+  Location: Boston, MA
 
 /* SITE */
-  Standards: HTML5, CSS3
-  Components: jQuery, Orbit, Reveal
-  Software: Coda, Textmate, Git
+  Standards: HTML5, MD, SCSS/CSS3, JS 
+  Components: Zurb Foundation, Jykill, jQuery, Modernizr, bower, grunt

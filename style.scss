@@ -7,6 +7,7 @@
 
 @import "reset";
 @import "variables";
+@import "settings"
 // Syntax highlighting @import is at the bottom of this file
 
 /****************/
@@ -46,9 +47,6 @@
   visibility: visible;
 }
 
-#a +#b:before{
-  visibility: hidden;
-}
 
 
 /**************/
@@ -60,7 +58,7 @@ html {
 }
 
 body {
-	background: $white;
+	background: $primary-color;
   font: 18px/1.4 $helvetica;
   color: $darkGray;
 }

@@ -8,6 +8,7 @@
 @import "reset";
 @import "variables";
 @import "settings"
+
 // Syntax highlighting @import is at the bottom of this file
 
 /****************/
@@ -58,7 +59,7 @@ html {
 }
 
 body {
-	background: $primary-color;
+	background: #000;
   font: 18px/1.4 $helvetica;
   color: $darkGray;
 }

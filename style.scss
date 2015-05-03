@@ -18,11 +18,15 @@
     display: inline;
   }
 
-.splash-main-image{
+.splash-right-image{
+  max-width: 50%;
+  float: right;
+}
+
+.splash-left-image{
   max-width: 50%;
   float: left;
 }
-
 
 /**************/
 /* BASE RULES */

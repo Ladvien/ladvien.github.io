@@ -40,7 +40,7 @@
 
 }
 
-#a:hover +#b.hidden{
+#a:hover +#b{
   visibility: hidden;
 }
 

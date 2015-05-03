@@ -14,10 +14,11 @@
 /****************/
 
 .splash-main-container{
-    align: center;
-    white-space: nowrap;
-    display: inline;
-  }
+  margin-left: auto;
+  margin-right: auto;
+  white-space: nowrap;
+  display: inline;
+}
 
 .splash-right-image{
   max-width: 50%;

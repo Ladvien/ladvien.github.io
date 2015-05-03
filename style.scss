@@ -177,6 +177,7 @@ img {
 
   img {
     border-radius: 5px;
+    max-width: 100;
   }
 }
 
@@ -289,8 +290,8 @@ footer {
 }
 
 .test {
-  max-width: 100%;
-  background-image: url("/images/background1.png");
+  //max-width: 100%;
+  //background-image: url("/images/background1.png");
 
 }
 

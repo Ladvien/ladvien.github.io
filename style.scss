@@ -40,10 +40,13 @@
 
 }
 
-#a:hover +#b{
-  visibility: hidden;
+#a:hover +#b{y
+  visibility: visible;
 }
 
+#b:before{
+  visibility: hidden;
+}
 
 /**************/
 /* BASE RULES */

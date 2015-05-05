@@ -1,0 +1,44 @@
+//
+// Foundation-Jekyll
+// Author: @aaronkwhite
+//
+
+body { margin: 5%; }
+
+code {
+  display: block;
+  padding: 1rem;
+}
+
+/****************/
+/* SPLASH RULES */
+/****************/
+
+.splash-main-container{
+  backgroud-color:#000;
+  white-space: nowrap;
+  display: inline;
+}
+
+.splash-right-image{
+  max-width: 50%;
+  backgroud:$primary-color;
+  //float: right;
+}
+
+.splash-left-image{
+  max-width: 50%;
+  backgroud-color:#000;
+  float: left
+}
+
+
+.splash-banner{
+  backgroud:$primary-color;
+}
+
+.splash-banner:hover {
+
+  //transform: scale(2.5);
+
+}

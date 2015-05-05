@@ -1,66 +1,97 @@
-jekyll-foundation-5-starter
-===========================
 
-Start [a github pages](https://pages.github.com/) website powerd by [Jekyll](http://jekyllrb.com/docs/quickstart/) using [Foundation/SCSS](http://foundation.zurb.com/docs/sass.html) in under 5 minutes! 
+# Foundation-Jekyll
+A bare bones [Foundation][1] & [Jekyll][2] boilerplate to get up and running fast.
 
-### What it is.
+### Version
+Current - 1.1.0
 
-Ever wanted a simple but nice looking responsive website as your project page or page for your repo? Are you in [a hackathon](http://baseballhackday.com) needing to put up a working website in munites? I do. Here is what I do, and I am sharing for you to use it, free. Free as in free speach AND free beer.
-
-You can see [the working example site here](http://daigofuji.github.io/jekyll-foundation-5-starter/)
-
-### For User & Organization Pages
-See [documentation](https://help.github.com/articles/user-organization-and-project-pages/)
-
-1. Fork this repo to your user or project
-2. From the `settings` rename the repo to `username.github.io` naming scheme.
-
-### For Project Pages
-See [documentation](https://help.github.com/articles/user-organization-and-project-pages/#project-pages)
-
-1. Create a `gh-pages` branch, i.e. `git checkout -b gh-pages`
-2. [Download the contents of this repo](https://github.com/daigofuji/jekyll-foundation-5-starter/archive/master.zip)
-3. Replace the entire branch contents with unzipped stuff
-4. Add, Commit then Publish the branch to github, i.e. `git push --set-upstream origin gh-pages`
-
-### To edit contents:
-1. edit `_config.yml`
-2. edit html/md files (hint: `_layouts/default.html` is the base)
-3. edit sass and run `grunt` (hint: Try [editing `scss/_stettings.scss`](http://foundation.zurb.com/docs/using-sass.html))
-4. edit `_include/nav.html` 
-
-Use at your own resk, and follw licence restriction of each products used. Most are MIT (OK to use commercially).
-
-### Useful command:
-
-Run grunt to compile css from sass by simply run 
-
-`grunt`
-
-from your terminal. It will launch watch. <code>control-c</code> to stop.
-
-You need to have grunt installed. <a href="http://daigo.org/2013/11/installing-npm-on-mavericks-macbook-pro/">This blog post</a> may be useful if you are like me and running Mac OS X.
-
-To run jekyll locally, run 
-
-`bundle exec jekyll serve --watch`
-
-Your website should be viewable by going to [localhost:4000](http://localhost:4000/)
-
-If you want to make sure foundation is up to date, try 
-
-`foundation update`
-
-(requires bower)
-
-Github's doc on <a href="https://help.github.com/articles/using-jekyll-with-pages">how to use Jekyll on Github Pages</a>. 
+## About
+This boilerplate was created as a starting point to use [Foundation][1] & [Jekyll][2] to create static websites. There aren't many (if any) [Foundation][1] & [Jekyll][2] boilerplates, so I created one. The structure is geared more towards building static sites and prototypes, not just blogs. Hopefully you'll find it as useful as I do.
 
 
-### Special Thanks
+### Get Started
+Clone the repo and start building your site:
 
-Special thanks to <a href="https://github.com/h5bp/html5-boilerplate">HTML 5 Boilerplate</a> whose code I have based this on.
+```
+ git clone git@github.com:aaronkwhite/foundation-jekyll.git project-name
+```
 
-@kionoshp's <a href="https://github.com/kianoshp/SASS-CSS-Boilerplate">padding-margin</a>. Because it has become part of every site that I manage. 
+The core components are located in the *source* directory, so you can better organize your content and stucture.
 
-and <a href="http://fortawesome.github.io/Font-Awesome/">Font Awesome</a> for bing awesome. 
+```
+foundation-jekyll/
+├── _site/
+├── _source/
+    ├── _data/
+        ├── sample.json
+    ├── _drafts/
+        ├── 2014-12-14-draft-post.md
+    ├── _includes/
+        ├── header.html
+        ├── footer.html
+    ├── _layouts/
+        ├── default.html
+    ├── _posts/
+        ├── 2014-12-14-post-one.md
+        ├── 2014-12-14-post-two.md
+    ├── _scss/
+    ├── assets/
+        ├── fonts/
+        ├── images/
+        ├── javascripts/
+            ├── foundation/
+            ├── foundation.min.js
+            ├── jquery-2.1.1.min.js
+            ├── modernizr-2.8.3-min.js
+            ├── scripts.js
+        ├── stylesheets/
+          ├── style.scss
+    ├── 404.html
+    ├── index.html
+    ├── feed.xml
+├── .gitignore
+├── LICENSE
+├── README.md
+├── _config.yml
+```
 
+We're using [Foundation][1] & Font-Awesome [Sass][3] compiled by Jekyll automatically when we build the source. All Sass files are located in the '_scss/' directory including the customized skin.
+
+The primary stylesheet '/assets/stylessheets/style.scss' file is configured to include all necessary files for Foundation, Font-Awesome and your custom styles.
+
+To test your site locally just run:
+
+```
+jekyll serve
+```
+
+*Note:* Make sure you update your git remote before you try to push any changes.
+
+### Dependencies
+ - ruby
+ - Jekyll
+ - kramdown
+ - pygments
+
+
+## Hosting on Github
+If you plan on hosting your site or blog on Github Pages, you will need to move all the files in the 'source' directory to the root of your project. This is due to the Github Pages build system overriding the source flag in _config.yml.
+
+## Support/Contributing
+If you run into any issues or bugs, please create an issue in Github. Unfortunately I can't help everyone via email or twitter, I'm only one person.
+
+If you would like to contribute to this repo, hit me up on twitter [@aaronkwhite](http://twitter.com/aaronkwhite) and then we can talk pull requests.
+
+
+## License
+
+[MIT](http://opensource.org/licenses/MIT)
+
+
+
+
+[1]: http://foundation.zurb.com
+[2]: http://jekyllrb.com
+[3]: http://sass-lang.com
+[4]: http://compass-style.org
+[5]: https://incident57.com/codekit

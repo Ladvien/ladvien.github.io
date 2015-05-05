@@ -1,9 +1,9 @@
-_site
 .DS_Store
-.jekyll
-.bundle
+*.sublime-project
+*.sublime-workspace
+config.codekit
+
 .sass-cache
-Gemfile
-Gemfile.lock
-node_modules
-package.json
+.sass-cache/*
+
+static/

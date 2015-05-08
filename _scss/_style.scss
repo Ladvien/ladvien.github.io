@@ -65,3 +65,37 @@ code {
 .splash-my-picture {
 
 }
+
+.splash-sliding-image-wrap {
+  width: 820px;
+  height: 400px;
+  float: left;
+  display: block;
+  overflow: hidden;
+  position: relative;
+  margin: 0 4px 0 0;
+  background: white;
+  border: 1px solid #666;
+}
+
+#splash-sliding-image-block {
+  width: 820px; height: 400px; float: left; display: block; overflow: hidden; position: relative;
+}
+
+.splash-block1 {
+  background: url("/images/robot_lab3.png"); repeat: no-repeat;
+  top: 0;
+  width: 820px;
+  height: 400px;
+  position: absolute;
+  display: block;
+  //-webkit-transition-timing-function: ease-in-out;
+  -webkit-transition: top .3s ease-in-out;
+  -moz-transition: top .3s ease-in-out;
+  transition: top .3s ease-in-out;
+}
+
+.splash-sliding-image-block:hover .splash-block1 {
+  top: -400px;
+
+}

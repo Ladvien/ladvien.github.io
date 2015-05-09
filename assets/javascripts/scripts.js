@@ -5,3 +5,34 @@
 
 // Init Foundation
 $(document).foundation();
+
+$(document).ready(function(){
+
+  $('#day-image').bind('mouseover', slideImageUp);
+  $('#day-image').bind('mouseout', slideImageDown);
+
+    $("#flip").click(function(){
+        $("#panel").slideDown("slow");
+    });
+
+    $( "#night-image" ).hover(function() {
+      $( "#night-image" ).animate({
+        opacity: 0//,
+        //left: "+=50",
+        //height: "toggle"
+      }, 100, function() {
+        hidden: true
+      });
+    });
+
+
+
+});
+
+function slideImageUp() {
+    $( "#day-image" ).animate({opacity: 0})
+};
+
+function slideImageDown() {
+  $( "#day-image" ).animate({opacity: 1})
+};

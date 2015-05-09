@@ -19,83 +19,37 @@ code {
   display: inline;
 }
 
-.splash-right-container {
-
+.bob{
+  display: inline-block;
+  width: 100%;
 }
 
-.splash-left-container {
-  white-space: nowrap;
-  border-style: solid;
-  border-width: 5px;
-  border-color: $black;
-  //backgroud-color:$sun;
-
-}
-
-.splash-right-image{
-  border-style: solid;
-  border-width: 10px;
-  border-radius: 25px;
-  border-color:$night;
-}
-
-.splash-left-image{
-  border-style: solid;
-  border-width: 10px;
-  border-radius: 25px;
-  border-color:$sun;
-}
-
-
-.splash-text-left{
-  text-align: center;
-}
-
-
-.splash-banner{
-  backgroud:$primary-color;
-}
-
-.splash-banner:hover {
-
-  //transform: scale(2.5);
-
-}
-
-.splash-my-picture {
-
-}
-
-.splash-sliding-image-wrap {
-  width: 820px;
-  height: 400px;
-  float: left;
-  display: block;
-  overflow: hidden;
-  position: relative;
-  margin: 0 4px 0 0;
-  background: white;
-  border: 1px solid #666;
-}
-
-#splash-sliding-image-block {
-  width: 820px; height: 400px; float: left; display: block; overflow: hidden; position: relative;
-}
-
-.splash-block1 {
-  background: url("/images/robot_lab3.png"); repeat: no-repeat;
-  top: 0;
-  width: 820px;
-  height: 400px;
+.hidden-text{
   position: absolute;
-  display: block;
-  //-webkit-transition-timing-function: ease-in-out;
-  -webkit-transition: top .3s ease-in-out;
-  -moz-transition: top .3s ease-in-out;
-  transition: top .3s ease-in-out;
+  left: $dayImageBorderWidth+20;
+  top: 10px;
+  z-index: -1;
 }
 
-.splash-sliding-image-block:hover .splash-block1 {
-  top: -400px;
+.splash-container{
+  border-style:  solid;
+  border-width: $dayImageBorderWidth;
+  border-radius: 1px;
+  border-color: #666;
+  margin: 20px;
+}
 
+#night-image{
+
+}
+
+#day-image-container{
+
+}
+
+#day-image{
+  border-style:  solid;
+  border-width: $dayImageBorderWidth;
+  border-radius: 25px;
+  border-color:  $night;
 }

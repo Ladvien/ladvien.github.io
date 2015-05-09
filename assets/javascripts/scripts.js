@@ -16,13 +16,17 @@ $(document).ready(function(){
     });
 
     $( "#night-image" ).hover(function() {
+
       $( "#night-image" ).animate({
         opacity: 0//,
         //left: "+=50",
         //height: "toggle"
-      }, 100, function() {
+      }, 300, function() {
         hidden: true
       });
+
+
+
     });
 
 
@@ -31,8 +35,18 @@ $(document).ready(function(){
 
 function slideImageUp() {
     $( "#day-image" ).animate({opacity: 0})
+    $(".hidden-text").animate({
+      opacity: 1.0
+    }, 300, function() {
+
+    });
 };
 
 function slideImageDown() {
   $( "#day-image" ).animate({opacity: 1})
+  $(".hidden-text").animate({
+    opacity: 0.0
+  }, 300, function() {
+
+  });
 };

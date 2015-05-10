@@ -1,46 +1,37 @@
-title:              Foundation-Jekyll
+# Site wide configuration
 
-# Versioning
-current_version: 1.1.0
+title: Bandana Philosophy
+description: Bipolar Blog
+logo:  # 120x120 px default image used for Twitter summary card
+teaser: # 400x250 px default teaser image used in image archive grid
+locale:
+url:
+# Jekyll configuration
 
-author:
-  name:             username
-  email:            user@domain.com
-  github:           username
-  twitter:          username
-
-# Dependencies
-markdown:           rdiscount
-highlighter:        pygments
-
-# Permalinks
-permalink:          pretty
-
-# Server
-source:             .
-destination:        ./static
-
-port:               4000
-baseurl:            ""
-url:                http://yoururl.com
-
-# exclude this stuff when building the static site
-exclude:            ["sass","scss",".gitignore","README.md","config.codekit"]
-
-
-## CUSTOM VARS
-
-#ga_id:             ##-########-###
-site_name:          Foundation-Jekyll
-site_description :  A bare bones Foundation & Jekyll boilerplate to get up and running fast.
-site_copyright:     Copyright (c) 2014 @aaronkwhite
-site_url:           http://yoururl.com
-site_email:         site@domain.com
-site_phone:         (555) 555-1234
-
-
-
-# We specify the directory for Jekyll so we can use @imports.
 sass:
-  sass_dir:          _scss
-  style:            :compressed
+    sass_dir: _sass
+    style: compressed
+permalink: /:categories/:title/
+kramdown:
+  toc_levels: 1..2
+highlighter: pygments
+gems:
+  - jekyll-sitemap
+
+
+# Site owner
+owner:
+  name: C. Thomas Brittain
+  email: design@ubermentis.com
+  twitter:
+  google:
+    ad-client:
+    ad-slot:
+  bio:
+  avatar: bio-photo.jpg # 160x160 px image for author byline
+disqus-shortname:
+
+
+exclude: ["lib", "config.rb", ".sass-cache", "Capfile", "config", "log", "Rakefile", "Rakefile.rb", "tmp", "*.sublime-project", "*.sublime-workspace", "Gemfile", "Gemfile.lock", "README.md", "LICENSE", "node_modules", "Gruntfile.js", "package.json"]
+
+category-list: [homeless, robots, misc]

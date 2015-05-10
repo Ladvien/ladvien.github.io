@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Foundation-Jekyll</title>
+    <description></description>    
+    <link>http://yoururl.com</link>
+    <atom:link href="http://yoururl.com/feed.xml" rel="self" type="application/rss+xml" />
+    
+      <item>
+        <title>Post 2</title>
+        
+          <description>&lt;ul&gt;
+&lt;li&gt;Post 2&lt;/li&gt;
+&lt;/ul&gt;
+
+</description>
+        
+                          <pubDate>Sun, 14 Dec 2014 00:00:00 -0600</pubDate>
+        <link>http://yoururl.com/2014/12/14/post-two/</link>
+        <guid isPermaLink="true">http://yoururl.com/2014/12/14/post-two/</guid>
+      </item>
+    
+      <item>
+        <title>Post 1</title>
+        
+          <description>&lt;ul&gt;
+&lt;li&gt;Post 1&lt;/li&gt;
+&lt;/ul&gt;
+
+</description>
+        
+                          <pubDate>Sun, 14 Dec 2014 00:00:00 -0600</pubDate>
+        <link>http://yoururl.com/2014/12/14/post-one/</link>
+        <guid isPermaLink="true">http://yoururl.com/2014/12/14/post-one/</guid>
+      </item>
+    
+  </channel>
+</rss>

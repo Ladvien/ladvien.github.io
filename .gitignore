@@ -1,9 +1,8 @@
+_site
 .DS_Store
 *.sublime-project
 *.sublime-workspace
-config.codekit
-
+codekit-config.json
+node_modules
+_asset_bundler_cache
 .sass-cache
-.sass-cache/*
-
-static/

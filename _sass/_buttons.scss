@@ -20,6 +20,7 @@
 	&:hover {
 		color: $white;
 		background-color: lighten($primary-color, 10);
+		cursor: pointer;
 	}
 	&:active {
 		// move button slightly on click

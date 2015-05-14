@@ -9,6 +9,7 @@
 #masthead {
 	padding: $gutter;
 	z-index: 5;
+	background-color: #bc0000;
 	background: url("/images/bandana.svg") no-repeat;
 	background-size: cover;
 	@include transform(translate(0,0));

@@ -269,6 +269,7 @@
 	@include fill-parent;
 	// expand image to cover full width of header
 	img {
+		margin: 25px;
 		width: 50%;
 		border: solid;
 		border-radius: 23px;

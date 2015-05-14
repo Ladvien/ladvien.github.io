@@ -17,7 +17,8 @@
 	.inner-wrap {
 		@include outer-container;
 	}
-	background: url("/images/bandana2.png");
+	background: url("/images/bandana.svg") no-repeat;
+
 }
 .site-title {
 	@include row;
@@ -27,12 +28,12 @@
 	padding: (.25 * $masthead-height) 0; // fourth the height to center vertically
 	height: $masthead-height;
 	text-decoration: none;
-	color: $black;
+	color: $white;
 	font-family: $alt-font;
 	font-weight: 700;
-	@include font-size(20,no);
+	@include font-size(36,no);
 	line-height: .5 * $masthead-height; // half the height to center vertically
-	text-transform: uppercase;
+	//text-transform: uppercase;
 }
 
 
@@ -72,7 +73,7 @@
 			}
 			&:after {
 				width: 0;
-				background: $black;
+				background: $white;
 			}
 			&:active:after,
 			&:hover:after {
@@ -104,9 +105,9 @@
 	li {
 		a {
 			font-weight: 700;
-			@include font-size(16,no);
+			@include font-size(24,no);
 			line-height: .5 * $masthead-height; // half the height to center vertically
-			color: $black;
+			color: $white;
 			text-transform: uppercase;
 		}
 	}

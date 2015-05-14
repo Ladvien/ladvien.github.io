@@ -3789,6 +3789,7 @@ small {
   line-height: inherit; }
 
 code {
+  /* REMOVE TO MAKE WORK WITH MD
   background-color: #f8f8f8;
   border-color: #dfdfdf;
   border-style: solid;
@@ -3796,7 +3797,7 @@ code {
   color: #333333;
   font-family: Consolas, "Liberation Mono", Courier, monospace;
   font-weight: normal;
-  padding: 0.125rem 0.3125rem 0.0625rem; }
+padding: 0.125rem 0.3125rem 0.0625rem; */}
 
 /* Lists */
 ul,

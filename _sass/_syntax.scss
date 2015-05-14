@@ -6,21 +6,22 @@
    Pygments.rb and Rouge
    ========================================================================== */
 
-.linenos,
+.linenos {display: none;}
 .code {
 	padding: 0;
-	border-top: 0 solid transparent;
-	border-bottom: 0 solid transparent;
+	border: 2px solid darken($body-color, 5);
+	border-radius: $border-radius;
+	background-color: #EFE;
+	@include font-size(18);
 }
 .linenodiv {
-  @include font-size(16);
+  //@include font-size(16);
 }
 
 .highlight {
 	overflow-x: auto;
 	@include font-size(16);
 	border: 1px solid darken($body-color, 5);
-	border-radius: $border-radius;
 	pre {
 		position: relative;
 		margin: 0;

@@ -18,7 +18,8 @@
 		@include outer-container;
 	}
 	background: url("/images/bandana.svg") no-repeat;
-
+	max-width:100%;
+	max-height:100%;
 }
 .site-title {
 	@include row;

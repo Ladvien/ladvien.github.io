@@ -17,6 +17,7 @@
 	.inner-wrap {
 		@include outer-container;
 	}
+	background: url("/images/bandana2.png");
 }
 .site-title {
 	@include row;

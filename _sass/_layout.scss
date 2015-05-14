@@ -7,9 +7,8 @@
    ========================================================================== */
 
 #masthead {
-	padding: $gutter;
+	padding: $gutter + 5;
 	z-index: 5;
-	background-color: #bc0000;
 	background: url("/images/bandana3.svg") no-repeat;
 	background-size: cover;
 	@include transform(translate(0,0));
@@ -26,14 +25,22 @@
 	@include media($large) {
 		@include span-columns(4);
 	}
-	padding: (.25 * $masthead-height) 0; // fourth the height to center vertically
+	padding: (.01 * $masthead-height) 0; // fourth the height to center vertically
 	height: $masthead-height;
 	text-decoration: none;
 	color: $white;
+	-webkit-text-stroke: 1px black;
+	text-shadow:
+			2px 2px 0 #000,
+			-1px -1px 0 #000,
+			1px -1px 0 #000,
+			-1px 1px 0 #000,
+			1px 1px 0 #000;
+
 	font-family: $alt-font;
 	font-weight: 700;
-	@include font-size(36,no);
-	line-height: .5 * $masthead-height; // half the height to center vertically
+	@include font-size(50,no);
+	line-height: .65 * $masthead-height; // half the height to center vertically
 	//text-transform: uppercase;
 }
 

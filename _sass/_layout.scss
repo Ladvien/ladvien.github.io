@@ -10,7 +10,7 @@
 	padding: $gutter;
 	z-index: 5;
 	background-color: #bc0000;
-	background: url("/images/bandana.svg") no-repeat;
+	background: url("/images/bandana3.svg") no-repeat;
 	background-size: cover;
 	@include transform(translate(0,0));
 	@include transition(500ms cubic-bezier(.645,.045,.355,1.000));

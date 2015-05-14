@@ -24,12 +24,9 @@
   position: fixed;
   transform: translateZ(0);
   backface-visibility: hidden; /* fix scroll jank */
+  bottom: 20px;
   @include media($large){
     top: $gutter;
-  }
-  @include media(!$large)
-  {
-    bottom: 20px;
   }
   right: $gutter;
   display: block;

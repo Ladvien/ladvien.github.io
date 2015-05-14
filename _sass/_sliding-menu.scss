@@ -22,10 +22,15 @@
 
 .sliding-menu-button {
   position: fixed;
-  bottom: 20px;
   transform: translateZ(0);
   backface-visibility: hidden; /* fix scroll jank */
-  //top: $gutter;
+  @include media($large){
+    top: $gutter;
+  }
+  @include media(!$large)
+  {
+    bottom: 20px;
+  }
   right: $gutter;
   display: block;
   width: $button-size * 2;

@@ -4,7 +4,7 @@ permalink: /
 title: "Latest Posts"
 ---
 
-<div class="tiles">
+<div class="post-list-wrapper">
 {% for post in site.posts %}
 	{% include post-simple-list.html %}
 {% endfor %}

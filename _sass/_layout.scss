@@ -332,8 +332,7 @@
 }
 
 .post-list-item-wrapper {
-	width: 100%;
-	white-space: nowrap;
+	width: 30%;
 	padding: 10px;
 	&:hover {
 		@include animation(pop .3s 0 linear);

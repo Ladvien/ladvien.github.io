@@ -39,12 +39,18 @@
 			1px -1px 0 #000,
 			-1px 1px 0 #000,
 			1px 1px 0 #000;
+	-webkit-user-select: none; /* Chrome/Safari */
+	-moz-user-select: none; /* Firefox */
+	-ms-user-select: none; /* IE10+ */
+	/* Rules below not implemented in browsers yet */
+	-o-user-select: none;
+	user-select: none;
 
 	font-family: $alt-font;
 	font-weight: 700;
 	@include font-size(50,no);
 	line-height: .65 * $masthead-height; // half the height to center vertically
-	//text-transform: uppercase;
+	text-transform: uppercase;
 	:hover {
 			font-color: black;
 	}
@@ -315,6 +321,52 @@
 		}
 	}
 }
+
+
+/*
+	 Bandana Philosophy Custom Post List
+   ========================================================================== */
+
+.no-wrap-child {
+	display:inline;
+}
+
+.post-list-item-wrapper {
+	width: 100%;
+	white-space: nowrap;
+	padding: 10px;
+	&:hover {
+		@include animation(pop .3s 0 linear);
+		box-shadow: 0 0 10px rgba($black, .90);
+	}
+}
+
+.post-list-item-image-wrapper {
+		float: left;
+		padding-right: 5px;
+}
+
+.post-list-image {
+	// Makes a circle.
+	width: 80px;
+ 	height: 80px;
+ 	background-size: cover;
+ 	display: block;
+ 	//border-radius: 45px;
+ 	//-webkit-border-radius: 45px;
+ 	//-moz-border-radius: 45px;
+	// End circle clipping.
+
+	display:inline;
+	border-style: solid;
+	border-color:#000000;
+	border-width: .1em;
+}
+
+.post-grid-image {
+
+}
+
 
 /*
    Page footer

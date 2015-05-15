@@ -6,6 +6,6 @@ title: "Latest Posts"
 
 <div class="tiles">
 {% for post in site.posts %}
-	{% include post-grid.html %}
+	{% include post-simple-list.html %}
 {% endfor %}
 </div><!-- /.tiles -->

@@ -97,6 +97,7 @@
   }
   a {
     img {
+      padding: 20px;
       // Image hover animation
       &:hover {
         @include animation(pop .3s 0 linear);

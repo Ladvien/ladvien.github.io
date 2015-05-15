@@ -337,7 +337,7 @@
 	margin: 10px;
 	border-style: solid;
 	border-color:#000000;
-	border-width: .15em;
+	border-width: .05em;
 	&:hover {
 		@include animation(pop .3s 0 linear);
 		box-shadow: 0 0 10px rgba($black, .90);

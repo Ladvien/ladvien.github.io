@@ -348,7 +348,7 @@
 	border-width: thin;
 	&:hover {
 		@include animation(pop .3s 0 linear);
-		box-shadow: 0 0 10px rgba($black, .90);
+		box-shadow: -1px -1px 10px rgba($black, .90);
 	}
 }
 

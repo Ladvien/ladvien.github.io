@@ -332,7 +332,7 @@
 }
 
 .post-list-item-wrapper {
-	width: 30%;
+	width: auto;
 	padding: 10px;
 	&:hover {
 		@include animation(pop .3s 0 linear);

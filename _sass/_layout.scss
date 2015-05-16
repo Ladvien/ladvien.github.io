@@ -331,10 +331,7 @@
 	display:inline;
 }
 
-.post-list-title {
-	padding-left: 1px;
-	padding-right: 1px;
-}
+
 
 .post-list-wrapper {
 	//border-style: solid;
@@ -343,23 +340,31 @@
 	//border-radius: 5px;
 	padding: 10px;
 	margin: 10px;
-
 }
 
 .post-list-item-wrapper {
 	width: auto;
 	//padding: 10px;
 	//margin: 10px;
-	border-style: solid;
+	border-top-style: solid;
 	border-color:#000000;
 	border-width: thin;
 	//border-radius: 5px;
 	&:hover {
-		@include animation(pop .3s 0 linear);
+		//@include animation(pop .3s 0 linear);
 		//box-shadow: -2px -2px 10px rgba($black, .90);
-		background:rgba(#BC0000, .20);
+		background:rgba(#BC0000, .60);
 
 	}
+}
+
+.post-list-item-title {
+	padding-left: 1px;
+	padding-right: 1px;
+}
+
+.post-list-item-date {
+	float:right;
 }
 
 .post-list-item-image-wrapper {

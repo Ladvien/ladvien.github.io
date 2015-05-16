@@ -33,12 +33,12 @@
 	text-decoration: none;
 	color: $black;
 	-webkit-text-stroke: 2px black;
-	/*text-shadow:
-			2px 2px 0 #000,
-			-1px -1px 0 #000,
-			1px -1px 0 #000,
-			-1px 1px 0 #000,
-			1px 1px 0 #000; */
+	text-shadow:
+			3px 3px 0 #BC6666,
+			-3px -3px 0 #BC6666,
+			3px -3px 0 #BC6666,
+			-3px 3px 0 #BC6666,
+			3px 3px 0 #BC6666;
 	-webkit-user-select: none; /* Chrome/Safari */
 	-moz-user-select: none; /* Firefox */
 	-ms-user-select: none; /* IE10+ */
@@ -77,6 +77,13 @@
 			padding: (.25 * $masthead-height) 0 (.25 * $masthead-height) ;
 			height: $masthead-height;
 			font-family: $alt-font;
+			-webkit-text-stroke: 2px black;
+			text-shadow:
+					2px 2px 0 #BC6666,
+					-2px -2px 0 #BC6666,
+					2px -2px 0 #BC6666,
+					-2px 2px 0 #BC6666,
+					2px 2px 0 #BC6666;
 			&:before,
 			&:after {
 				content: '';

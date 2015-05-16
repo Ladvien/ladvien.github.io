@@ -1,7 +1,7 @@
 ---
 layout: archive
 permalink: /
-title: "Latest Posts"
+title: "Writings"
 ---
 
 <div class="post-list-wrapper">

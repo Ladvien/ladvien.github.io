@@ -12,7 +12,7 @@
 	padding-bottom: $gutter + 5;
 	padding-right: $gutter + 5;
 	z-index: 5;
-	background: url("/images/bandana3.svg") no-repeat;
+	background: url("/images/bandana7.svg") no-repeat;
 	background-size: cover;
 	@include transform(translate(0,0));
 	@include transition(500ms cubic-bezier(.645,.045,.355,1.000));
@@ -31,14 +31,14 @@
 	padding: (.01 * $masthead-height) 0; // fourth the height to center vertically
 	height: $masthead-height;
 	text-decoration: none;
-	color: $white;
+	color: $black;
 	-webkit-text-stroke: 2px black;
-	text-shadow:
+	/*text-shadow:
 			2px 2px 0 #000,
 			-1px -1px 0 #000,
 			1px -1px 0 #000,
 			-1px 1px 0 #000,
-			1px 1px 0 #000;
+			1px 1px 0 #000; */
 	-webkit-user-select: none; /* Chrome/Safari */
 	-moz-user-select: none; /* Firefox */
 	-ms-user-select: none; /* IE10+ */
@@ -93,7 +93,7 @@
 			}
 			&:after {
 				width: 0;
-				background: $white;
+				background: $black;
 			}
 			&:active:after,
 			&:hover:after {
@@ -127,7 +127,7 @@
 			font-weight: 700;
 			@include font-size(24,no);
 			line-height: .5 * $masthead-height; // half the height to center vertically
-			color: $white;
+			color: $black;
 			text-transform: uppercase;
 		}
 	}

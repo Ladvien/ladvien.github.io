@@ -351,13 +351,13 @@
 	//padding: 10px;
 	//margin: 10px;
 	border-style: solid;
-	border-color:#BC0000;
+	border-color:#000000;
 	border-width: thin;
 	//border-radius: 5px;
 	&:hover {
 		@include animation(pop .3s 0 linear);
 		//box-shadow: -2px -2px 10px rgba($black, .90);
-		background:rgba($black, .20);
+		background:rgba(#BC0000, .20);
 
 	}
 }

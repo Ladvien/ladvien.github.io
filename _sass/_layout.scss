@@ -40,10 +40,14 @@
 			-3px 3px 0 #999,
 			3px 3px 0 #999;
 
-
 	font-family: $alt-font;
 	font-weight: 700;
-	@include font-size(50,no);
+
+	@include font-size(36,no);
+	@include media($large) {
+		@include font-size(50,no);
+	}
+
 	line-height: .65 * $masthead-height; // half the height to center vertically
 	text-transform: uppercase;
 	&:hover {

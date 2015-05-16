@@ -331,6 +331,11 @@
 	display:inline;
 }
 
+.post-list-title {
+	padding-left: 1px;
+	padding-right: 1px;
+}
+
 .post-list-wrapper {
 	border-style: solid;
 	border-color:#BC0000;
@@ -351,7 +356,7 @@
 	&:hover {
 		@include animation(pop .3s 0 linear);
 		//box-shadow: -2px -2px 10px rgba($black, .90);
-		background:rgba($black, .20);  
+		background:rgba($black, .20);
 
 	}
 }

@@ -1,8 +1,8 @@
 ---
 layout: archive
 ---
-<div class="tiles">
-{% for post in site.categories.homeless %}
-  {% include post-grid.html %}
+<div class="post-list-wrapper">
+{% for post in site.posts %}
+	{% include post-simple-list.html %}
 {% endfor %}
-</div><!-- /.tiles -->
+</div><!-- /.tiles --

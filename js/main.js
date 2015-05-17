@@ -39,7 +39,7 @@ $(document).ready(function(){
 
         }, function(){
             righteye.stop(false, true).animate({
-              fill: #BC0000,
+              fill: '#BC0000',
               rx: 27,
               ry: 27
             }, 250, mina.easeinout);

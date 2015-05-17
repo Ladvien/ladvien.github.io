@@ -241,8 +241,9 @@ When everything came in, I took the broken boards off by heating the bottom of t
 
 **Video of Soldering the HM-10 to Breakout**
 
-**[![](/images/HM-10_Breakout_Board_Wire_up_movie_pic.jpg)](http://www.youtube.com/watch?v=BOT7Vx9lAlk)
-**
+<div class="flex-video">
+  <iframe width="560" height="315" src="https://www.youtube.com/embed/BOT7Vx9lAlk" frameborder="0" allowfullscreen></iframe>
+</div>
 
 I wired the whole mess up on a breadboard and was surprised when I actually got a response in Realterm.
 
@@ -387,7 +388,7 @@ After reading the manual some more, and tinkering with the AT commands, I sent a
 >
 >
 >
-> <div style="border-style: none;">
+>
 >
 > a. AT+CLEAR
 >

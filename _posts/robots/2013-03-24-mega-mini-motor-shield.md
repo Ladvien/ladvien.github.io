@@ -8,6 +8,7 @@ image:
   feature: IMG_8629.JPG
   teaser: IMG_8629.JPG
   thumb:
+comments: true
 ---
 Originally posted on [www.letsmakerobots.com](www.letsmakerobots.com)
 

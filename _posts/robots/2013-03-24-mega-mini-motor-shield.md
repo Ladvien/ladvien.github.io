@@ -12,7 +12,7 @@ image:
 Originally posted on [www.letsmakerobots.com](www.letsmakerobots.com)
 
 
-<div class="flex-video">
+<div class="flex-video" style="float:right;">
   <iframe width="560" height="315" src="https://www.youtube.com/embed/Ny9dN20BRA4" frameborder="0" allowfullscreen></iframe>
 </div>
 

@@ -49,6 +49,8 @@ $(document).ready(function(){
       canvas.append(lefteye);
     });
 
+
+    // EYE POP ANIMATION
     var eyePopFlag = true;
 
     var interval = self.setInterval(function(){
@@ -56,16 +58,7 @@ $(document).ready(function(){
       else{eyeReturn(righteye, lefteye)}
       },400);
 
-    function eyePopAndReturn(righteye, lefteye){
-      if(eyePopFlag){
-        eyePop(righteye, lefteye)
-      }
-      else {
-        eyeReturn(righteye, lefteye)
-      }
-    }
 
-    // EYE POP ANIMATION
     function eyePop(righteye, lefteye){
 
       var randomTime = (Math.floor((Math.random() * 10) + 1)) * 25;
@@ -88,8 +81,6 @@ $(document).ready(function(){
       }, randomTime, mina.easeinout);
       eyePopFlag = false;
     }
-
-
 
     function eyeReturn(righteye, lefteye){
 

@@ -22,9 +22,8 @@ $(document).ready(function(){
       var lefteye = response.select("#left-eye");
       var handler;
 
+      // EYE POP ANIMATION
       item.hover(function () {
-
-
               righteye.stop(false, true).animate({
                 fill: 'green',
                 rx: 30,
@@ -39,8 +38,6 @@ $(document).ready(function(){
 
 
         }, function(){
-
-            canvas.text(20, 20, "Lost hover");
             righteye.stop(false, true).animate({
               fill: 'white',
               rx: 27,
@@ -54,11 +51,12 @@ $(document).ready(function(){
             }, 250, mina.easeinout);
           }
         );
-
+      // END EYE POP
 
       canvas.append(righteye);
       canvas.append(lefteye);
       canvas.append(bob);
+
     });
   });
       /*  Good for interval based animations.

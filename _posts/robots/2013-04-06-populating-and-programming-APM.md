@@ -10,8 +10,11 @@ image:
   thumb:
 comments: true
 ---
-
 Originally posted on [www.letsmakerobots.com](www.letsmakerobots.com)
+
+<div class="flex-video">
+  <iframe width="420" height="315" src="https://www.youtube.com/embed/leWv0mJ9VVE" frameborder="0" allowfullscreen></iframe>
+</div>
 
 I decided to try making an Arduino Pro Mini at home.  Being done, it's not worth it.  You can buy one for a dollar more than you can make them, and it took awhile to populate.  Although, it's "fun."
 

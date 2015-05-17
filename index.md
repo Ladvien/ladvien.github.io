@@ -1,7 +1,6 @@
 ---
 layout: archive
 permalink: /
-comments: true
 title: "Writings"
 ---
 

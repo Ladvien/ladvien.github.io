@@ -5,8 +5,8 @@ categories: robots
 excerpt:
 tags: [robots]
 image:
-  feature: IMG_0356.jpg
-  teaser: IMG_0356_5.png
+  feature: IMG_8629.JPG
+  teaser: IMG_8629.JPG
   thumb:
 ---
 Originally posted on [www.letsmakerobots.com](www.letsmakerobots.com)

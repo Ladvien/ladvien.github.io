@@ -27,7 +27,7 @@ My next project is a Fuse Doctor. :)
 
 I had ordered the boards from OSHPark and had planned on making three.  So, I populated another and took some time programming it.  I've outlined my steps below:
 
-**1 Hook up the AVRISP MKII **
+**1 Hook up the AVRISP MKII**
 
 ![](/images/avrispmkii-pin-out.png)
 
@@ -45,8 +45,7 @@ I had ordered the boards from OSHPark and had planned on making three.  So, I po
 
 **4 Read Target voltage (it should be ~5V).  Read Device Signature.**
 
-**![](/images/Atmel_Studio_1.jpg)
-**
+**![](/images/Atmel_Studio_1.jpg)**
 
 6 Open **boards.txt** that comes with Arduino (\Desktop\arduino-1.0.3\hardware\arduino\boards.txt).
 

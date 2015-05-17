@@ -27,15 +27,15 @@ My next project is a Fuse Doctor. :)
 
 I had ordered the boards from OSHPark and had planned on making three.  So, I populated another and took some time programming it.  I've outlined my steps below:
 
-**1\. Hook up the AVRISP MKII **
+**1 Hook up the AVRISP MKII **
 
 ![](/images/avrispmkii-pin-out.png)
 
 ![](/images/Pinout_of_Aduino_Pro_Mini.jpg)
 
-**2\. Open Atmel Studio.  Go to Tools -- Device Programming.**
+**2 Open Atmel Studio.  Go to Tools -- Device Programming.**
 
-**3\. Setup:**
+**3 Setup:**
 
 *   **Tool: AVRISP mkII**
 *   **Device: ATmega328P**
@@ -43,20 +43,20 @@ I had ordered the boards from OSHPark and had planned on making three.  So, I po
 
 **Click apply**
 
-**4\. Read Target voltage (it should be ~5V).  Read Device Signature.**
+**4 Read Target voltage (it should be ~5V).  Read Device Signature.**
 
 **![](/images/Atmel_Studio_1.jpg)
 **
 
-6\. Open **boards.txt** that comes with Arduino (\Desktop\arduino-1.0.3\hardware\arduino\boards.txt).
+6 Open **boards.txt** that comes with Arduino (\Desktop\arduino-1.0.3\hardware\arduino\boards.txt).
 
-7\. Scroll down to the area marked:
+7 Scroll down to the area marked:
 
 ![](/images/Boards_File.jpg)
 
-**8\. Pull the programming information for the board from this area.**  Now, I've bricked a few boards, but I think I've figured this one out.  When programming this board with the MKII and Atmel Studio, you should follow this order.
+**8 Pull the programming information for the board from this area.**  Now, I've bricked a few boards, but I think I've figured this one out.  When programming this board with the MKII and Atmel Studio, you should follow this order.
 
-**1\. Set the fuses.**
+**1 Set the fuses.**
 
 *   **Extended: 0xFD**
 *   **High: 0xDA**
@@ -64,7 +64,7 @@ I had ordered the boards from OSHPark and had planned on making three.  So, I po
 *   **(Double check the board file to make sure I didn't make typos)**
 *   **Hit "Program"**
 
-**2\. Upload Bootloader.**
+**2 Upload Bootloader.**
 
 "The bootloader for the 5v, 16mhz Arduino Pro Mini (which is what I built) is **"ATmegaBOOT_168_atmega328.hex **(Desktop\arduino-1.0.3\hardware\arduino\bootloaders\atmega\ATmegaBOOT_168_atmega328.hex).  It's important to note that the 3.3v and 5v versions use different bootloaders.
 
@@ -74,7 +74,7 @@ I had ordered the boards from OSHPark and had planned on making three.  So, I po
 *   **(Double check the boards file to make sure I'm not screwing you up).**
 *   **Hit program.**
 
-**3\.  Set Lock Bits. **
+**3  Set Lock Bits. **
 
 *   **Go to the "Lock bits" tab.  **
 *   **Check the boards.txt file for Lockbit number**
@@ -82,9 +82,9 @@ I had ordered the boards from OSHPark and had planned on making three.  So, I po
 *   **(Double check the boards.txt.  I don't take blame for bricked boards :P).**
 *   **Hit "Program"**
 
-**9\. Upload the Blink Sketch; the LED by the reset button should blink.**
+**9 Upload the Blink Sketch; the LED by the reset button should blink.**
 
-**10\. Let me know how it went.  If you bricked a chip using these instructions, let me know so I can modify them quick.**
+**10 Let me know how it went.  If you bricked a chip using these instructions, let me know so I can modify them quick.**
 
 Now that I'm used to the camera and stalactite, I plan to annotate my next board for tips on working with 0402s.
 

@@ -13,6 +13,15 @@ comments: true
 
 Originally posted on [www.letsmakerobots.com](www.letsmakerobots.com)
 
+<div class="flex-video">
+  <iframe width="560" height="315" src="https://www.youtube.com/embed/99WxBqoRHk0" frameborder="0" allowfullscreen></iframe>
+</div>
+<div class="flex-video">
+  <iframe width="560" height="315" src="https://www.youtube.com/embed/pdXAGdvuocI" frameborder="0" allowfullscreen></iframe>
+</div>
+<div class="flex-video">
+  <iframe width="560" height="315" src="https://www.youtube.com/embed/EB01faqzlCQ" frameborder="0" allowfullscreen></iframe>
+</div>
 8/25/13:
 
 This fellow here has made some pretty nifty walkthroughs on the rtl8192 and the Chronodot (DS3231) RTC on the Arch Linux.  Though I've not attempted his instructions (been burnt out on this board) I believe his instructions will get a reliable WiFi connection with the rtl8192, using Arch Linux, on the B^3.

@@ -1,6 +1,6 @@
 ---
 layout: article
-title: Populating and Programming and APM
+title: Beaglebone Black
 categories: robots
 excerpt:
 tags: [robots]

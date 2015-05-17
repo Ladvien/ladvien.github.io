@@ -76,7 +76,7 @@ Well, I think I could best describe this point in economic terms. It's the where
 
 **Figure 1**
 
-![](/images/250px-Production_Possibilities_Frontier_Curve_svg.jpg)
+![](/images/Production_Possibilities_Frontier_Curve_svg.jpg)
 
 In essence, this graph shows that I cannot reach my desired productive efficiency (getting the B^3 to do the tricks I want it).  Really, I'd be happy at point C (even though point D is probably better for me and my family).  The problem is technology limitations are restricting me from getting to point C on the curve.  And it's bugging the hell out of me.  At first, I thought this was completely due to my ineptitude (which is partially true), but there is another barrier, a seemingly hidden one.  
 
@@ -270,8 +270,8 @@ If anyone else following this, **please double-check me, I'll make corrections i
 
 These are some of the differences I've noticed between the Beaglebone Black and the Raspberry Pi.
 
- **![](/images/6312263717_932956b10c_o.jpg)** | **![](/images/20121210222414_Raspberry_Pi_Logo.png)** | **
-** | Est. to Upgrade Rpi or BBB | Est. Difficulty to Add |
+ ![](/images/6312263717_932956b10c_o.jpg) | ![](/images/20121210222414_Raspberry_Pi_Logo.png) |
+| Est. to Upgrade Rpi or BBB | Est. Difficulty to Add |
 | Real Time Clock | **1** | **0** |
  | $[2.30](http://www.fasttech.com/products/0/10000007/1012004-tiny-i2c-rtc-ds1307-at24c32-real-time-clock-shield) | Medium |
 | Processor Speed | **1GHZ** | **700MHZ** |

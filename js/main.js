@@ -32,7 +32,7 @@ $(document).ready(function(){
 
               lefteye.stop(false, true).animate({
                 fill: 'red',
-                rx: 20,
+                rx: 25,
                 ry: 20
               }, 250, mina.easeinout);
 
@@ -47,7 +47,9 @@ $(document).ready(function(){
             lefteye.stop(false, true).animate({
               fill: 'white',
               rx: 27,
-              ry: 27
+              ry: 27,
+              rotate: 20
+
             }, 250, mina.easeinout);
           }
         );

@@ -33,18 +33,12 @@ $(document).ready(function(){
               lefteye.stop(false, true).animate({
                 fill: 'red',
                 rx: 25,
-                ry: 20
+                ry: 20,
+                rx: 45,
+                ry: 43
+
               }, 250, mina.easeinout);
-              righteye.stop(false, true).animate({
-                fill: 'red',
-                rx: 25,
-                ry: 25
-              }, 250, mina.easeinout);
-              lefteye.stop(false, true).animate({
-                fill: 'green',
-                rx: 37,
-                ry: 29
-              }, 250, mina.easeinout);
+
 
         }, function(){
             righteye.stop(false, true).animate({

@@ -18,6 +18,10 @@ $(document).ready(function(){
   var righteye;
   var lefteye;
 
+  //<div class="robot-container">
+  //      <svg class="svg-canvas no-wrap-child" viewbox="0 0 317 382"></svg>
+  //</div>
+
   Snap.load('/images/Bob_Bot.svg', function (response) {
 
       bob = response.select("#bob");

@@ -173,7 +173,7 @@ I ordered several samples of the chip from TI. While I waited on the post I bega
 
 
 
-**Hardware: **
+**Hardware:**
 
 ![](/images/500px-CC2541_Breakout_Board.jpg)Here's a [**complete PCB**](http://processors.wiki.ti.com/index.php/CC2541_Breakout_Board) for the [**CC2541**](http://www.ti.com/lit/ds/symlink/cc2541.pdf), which seems to be optimized for low-power consumption. I will say, the entire chip is pretty well documented on the TI forums, but overall, the hardware aspects are the least.
 

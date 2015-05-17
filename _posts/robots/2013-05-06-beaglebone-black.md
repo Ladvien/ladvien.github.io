@@ -14,13 +14,13 @@ comments: true
 Originally posted on [www.letsmakerobots.com](www.letsmakerobots.com)
 
 <div class="flex-video">
-  <iframe width="129" height="79" src="https://www.youtube.com/embed/99WxBqoRHk0" frameborder="0" allowfullscreen></iframe>
+  <iframe width="560" height="315" src="https://www.youtube.com/embed/99WxBqoRHk0" frameborder="0" allowfullscreen></iframe>
 </div>
 <div class="flex-video">
-  <iframe width="129" height="79" src="https://www.youtube.com/embed/pdXAGdvuocI" frameborder="0" allowfullscreen></iframe>
+  <iframe width="560" height="315" src="https://www.youtube.com/embed/pdXAGdvuocI" frameborder="0" allowfullscreen></iframe>
 </div>
 <div class="flex-video">
-  <iframe width="129" height="79" src="https://www.youtube.com/embed/EB01faqzlCQ" frameborder="0" allowfullscreen></iframe>
+  <iframe width="560" height="315" src="https://www.youtube.com/embed/99WxBqoRHk0" frameborder="0" allowfullscreen></iframe>
 </div>
 8/25/13:
 

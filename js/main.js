@@ -26,15 +26,15 @@ $(document).ready(function(){
       item.hover(function () {
               righteye.stop(false, true).animate({
                 fill: 'green',
-                rx: 30,
-                ry: 30
-              }, 90, mina.easeinout);
+                rx: 37,
+                ry: 37
+              }, 250, mina.easeinout);
 
               lefteye.stop(false, true).animate({
                 fill: 'red',
                 rx: 20,
                 ry: 20
-              }, 90, mina.easeinout);
+              }, 250, mina.easeinout);
 
 
         }, function(){

@@ -97,7 +97,9 @@ I decided to try again. I'd have no more trying to ignorantly trouble-shoot the 
 
 Well, below is **a video of that process**:
 
-  [![](/images/mqdefault.jpg)](http://www.youtube.com/watch?v=hZI9QOGVHNM&feature=c4-overview&list=UUKodYd0Fj3TSHzXg7aOJYYQ)
+<div class="flex-video">
+  <iframe width="560" height="315" src="https://www.youtube.com/embed/hZI9QOGVHNM" frameborder="0" allowfullscreen></iframe>
+</div>
 
 After I caught the two errors (wrong MCP6001 and disorientation of the APDS-9008) I felt a little better sending it to OSHPark again. Two dollars later I wasn't as sure, but the boards were on their way regardless. While I waited, I jumped on Texas Instrument's website and ordered samples of (what I hoped was) the correct op-amp.
 

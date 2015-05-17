@@ -5,8 +5,8 @@ categories: robots
 excerpt:
 tags: [robots]
 image:
-  feature: 6312263717_932956b10c_o.jpg
-  teaser: 6312263717_932956b10c_o.jpg
+  feature: B_3PinOut3.png
+  teaser: B_3PinOut3.png
   thumb:
 comments: true
 ---

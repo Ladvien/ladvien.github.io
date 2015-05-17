@@ -5,8 +5,8 @@ categories: robots
 excerpt:
 tags: [robots]
 image:
-  feature: 11114-02_i_ma.jpg
-  teaser: 11114-02_i_ma.jpg
+  feature: 6312263717_932956b10c_o.jpg
+  teaser: 6312263717_932956b10c_o.jpg
   thumb:
 comments: true
 ---

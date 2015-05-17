@@ -27,15 +27,15 @@ My next project is a Fuse Doctor. :)
 
 I had ordered the boards from OSHPark and had planned on making three.  So, I populated another and took some time programming it.  I've outlined my steps below:
 
-**1 Hook up the AVRISP MKII**
+**1. Hook up the AVRISP MKII**
 
 ![](/images/avrispmkii-pin-out.png)
 
 ![](/images/Pinout_of_Aduino_Pro_Mini.jpg)
 
-**2 Open Atmel Studio.  Go to Tools -- Device Programming.**
+**2. Open Atmel Studio.  Go to Tools -- Device Programming.**
 
-**3 Setup:**
+**3. Setup:**
 
 *   **Tool: AVRISP mkII**
 *   **Device: ATmega328P**
@@ -43,19 +43,19 @@ I had ordered the boards from OSHPark and had planned on making three.  So, I po
 
 **Click apply**
 
-**4 Read Target voltage (it should be ~5V).  Read Device Signature.**
+**4. Read Target voltage (it should be ~5V).  Read Device Signature.**
 
 **![](/images/Atmel_Studio_1.jpg)**
 
-6 Open **boards.txt** that comes with Arduino (\Desktop\arduino-1.0.3\hardware\arduino\boards.txt).
+6. Open **boards.txt** that comes with Arduino (\Desktop\arduino-1.0.3\hardware\arduino\boards.txt).
 
-7 Scroll down to the area marked:
+7. Scroll down to the area marked:
 
 ![](/images/Boards_File.jpg)
 
 **8 Pull the programming information for the board from this area.**  Now, I've bricked a few boards, but I think I've figured this one out.  When programming this board with the MKII and Atmel Studio, you should follow this order.
 
-**1 Set the fuses.**
+**1. Set the fuses:**
 
 *   **Extended: 0xFD**
 *   **High: 0xDA**

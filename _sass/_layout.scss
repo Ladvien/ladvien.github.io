@@ -7,16 +7,91 @@
 		SNAP.SVG
 	   ========================================================================== */
 .robot-container {
-	width: 30px;
-	height: 30px;
+	width: 65px;
+	height: 65px;
+	position: fixed;
+	left: 20px;
+	bottom: 20px;
 }
 
 #robot-container{
-	width: 65px;
-	height: 65px;
+	width: 10%;
+	height: 10%;
+}
+
+/*
+	 Bandana Philosophy Custom Post List
+   ========================================================================== */
+
+.no-wrap-child {
+	display:inline;
 }
 
 
+
+.post-list-wrapper {
+	//border-style: solid;
+	//border-color:#BC0000;
+	//border-width: thin;
+	//border-radius: 5px;
+	padding: 10px;
+	margin: 10px;
+}
+
+.post-list-item-wrapper {
+	width: auto;
+	//padding: 10px;
+	//margin: 10px;
+	border-top-style: solid;
+	border-color:#000000;
+	border-width: thin;
+	//border-radius: 5px;
+	&:hover {
+		//@include animation(pop .3s 0 linear);
+		//box-shadow: -2px -2px 10px rgba($black, .90);
+		background:rgba(#BC0000, .60);
+
+	}
+}
+
+.post-list-item-title {
+	padding-left: 1px;
+	padding-right: 1px;
+}
+
+.post-list-item-date {
+	float:right;
+}
+
+.post-list-item-image-wrapper {
+		float: left;
+		padding-right: 10px;
+		padding-left: 10px;
+		//padding-bottom: 2px;
+		padding-top: 2px;
+		border-radius: 5px;
+}
+
+.post-list-image {
+	// Makes a circle.
+	width: 80px;
+ 	height: 80px;
+ 	background-size: cover;
+ 	display: block;
+ 	//border-radius: 45px;
+ 	//-webkit-border-radius: 45px;
+ 	//-moz-border-radius: 45px;
+	// End circle clipping.
+	border-radius: 5px;
+	display:inline;
+	//border-style: solid;
+	//border-color:#000000;
+	//border-width: .1em;
+}
+
+.post-grid-image {
+
+}
 
 /*
    Masthead
@@ -346,79 +421,7 @@
 }
 
 
-/*
-	 Bandana Philosophy Custom Post List
-   ========================================================================== */
 
-.no-wrap-child {
-	display:inline;
-}
-
-
-
-.post-list-wrapper {
-	//border-style: solid;
-	//border-color:#BC0000;
-	//border-width: thin;
-	//border-radius: 5px;
-	padding: 10px;
-	margin: 10px;
-}
-
-.post-list-item-wrapper {
-	width: auto;
-	//padding: 10px;
-	//margin: 10px;
-	border-top-style: solid;
-	border-color:#000000;
-	border-width: thin;
-	//border-radius: 5px;
-	&:hover {
-		//@include animation(pop .3s 0 linear);
-		//box-shadow: -2px -2px 10px rgba($black, .90);
-		background:rgba(#BC0000, .60);
-
-	}
-}
-
-.post-list-item-title {
-	padding-left: 1px;
-	padding-right: 1px;
-}
-
-.post-list-item-date {
-	float:right;
-}
-
-.post-list-item-image-wrapper {
-		float: left;
-		padding-right: 10px;
-		padding-left: 10px;
-		//padding-bottom: 2px;
-		padding-top: 2px;
-		border-radius: 5px;
-}
-
-.post-list-image {
-	// Makes a circle.
-	width: 80px;
- 	height: 80px;
- 	background-size: cover;
- 	display: block;
- 	//border-radius: 45px;
- 	//-webkit-border-radius: 45px;
- 	//-moz-border-radius: 45px;
-	// End circle clipping.
-	border-radius: 5px;
-	display:inline;
-	//border-style: solid;
-	//border-color:#000000;
-	//border-width: .1em;
-}
-
-.post-grid-image {
-
-}
 
 
 /*

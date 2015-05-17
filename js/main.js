@@ -12,79 +12,105 @@ $(document).ready(function(){
   });
 
   // JS
-  var canvas = Snap("#svg-canvas");
-  var item = Snap("#robot-container");
+  var canvas = Snap(".svg-canvas");
+  var item = Snap(".robot-container");
+  var bob;
+  var righteye;
+  var lefteye;
 
   Snap.load('/images/Bob_Bot.svg', function (response) {
 
-      var bob = response.select("#bob");
-      var righteye = response.select("#right-eye");
-      var lefteye = response.select("#left-eye");
-      var handler;
+      bob = response.select("#bob");
+      response.select("#right-eye").attr({
+        fill: 'white'
+      })
+      response.select("#left-eye").attr({
+        fill: 'white'
+      })
+      righteye = response.select("#right-eye");
+      lefteye = response.select("#left-eye");
 
-      // EYE POP ANIMATION
+      // This fills in Bob's body.
+      bob.selectAll("path").attr({
+        fill: "#BC6666"
+      })
+
+      /*
       item.hover(function () {
-              righteye.stop(false, true).animate({
-                fill: 'green',
-                rx: 37,
-                ry: 37
-              }, 250, mina.easeinout);
-
-              lefteye.stop(false, true).animate({
-                fill: 'red',
-                rx: 45,
-                ry: 40
-              }, 250, mina.easeinout);
+          eyePop(righteye, lefteye);
         }, function(){
-            righteye.stop(false, true).animate({
-              fill: 'white',
-              rx: 27,
-              ry: 27
-            }, 250, mina.easeinout);
+          eyeReturn(righteye, lefteye);
+        }
+      );
+      */
 
-            lefteye.stop(false, true).animate({
-              fill: 'white',
-              rx: 27,
-              ry: 27,
-              rotate: 20
-
-            }, 250, mina.easeinout);
-          }
-        );
-      // END EYE POP
-
+      canvas.append(bob);
       canvas.append(righteye);
       canvas.append(lefteye);
-      canvas.append(bob);
-
     });
-  });
-      /*  Good for interval based animations.
-      bob.hover(function () {
-        handler = window.setInterval(function () {
-            //righteye.attr({ opacity: 0})
-            righteye.animate({
-              fill: 'black'
-            }, 600, null, function () {
-              //
-            });
-            lefteye.animate({
-              fill: 'black'
-            }, 600, null, function () {
-              //
-            });
-        }, 20);
-      }, function () {
-          window.clearInterval(handler);
-          righteye.animate({
-                fill: 'white'
-            }, 20);
 
-          lefteye.animate({
-            fill: 'white'
-          }, 20);
-      }); */
+    var eyePopFlag = true;
 
+    var interval = self.setInterval(function(){
+      if(eyePopFlag){eyePopAndReturn(righteye, lefteye)}
+      else{eyeReturn(righteye, lefteye)}
+      },400);
+
+    function eyePopAndReturn(righteye, lefteye){
+      if(eyePopFlag){
+        eyePop(righteye, lefteye)
+      }
+      else {
+        eyeReturn(righteye, lefteye)
+      }
+    }
+
+    // EYE POP ANIMATION
+    function eyePop(righteye, lefteye){
+
+      var randomTime = (Math.floor((Math.random() * 10) + 1)) * 25;
+
+      var randomRightEyePop = Math.floor((Math.random() * 10) + 1)
+      var randomLeftEyePop = Math.floor((Math.random() * 10) + 1)
+
+      var back = ["#ff0000","blue","gray", "red", "green", "silver"];
+      var randColor = back[Math.floor(Math.random() * back.length)];
+
+      lefteye.stop(false, true).animate({
+        fill: randColor.toString(),
+        rx: 30 + randomLeftEyePop,
+        ry: 30 + randomLeftEyePop
+      }, randomTime, mina.easeinout);
+      righteye.stop(false, true).animate({
+        fill: randColor.toString(),
+        rx: 30 + randomRightEyePop,
+        ry: 30 + randomRightEyePop
+      }, randomTime, mina.easeinout);
+      eyePopFlag = false;
+    }
+
+
+
+    function eyeReturn(righteye, lefteye){
+
+      righteye.stop(false, true).animate({
+        fill: "black",
+        rx: 27,
+        ry: 27
+      }, 250, mina.easeinout);
+
+      lefteye.stop(false, true).animate({
+        fill: "black",
+        rx: 27,
+        ry: 27,
+        rotate: 20
+      }, 250, mina.easeinout);
+      eyePopFlag = true;
+    }
+    // END EYE POP
+
+
+});
 
 
 

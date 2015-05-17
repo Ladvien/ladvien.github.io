@@ -65,7 +65,7 @@ I had ordered the boards from OSHPark and had planned on making three.  So, I po
 
 **2 Upload Bootloader.**
 
-"The bootloader for the 5v, 16mhz Arduino Pro Mini (which is what I built) is **"ATmegaBOOT_168_atmega328.hex **(Desktop\arduino-1.0.3\hardware\arduino\bootloaders\atmega\ATmegaBOOT_168_atmega328.hex).  It's important to note that the 3.3v and 5v versions use different bootloaders.
+"The bootloader for the 5v, 16mhz Arduino Pro Mini (which is what I built) is **"ATmegaBOOT_168_atmega328.hex (Desktop\arduino-1.0.3\hardware\arduino\bootloaders\atmega\ATmegaBOOT_168_atmega328.hex).  It's important to note that the 3.3v and 5v versions use different bootloaders.**
 
 *   **Go to the Memories tab**
 *   **Hit the browse ellipsis.**
@@ -73,9 +73,9 @@ I had ordered the boards from OSHPark and had planned on making three.  So, I po
 *   **(Double check the boards file to make sure I'm not screwing you up).**
 *   **Hit program.**
 
-**3  Set Lock Bits. **
+**3  Set Lock Bits.**
 
-*   **Go to the "Lock bits" tab.  **
+*   **Go to the "Lock bits" tab.**
 *   **Check the boards.txt file for Lockbit number**
 *   **Lockbit: 0xCF**
 *   **(Double check the boards.txt.  I don't take blame for bricked boards :P).**

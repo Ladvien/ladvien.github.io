@@ -13,7 +13,7 @@ $(document).ready(function(){
 
   // JS
   var canvas = Snap("#svg-canvas");
-  var item = Snap("#item");
+  var item = Snap("#robot-container");
 
   Snap.load('/images/Bob_Bot.svg', function (response) {
 

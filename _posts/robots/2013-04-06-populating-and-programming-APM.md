@@ -11,6 +11,8 @@ image:
 comments: true
 ---
 
+Originally posted on [www.letsmakerobots.com](www.letsmakerobots.com)
+
 I decided to try making an Arduino Pro Mini at home.  Being done, it's not worth it.  You can buy one for a dollar more than you can make them, and it took awhile to populate.  Although, it's "fun."
 
 ![](/images/IMG_8868_513x768.jpg)
@@ -53,7 +55,7 @@ I had ordered the boards from OSHPark and had planned on making three.  So, I po
 
 ![](/images/Boards_File.jpg)
 
-**8 Pull the programming information for the board from this area.**  Now, I've bricked a few boards, but I think I've figured this one out.  When programming this board with the MKII and Atmel Studio, you should follow this order.
+**8. Pull the programming information for the board from this area.**  Now, I've bricked a few boards, but I think I've figured this one out.  When programming this board with the MKII and Atmel Studio, you should follow this order.
 
 **1. Set the fuses:**
 
@@ -63,7 +65,7 @@ I had ordered the boards from OSHPark and had planned on making three.  So, I po
 *   **(Double check the board file to make sure I didn't make typos)**
 *   **Hit "Program"**
 
-**2 Upload Bootloader.**
+**2. Upload Bootloader.**
 
 "The bootloader for the 5v, 16mhz Arduino Pro Mini (which is what I built) is "ATmegaBOOT_168_atmega328.hex (Desktop\arduino-1.0.3\hardware\arduino\bootloaders\atmega\ATmegaBOOT_168_atmega328.hex).  
 **It's important to note that the 3.3v and 5v versions use different bootloaders.**

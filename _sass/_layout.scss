@@ -16,6 +16,10 @@
 	height: 10%;
 }
 
+#svg-canvas {
+	height: 100%;
+	width: 100%;
+}
 /*
    Masthead
    ========================================================================== */
@@ -37,6 +41,7 @@
 		@include outer-container;
 	}
 }
+
 .site-title {
 	@include row;
 	@include media($large) {

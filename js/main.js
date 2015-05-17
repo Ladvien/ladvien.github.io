@@ -32,14 +32,9 @@ $(document).ready(function(){
 
               lefteye.stop(false, true).animate({
                 fill: 'red',
-                rx: 25,
-                ry: 20,
                 rx: 45,
-                ry: 43
-
+                ry: 40
               }, 250, mina.easeinout);
-
-
         }, function(){
             righteye.stop(false, true).animate({
               fill: 'white',

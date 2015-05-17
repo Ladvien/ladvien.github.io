@@ -13,13 +13,13 @@ comments: true
 
 I decided to try making an Arduino Pro Mini at home.  Being done, it's not worth it.  You can buy one for a dollar more than you can make them, and it took awhile to populate.  Although, it's "fun."
 
-![](/files/userpics/u19048/IMG_8868_513x768.jpg)
+![](/images/IMG_8868_513x768.jpg)
 
 <span style="font-size: 13px; line-height: 1.231;">This project was also a chance for me to test the Spying-Stalactite I built.</span>
 
 <span style="font-size: 13px; line-height: 1.231;">I've enjoyed it.  It allows me to reflect on my strategy while populating boards.  It's simply a drop down with some high-powered LEDs (~2500 lumen), heatsink, and coolant fan.  It has a hole for my iphone to do the recording.  Cheap and simple.  Although, I need to diffuse the light, as you might see by the video that it washes out the details of the project.  Also, I'll add a few more lights and do away with the tungsten lamp, since the iphone is constantly in a white-balance battle as I move infront of the mixed light</span><span style="line-height: 1.231;">sources.</span>
 
-![](/files/userpics/u19048/IMG_8862_1150x768.jpg)
+![](/images/IMG_8862_1150x768.jpg)
 
 I populated this board; everything came out fine (although, it was _much more difficult_ trying not to block the camera with my head).  I popped it into Atmel studio and it read out the device voltage and signature.  Of course, I bricked it, as I seem to do a lot.
 
@@ -29,9 +29,9 @@ I had ordered the boards from OSHPark and had planned on making three.  So, I po
 
 **1\. Hook up the AVRISP MKII **
 
-![](/files/userpics/u19048/avrispmkii-pin-out.png)
+![](/images/avrispmkii-pin-out.png)
 
-![](/files/userpics/u19048/Pinout_of_Aduino_Pro_Mini.jpg)
+![](/images/Pinout_of_Aduino_Pro_Mini.jpg)
 
 **2\. Open Atmel Studio.  Go to Tools --> Device Programming.**
 
@@ -45,14 +45,14 @@ I had ordered the boards from OSHPark and had planned on making three.  So, I po
 
 **4\. Read Target voltage (it should be ~5V).  Read Device Signature.**
 
-**![](/files/userpics/u19048/Atmel_Studio_1.jpg)
+**![](/images/Atmel_Studio_1.jpg)
 **
 
 6\. Open **boards.txt** that comes with Arduino (\Desktop\arduino-1.0.3\hardware\arduino\boards.txt).
 
 7\. Scroll down to the area marked:
 
-![](/files/userpics/u19048/Boards_File.jpg)
+![](/images/Boards_File.jpg)
 
 **8\. Pull the programming information for the board from this area.**  Now, I've bricked a few boards, but I think I've figured this one out.  When programming this board with the MKII and Atmel Studio, you should follow this order.
 

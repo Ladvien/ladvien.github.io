@@ -37,9 +37,9 @@ Alright, now that I had a little story in my head to handle the intialisms learn
 
 Here is my reference list:
 
-**1. TCCR = Timer/Counter Control Register.</span>**
+**1. TCCR = Timer/Counter Control Register.**
 
-On the ATtiny1634 there are 4 control registers.  One is 8-bit and the other is 16-bit.  Though, this journal will stick with the Arduino standard, meaning, I'll use my 16-bit as an 8-bit.  Here are the four Timer/Counter Control Register names:</span>
+On the ATtiny1634 there are 4 control registers.  One is 8-bit and the other is 16-bit.  Though, this journal will stick with the Arduino standard, meaning, I'll use my 16-bit as an 8-bit.  Here are the four Timer/Counter Control Register names:
 
 1.  TCCROA (8-bit)
 2.  TCCROB (8-bit)
@@ -93,15 +93,15 @@ We select this by setting WGM00 and WGM01 bits.
 
 **4. How to set the TCCR registers.**
 
-So, setting things up, the code will look something like this,</span>
+So, setting things up, the code will look something like this,
 
 CODE!
 
 I left the assignment of the TCCR registers in a binary format.  This was just easier for me, but you could as easily use bitwise operations, e.g.,
 
-*    </span>TCCR1A |= (1<<COM1A1)|(1<<WGM01)</span>
+*    TCCR1A |= (1<<COM1A1)|(1<<WGM01)
 
-You notice we set the COM0A1 or COM1A1 bits, but later I'll change this so they are not set at initialization.  I found if you connect the pins to the timers at the beginning, then they'll constantly have a nominal voltage on them.  This is made clearer if you have an LED on the pin.  Therefore, unless you set the COM0A1 and COM1A1 bits low then the LED will never fully turn off.</span>
+You notice we set the COM0A1 or COM1A1 bits, but later I'll change this so they are not set at initialization.  I found if you connect the pins to the timers at the beginning, then they'll constantly have a nominal voltage on them.  This is made clearer if you have an LED on the pin.  Therefore, unless you set the COM0A1 and COM1A1 bits low then the LED will never fully turn off.
 
 Also, we have to set the data direction registers for the PWM pins to outputs.
 
@@ -121,7 +121,7 @@ The above code provided this output,
 
 
 
-How the magic happens in AVR is around the output comparison registers,</span>
+How the magic happens in AVR is around the output comparison registers,
 
 1.  OCR0A -- controls PC0
 2.  OCR0B -- controls PA5
@@ -150,7 +150,7 @@ This can be done using the XOR operator on the TCCR register,
 
 This should set the PC0 pin to 0v.
 
-It's really that simple...well, unless you want to mess with the type of PWM you are creating.  Ugh.</span>
+It's really that simple...well, unless you want to mess with the type of PWM you are creating.  Ugh.
 
 **5. ATtiny1634 analogWrite.h**
 
@@ -184,4 +184,4 @@ CODE!
 
 Ok.  I'll revisit this probably with a complete H-Bridge control library.
 
-<span style="text-decoration: underline;">**As always, please feel free to correct my f'ups.**</span>  **:)**
+**As always, please feel free to correct my f'ups.**  **:)**

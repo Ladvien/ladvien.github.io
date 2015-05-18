@@ -79,7 +79,7 @@ I started [re-rolling my own bootloader](http://letsmakerobots.com/lpc1114-usb-s
 
 **A-3. _Almost _the same size as the Arduino Pro Mini, but with Mounting holes.**
 
-![](http://letsmakerobots.com/images/IMG_0921.jpg)I love the Arduino Pro Mini (APM) for robot building.  It is small, powerful, robust, it's just good stuff all around.  When I decided to build an LPC board I wanted it to copy it in design.
+![](/images/IMG_0921.jpg)I love the Arduino Pro Mini (APM) for robot building.  It is small, powerful, robust, it's just good stuff all around.  When I decided to build an LPC board I wanted it to copy it in design.
 
 Here are the features I pulled:
 
@@ -101,7 +101,7 @@ I've always dreamed of hooking up a Bluetooth module to an Arduino and uploading
 
 I therefore set out to design a board that would allow for wireless uploading of programs.
 
-![](http://letsmakerobots.com/images/HM-11_BLE_Module_03.jpg)
+![](/images/HM-11_BLE_Module_03.jpg)
 
 Instead of using my traditional go-to [HM-10](http://letsmakerobots.com/content/bluetooth-40-arduino), I decided to switch it up and attempt using the [HM-11](http://www.fasttech.com/products/0/10008268/1740900-hm-11-bluetooth-v4-0-transceiver-ble-module).
 
@@ -126,11 +126,11 @@ In theory, this is how the wireless uploading would work.
 13.  HM-11-**A **sends "AT+PIO21"
 14.  HM-11-**B **PIO2 goes HIGH and the LPC runs the uploaded program.
 
-![](http://letsmakerobots.com/images/FTDI_HM-11_LPC_Layout_2.jpg)
+![](/images/FTDI_HM-11_LPC_Layout_2.jpg)
 
 **B-1\. Testing**
 
-![](http://letsmakerobots.com/images/Valdez_Mutant_--_Board_v04.png)
+![](/images/Valdez_Mutant_--_Board_v04.png)
 
 Testing this board was a bit of a bitch.  The first version (v02) I printed had several major flaws:
 

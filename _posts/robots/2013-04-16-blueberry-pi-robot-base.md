@@ -13,7 +13,7 @@ comments: true
 
 Originally posted on [www.letsmakerobots.com](www.letsmakerobots.com)
 
-<span style="font-size: 13px; line-height: 1.231;">This article is specific:</span> **How I personally would setup my Raspberry Pi to act as robot base.**<span style="font-size: 13px; line-height: 1.231;">  But, I'll be clear, this is one of nth possible setups.  A chessboard has 64 squares but those working the board allow for innumerable possibilities.</span>
+<span style="font-size: 13px; line-height: 1.231;">This article is specific:</span>**How I personally would setup my Raspberry Pi to act as robot base.**<span style="font-size: 13px; line-height: 1.231;">  But, I'll be clear, this is one of nth possible setups.  A chessboard has 64 squares but those working the board allow for innumerable possibilities.</span>
 
 That aside, here we go:
 
@@ -33,23 +33,23 @@ Put the BerryBoot SD card in your Pi and boot it up.
 **![](/images/berryboot-install-distro2.png)
 **
 
-**3. [Setup your WiFi dongle.](http://neville-wright.com/setup-your-raspberry-pi-wireless-network/) ** I believe BerryBoot will now setup your WiFi dongle on initial boot, which it did for me (even gave me the option to download the image via WiFi).  But, I had trouble getting my WiFi dongle pulled up after booting Raspbian Wheezy.
+**3. [Setup your WiFi dongle.](http://neville-wright.com/setup-your-raspberry-pi-wireless-network/)** I believe BerryBoot will now setup your WiFi dongle on initial boot, which it did for me (even gave me the option to download the image via WiFi).  But, I had trouble getting my WiFi dongle pulled up after booting Raspbian Wheezy.
 
 **If you have difficulty with manual WiFi dongle setup, you might try [this video](http://www.youtube.com/watch?v=5AsSFq42pxI).**
 
 **Lastly, if you are looking for a WiFi dongle for cheap, with good range, and uses very little mAhs (the Pi can only feed about 700mAhs through the USB port).  You might [try this one](http://www.fasttech.com/products/0/10002056/1147303-mini-150mbps-80211n-wireless-usb-20-wifi-network-a), $6.17.**
 
-**4\. Setup PuTTY on your Desktop Computer.  [Follow this video.](https://www.youtube.com/watch?v=k-ao1ZktuzI) **This will allow you to begin SSHing into the Pi.  That way you don't have to look at a little RCA screen like me.  For those who aren't familiar with SSH (like I was before this video), the video will explain it.  At risk of oversimplification, **it allows you to access your Raspberry Pi command line through your desktop****.**
+**4\. Setup PuTTY on your Desktop Computer.  [Follow this video.](https://www.youtube.com/watch?v=k-ao1ZktuzI)**This will allow you to begin SSHing into the Pi.  That way you don't have to look at a little RCA screen like me.  For those who aren't familiar with SSH (like I was before this video), the video will explain it.  At risk of oversimplification,**it allows you to access your Raspberry Pi command line through your desktop****.**
 
 **![](/images/Putty1.jpg)**
 
-**You have to plug in your Pi's network number.  ****You can find this by pulling up your wireless hub's configuration page.  You should see what address your Pi is listed at.  For some strange reason, if it doesn't list the device name, just view the page while the Pi is up, then unplug your Pi and refresh the wireless hub configuration page.  The device that disappeared is your Pi.  I've never had to change the port number, but beware you might need to depending on your setup.**
+**You have to plug in your Pi's network number. ****You can find this by pulling up your wireless hub's configuration page.  You should see what address your Pi is listed at.  For some strange reason, if it doesn't list the device name, just view the page while the Pi is up, then unplug your Pi and refresh the wireless hub configuration page.  The device that disappeared is your Pi.  I've never had to change the port number, but beware you might need to depending on your setup.**
 
 If you want to know whether your have the correct information, try login' in and if you get a screen like this, your good.
 
 ![](/images/Putty2.jpg)
 
-Your username and password are by default: **pi, raspberry**
+Your username and password are by default:**pi, raspberry**
 
 **Remember! In the case of a Raspberry Pi, <span style="text-decoration: underline;">always share your password</span>, 'cause everyone has it anyway :)**
 
@@ -58,13 +58,13 @@ Your username and password are by default: **pi, raspberry**
 **![](/images/Putty3.jpg)
 **
 
-**5\. Setup VNCServer on your Raspberry Pi.  [Follow this video.](https://www.youtube.com/watch?v=c5QCoh8S0N4) (Or this [walkthrough](http://gettingstartedwithraspberrypi.tumblr.com/post/24142374137/setting-up-a-vnc-server)). **<span style="font-size: 13px; line-height: 1.231;">Putty will let you access your Pi's command line, but setting up a VNC will actually allow you to access your Pi's Desktop GUI from your PC, in the same manner as Putty.  </span>
+**5\. Setup VNCServer on your Raspberry Pi.  [Follow this video.](https://www.youtube.com/watch?v=c5QCoh8S0N4) (Or this [walkthrough](http://gettingstartedwithraspberrypi.tumblr.com/post/24142374137/setting-up-a-vnc-server)).**<span style="font-size: 13px; line-height: 1.231;">Putty will let you access your Pi's command line, but setting up a VNC will actually allow you to access your Pi's Desktop GUI from your PC, in the same manner as Putty.  </span>
 
-**6\. Setup a VNC Client on your Desktop Computer. [Real VNC.](http://www.realvnc.com/download/viewer/)  **There are many different programs, I happened to end up using Real VNC.
+**6\. Setup a VNC Client on your Desktop Computer. [Real VNC.](http://www.realvnc.com/download/viewer/) **There are many different programs, I happened to end up using Real VNC.
 
 Once you have VNC setup on both machines, PuTTY into your Pi and start the VNC server.  
 
-> **$sudo vncserver**
+>**$sudo vncserver**
 
 ![](/images/RealVNC5.jpg)
 
@@ -86,27 +86,27 @@ Use something like this, "-geometry 1024x728 -depth 24"
 
 ![](/images/gitinstall.jpg)
 
-**I****nstall the git manager:  **
+**I****nstall the git manager: **
 
-> **At Raspberry Pi prompt:  ****$sudo apt-get install  git**
+>**At Raspberry Pi prompt: ****$sudo apt-get install  git**
 
 **The way to use it is like so,**
 
-> **At Raspberry Pi prompt:  ****$sudo git clone https://github.com/adafruit/Adafruit-Raspberry-Pi-Python-Code.git**
+>**At Raspberry Pi prompt: ****$sudo git clone https://github.com/adafruit/Adafruit-Raspberry-Pi-Python-Code.git**
 
-**9\.  ****Install SMBus.  ****This is specifically for my setup, since I'll be using the I2C bus to communicate between the Pi and the Arduino.**
+**9\. ****Install SMBus. ****This is specifically for my setup, since I'll be using the I2C bus to communicate between the Pi and the Arduino.**
 
-> **At Raspberry Pi prompt:   ****$sudo apt-get install python-smbus**
+>**At Raspberry Pi prompt:  ****$sudo apt-get install python-smbus**
 
 <div>**10\. Any other Python modules you might fancy.**</div>
 
 Useful for keystroke, GUI, and other interfacing needs:
 
-> **[Pygame (should come with Raspbian)](http://www.pygame.org/news.html). (sudo apt-get install pygame)**
+>**[Pygame (should come with Raspbian)](http://www.pygame.org/news.html). (sudo apt-get install pygame)**
 
 Lady Ada's Python codes for an array of I2C sensors:
 
-> **[Adafruit I2C library](https://github.com/adafruit/Adafruit-Raspberry-Pi-Python-Code) (git)**
+>**[Adafruit I2C library](https://github.com/adafruit/Adafruit-Raspberry-Pi-Python-Code) (git)**
 
 Access your Raspberry Pi from iDevice web based GUI:
 
@@ -120,11 +120,11 @@ Access your Raspberry Pi from iDevice web based GUI:
 
 **11\. (optional) Install Arduino IDE on Raspberry Pi.  This will allow you to program the Arduino directly from your Pi--**and if you follow my design, you'll be able to do so without ever leaving your desktop computer.  You can do this by opening the VNC Server, opening the Arduino IDE on the remote desktop, selecting the sketch you want to upload, and as long as your Arduino is connecting by way of USB, you can then upload your sketch from where you sit.  This allows for quick changes to Arduino code without switching wires around.  Also, I think Kariloy is looking for a way to upload sketches by way of GPIO pins.  This would make a cleaner design.
 
-**12\. [Install WinSCP](http://winscp.net/eng/download.php).  This will allow you to transfer files between your desktop and the Pi.  **I find this helps with programming management.  I'm a messy filer.  If I file at all.
+**12\. [Install WinSCP](http://winscp.net/eng/download.php).  This will allow you to transfer files between your desktop and the Pi. **I find this helps with programming management.  I'm a messy filer.  If I file at all.
 
 ![](/images/winscp.jpg)
 
-**13\.  Take a deep breath. **
+**13\.  Take a deep breath.**
 
 **14\.  Follow [these instructions](http://letsmakerobots.com/node/36847) for making my I2C optoisolator board.**
 
@@ -150,7 +150,7 @@ Now, I've read this fellow's [article](http://quick2wire.com/category/raspberry-
 
 **Note, my code is really just the base for a robot.  Right now, my it is nothing more than a very, very complex radio controller for a RC car.  But someday, I'll make a real robot :)**
 
-**16\.  Tweak and gut the code as you see fit.  **
+**16\.  Tweak and gut the code as you see fit. **
 
 **17\.  Ask questions: Pretty much everyone on this site is smarter than me, they'll know the answer.**
 

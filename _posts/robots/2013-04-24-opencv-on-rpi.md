@@ -1,6 +1,6 @@
 ---
 layout: article
-title: Pi Power -- How I Made a Battery Powered USB Hub
+title: OpenCV on a Raspberry Pi
 categories: robots
 excerpt:
 tags: [robots]

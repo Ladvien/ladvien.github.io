@@ -1,6 +1,6 @@
 ---
 layout: article
-title: Kobold
+title: A Friendly Overlord
 categories: robots
 excerpt:
 tags: [robots]

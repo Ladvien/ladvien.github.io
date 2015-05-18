@@ -1,6 +1,6 @@
 ---
 layout: article
-title: Populating and Programming and APM
+title: Arduino to RPi -- Galvanically Isolated I2C
 categories: robots
 excerpt:
 tags: [robots]

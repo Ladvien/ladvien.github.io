@@ -11,6 +11,8 @@ image:
 comments: true
 ---
 
+<a class="btn" href="/files/Kobold_Working_1.zip" target="">Valdez Mutant Files</a>
+
 This is a little board I made in anticipation of Mr. Bdk6's toolchain for the LPC1114.
 
 *   [Bdkdev](http://smalltimeelectronics.com/projects/lpcdev/lpcdev.html)
@@ -49,7 +51,7 @@ Passives are 0402:
 8.  2 x 4.7k
 9.  Total for Passives: ~ .22
 
-**Total Cost for Board <span style="text-decoration: underline;"without HM-11: $8**
+**Total Cost for Board HM-11: $8**
 
 **Total Cost with HM-11: $15.20**
 

@@ -10,6 +10,11 @@ image:
   thumb:
 comments: true
 ---
+Originally posted on [www.letsmakerobots.com](www.letsmakerobots.com)
+
+<div class="flex-video">
+  <iframe width="420" height="315" src="https://www.youtube.com/embed/P77ZGNKlc9M" frameborder="0" allowfullscreen></iframe>
+</div>
 
 I've waited to finish incorporating my Raspberry Pi into my bot for an ample bit.  But since I know so little about electricity, I swore to myself I wouldn't add my Pi to my [bot ](http://letsmakerobots.com/node/35922)until I was absolutely sure I wouldn't fry it.  
 

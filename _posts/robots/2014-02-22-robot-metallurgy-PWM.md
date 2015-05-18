@@ -13,12 +13,6 @@ comments: true
 
 Originally posted on [www.letsmakerobots.com](www.letsmakerobots.com)
 
-
-<div class="flex-video">
-<iframe width="560" height="315" src="https://www.youtube.com/embed/voWenZRJcD0?list=UUKodYd0Fj3TSHzXg7aOJYYQ" frameborder="0" allowfullscreen></iframe>
-</div>
-
-
 This is a continuation of my [Robot Metallurgy 101 Lesson Journal](http://letsmakerobots.com/node/39996).
 
 After I was able to get my motors moving using the SN754410 I became a little obessessed with understanding AVR PWM architecture.  There are several tutorials that helped me a lot:
@@ -32,7 +26,10 @@ In the end, I ripped maxEmbedded code and got my PB3 LED working in about 10 min
 
 Really, it was the register and bit names that were tripping me up.  Each had names like, "TCCROA1" and "OCR0A", and so forth.  Each is an [initialism](http://en.wikipedia.org/wiki/Acronym).  This was a problem for me, I was soon lost in a jungle of intialisms, which represented abstract concepts, such as other intialisms.  I felt as if I were bumbling through a [George MacDonald](http://en.wikipedia.org/wiki/George_Macdonald) dissertation on an orc language:
 
-[![](/images/PWM_Movie_Play_2.png)](http://www.youtube.com/watch?v=voWenZRJcD0&feature=share&list=UUKodYd0Fj3TSHzXg7aOJYYQ)
+<div class="flex-video">
+<iframe width="560" height="315" src="https://www.youtube.com/embed/voWenZRJcD0?list=UUKodYd0Fj3TSHzXg7aOJYYQ" frameborder="0" allowfullscreen></iframe>
+</div>
+
 
 NOTE: Dear reader, I apologize if that video confused you more.  Again, this is a journal so to help me remember what I learn.  And I find adding a story to ridicules abstractions is necessary for me.
 

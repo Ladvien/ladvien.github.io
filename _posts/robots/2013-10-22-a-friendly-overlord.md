@@ -15,7 +15,7 @@ I've been working on this one in silence for a bit.
 
 Awhile back it hit me, before I started growing my [Overlord project](http://letsmakerobots.com/node/38208) in complexity I wanted to refine it for ease-of-use. Therefore, I began translating my Overlord project into a Python module I could build off.
 
-*   [Friendly Overlord](https://github.com/Ladvien/Overlord)
+<a class="btn" href="https://github.com/Ladvien/Overlord" target="">A Friendly Overlord</a>
 
 I figure, this would make it easier for anyone to use. This includes myself, I've not forgotten my identity as a hack, nor will anyone who pops the hood on this module :)  
 
@@ -143,7 +143,7 @@ rx.start()
 #Threads the motor functions.
 motorTimer = threading.Thread(target=motorTimer)
 motorTimer.start()
-{% endhilight %}
+{% endhighlight %}
 
 This is fully functional code.  You'll notice that really, only about 10 lines get Friendly Overlord going, the rest handle Serial functions and motor firing.  Be warned, the motor firing code will change, since it is written how I like it right now, eventually will be designed to be as flexible as possible.
 

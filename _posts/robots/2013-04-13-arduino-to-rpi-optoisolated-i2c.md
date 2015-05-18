@@ -12,6 +12,9 @@ comments: true
 ---
 Originally posted on [www.letsmakerobots.com](www.letsmakerobots.com)
 
+<a class="btn" href="/files/ADUM1250ARZ_v.01.zip" target="">Breakout PCB</a>
+<a class="btn" href="/files/Arduino_to_Pi_I2C_v2.zip" target="">Arduino Code</a>
+
 <div class="flex-video">
   <iframe width="420" height="315" src="https://www.youtube.com/embed/P77ZGNKlc9M" frameborder="0" allowfullscreen></iframe>
 </div>

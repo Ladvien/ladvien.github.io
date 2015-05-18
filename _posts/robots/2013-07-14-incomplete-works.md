@@ -11,6 +11,8 @@ image:
 comments: true
 ---
 
+Originally posted on [www.letsmakerobots.com](www.letsmakerobots.com)
+
 I'm posting this collection out of frustration and perhaps defeat. I've been working on several projects for the last two months, trying to finish something. I'd gotten addicted to that "It works!" moment I think anyone gets when they see a LED blink. Sadly, I feel I've failed at most of these projects.
 
 The second reason I post is posterity.

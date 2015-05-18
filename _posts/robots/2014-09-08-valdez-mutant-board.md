@@ -11,6 +11,8 @@ image:
 comments: true
 ---
 
+Originally posted on [www.letsmakerobots.com](www.letsmakerobots.com)
+
 <a class="btn" href="/files/Kobold_Working_1.zip" target="">Valdez Mutant Files</a>
 
 This is a little board I made in anticipation of Mr. Bdk6's toolchain for the LPC1114.

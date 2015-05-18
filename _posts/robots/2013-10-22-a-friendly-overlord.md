@@ -11,6 +11,8 @@ image:
 comments: true
 ---
 
+Originally posted on [www.letsmakerobots.com](www.letsmakerobots.com)
+
 I've been working on this one in silence for a bit.  
 
 Awhile back it hit me, before I started growing my [Overlord project](http://letsmakerobots.com/node/38208) in complexity I wanted to refine it for ease-of-use. Therefore, I began translating my Overlord project into a Python module I could build off.

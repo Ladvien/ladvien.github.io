@@ -11,6 +11,8 @@ image:
 comments: true
 ---
 
+Originally posted on [www.letsmakerobots.com](www.letsmakerobots.com)
+
 Six months ago I bought my first Arduino.  Bought it at the Shack.  I'd never worked with electronics, but I had to replace a![](/images/IMG_0494.jpg) momentary switch on my computer and wanted more.  I quickly woke to the Open Hardware community.
 
 A month later, I was reading about making your own PCBs at home.  I made my first home board a few days later.  It was a motor driver board, and well, it was a mixed success.  Definitely not a looker (http://wp.me/p37cuD-3q).  But I was hooked.  I wanted to do something more sophisticated.  And I was spurred on by a story I once heard about Hunter S. Thompson.  It was said that he'd often copy pages out of the Great Gastby because he, "wanted to feel for the music of such great words."  That's a paraphrase but only cause I didn't want to reread the forward of _Fear and Loathing on the Campaign Trail '72 (_once was enough, thanks)_._  Still, the logic seemed sound.  So, I thought of how to apply it to electronics.

@@ -13,9 +13,6 @@ comments: true
 
 Originally posted on [www.letsmakerobots.com](www.letsmakerobots.com)
 
-<div class="flex-video">
-<iframe width="560" height="315" src="https://www.youtube.com/embed/llYuknlc3uk?list=UUKodYd0Fj3TSHzXg7aOJYYQ" frameborder="0" allowfullscreen></iframe>
-</div>
 
 I've been working on re-making the the [Open Hardware Pulse Sensor](http://pulsesensor.com/open-hardware/) so it'd be easy to send off to OSHPark and to make at home. I'm not sure, but I think I started this project in March and I've just now finished it.
 
@@ -27,9 +24,12 @@ I believe there were three problems:
 2.  The Arduino I'd been plugging into was sitting on a surface that provided enough conductivity to create noise between the 3.3v pin on the underside and A0, which I was using for the op-amp in.
 3.  Every time I touched the sensor the exposed vias were shorted through my own conductivity.  Stupid mineral water.
 
-**VIDEO:**
+<div class="flex-video">
+<iframe width="560" height="315" src="https://www.youtube.com/embed/llYuknlc3uk?list=UUKodYd0Fj3TSHzXg7aOJYYQ" frameborder="0" allowfullscreen></iframe>
+</div>
 
-**[![](/images/u19048/Pulse_Sensor_Play_Button.jpg)](http://www.youtube.com/watch?v=llYuknlc3uk&feature=share&list=UUKodYd0Fj3TSHzXg7aOJYYQ)
+
+**[![](/images/Pulse_Sensor_Play_Button.jpg)](http://www.youtube.com/watch?v=llYuknlc3uk&feature=share&list=UUKodYd0Fj3TSHzXg7aOJYYQ)
 **
 
 I've already detailed how I [went about making it](http://letsmakerobots.com/node/37815); so, I'll try to stick to repeatability.
@@ -58,11 +58,11 @@ I've already detailed how I [went about making it](http://letsmakerobots.com/nod
 
 The light sensor is the hardest bit, so take your time.  I put a little bit of solder on each pad with my soldering-iron, then, cover the soldered pads in flux.  Next, I attempt to align the light-sensor with the pads as close as possible.  After, I put the board with the backside on an over-turned clothes iron.  Let the iron heat up until the solder reflows and the sensor is attached.
 
-![](/images/u19048/IMG_0673.jpg)
+![](/images/IMG_0673.jpg)
 
 4. Flip the sensor and lock it to your surface with tacky-putty to solder the LED, passives, and op-amp.  I won't detail this, since my [video](http://www.youtube.com/watch?v=llYuknlc3uk&feature=share&list=UUKodYd0Fj3TSHzXg7aOJYYQ) shows the entire process.
 
-![](/images/u19048/Overlays_on_HR.jpg)
+![](/images/Overlays_on_HR.jpg)
 
 5. **Wrap it with tape, cutting a small hole for the LED and light-sensor.**  (I'll come up with a better solution, and a way it to clip it to your body, on the next iteration).
 

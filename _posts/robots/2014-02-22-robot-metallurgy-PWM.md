@@ -16,6 +16,7 @@ Originally posted on [www.letsmakerobots.com](www.letsmakerobots.com)
 
 <div class="flex-video">
 <iframe width="560" height="315" src="https://www.youtube.com/embed/voWenZRJcD0?list=UUKodYd0Fj3TSHzXg7aOJYYQ" frameborder="0" allowfullscreen></iframe>
+</div>
 
 
 This is a continuation of my [Robot Metallurgy 101 Lesson Journal](http://letsmakerobots.com/node/39996).

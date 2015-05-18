@@ -114,7 +114,7 @@ In theory, this is how the wireless uploading would work.
 1.  HM-11-**A** sends "AT+PIO30"
 2.  The HM-11-**B** PIO3 will go low, which sets the LPC1114 ISP MODE to LOW.  
 3.  HM-11-**A **sends "AT+PIO20"
-4.  >Then, the HM-11-**B** PIO2 goes LOW for ~5uS.  This will reset the LPC.
+4.  Then, the HM-11-**B** PIO2 goes LOW for ~5uS.  This will reset the LPC.
 5.  As the LPC comes back up it checks the ISP MODE pin and sees it LOW.
 6.  HM-11-**A **sends "AT+PIO31" waits ~100mS then sends "AT+PIO21"
 7.  The HM-11-**B** PIO3 and PIO2 will go HIGH.
@@ -138,7 +138,7 @@ Mistakes on **1st iteration**:
 
 1.  The RX/TX lines were flipped (I swear, I never get that right).
 2.  The CONN pin on the HM-11 was wrong.
-3.  I routed the CTS pin to pin PIO0_2, which is _not_ the reset pin. :|
+3.  I routed the CTS pin to pin PIO0_2, which is _not_ the reset pin.
 4.  There was a N-Chan flipping for the HM-11 to flip the LPC power.  I got rid of that and simply ran a line to the reset (duh).
 
 I quickly corrected these problems and sent the board off again.  When the **2nd Iteration** came in I wasn't able to test it.  No matter what I did I couldn't get it to go into ISP mode.  I got pretty harsh on myself, blaming my "crappy soldering skills and dellusions of ability."  Then it hit me, I had added 10uF and those take a bit to discharge.  I threw the multi-meter on it and sure enough, when I pulled the power from the LPC, then reapplied it (I was using this method instead of the reset line) it took a good 30 seconds for the voltage to drop near nominal.  >I quickly strung up a momentary switch on the reset line, first time I hit the button it went right into ISP mode. **Son-of-a-badger**>!

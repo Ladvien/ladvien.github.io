@@ -5,8 +5,8 @@ categories: robots
 excerpt:
 tags: [robots]
 image:
-  feature: IMG_8629.JPG
-  teaser: IMG_8629.JPG
+  feature: IMG_0476.JPG
+  teaser: IMG_0476.JPG
   thumb:
 comments: true
 ---

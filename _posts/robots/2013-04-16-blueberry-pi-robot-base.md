@@ -38,11 +38,11 @@ Put the BerryBoot SD card in your Pi and boot it up.
 
 **Lastly, if you are looking for a WiFi dongle for cheap, with good range, and uses very little mAhs (the Pi can only feed about 700mAhs through the USB port).  You might [try this one](http://www.fasttech.com/products/0/10002056/1147303-mini-150mbps-80211n-wireless-usb-20-wifi-network-a), $6.17.**
 
-**4. Setup PuTTY on your Desktop Computer.  [Follow this video.](https://www.youtube.com/watch?v=k-ao1ZktuzI)**This will allow you to begin SSHing into the Pi.  That way you don't have to look at a little RCA screen like me.  For those who aren't familiar with SSH (like I was before this video), the video will explain it.  At risk of oversimplification,**it allows you to access your Raspberry Pi command line through your desktop****.**
+**4. Setup PuTTY on your Desktop Computer.  [Follow this video.](https://www.youtube.com/watch?v=k-ao1ZktuzI)**This will allow you to begin SSHing into the Pi.  That way you don't have to look at a little RCA screen like me.  For those who aren't familiar with SSH (like I was before this video), the video will explain it.  At risk of oversimplification,**it allows you to access your Raspberry Pi command line through your desktop.**
 
-**![](/images/Putty1.jpg)**
+![](/images/Putty1.jpg)
 
-**You have to plug in your Pi's network number. ****You can find this by pulling up your wireless hub's configuration page.  You should see what address your Pi is listed at.  For some strange reason, if it doesn't list the device name, just view the page while the Pi is up, then unplug your Pi and refresh the wireless hub configuration page.  The device that disappeared is your Pi.  I've never had to change the port number, but beware you might need to depending on your setup.**
+**You have to plug in your Pi's network number.**You can find this by pulling up your wireless hub's configuration page.  You should see what address your Pi is listed at.  For some strange reason, if it doesn't list the device name, just view the page while the Pi is up, then unplug your Pi and refresh the wireless hub configuration page.  The device that disappeared is your Pi.  I've never had to change the port number, but beware you might need to depending on your setup.**
 
 If you want to know whether your have the correct information, try login' in and if you get a screen like this, your good.
 

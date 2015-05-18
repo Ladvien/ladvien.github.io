@@ -1,6 +1,6 @@
 ---
 layout: article
-title: Mega Mini Motor Shield (M^3)
+title: The Hunter S. Thompson Board -- Arduino Mega Mini
 categories: robots
 excerpt:
 tags: [robots]

@@ -13,7 +13,7 @@ comments: true
 
 This is a little board I made in anticipation of Mr. Bdk6's toolchain for the LPC1114.
 
-*   >[Bdkdev](http://smalltimeelectronics.com/projects/lpcdev/lpcdev.html)
+*   [Bdkdev](http://smalltimeelectronics.com/projects/lpcdev/lpcdev.html)
 
 This toolchain is amazing.  Really, if you are wanting to break away from Arduino / AVR, into the ARM chips, Bdk6's toolchain for the LPC1114 is the way to go.
 
@@ -49,7 +49,7 @@ Passives are 0402:
 8.  2 x 4.7k
 9.  Total for Passives: ~ .22
 
-**Total Cost for Board <span style="text-decoration: underline;">without HM-11: $8**
+**Total Cost for Board <span style="text-decoration: underline;"without HM-11: $8**
 
 **Total Cost with HM-11: $15.20**
 
@@ -59,7 +59,7 @@ After doing a bit of [AVR programming](http://letsmakerobots.com/node/39996) I t
 
 ![](https://cdn.sparkfun.com//assets/parts/3/6/2/9/09716-02.jpg)
 
-But then [Mr. Bdk6 introduced me to the LPC1114.](http://letsmakerobots.com/node/39035)  Not only was the chip [sub $3 in single quantities](http://www.digikey.com/product-search/en/integrated-circuits-ics/embedded-microcontrollers/2556109?k=lpc1114) (cheaper than the Atmega328P), but it was also programmable with a typical serial-USB interface.  >I figured, if it was programmable by serial then I could program it with my Arduino Pro Mini FTDI Breakout, which I bought from SparkFun long ago.  I did this selfishly, but I assumed a lot of Arduino roboticists here have also switched to the APM as their go to board.  I further assumed most would probably have a APM FTDI connector.  I took this into account because my goal was to reduce as many barriers in switching from Arduino to the LPC1114, short of writing simple and opaque support libraries.
+But then [Mr. Bdk6 introduced me to the LPC1114.](http://letsmakerobots.com/node/39035)  Not only was the chip [sub $3 in single quantities](http://www.digikey.com/product-search/en/integrated-circuits-ics/embedded-microcontrollers/2556109?k=lpc1114) (cheaper than the Atmega328P), but it was also programmable with a typical serial-USB interface.  I figured, if it was programmable by serial then I could program it with my Arduino Pro Mini FTDI Breakout, which I bought from SparkFun long ago.  I did this selfishly, but I assumed a lot of Arduino roboticists here have also switched to the APM as their go to board.  I further assumed most would probably have a APM FTDI connector.  I took this into account because my goal was to reduce as many barriers in switching from Arduino to the LPC1114, short of writing simple and opaque support libraries.
 
 I'm going to take a brief moment and explain the LPC1114's ISP ROM.  The LPC1114 has a built in bootloader, which resides in a ROM block on the chip.  When the chip is provided power, either on initial or reset, it runs this bootloader.  The bootloader polls PIN 1 on PORT 0 (PIO0_1), if this pin is high or floating, then the bootloader executes whatever is in the program memory blocks. If PIO0_1 is low, then the LPC1114 enters [in-system programming mode](http://en.wikipedia.org/wiki/In-system_programming).
 
@@ -67,9 +67,9 @@ When I discovered this, I got excited.  Why not use the DTR/CTS pins to control 
 
 A few problems:
 
-**1\. The LPC1114 operates on 3.3v**.  And don't let your "3.3V" FTDI breakout fool you.  They still spit out 5V on for VCC, RX, and TX, at least until you jumper the solder-jumper on the underside.  >No sweat, I'll add a> [logic-level translator](http://www.instructables.com/id/A-bidirectional-logic-level-converter-for-I2C/)>.
+**1\. The LPC1114 operates on 3.3v**.  And don't let your "3.3V" FTDI breakout fool you.  They still spit out 5V on for VCC, RX, and TX, at least until you jumper the solder-jumper on the underside.  No sweat, I'll add a [logic-level translator](http://www.instructables.com/id/A-bidirectional-logic-level-converter-for-I2C/).
 
-**>2. There is no existing LPC1114 programming software that controls DTR/CTS.**>  [FlashMagic](http://www.flashmagictool.com) and [lpc21isp](http://sourceforge.net/projects/lpc21isp/) both use **DTR/RTS,** while the APM FTDI breakout I have  uses DTR/CTS.  Stupid dung-beetles in the ointment.  I was committed to the idea of using the APM FTDI connector as a "no-modification" way to program the LPC.  Thus my toils began.
+**2. There is no existing LPC1114 programming software that controls DTR/CTS.**  [FlashMagic](http://www.flashmagictool.com) and [lpc21isp](http://sourceforge.net/projects/lpc21isp/) both use **DTR/RTS,** while the APM FTDI breakout I have  uses DTR/CTS.  Stupid dung-beetles in the ointment.  I was committed to the idea of using the APM FTDI connector as a "no-modification" way to program the LPC.  Thus my toils began.
 
 I started by trying to change the source of the lpc21isp.  I was successful in manipulating the source, but the lpc21isp relies on Windows communication protocol drivers, which _don't_ allow for the bit level control of the CTS pin.  Damnit.  
 
@@ -141,7 +141,7 @@ Mistakes on **1st iteration**:
 3.  I routed the CTS pin to pin PIO0_2, which is _not_ the reset pin.
 4.  There was a N-Chan flipping for the HM-11 to flip the LPC power.  I got rid of that and simply ran a line to the reset (duh).
 
-I quickly corrected these problems and sent the board off again.  When the **2nd Iteration** came in I wasn't able to test it.  No matter what I did I couldn't get it to go into ISP mode.  I got pretty harsh on myself, blaming my "crappy soldering skills and dellusions of ability."  Then it hit me, I had added 10uF and those take a bit to discharge.  I threw the multi-meter on it and sure enough, when I pulled the power from the LPC, then reapplied it (I was using this method instead of the reset line) it took a good 30 seconds for the voltage to drop near nominal.  >I quickly strung up a momentary switch on the reset line, first time I hit the button it went right into ISP mode. **Son-of-a-badger**>!
+I quickly corrected these problems and sent the board off again.  When the **2nd Iteration** came in I wasn't able to test it.  No matter what I did I couldn't get it to go into ISP mode.  I got pretty harsh on myself, blaming my "crappy soldering skills and dellusions of ability."  Then it hit me, I had added 10uF and those take a bit to discharge.  I threw the multi-meter on it and sure enough, when I pulled the power from the LPC, then reapplied it (I was using this method instead of the reset line) it took a good 30 seconds for the voltage to drop near nominal.  I quickly strung up a momentary switch on the reset line, first time I hit the button it went right into ISP mode. **Son-of-a-badger**!
 
 Therefore, I consider the 2nd iteration a hardware success.
 

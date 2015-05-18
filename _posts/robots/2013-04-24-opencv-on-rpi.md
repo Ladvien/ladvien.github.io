@@ -13,6 +13,8 @@ comments: true
 
 Originally posted on [www.letsmakerobots.com](www.letsmakerobots.com)
 
+<a class="btn" href="/files/facedetectv10.zip" target="">Code</a>
+
 <div class="flex-video">
 <iframe width="560" height="315" src="https://www.youtube.com/embed/Uo0NFRkdIWc" frameborder="0" allowfullscreen></iframe>
 </div>

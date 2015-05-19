@@ -204,7 +204,7 @@ If all worked, the hot-end will magically find its way to the center of the prin
 
 Even after all this, we still aren't done. There is another variable to calibrate on the Kossel, the flatness of the plate.
 
-We have already calibrated the Kossel's print volume height.  This means if we send the command **G X0 Y0 Z0** then the hotend-should come to rest at the center of the print bed, about .1mm above the surface.  But, delta printers have an additional variable of **flatness.  **Consider the two following images:
+We have already calibrated the Kossel's print volume height.  This means if we send the command **G X0 Y0 Z0** then the hotend-should come to rest at the center of the print bed, about .1mm above the surface.  But, delta printers have an additional variable of **flatness.** Consider the two following images:
 
 ![](/images/Concave.png)
 
@@ -218,7 +218,7 @@ If the print bed, according to firmware, is convex, then the hot-end might be co
 
 This is why Johann's auto-probe was such a nifty addition to the Kossel build.  But let's not get ahead of ourselves, physical calibration first.
 
-Well, that's sort of a lie.  To correct for flatness we are going to adjust the firmware.  The flatness of a Kossel is reliant on the variable **DELTA_RADIUS **and it is the sum of several variables.  So, to adjust DELTA_RADIUS we focus in on either increasing or decreasing one of the variables.  I picked **DELTA_SMOOTH_ROD_OFFSET** at random.
+Well, that's sort of a lie.  To correct for flatness we are going to adjust the firmware.  The flatness of a Kossel is reliant on the variable **DELTA_RADIUS** and it is the sum of several variables.  So, to adjust DELTA_RADIUS we focus in on either increasing or decreasing one of the variables.  I picked **DELTA_SMOOTH_ROD_OFFSET** at random.
 
 Ok, the adjustment is pretty straight forward, but requres tinkering to get it right.  But before we make an adjustment we need to know what direction to go.  We can determine this by visually comparing difference between the distance between the hotend and the print surface when the hotend is at the center, and the distance between the hotend and the print surface when near one of the towers.  Let's go back to pictures.
 

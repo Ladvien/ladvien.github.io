@@ -1,6 +1,6 @@
 ---
 layout: article
-title: LPC1114 -- GCC Toolchain Setup
+title: FTDI Bitbanging GCC
 categories: robots
 excerpt:
 tags: [robots]

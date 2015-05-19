@@ -440,7 +440,7 @@ int main(void)
 
 Code to NOT a PIN looks like this ``PORTA &= ~ (1 << PINA1);.`` In plain English and in order of operation, "Set PORTA PIN1 to HIGH, create a bitmask of PORTA, then NOT that bitmask.  After, take the NOT'ed bitmask and AND it with PORTA's original state."  
 
-**Whew.** I'm not sure I follow that even after writing it.  But I understand it.  Really, ``PORTA &= ~ (1 << PINA1) = Set PA1 LOW.**
+**Whew.** I'm not sure I follow that even after writing it.  But I understand it.  Really, ``PORTA &= ~ (1 << PINA1) = Set PA1 LOW.``
 
 But this is good.  We now can dynamically change the state of one PIN without destroying the state of the other PINs on the same port.  Booyah!  
 

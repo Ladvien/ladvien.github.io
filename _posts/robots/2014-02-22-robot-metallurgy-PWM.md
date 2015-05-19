@@ -1,6 +1,6 @@
 ---
 layout: article
-title: Robot Metallurgy 101 -- PWM -- AVR Lesson Journal
+title: Metallurgy 101 - AVR PWM
 categories: robots
 excerpt:
 tags: [robots]

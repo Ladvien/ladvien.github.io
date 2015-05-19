@@ -191,13 +191,13 @@ But we can use the bitwise operator, OR, to do the same,
 
 {% highlight c %}
 *   DDRB |= 0b00000001;
-{% highlight %}
+{% endhighlight %}
 
 The "|=" is an abbreviated operation that represents the following,
 
 {% highlight c %}
 *   DDRB = DDRB | 0b0000001;
-{% highlight %}
+{% endhighlight %}
 
 In English, "Whatever is in DDRB is equal to whatever is in DDRB **OR** 0b0000001."
 
@@ -229,13 +229,13 @@ One last thing, the <avr/io.h> contains defined pin constants.  So, this operati
 
 {% highlight c %}
 *   DDRB |= 0b00000001;
-{% highlight %}
+{% endhighlight %}
 
 Can be written like so,
 
 {% highlight c %}
 *   DDRB |= 1 << PINB0;
-{% highlight %}
+{% endhighlight %}
 
 They do exactly the same thing--and _I guess_ the latter is easier to read.  Pfft.
 
@@ -438,7 +438,7 @@ int main(void)
 
 Code to NOT a PIN looks like this ``PORTA &= ~ (1 << PINA1);.`` In plain English and in order of operation, "Set PORTA PIN1 to HIGH, create a bitmask of PORTA, then NOT that bitmask.  After, take the NOT'ed bitmask and AND it with PORTA's original state."  
 
-**Whew.** I'm not sure I follow that even after writing it.  But I understand it.  Really, ``PORTA &= ~ (1 << PINA1) = Set PA1 LOW.``
+**Whew.** I'm not sure I follow that even after writing it.  But I understand it.  Really, ``PORTA &= ~ (1 << PINA1) = Set PA1 LOW.**
 
 But this is good.  We now can dynamically change the state of one PIN without destroying the state of the other PINs on the same port.  Booyah!  
 

@@ -1,6 +1,6 @@
 ---
 layout: article
-title: Robot Metallurgy 101 -- UART -- AVR Lesson Journal
+title: Robot Metallurgy 101 -- AVR Lesson Journal 
 categories: robots
 excerpt:
 tags: [robots]

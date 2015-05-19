@@ -41,7 +41,7 @@ I craved more freedom, so I started looking for tools that'd allow me to code fo
 
 ![](/images/GCC_Download2.jpg)
 
-**1. ****[Download and install](https://launchpad.net/gcc-arm-embedded/4.7/4.7-2013-q3-update/+download/gcc-arm-none-eabi-4_7-2013q3-20130916-win32.exe) GNU Tools for ARM Embedded Processors (Win32 Release -- 2013, quarter 3).** **During the installation, make sure to check the box "Add path to environment variable.****" **
+**1. [Download and install](https://launchpad.net/gcc-arm-embedded/4.7/4.7-2013-q3-update/+download/gcc-arm-none-eabi-4_7-2013q3-20130916-win32.exe) GNU Tools for ARM Embedded Processors (Win32 Release -- 2013, quarter 3).** **During the installation, make sure to check the box "Add path to environment variable.****" **
 
 ![](/images/GCC_Download3.jpg)
 

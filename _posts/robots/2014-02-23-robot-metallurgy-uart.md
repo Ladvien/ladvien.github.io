@@ -603,7 +603,7 @@ int main()
 
 This program is the same as above, but using the library.  It simply takes data receiving from one UART and send its out the other.
 
-Alright, that's enough UART for awhile.  I might update this when I run into bugs, **which I will, <span style="text-decoration: underline;">I am a hack.** So, use this code at your own risk of frustration.
+Alright, that's enough UART for awhile.  I might update this when I run into bugs, **which I will, I am a hack.** So, use this code at your own risk of frustration.
 
 **Stuff I'd no energy to finish.**
 

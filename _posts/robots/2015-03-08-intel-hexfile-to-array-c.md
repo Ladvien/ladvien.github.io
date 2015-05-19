@@ -133,8 +133,7 @@ To understand this function it pays to understand well the Intel HEX file format
 
 <div>(Borrowed from Wikipedia's excellent article on [Intel HEX](http://en.wikipedia.org/wiki/Intel_HEX))</div>
 
-<div>All of the information in the file is important, but we are only looking to put the <span style="color: #252525; font-family: sans-serif; font-size: 14px; line-height: 22px;"> <span style="font-family: sans-serif; font-size: 14px; line-height: 22px; display: inline-block; width: 1.5em; height: 1.5em; margin: 1px 0px; border: 1px solid black; background-color: #ccffff; text-align: center;"> A7<span style="color: #252525; font-family: sans-serif; font-size: 14px; line-height: 22px;"> Data into the array.</div></div></div></div>
-
+<div>All of the information in the file is important, but we are only looking to put the <span style="color: #252525; font-family: sans-serif; font-size: 14px; line-height: 22px;"> <span style="font-family: sans-serif; font-size: 14px; line-height: 22px; display: inline-block; width: 1.5em; height: 1.5em; margin: 1px 0px; border: 1px solid black; background-color: #ccffff; text-align: center;"> A7<span style="color: #252525; font-family: sans-serif; font-size: 14px; line-height: 22px;"> Data into the array.</div><</span>
 
 To extract this data we are going to use three sub-routines: read_byte_from_file(), Ascii2Hex(), clear_special_char()
 

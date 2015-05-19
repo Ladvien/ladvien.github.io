@@ -53,7 +53,7 @@ So, I made up a fresh version of the HM-10 breakout board (v.9.9) with this LED 
 
 Again, can't use yellow or red LEDs on the RX/TX lines, since they do not create a high-enough voltage drop to signal the CC2540 low).
 
-**How upgrade the HM-10 **
+**How upgrade the HM-10**
 
 **(NOTE:** You can only upgrade versions 507 or later, according to Jnhuamoa)
 

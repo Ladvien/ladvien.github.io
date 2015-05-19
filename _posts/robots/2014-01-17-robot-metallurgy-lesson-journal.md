@@ -156,9 +156,9 @@ Now, Atmel Studio is setup to automatically program your code using the last sel
 
 Ok.  Now we have our Tiny running at 8mhz, we will need to adjust this in our code.
 
-
-
+{% highlight c %}
 #define F_CPU 8000000 // AVR clock frequency in Hz, used by util/delay.h</pre>
+{% endhighlight %}
 
 Here we are telling the program our chip is running at 8mhz (8,000,000 [hertz](http://en.wikipedia.org/wiki/Hertz)).
 

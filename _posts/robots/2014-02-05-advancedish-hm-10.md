@@ -15,7 +15,7 @@ Originally posted on [www.letsmakerobots.com](www.letsmakerobots.com)
 
 <div class="flex-video">
 <iframe width="560" height="315" src="https://www.youtube.com/embed/zSp-vwzY-Pg" frameborder="0" allowfullscreen></iframe>
-
+</div>
 
 Here are some random notes on working with the HM-10.
 

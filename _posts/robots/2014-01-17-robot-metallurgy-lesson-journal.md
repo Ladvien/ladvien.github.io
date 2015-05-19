@@ -191,13 +191,13 @@ But we can use the bitwise operator, OR, to do the same,
 
 {% highlight c %}
 *   DDRB |= 0b00000001;
-c33
+{% highlight %}
 
 The "|=" is an abbreviated operation that represents the following,
 
-c22
+{% highlight c %}
 *   DDRB = DDRB | 0b0000001;
-c33
+{% highlight %}
 
 In English, "Whatever is in DDRB is equal to whatever is in DDRB **OR** 0b0000001."
 
@@ -227,15 +227,15 @@ This seems more complex to me, but I understand it becomes very important when y
 
 One last thing, the <avr/io.h> contains defined pin constants.  So, this operation,
 
-c22
+{% highlight c %}
 *   DDRB |= 0b00000001;
-c33
+{% highlight %}
 
 Can be written like so,
 
-c22
+{% highlight c %}
 *   DDRB |= 1 << PINB0;
-c33
+{% highlight %}
 
 They do exactly the same thing--and _I guess_ the latter is easier to read.  Pfft.
 

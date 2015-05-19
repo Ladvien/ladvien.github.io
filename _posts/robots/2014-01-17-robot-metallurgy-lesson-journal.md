@@ -207,7 +207,7 @@ That looks like this,
 
 Bitwise operators, like OR'ing, are done on the entire byte.  That is, each bit, 0-7, are OR'd, so you have to keep in mind the operation isn't done _only_ on the bit you want to change.  This is where truth tables come in.  Below is a table describing the output of the OR operation.
 
-**OR (|)**
+**OR (\|)**
 
 ![](/images/Bitwise_Operators_OR_2.jpg)
 

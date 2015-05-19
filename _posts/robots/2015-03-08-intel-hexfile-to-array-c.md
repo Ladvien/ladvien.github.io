@@ -126,7 +126,9 @@ To understand this function it pays to understand well the Intel HEX file format
 :100110002146017E17C20001FF5F16002148011928
 :10012000194E79234623965778239EDA3F01B2CAA7
 :100130003F0156702B5E712B722B732146013421C7
-:00000001FF</pre><p><strong>Parsed HEX file:</strong></p><pre>: 11 2222 33 44444444444444444444444444444444 55 \n</pre><ol>
+:00000001FF</pre>
+
+<p><strong>Parsed HEX file:</strong></p><pre>: 11 2222 33 44444444444444444444444444444444 55 \n</pre><ol>
 <li>'<strong>:</strong>' = Start Code.
 </li><li>11 = Byte Count
 </li><li>2222 = Address

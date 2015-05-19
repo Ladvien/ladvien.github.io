@@ -171,7 +171,7 @@ Alright, a few other notes.
 Bitwise operators are arithmetic operations that may be performed on binary numbers.  There are four main ones:
 
 1.  [AND](http://en.wikipedia.org/wiki/Bitwise_operations_in_C#Bitwise_AND_.22.26.22) (&)
-2.  [OR ](http://en.wikipedia.org/wiki/Bitwise_operations_in_C#Bitwise_OR_.22.7C.22)(|)
+2.  [OR](http://en.wikipedia.org/wiki/Bitwise_operations_in_C#Bitwise_OR_.22.7C.22)(\|)
 3.  [XOR](http://en.wikipedia.org/wiki/Bitwise_operations_in_C#Bitwise_XOR_.22.5E.22) (^)
 4.  [NOT](http://en.wikipedia.org/wiki/Bitwise_operations_in_C#Bitwise_NOT_.22.7E.22_.2F_One.27s_Complement_.28Unary.29) (~)
 

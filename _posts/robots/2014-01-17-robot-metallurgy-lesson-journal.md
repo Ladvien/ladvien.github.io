@@ -1,6 +1,6 @@
 ---
 layout: article
-title: Robot Metallurgy 101 -- AVR Lesson Journal 
+title: Robot Metallurgy 101 -- AVR Lesson Journal
 categories: robots
 excerpt:
 tags: [robots]
@@ -50,21 +50,13 @@ I wired up the 1634 and the ISP like so,
 
 What do you mean the silk-screen is mislabeled...shh.
 
-
-
-
 After I got the pinout all figured out, I downloaded [Atmel Studio 6.1](http://www.atmel.com/tools/atmelstudio.aspx).  I know there are many different opinions about what IDE to use, and a lot of them seem to favor a text editor and AVRDude, for a change I wanted to go with a commercial IDE.  Also, it seems like a lot of those in the AVRFreaks group actually _like_ Atmel Studio.
-
-
-
 
 It's pretty easy to set up.  You install it.  Plug in your AVR ISP MKII.  Then, File-->New Project.  Select "GCC C Executable Project" and name your project.  Hit "Ok."  Atmel Studio will bring up a list of supported chips.  I scrolled down until I found my chip, "ATtiny1634." You'll notice the [datasheet](http://www.atmel.com/Images/Atmel-8303-8-bit-AVR-Microcontroller-tinyAVR-ATtiny1634_Datasheet.pdf) and supported programmers are to the side.
 
 Alright, so, here I was.  IDE all set up...um, now what do I do?
 
 I began to Google until I found an AVR Tutorial Series that looked like it would bring me from the basics, well, up to Serial communication.  Really, I figure if I could learn the following I could build whatever I wanted out of it:
-
-
 
 1.  Digital pin control (HIGH/LOW).
 2.  ADC.
@@ -77,12 +69,7 @@ Luckily, I found the series put together by [Newbie Hack's](http://www.newbiehac
 
 [![](http://www.newbiehack.com/images/newbieHack_logo_04CroppedscaledTo200.jpg)](http://www.newbiehack.com/)
 
-
-
 So, I decided I would try to walk through all of his tutorials and see if I could apply them to the ATtiny1634. NOTE: The author of this series appears to be [Patrick Hood-Daniel](http://www.newbiehack.com/aboutus.aspx), a fellow Texan (don't hold that against us :P).
-
-
-
 
 **1\. Blinkin LED**
 
@@ -127,10 +114,6 @@ Newbie Hacks (NB) does a great job of explaining this.  He even draws out a pict
 
 ![](http://www.newbiehack.com/images/DDRB.JPG)
 
-
-
-
-
 I like to think in images, so I see each bit as an LED.  It makes sense, an LED has two-states ON/OFF; a bit has two states 0 or 1\.  So, a byte for me is 8 LEDs numbered 0-7.
 
 ![](/images/LED_Bitwise_2_bb.jpg)
@@ -143,13 +126,9 @@ The Atmel chips have different ports, which usually have an array of pins. So, t
 
 But don't be confused, the LED we have connected isn't turned on yet.  The voltage on PB0 still equals 0\.  But, we could now change the voltage from 0 to 5\.  We do this by changing another registry.  The port state registry, PORTB.
 
-
-
 **PORTB = 0B00000001;**
 
 Actually sets pin 0 (PB0) on port B to 5 volts.  The other pins are still set as inputs, so you can't change the voltage.  
-
-
 
 That simple folks?  Well, we also have to insert a delay.  Delay's are really just telling the uC how many cycles to do nothing.  There is some math involved that divides the clock speed to get the exact time delay you would like in finite-ish numbers.  This math is locked away as a function in the <util/delay.h>  file.  So, for our sake, it is a simple matter of adding:
 
@@ -175,15 +154,11 @@ While we are under the device programming window, click on the "Memories" tab.  
 
 Now, Atmel Studio is setup to automatically program your code using the last selected devices whenever you hit "F5."  Sadly, I found this rarely worked properly.  But I'm betting it's because I have no decoupling capacitor--yes, I confirmed this.  <span style="text-decoration: line-through;">I put a 1uF radial capacitor between VCC and GND, now the "F5" programming works as expected. I've no idea.  Seems to work if I manually program it though.  Shrug.
 
-
-
 Ok.  Now we have our Tiny running at 8mhz, we will need to adjust this in our code.
 
-<div style="background: #ffffff; overflow: auto; width: auto; border: solid gray; border-width: .1em .1em .1em .8em; padding: .2em .6em;">
-
-<pre style="margin: 0; line-height: 125%;"><span style="color: #557799;">#define F_CPU 8000000 <span style="color: #888888;">// AVR clock frequency in Hz, used by util/delay.h</pre>
 
 
+#define F_CPU 8000000 // AVR clock frequency in Hz, used by util/delay.h</pre>
 
 Here we are telling the program our chip is running at 8mhz (8,000,000 [hertz](http://en.wikipedia.org/wiki/Hertz)).
 
@@ -195,14 +170,10 @@ Alright, a few other notes.
 
 Bitwise operators are arithmetic operations that may be performed on binary numbers.  There are four main ones:
 
-
-
 1.  [AND](http://en.wikipedia.org/wiki/Bitwise_operations_in_C#Bitwise_AND_.22.26.22) (&)
 2.  [OR ](http://en.wikipedia.org/wiki/Bitwise_operations_in_C#Bitwise_OR_.22.7C.22)(|)
 3.  [XOR](http://en.wikipedia.org/wiki/Bitwise_operations_in_C#Bitwise_XOR_.22.5E.22) (^)
 4.  [NOT](http://en.wikipedia.org/wiki/Bitwise_operations_in_C#Bitwise_NOT_.22.7E.22_.2F_One.27s_Complement_.28Unary.29) (~)
-
-
 
 I will not go into much detail on Bitwise Operators because Newbie Hacks does an excellent job explaining them.  And they are all over the internet.  But for our purposes, building robots, it is good to know what they look like and what they'll do to our bits (remember, your pins' output are controlled by bit registries).
 
@@ -212,19 +183,13 @@ So, I'll cover two that apply to our example and one bitwise helper: **OR,** **X
 
 We learned that the following sets pin PB0 as an OUTPUT.
 
-
-
 *   DDRB = 0b00000001;
 
 But we can use the bitwise operator, OR, to do the same,
 
 *   DDRB |= 0b00000001;
 
-
-
 The "|=" is an abbreviated operation that represents the following,
-
-
 
 *   DDRB = DDRB | 0b0000001;
 

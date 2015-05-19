@@ -1,6 +1,6 @@
 ---
 layout: article
-title: The Valdez Mutant -- LPC1114 QFN
+title: UUEncode in C
 categories: robots
 excerpt:
 tags: [robots]

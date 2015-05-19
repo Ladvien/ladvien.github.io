@@ -13,7 +13,7 @@ comments: true
 
 Originally posted on [www.letsmakerobots.com](www.letsmakerobots.com)
 
-<span style="font-size: medium;"><span style="line-height: 22px;">**Nostalgia**
+**Nostalgia**
 
 I wanted to post this simply because it working on it brought my a dry nostalgic joy.  When I was young, 8-9, my parents got a old computer.  All I remember was its screen was orange and black; having a [Hercules graphics card](http://en.wikipedia.org/wiki/Hercules_Graphics_Card).  I quickly learned to get around from the command prompt.  But I was always thrilled to run into menu driven program.  It was like going to a fancy restaurant of abstractness.  Anyway, when I wanted my code to slow down a bit and branch directions based upon user input, a command menu was a natural choice.
 
@@ -54,11 +54,11 @@ I used this line to build it:
 
 As for editing, I've really grown to love [Sublime Text 2](http://www.sublimetext.com/2).
 
-If you have issues**, make sure directory containing your files is in your PATH environment variable **(I go over how to add the directory to your environment variables in this [post](http://letsmakerobots.com/content/lpc1114-setup-bare-metal-arm)).
+If you have issues**, make sure directory containing your files is in your PATH environment variable** (I go over how to add the directory to your environment variables in this [post](http://letsmakerobots.com/content/lpc1114-setup-bare-metal-arm)).
 
-<span style="font-size: medium;"><span style="line-height: 22px;">**![](/images/Command_line_menu.png)**
+![](/images/Command_line_menu.png)
 
-<span style="font-size: medium;"><span style="line-height: 22px;">**How to Write a Command Line Menu**
+**How to Write a Command Line Menu**
 
 There really isn't much to the code here.  Basically, it it prints out the options you want your user to know.  Then, it starts a do-while loop until the user selects an appropriate number.
 

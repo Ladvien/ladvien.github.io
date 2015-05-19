@@ -122,19 +122,21 @@ To understand this function it pays to understand well the Intel HEX file format
 
 **Parsed HEX file:**
 
-<pre style="font-family: monospace, Courier; background-color: #f9f9f9; border: 1px solid #dddddd; padding: 1em; line-height: 1.3em; font-size: 14px;"><span style="background-color: #ffffcc; font-family: monospace;">:<span style="background-color: #ccffcc; font-family: monospace;">10<span style="background-color: #ccccff; font-family: monospace;">0100<span style="background-color: #ffcccc; font-family: monospace;">00<span style="background-color: #ccffff; font-family: monospace;">214601360121470136007EFE09D21901<span style="background-color: #cccccc; font-family: monospace;">40
-<span style="background-color: #ffffcc; font-family: monospace;">:<span style="background-color: #ccffcc; font-family: monospace;">10<span style="background-color: #ccccff; font-family: monospace;">0110<span style="background-color: #ffcccc; font-family: monospace;">00<span style="background-color: #ccffff; font-family: monospace;">2146017E17C20001FF5F160021480119<span style="background-color: #cccccc; font-family: monospace;">28
-<span style="background-color: #ffffcc; font-family: monospace;">:<span style="background-color: #ccffcc; font-family: monospace;">10<span style="background-color: #ccccff; font-family: monospace;">0120<span style="background-color: #ffcccc; font-family: monospace;">00<span style="background-color: #ccffff; font-family: monospace;">194E79234623965778239EDA3F01B2CA<span style="background-color: #cccccc; font-family: monospace;">A7
-<span style="background-color: #ffffcc; font-family: monospace;">:<span style="background-color: #ccffcc; font-family: monospace;">10<span style="background-color: #ccccff; font-family: monospace;">0130<span style="background-color: #ffcccc; font-family: monospace;">00<span style="background-color: #ccffff; font-family: monospace;">3F0156702B5E712B722B732146013421<span style="background-color: #cccccc; font-family: monospace;">C7
-<span style="background-color: #ffffcc; font-family: monospace;">:<span style="background-color: #ccffcc; font-family: monospace;">00<span style="background-color: #ccccff; font-family: monospace;">0000<span style="background-color: #ffcccc; font-family: monospace;">01<span style="background-color: #cccccc; font-family: monospace;">FF
-</pre>
-
-<div><span style="font-family: sans-serif; font-size: 14px; line-height: 22px; display: inline-block; width: 1.5em; height: 1.5em; margin: 1px 0px; border: 1px solid black; background-color: #ffffcc; text-align: center;">  :  <span style="color: #252525; font-family: sans-serif; font-size: 14px; line-height: 22px;"> Start code <span style="font-family: sans-serif; font-size: 14px; line-height: 22px; display: inline-block; width: 1.5em; height: 1.5em; margin: 1px 0px; border: 1px solid black; background-color: #ccffcc; text-align: center;"> 10 <span style="color: #252525; font-family: sans-serif; font-size: 14px; line-height: 22px;"> Byte count <span style="font-family: sans-serif; font-size: 14px; line-height: 22px; display: inline-block; width: 1.5em; height: 1.5em; margin: 1px 0px; border: 1px solid black; background-color: #ccccff; text-align: center;"> 01<span style="color: #252525; font-family: sans-serif; font-size: 14px; line-height: 22px;"> Address <span style="font-family: sans-serif; font-size: 14px; line-height: 22px; display: inline-block; width: 1.5em; height: 1.5em; margin: 1px 0px; border: 1px solid black; background-color: #ffcccc; text-align: center;"> 00<span style="color: #252525; font-family: sans-serif; font-size: 14px; line-height: 22px;"> Record type <span style="font-family: sans-serif; font-size: 14px; line-height: 22px; display: inline-block; width: 1.5em; height: 1.5em; margin: 1px 0px; border: 1px solid black; background-color: #ccffff; text-align: center;"> A7 <span style="color: #252525; font-family: sans-serif; font-size: 14px; line-height: 22px;"> Data <span style="font-family: sans-serif; font-size: 14px; line-height: 22px; display: inline-block; width: 1.5em; height: 1.5em; margin: 1px 0px; border: 1px solid black; background-color: #cccccc; text-align: center;"> C7 <span style="color: #252525; font-family: sans-serif; font-size: 14px; line-height: 22px;"> Checksum</div></span>
-
-(Borrowed from Wikipedia's excellent article on [Intel HEX](http://en.wikipedia.org/wiki/Intel_HEX))
-
-All of the information in the file is important, but we are only looking to put the   A7 Data into the array.
-To extract this data we are going to use three sub-routines: read_byte_from_file(), Ascii2Hex(), clear_special_char()
+<p>Let's take a look at the raw data,</p><pre>:10010000214601360121470136007EFE09D2190140
+:100110002146017E17C20001FF5F16002148011928
+:10012000194E79234623965778239EDA3F01B2CAA7
+:100130003F0156702B5E712B722B732146013421C7
+:00000001FF</pre><p><strong>Parsed HEX file:</strong></p><pre>: 11 2222 33 44444444444444444444444444444444 55 \n</pre><ol>
+<li>'<strong>:</strong>' = Start Code.
+</li><li>11 = Byte Count
+</li><li>2222 = Address
+</li><li>33 = Data Type
+</li><li>44 = <strong>Data</strong>
+</li><li>55 = Check Sum
+</li><li>'\n' = End Code</li></ol><p>All of the information in the file is important, but we are only looking to put the <strong>Data</strong> into the array. To extract this data we are going to use three sub-routines: </p><ol>
+<li>read_byte_from_file()
+</li><li>Ascii2Hex()
+</li><li>clear_special_char()</li></ol>
 
 **read_byte_from_file()**
 

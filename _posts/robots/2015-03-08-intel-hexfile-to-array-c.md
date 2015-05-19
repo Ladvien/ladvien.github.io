@@ -297,8 +297,6 @@ bool read_line_from_hex_file(FILE * file, uint8_t line_of_data[], long int * com
 
 The above code parses exactly one line of hex data from the file pointer.
 
-<pre style="font-family: monospace, Courier; background-color: #f9f9f9; border: 1px solid #dddddd; padding: 1em; line-height: 1.3em; font-size: 14px;"><span style="background-color: #ffffcc; font-family: monospace;">:<span style="background-color: #ccffcc; font-family: monospace;">10<span style="background-color: #ccccff; font-family: monospace;">0120<span style="background-color: #ffcccc; font-family: monospace;">00<span style="background-color: #ccffff; font-family: monospace;">194E79234623965778239EDA3F01B2CA<span style="background-color: #cccccc; font-family: monospace;">A7</pre>
-
 *   17: We read the first byte of a line.  This should be the ':' character, but remember our clear_special_char() should skip this and read the next two bytes '1' and '0' (green).  The "10" is how many bytes of data (blue) found on this line.  Note, 10 is not a decimal number, it's hexadecimal.  Meaning, there should be 16 bytes of data found on this line.
 *   20: We check if there was any data on this line.  If there are zero data, we return false.
 *   23: Take the first byte of the data address (purple).

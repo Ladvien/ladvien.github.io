@@ -61,7 +61,7 @@ For me, this was "**C:\Program Files (x86)\GNU Tools ARM Embedded\4.7 2013q3\bin
 
 **2\. Download [Frank Duignan's](http://eleceng.dit.ie/frank/arm/BareMetalLPC1114/) Windows [linker script](https://web.eecs.umich.edu/~prabal/teaching/eecs373-f11/readings/Linker.pdf), [LPC1114 header file](http://www.keil.com/dd/docs/arm/nxp/lpc11xx/lpc11xx.h), and build batch file.**
 
-> [Duignan's LPC1114 tools](https://drive.google.com/file/d/0B3NaVR72FYQcTDlYSVdTZ3ZpUTA/edit)
+[Duignan's LPC1114 tools](https://drive.google.com/file/d/0B3NaVR72FYQcTDlYSVdTZ3ZpUTA/edit)
 
 [Ted Burke](http://batchloaf.wordpress.com/2013/11/29/simple-arm-example-for-lpc1114/) was nice enough to put these up for us.  However, there's two pieces missing for us to use these amazing tools.
 
@@ -69,7 +69,7 @@ For me, this was "**C:\Program Files (x86)\GNU Tools ARM Embedded\4.7 2013q3\bin
 
 **4\. Install [binutils](http://www.gnu.org/software/binutils/) for file conversion.  **Binutils has to be compiled for Windows, though, I was able to find them pre-compiled.
 
-> Download [Binutils](http://sourceforge.net/projects/mingw/files/MinGW/Base/binutils/binutils-2.22/binutils-2.22-1-mingw32-bin.tar.lzma/download) compiled for Windows
+Download [Binutils](http://sourceforge.net/projects/mingw/files/MinGW/Base/binutils/binutils-2.22/binutils-2.22-1-mingw32-bin.tar.lzma/download) compiled for Windows
 
 Really, we are only using Binutils for **objcopy**, which is at the end of the batch file.  This translates the **.elf** produced by the ARM compiler into a **.hex** file.  To unzip Binutils file I'd recommend using [7zip](http://www.7-zip.org/download.html).  After installing them add the bin folder to your environment variable (see step 1).  For me, I added "**C:\Users\Ladvien\Documents\LPC1114_Bare_Metal\Ming32\bin".**
 
@@ -179,7 +179,7 @@ We still have the problem of getting the main.hex uploaded to the LPC1114\.  You
 
 I've pre-built lpc21isp for Windows.  
 
-> [Download LPC21ISP](https://github.com/Ladvien/LPC21ISP_Win) (now with automatic mode switching! :)
+[Download LPC21ISP](https://github.com/Ladvien/LPC21ISP_Win) (now with automatic mode switching! :)
 
 But if this doesn't work for you, then you'll have to [build it yourself](http://sourceforge.net/projects/lpc21isp/?source=dlp).
 
@@ -187,7 +187,7 @@ But if this doesn't work for you, then you'll have to [build it yourself](http:/
 
 Only one line this time:
 
-> **lpc21isp -wipe -localecho -hex main.hex COM3 57600 12000**
+**lpc21isp -wipe -localecho -hex main.hex COM3 57600 12000**
 
 You'll have to adjust the COM port to the port you are using.  Here is a little bit of a** [guide using lpc21isp](http://pygmy.utoh.org/riscy/bootloader.html)**.  Also, you'll either need to put the lpc21isp file in one of the folders added in the path variable.  Or, make sure the LPC1114_upload.bat and lpc21isp files are in the same directory as your main.hex.
 
@@ -215,12 +215,10 @@ The lpc21isp allows for [automatic mode switching](http://letsmakerobots.com/loo
 
 Then replace the line in your LPC1114_upload.bat file with
 
-> **lpc21isp -wipe -localecho -control -hex main.hex COM3 57600 12000**
+**lpc21isp -wipe -localecho -control -hex main.hex COM3 57600 12000**
 
 This will automatically put the LPC1114 into program mode, upload your code, then reset to run your newly uploaded program. **Just like Arduino!** (Bdk6, you didn't see that statement, right? :)
 
 Of course, lpc21isp is an agglomeration and had an error(?) that wouldn't reset the chip after downloading the new code.  I simply commented an if-statement and it is now "working."  I'm sure I've lost some robustness, but hell, it does what I want with no apparent side-effects.  If you would like to know more about how I "broke" lpc21isp check my Github [readme](https://github.com/Ladvien/LPC21ISP_Win/blob/master/README.md) on the issue.
 
 ![](/images/LPC1114_Bare_Metal_ARM2.jpg)
-
-<div>

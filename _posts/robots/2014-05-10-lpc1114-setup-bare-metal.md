@@ -193,8 +193,8 @@ You'll have to adjust the COM port to the port you are using.  Here is a little 
 
 **11\. Wire up your LPC1114.**
 
-**![](/images/LPC1114_Wires.png)
-**
+![](/images/LPC1114_Wires.png)
+
 
 One last bit I should point out, when "DP24" is connected to ground and then voltage is supplied to the LPC1114, it'll enter the hardware bootloader.  But, if DP24 is open or (preferably) pulled-up with a resistor when voltage is supplied to the LPC1114 then it'll run whatever code has been uploaded to the flash memory.  
 

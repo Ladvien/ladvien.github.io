@@ -1,6 +1,6 @@
 ---
 layout: article
-title: Metallurgy 101 - AVR UART
+title: Kossel Mini Calibration
 categories: robots
 excerpt:
 tags: [robots]

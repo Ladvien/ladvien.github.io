@@ -529,8 +529,8 @@ ISR(USART1_RX_vect){
 
 Really, it is all the functions moved over to a header file (**.h).  One thing I'll point out, the #ifndef makes sure the header file is not included twice, but I was getting an error with it for awhile, come to find out, you **cannot** start #define name for #ifndef with a number, e.g.,
 
-1.  #ifndef 1634_UART -- This will not work.
-2.  #ifndef UART_1634 -- Works great!
+1.  \#ifndef 1634_UART -- This will not work.
+2.  \#ifndef UART_1634 -- Works great!
 
 Eh.  Devil's in the details.
 

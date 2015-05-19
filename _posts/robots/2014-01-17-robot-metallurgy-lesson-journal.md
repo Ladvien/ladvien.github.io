@@ -120,19 +120,25 @@ I like to think in images, so I see each bit as an LED.  It makes sense, an LED 
 
 The above image could represent the following code:
 
-**DDRB = 0B00000001;**
+{% highlight c %}
+DDRB = 0B00000001;
+{% endhighlight %}
 
 The Atmel chips have different ports, which usually have an array of pins. So, the DDR stands for digital direction registry of port B.  Then, we assign a state to every pin on port B (PB0-PB7) by setting a bit to either 0 or 1\. So, according to the image and our code, we are setting ports B1-7 as INPUTS (0 = INPUT) and PB0 as an OUTPUT.
 
 But don't be confused, the LED we have connected isn't turned on yet.  The voltage on PB0 still equals 0\.  But, we could now change the voltage from 0 to 5\.  We do this by changing another registry.  The port state registry, PORTB.
 
-**PORTB = 0B00000001;**
+{% highlight c %}
+PORTB = 0B00000001;
+{% endhighlight %}
 
 Actually sets pin 0 (PB0) on port B to 5 volts.  The other pins are still set as inputs, so you can't change the voltage.  
 
 That simple folks?  Well, we also have to insert a delay.  Delay's are really just telling the uC how many cycles to do nothing.  There is some math involved that divides the clock speed to get the exact time delay you would like in finite-ish numbers.  This math is locked away as a function in the <util/delay.h>  file.  So, for our sake, it is a simple matter of adding:
 
-**_delay_ms(500);**
+{% highlight c %}
+_delay_ms(500);
+{% endhighlight %}
 
 This tells our Tiny to sit idle for half a second, then continue.  Also, there is a _delay_us() function that will delay microseconds.
 
@@ -184,7 +190,7 @@ So, I'll cover two that apply to our example and one bitwise helper: **OR,** **X
 We learned that the following sets pin PB0 as an OUTPUT.
 
 {% highlight c %}
-*   DDRB = 0b00000001;
+DDRB = 0b00000001;
 {% endhighlight %}
 
 But we can use the bitwise operator, OR, to do the same,

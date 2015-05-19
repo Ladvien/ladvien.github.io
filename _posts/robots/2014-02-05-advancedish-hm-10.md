@@ -15,7 +15,7 @@ Originally posted on [www.letsmakerobots.com](www.letsmakerobots.com)
 
 <div class="flex-video">
 <iframe width="560" height="315" src="https://www.youtube.com/embed/zSp-vwzY-Pg" frameborder="0" allowfullscreen></iframe>
-</div>
+
 
 Here are some random notes on working with the HM-10.
 
@@ -169,10 +169,10 @@ void serialEvent() {
 }
 {% endhighlight %}
 
-<div>Not going to lie. I'm pretty dissapointed with how complicated the firmware makes it to switch between nodes.  Although, I've only begun to play with firmware versions greater than V303.</div>
+Not going to lie. I'm pretty dissapointed with how complicated the firmware makes it to switch between nodes.  Although, I've only begun to play with firmware versions greater than V303.
 
-<div>I couldn't do much better than about 2.84 seconds switching between nodes.  This simply wont do for me.  And, of course, this rate goes up with more nodes.  So, a swarm of little robots controlled this way would be unmanagable.</div>
+I couldn't do much better than about 2.84 seconds switching between nodes.  This simply wont do for me.  And, of course, this rate goes up with more nodes.  So, a swarm of little robots controlled this way would be unmanagable.
 
-<div>I tried tweaking the timing of everything in the code.  The HM-10 wasn't having it.  If I lowered the delay following an AT command it, the command wouldn't take.  This would often cause the nodes to become stuck (waiting for timeout, still connected, etc.)  Also, the hardware reset on the HM-10 is said to be 100ms, but I'm finding it unhappy with much less than 250ms.</div>
+I tried tweaking the timing of everything in the code.  The HM-10 wasn't having it.  If I lowered the delay following an AT command it, the command wouldn't take.  This would often cause the nodes to become stuck (waiting for timeout, still connected, etc.)  Also, the hardware reset on the HM-10 is said to be 100ms, but I'm finding it unhappy with much less than 250ms.
 
-<div>Anyway, if anyone else wants to carry the banner my suggestion is uping the buad rate and sticking with hardware resets, like in my [ATtiny Bitsy Spider](http://letsmakerobots.com/node/39795) board.</div>
+Anyway, if anyone else wants to carry the banner my suggestion is uping the buad rate and sticking with hardware resets, like in my [ATtiny Bitsy Spider](http://letsmakerobots.com/node/39795) board.

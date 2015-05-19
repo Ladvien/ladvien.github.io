@@ -59,7 +59,7 @@ I chose the Mac Book over Mac Mini.  The Mac Book came with a monitor and periph
 
 I was a _a lot_ worried an eBay Mac would be DOA.  When it finally came in, I was relieved to see it boot up.  But, within an hour it overheated and crashed.  Worried the crap out of me.  I then realized this laptop had two video cards and the display settings were full-blast.  I backed down the video settings and the temperature seemed to hold.  Still a little worried.  When I get the app written for Carduino I'll probably take it apart, clean the heat-sink fins and reapply thermal paste.
 
-So, price for the Mac: **$469.99**
+So, price for the Mac:**$469.99**
 
 
 
@@ -83,7 +83,7 @@ Once you have your Mac and Developer License, time to setup Xcode.
 
 ![](/images/Screenshot_2014-07-14_22_41_42.png)
 
-If you try to compile your app and you **get an error regarding a certificate,** and doesn't automatically resolve, you can download a certificate manually.
+If you try to compile your app and you**get an error regarding a certificate,** and doesn't automatically resolve, you can download a certificate manually.
 
 **Download Developer certificate**
 
@@ -121,7 +121,7 @@ The site I found most useful was Ray Wenderlich's
 
 His written tutorials are free, but giving the visual component of Xcode I paid $15 for a subscription to his video tutorials.  Both written and video tutorials are excellent.  Learned pretty much everything I needed from him and his peers.
 
-I would list other tutorials, but really, Ray's covers everything you'd need to write this app--well, besides the Bluetooth part, which I'll cover.  But one surprisingly helpful video was Apple's introduction to **CoreBluetooth Framework**.
+I would list other tutorials, but really, Ray's covers everything you'd need to write this app--well, besides the Bluetooth part, which I'll cover.  But one surprisingly helpful video was Apple's introduction to**CoreBluetooth Framework**.
 
 1.  [101 Core Bluetooth](https://developer.apple.com/videos/wwdc/2012/?include=703#703) (You need an Apple Device to watch it.)
 2.  [Advanced Core Bluetooth](https://developer.apple.com/videos/wwdc/2012/?include=705#705) (You need an Apple Device to watch it .)
@@ -197,11 +197,11 @@ The big take away for us is the differences between Central and Peripheral roles
 
 ![](/images/Central_Peri_LMR.png)
 
-This doesn't mean our bot cant receive data or iOS device can't send data, it simply defines the relationship between the devices.  The role decides which device controls the connection and data flow.  For the sake of this app the **bot will be setup as a Peripheral** and the **iOS device will be the Central**.  This is my opinion, but it seems the BLE hardware connected to the uC or CPU with the greatest speed should take the Central role.
+This doesn't mean our bot cant receive data or iOS device can't send data, it simply defines the relationship between the devices.  The role decides which device controls the connection and data flow.  For the sake of this app the**bot will be setup as a Peripheral** and the**iOS device will be the Central**.  This is my opinion, but it seems the BLE hardware connected to the uC or CPU with the greatest speed should take the Central role.
 
 **The header file -- bleApp.h**
 
-To access the Bluetooth 4.0 functionality of compatible iOS devices, Apple provide the [CoreBluetooth Framework](https://developer.apple.com/library/ios/documentation/NetworkingInternetWeb/Conceptual/CoreBluetooth_concepts/AboutCoreBluetooth/Introduction.html#//apple_ref/doc/uid/TP40013257).  This framework is brought into your app code in the typical C fashion, by importing it in **bleApp.h**
+To access the Bluetooth 4.0 functionality of compatible iOS devices, Apple provide the [CoreBluetooth Framework](https://developer.apple.com/library/ios/documentation/NetworkingInternetWeb/Conceptual/CoreBluetooth_concepts/AboutCoreBluetooth/Introduction.html#//apple_ref/doc/uid/TP40013257).  This framework is brought into your app code in the typical C fashion, by importing it in**bleApp.h**
 
 {% highlight objective-c %}
 #import <CoreBluetooth/CoreBluetooth.h>
@@ -216,7 +216,7 @@ References to the methods can be found here:
 
 Alright, I'm going to attempt explaining something I poorly understand, Objective-C Delegates.
 
-I believe a delegate is a collection of services your code can subscribe.  I think of them much like interrupts in Arduino.  Each time a specific event happens a method is called.  You setup the delegates you wish to subscribe at the top of your **bleApp.h**:
+I believe a delegate is a collection of services your code can subscribe.  I think of them much like interrupts in Arduino.  Each time a specific event happens a method is called.  You setup the delegates you wish to subscribe at the top of your**bleApp.h**:
 
 {% highlight objective-c %}
 @interface ViewController : UIViewController <CBPeripheralDelegate,
@@ -230,22 +230,22 @@ Here we are calling on subscribing to four delegates:
 3.  UITableViewDelegate
 4.  UITableViewDataSource
 
-The CoreBluetooth Central Manager, the CoreBluetooth Peripheral, User Interface Table View Delegate, and the User Interface Table View Data Source.  Right now we are only going to **focus on the Bluetooth delegates**.
+The CoreBluetooth Central Manager, the CoreBluetooth Peripheral, User Interface Table View Delegate, and the User Interface Table View Data Source.  Right now we are only going to**focus on the Bluetooth delegates**.
 
 Another way to think of delegates is a collection of little scout robots who report when a specific event takes place.
 
 ![](/images/Central_Manager_Delegate_15.png)
 
-These delegates are a collection of little methods who will be called at specific events.  For example, the CBPeripheralDelegate has the method **-(void)peripheral:(CBPeripheral *)peripheral didDiscoverServices:(NSError *)error**.  This method is called whenever iOS app discovers BLE peripheral.  Again, these methods are **event** driven--this means something usually has to happen before the come report to your code.
+These delegates are a collection of little methods who will be called at specific events.  For example, the CBPeripheralDelegate has the method**-(void)peripheral:(CBPeripheral *)peripheral didDiscoverServices:(NSError *)error**.  This method is called whenever iOS app discovers BLE peripheral.  Again, these methods are**event** driven--this means something usually has to happen before the come report to your code.
 
 Here are the major methods we will be using to control the iOS BLE hardware:
 
-1.  **centralManagerDidUpdateState**
-2.  **centralManager DidDiscoverPeripheral**
-3.  **centralManager didConnectPeripheral**
-4.  **peripheral didDiscoverServices**
-5.  **peripheral didDiscoverCharacteristicsForService**
-6.  **pierpheral didDiscoverDescriptorsForCharacteristic**
+1. **centralManagerDidUpdateState**
+2. **centralManager DidDiscoverPeripheral**
+3. **centralManager didConnectPeripheral**
+4. **peripheral didDiscoverServices**
+5. **peripheral didDiscoverCharacteristicsForService**
+6. **pierpheral didDiscoverDescriptorsForCharacteristic**
 
 Next, we declare the properties we will need.  If you know as little about Objective-C properties as I did here's a [good tutorial](http://rypress.com/tutorials/objective-c/properties.html).
 
@@ -287,9 +287,9 @@ That should be all the code we need in our header file.
 
 **1\. The UI Connection**
 
-Objective-C operates under the [Modal-View-Controller](https://developer.apple.com/library/ios/documentation/general/conceptual/CocoaEncyclopedia/Model-View-Controller/Model-View-Controller.html) design modal.  We don't have to go too deep into this design theory to be dangerous, the main thing we want to take away is UI elements are connected to our code with keywords.  For UI elements we wish to change programmatically we set a **IBOutlet** and for UI elements we wish to generate an action we use the **-(IBAction)** methods.
+Objective-C operates under the [Modal-View-Controller](https://developer.apple.com/library/ios/documentation/general/conceptual/CocoaEncyclopedia/Model-View-Controller/Model-View-Controller.html) design modal.  We don't have to go too deep into this design theory to be dangerous, the main thing we want to take away is UI elements are connected to our code with keywords.  For UI elements we wish to change programmatically we set a**IBOutlet** and for UI elements we wish to generate an action we use the**-(IBAction)** methods.
 
-An example of using an IBOutlet would like this: **rxLabel.text = @"Got data";**
+An example of using an IBOutlet would like this:**rxLabel.text = @"Got data";**
 
 An example of a -(IBAction) method would be:
 
@@ -299,7 +299,7 @@ All good, now how do we make IBOutlets and IBActions?  First, click on the "Tuxe
 
 ![](/images/Tux_View.png)
 
-Now, hold CONTROL and click on the UI element you want to create an Action or Outlet, then drag to your code between **@interface** and **@end.**
+Now, hold CONTROL and click on the UI element you want to create an Action or Outlet, then drag to your code between**@interface** and**@end.**
 
 ![](/images/Drag_for_Outlet.png)  
 
@@ -360,7 +360,7 @@ Either way, we need to end up with code that looks something like this:
 
 **1\. CBCentralManager**
 
-Ok, let's get our Bluetooth going.  Objective-C has a method that runs once if the UI loads, **-(void)viewDidLoad** method.
+Ok, let's get our Bluetooth going.  Objective-C has a method that runs once if the UI loads,**-(void)viewDidLoad** method.
 
 {% highlight objective-c %}
 - (void)viewDidLoad
@@ -372,7 +372,7 @@ Ok, let's get our Bluetooth going.  Objective-C has a method that runs once if t
 }
 {% endhighlight %}
 
-We will add more code in this method later, but for now this will work.  Here, we are simply allocating and initializing an instance of the CBCentralManager object.  It has two arguments, **initWithDelegate**, we set this to self and the queue we set to nil.  This allows us to inherit the CBDelegate from the ViewController.h.  The queue being set to nil simply means we are going to allow the CentralManager to manage our data.
+We will add more code in this method later, but for now this will work.  Here, we are simply allocating and initializing an instance of the CBCentralManager object.  It has two arguments,**initWithDelegate**, we set this to self and the queue we set to nil.  This allows us to inherit the CBDelegate from the ViewController.h.  The queue being set to nil simply means we are going to allow the CentralManager to manage our data.
 
 ![](/images/Msg_sir_3.jpg)
 
@@ -382,7 +382,7 @@ We will add more code in this method later, but for now this will work.  Here, w
 
 This method is called each time the BLE hardware on the iOS device changes state.  Here, we are using it to check if the iOS' Bluetooth hardware has been turned on.
 
-The **centralManagerDidUpdateState** is a method called by the CoreBluetooth (CB) Central Manager Delegate whenever the BLE hardware in your device changes state.  Here, it is being called when our app first begins.  It will also be called each time the iOS Bluetooth is turned on or off.
+The**centralManagerDidUpdateState** is a method called by the CoreBluetooth (CB) Central Manager Delegate whenever the BLE hardware in your device changes state.  Here, it is being called when our app first begins.  It will also be called each time the iOS Bluetooth is turned on or off.
 
 {% highlight objective-c %}
 // Make sure iOS BT is on.  Then start scanning.
@@ -406,10 +406,10 @@ The [central.state](https://developer.apple.com/library/ios/documentation/CoreBl
 2.  CBCentralManagerStateResetting -- Device is resetting
 3.  CBCentralManagerStateUnsupported -- this device doesn't support BLE.
 4.  CBCentralManagerStateUnauthorized -- Your app isn't authorized to use BLE
-5.  **CBCentralManagerStatePoweredOff**
-6.  **CBCentralManagerStatePoweredOn**
+5. **CBCentralManagerStatePoweredOff**
+6. **CBCentralManagerStatePoweredOn**
 
-We will only be using the last two states.  Our code checks if the BLE hardware is enabled; if it is not, it does nothing.  Eventually, I'll probably add an alert to notify the user, but right now, it does nothing. If the hardware is enabled, then it executes the centralManager instance method with two arguments **scanForPeripheralsWithServices: nil** and **options: nil.**  
+We will only be using the last two states.  Our code checks if the BLE hardware is enabled; if it is not, it does nothing.  Eventually, I'll probably add an alert to notify the user, but right now, it does nothing. If the hardware is enabled, then it executes the centralManager instance method with two arguments**scanForPeripheralsWithServices: nil** and**options: nil.**  
 
 In case you didn't have time to read the BLE protocol manual, I'm going to give you a crash course.  Let's start with the service tree.  The magic of Bluetooth lies in its advertisment protocol.  The Central BLE device is scanning the air, while the Peripheral is advertising its information.  The information advertised coordinates services the peripheral device has available.  
 
@@ -459,13 +459,13 @@ The centralManager didDiscoverPeripheral method executes every time a new servic
 }
 {% endhighlight %}
 
-**9: **Our code set an instance variable **_discoveredPeripheral** to the most recent discovered peripheral.
+**9:**Our code set an instance variable**_discoveredPeripheral** to the most recent discovered peripheral.
 
 **12:** Creates a string variable and sets it to the discovered peripheral's UUID.
 
 1**4:** Checks to see if we got a proper UUID string in the uuid variable.
 
-**17:** Here we are calling the setter method for the **devices NSMutableDictionary**.  We are setting the object service information from the discovered peripheral and the key is the discovered peripheral's UUID.  This is going to allow us to recall at least 6 discovered services.
+**17:** Here we are calling the setter method for the**devices NSMutableDictionary**.  We are setting the object service information from the discovered peripheral and the key is the discovered peripheral's UUID.  This is going to allow us to recall at least 6 discovered services.
 
 **- (NSMutableDictionary *)devices Sett Method**
 
@@ -485,9 +485,9 @@ We are going to store the last six peripherals discovered.
 }
 {% endhighlight %}
 
-**4:** We check to see if we've initialized the dictionary.  **7:** If we haven't then we setup the dictionary with a six device slots, then, we set a slot to the last discovered device.
+**4:** We check to see if we've initialized the dictionary. **7:** If we haven't then we setup the dictionary with a six device slots, then, we set a slot to the last discovered device.
 
-**10:  **When we are done, we return the **devices** dictionary.
+**10: **When we are done, we return the**devices** dictionary.
 
 The devices method will be called many times throughout our program.  Eventually, we will use the dictionary to populate a table of discovered devices.
 
@@ -509,9 +509,9 @@ The centralManager didConnect method executes whenever your app connects to a sp
 }
 {% endhighlight %}
 
-**5: **Once we've connected we activate the peripheral delegate methods.
+**5:**Once we've connected we activate the peripheral delegate methods.
 
-**8:** After we have connected to a particular peripheral, we call the **peripheral discoverServices** method.  Again, by setting the **discoverServices** to **nil** we search for all services on our newly connected peripheral.
+**8:** After we have connected to a particular peripheral, we call the**peripheral discoverServices** method.  Again, by setting the**discoverServices** to**nil** we search for all services on our newly connected peripheral.
 
 **2\. CBPeripheralDelegate**
 
@@ -533,9 +533,9 @@ Here, we enumerate through all the services on the connected peripheral.  This i
 }
 {% endhighlight %}
 
-**4:** This is a fancy for-loop called enumeration.  It goes through all the services listed in the **(CBPeripheral *)peripheral**, which is a small list on the HM-10\.  If it is in the peripheral role, which is default, it only has one service.
+**4:** This is a fancy for-loop called enumeration.  It goes through all the services listed in the**(CBPeripheral *)peripheral**, which is a small list on the HM-10\.  If it is in the peripheral role, which is default, it only has one service.
 
-**7:** Here we call **discoverCharacteristics** method on each service on our connected device.  Again, passing the **nil** argument means we want to discover all characteristics, as oppossed to a specific.  Slow, but inclusive.
+**7:** Here we call**discoverCharacteristics** method on each service on our connected device.  Again, passing the**nil** argument means we want to discover all characteristics, as oppossed to a specific.  Slow, but inclusive.
 
 **![](/images/Msg_sir_3.jpg)**
 
@@ -559,7 +559,7 @@ didDiscoverCharacteristicsForService:(CBService *)service
 
 **4:** We go through each characteristic of each service on the connected peripheral.
 
-**7:** We call the **discoverDescriptorsForCharacteristic** method on each discovered characteristics.
+**7:** We call the**discoverDescriptorsForCharacteristic** method on each discovered characteristics.
 
 **![](/images/Msg_sir_3.jpg)**
 
@@ -569,11 +569,11 @@ We are accomplishing two things in this method.  First, we are getting the chara
 
 ![](/images/TreeOfServicesAndCharacteristics_Remote_Var4.png)
 
-**6: **The firs thing we do is convert the HM-10's characteristics from FFE1 to character values, 255 and 225\.  
+**6:**The firs thing we do is convert the HM-10's characteristics from FFE1 to character values, 255 and 225\.  
 
-**8: **Next, we check to see if we got two characters, and they are 255 and 225
+**8:**Next, we check to see if we got two characters, and they are 255 and 225
 
-**12-23**: We do a quick enumeration through the services and characteristics.  For each characteristic, for each service, we call the selectedPeripheral setter method.  We pass the **setNotifyValue** argument to **true**.  This automatically receives serial data.  Each time serial data is received the method
+**12-23**: We do a quick enumeration through the services and characteristics.  For each characteristic, for each service, we call the selectedPeripheral setter method.  We pass the**setNotifyValue** argument to**true**.  This automatically receives serial data.  Each time serial data is received the method
 
 {% highlight objective-c %}
 -(void)peripheral:(CBPeripheral *)peripheral didUpdateValueForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error
@@ -587,7 +587,7 @@ We are accomplishing two things in this method.  First, we are getting the chara
 
 We'll write our RX method when we get to UI, since we'll set our rxDataLabel to automatically update with incoming data.
 
-Also, the we are setting up an automatic RX notification method.  But, another way to do this is by setting the **setNotifyValue** to false.  Then, each time you want to get RX data you can call the **didUpdateValueForCharacteristic** method manually.
+Also, the we are setting up an automatic RX notification method.  But, another way to do this is by setting the**setNotifyValue** to false.  Then, each time you want to get RX data you can call the**didUpdateValueForCharacteristic** method manually.
 
 {% highlight objective-c %}
 - (void)peripheral:(CBPeripheral *)peripheral
@@ -619,11 +619,11 @@ didDiscoverDescriptorsForCharacteristic:(CBCharacteristic *)characteristic
 
 **sendValue**
 
-This method is called whenever we want to send information to the peripheral.  It has data passing argument **str**, but we wont be using it.  The app we are writing automatically assemblies a data string and send it to the peripheral each time it is called.  To send our data we simply must insure it is in the appropriate variable.
+This method is called whenever we want to send information to the peripheral.  It has data passing argument**str**, but we wont be using it.  The app we are writing automatically assemblies a data string and send it to the peripheral each time it is called.  To send our data we simply must insure it is in the appropriate variable.
 
-This app takes the values of two slider with a range of -255 to 255\.  We then do a little data manipulation.  On the iOS device a byte takes 8 bits.  Same for an unsigned character.  But I found if you assign a value greater than 127 then ARC will automatically generate two-bytes for a single unsigned value.  To get around this and hang on to full resolution of the Arduino, we convert the slider ranges from 255 to 125-0 or 125-1\.  The one is a bit set in a switch-array, **controlByte**.  Then, when the Arduino receives the data it converts it back to full range, 255.
+This app takes the values of two slider with a range of -255 to 255\.  We then do a little data manipulation.  On the iOS device a byte takes 8 bits.  Same for an unsigned character.  But I found if you assign a value greater than 127 then ARC will automatically generate two-bytes for a single unsigned value.  To get around this and hang on to full resolution of the Arduino, we convert the slider ranges from 255 to 125-0 or 125-1\.  The one is a bit set in a switch-array,**controlByte**.  Then, when the Arduino receives the data it converts it back to full range, 255.
 
-Regarding the direction, using the same switch array, **controlByte**, we **set a bit low or high depending on whether the slider indicates 0 to -255 or 0 to 255**.  Again, when this makes it to the Arduino it is converted into direction of the motors.
+Regarding the direction, using the same switch array,**controlByte**, we**set a bit low or high depending on whether the slider indicates 0 to -255 or 0 to 255**.  Again, when this makes it to the Arduino it is converted into direction of the motors.
 
 Ok! Let's step through the code.
 
@@ -715,21 +715,21 @@ Ok! Let's step through the code.
 
 **3-6:**Like before, we are enumerating through all services and characteristics on our connected peripheral.
 
-**8-9**: We get the slider values, round them into an integer and load them into appropriate integer variables **steeringValue** and** accelerationValue**.
+**8-9**: We get the slider values, round them into an integer and load them into appropriate integer variables**steeringValue** and** accelerationValue**.
 
-**14: **Setup a data variable to hold our send string.
+**14:**Setup a data variable to hold our send string.
 
-**25: **We create a byte variable to act as our switch-array.
+**25:**We create a byte variable to act as our switch-array.
 
-**29-42: **Determine direction the motors should go based on the sign of the sliders.
+**29-42:**Determine direction the motors should go based on the sign of the sliders.
 
 **45-58:** Decide whether we need to divide the range.
 
-**67-69: **Load the processed data into data variable.
+**67-69:**Load the processed data into data variable.
 
 **72:** Create a string using the data we've processed, then, convert it to ASCII to be sent to the Arduino.
 
-**75: **Add the ":" character, which will act as our end-of-transmission character.
+**75:**Add the ":" character, which will act as our end-of-transmission character.
 
 **78:** _Finally,_ we send the completed data string to the peripheral.
 

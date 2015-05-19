@@ -67,7 +67,7 @@ For me, this was "**C:\Program Files (x86)\GNU Tools ARM Embedded\4.7 2013q3\bin
 
 **3\. Create a workspace folder. e.g., "C:\Users\Ladvien\Documents\LPC1114_Bare_Metal".**
 
-**4\. Install [binutils](http://www.gnu.org/software/binutils/) for file conversion.  **Binutils has to be compiled for Windows, though, I was able to find them pre-compiled.
+**4\. Install [binutils](http://www.gnu.org/software/binutils/) for file conversion.** Binutils has to be compiled for Windows, though, I was able to find them pre-compiled.
 
 Download [Binutils](http://sourceforge.net/projects/mingw/files/MinGW/Base/binutils/binutils-2.22/binutils-2.22-1-mingw32-bin.tar.lzma/download) compiled for Windows
 

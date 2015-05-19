@@ -325,18 +325,18 @@ _Buuut_, I don't have MATLAB and I'm not currently tied to a university, so I ha
 
 ![](/images/Excel_auto_probe2.png)
 
-**3\. I**f you click on the formating options and select "**Text Import Wizard.**"  You can then select a "Space Delimited" pasting option.  Basically, this will cause Excel to translate th
+**3\. If you click on the formating options and select "Text Import Wizard.**"  You can then select a "Space Delimited" pasting option.  Basically, this will cause Excel to translate th
 
 ![](/images/Excel_auto_probe3.png)
 
 **4\. Once you have your data in Excel correctly, let's make a graph.  **Select your data set then go to the graph type "Surface."
 
-**![](/images/Excel_auto_probe4.png)
-**
+![](/images/Excel_auto_probe4.png)
+
 
 **5\. There's the graph.**
 
-**![](/images/Excel_auto_probe5.png)**
+![](/images/Excel_auto_probe5.png)
 
 6\. There are several things you can do with this data, but only if you have a point of orientation.  That is, what area on the graph represent the area on the print surface.  To find the auto-probe data orientation, I built a lump on my print surface near one of the towers, like this:
 

@@ -325,7 +325,7 @@ _Buuut_, I don't have MATLAB and I'm not currently tied to a university, so I ha
 
 ![](/images/Excel_auto_probe2.png)
 
-**3\. If you click on the formating options and select "Text Import Wizard.**"  You can then select a "Space Delimited" pasting option.  Basically, this will cause Excel to translate th
+**3\. If you click on the formating options and select "Text Import Wizard."**  You can then select a "Space Delimited" pasting option.  Basically, this will cause Excel to translate th
 
 ![](/images/Excel_auto_probe3.png)
 

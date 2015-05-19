@@ -487,7 +487,7 @@ We are going to store the last six peripherals discovered.
 
 **4:** We check to see if we've initialized the dictionary. **7:** If we haven't then we setup the dictionary with a six device slots, then, we set a slot to the last discovered device.
 
-**10: **When we are done, we return the**devices** dictionary.
+**10:** When we are done, we return the **devices** dictionary.
 
 The devices method will be called many times throughout our program.  Eventually, we will use the dictionary to populate a table of discovered devices.
 

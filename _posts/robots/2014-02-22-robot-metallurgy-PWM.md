@@ -95,7 +95,37 @@ We select this by setting WGM00 and WGM01 bits.
 
 So, setting things up, the code will look something like this,
 
-CODE!
+{% highlight c linenos %}
+// Demonstration of PWM on an ATtiny1634.
+// C. Thomas Brittain
+
+#define F_CPU 8000000    // AVR clock frequency in Hz, used by util/delay.h
+#include <avr/io.h>
+#include <util/delay.h>
+
+//Initialize PWM
+void pwm_init()
+{
+	//This is the first PWM register, TCNT0.  It is 8 bit.  Both PIN PA5 and PA6 are set to clear on compare,
+	//then set at bottom; this makes them non-inverting.  The WGM bits are set to for "Fast PWM MODE"
+	//and this clears at the top, "0x00FF."
+	TCCR0A = 0b10100011; // WORKS FOR OC0A, OC0B
+	TCCR0B = 0b00000001; // WORKS FOR OC0A, OC0B
+
+	//This is the second PWM register;TCNT1.  It is 8 bit.  Both PIN PB3 and PC0 are set to clear on compare,
+	//then set at bottom; this makes them non-inverting.  The WGM bits are set to for "Fast PWM MODE"
+	//and this clears at the top, "0x00FF."
+	TCCR1A = 0b10100001;  //WORKS FOR OC1A, OC1B
+	TCCR1B = 0b00001001;  //WORKS FOR OC1A, OC1B
+
+	//This sets the PWM pins as outputs.
+	DDRB |= (1<<PINB3);
+	DDRA |= (1<<PINA5);
+	DDRA |= (1<<PINA6);
+	DDRC |= (1<<PINC0);
+
+}
+{% endhighlight %}
 
 I left the assignment of the TCCR registers in a binary format.  This was just easier for me, but you could as easily use bitwise operations, e.g.,
 
@@ -107,7 +137,47 @@ Also, we have to set the data direction registers for the PWM pins to outputs.
 
 Now, that the initialization is done, let's look at the code I used to demonstrate PWM on the ATtiny1634.
 
-CODE!
+{% highlight c %}
+int main()
+{
+	uint8_t brightness;
+
+	// initialize timer0 in PWM mode
+	pwm_init();
+
+	//Setup several duty-cycle counters to show differential PWM channels.
+	uint8_t brightness2 = 0;
+	uint8_t brightness3 = 0;
+	uint8_t brightness4 = 0;
+
+	//Let's only do this 3 times before turning PWM off.
+	for (int counterB = 0; counterB < 2; ++counterB){
+
+		//The main duty PWM cycle counter will also be our loop counter. (0-255)
+		for (brightness = 255; brightness > 0; --brightness)
+			{
+				// set the brightness as duty cycle
+				brightness2 = brightness2 + 1;
+				brightness3 = brightness3 + 2;
+				brightness4 = brightness4 + 10;
+
+				OCR0A = brightness;   // PCO0
+				OCR0B = brightness2;  // PA5
+				OCR1A = brightness3;  // PB3
+				OCR1B = brightness4;  // PA6
+
+				//Delay to make changes visible.
+				_delay_ms(40);
+			}
+
+			//After 3 loops clear the PWM channels by setting COM0A1 and COM0B1 bits low.
+			//If this is not done then there will be a nominal voltage on these pins due to
+			//the internal pull-ups setting them as outputs.
+			TCCR0A = 0b00000011; // WORKS FOR OC0A, OC0B
+			TCCR1A = 0b00000011; // WORKS FOR OC0A, OC0B
+		}
+}
+{% endhighlight %}
 
 You'll notice this is a modified "Fade" sketch from the Arduino world.  
 
@@ -168,7 +238,98 @@ had a lot of appeal to me.
 
 I played with it a bit and ended up with the following,
 
-CODE!
+{% highlight c linenos %}
+#ifndef analogWrite1634
+#define analogWrite1634
+
+#include <avr/io.h>
+#include <util/delay.h>
+
+void analogWrite(int PWM_PinSelect, int duty);
+
+// initialize PWM
+void pwm_init()
+{
+	//Define PWM pins.
+	#define PWM_PC0 1
+	#define PWM_PA5 2
+	#define PWM_PA6 3
+	#define PWM_PB3 4
+
+	//This is the first PWM register, TCNT0.  It is 8 bit.  Both PIN PA5 and PA6 are set to clear on compare,
+	//then set at bottom; this makes them non-inverting.  The WGM bits are set to for "Fast PWM MODE"
+	//and this clears at the top, "0x00FF."
+	TCCR0A = 0b00000011; // WORKS FOR OC0A, OC0B
+	TCCR0B = 0b00000001; // WORKS FOR OC0A, OC0B
+
+	//This is the second PWM register;TCNT1.  It is 8 bit.  Both PIN PB3 and PC0 are set to clear on compare,
+	//then set at bottom; this makes them non-inverting.  The WGM bits are set to for "Fast PWM MODE"
+	//and this clears at the top, "0x00FF."
+	TCCR1A = 0b00000001;  //WORKS FOR OC1A, OC1B
+	TCCR1B = 0b00001001;  //WORKS FOR OC1A, OC1B
+
+	//This sets the PWM pins as outputs.
+	DDRB |= (1<<PINB3);
+	DDRA |= (1<<PINA5);
+	DDRA |= (1<<PINA6);
+	DDRC |= (1<<PINC0);
+
+}
+
+void analogWrite(int PWM_PinSelect, int duty){
+
+	//Make sure we were passed a number in-range.
+	if (duty > 255) duty = 255;
+	if (duty < 1) duty = 0;
+
+	//Sets PWM for PC0
+	if (PWM_PinSelect == 1){
+		if (duty > 0){
+			TCCR0A |= (1<<COM0A1);
+			OCR0A = duty;
+		}
+		else {
+			TCCR0A ^= (1<<COM0A1);
+		}
+	}
+
+	//Sets PWM for PA5
+	if (PWM_PinSelect == 2){
+		if (duty > 0){
+			TCCR0A |= (1<<COM0B1);
+			OCR0B = duty;
+		}
+		else {
+			TCCR0A ^= (1<<COM0B1);
+		}
+	}
+
+	//Sets PWM for PA6
+	if (PWM_PinSelect == 3){
+		if (duty > 0){
+			TCCR1A |= (1<<COM1B1);
+			OCR1B = duty;
+		}
+		else {
+			TCCR1A ^= (1<<COM1B1);
+		}
+	}
+
+	//Sets PWM for PB3
+	if (PWM_PinSelect == 4){
+		if (duty > 0){
+			TCCR1A |= (1<<COM1A1);
+			OCR1A = duty;
+		}
+		else {
+			TCCR1A	 ^= (1<<COM1A1);
+		}
+	}
+
+}
+
+#endif
+{% endhighlight %}
 
 A synopsis of the library,
 
@@ -180,7 +341,53 @@ A synopsis of the library,
 
 I saved this as **1634analogWrite.h** and then wrote a sketch to use
 
-CODE!
+{% highlight c linenos %}
+// program to change brightness of an LED
+// demonstration of PWM
+//void Tiny1634_PWM(int PWM_PinSelect, int duty);
+
+#define F_CPU 8000000    // AVR clock frequency in Hz, used by util/delay.h
+#include <avr/io.h>
+#include <util/delay.h>
+#include "1634analogWrite.h"
+
+int main()
+{
+	uint8_t brightness;
+
+	// initialize timer0 in PWM mode
+	pwm_init();
+	int brightness2 = 255;
+	int brightness3 = 255;
+	int brightness4 = 255;
+	// run forever
+	while(1)
+	{
+		for (brightness = 255; brightness > -1; --brightness)
+		{
+			analogWrite(PWM_PC0, brightness);
+			analogWrite(PWM_PB3, brightness2);
+			analogWrite(PWM_PA5, brightness3);
+			analogWrite(PWM_PA6, brightness4);
+
+			_delay_ms(10);
+			brightness2 = brightness2 - 5;
+			brightness3 = brightness3 - 10;
+			brightness4 = brightness4 - 15;
+
+			if (brightness == 0)
+			{
+				_delay_ms(1000);
+			}
+			if(brightness2 < 0) brightness2 =255;
+			if(brightness3 < 0) brightness3 =255;
+			if(brightness4 < 0) brightness4 =255;
+		}
+
+	}
+}
+{% endhighlight %}
+
 
 Ok.  I'll revisit this probably with a complete H-Bridge control library.
 

@@ -257,7 +257,7 @@ Really, it is changing the firmware's idea of flatness.
 
 Now, make the adjust from the visual information you collected by comparing point A to point B, C, and D.  Then, comparing them again, adjust again.  Compare, adjust.  _Ad infinitium._
 
-Please, don't think your done. Making these last adjustments means you really need to go back and start from Step #1 and work through them a second time, since any adjustment throws the previous adjustments off alittle. ** So, it is true, adjustment is an infinite process of error reduction and perfection will never be achieved.  Be happy with pretty damn close :)**
+Please, don't think your done. Making these last adjustments means you really need to go back and start from Step #1 and work through them a second time, since any adjustment throws the previous adjustments off alittle. **So, it is true, adjustment is an infinite process of error reduction and perfection will never be achieved.  Be happy with pretty damn close :)**
 
 **6\. Auto-Probe**
 

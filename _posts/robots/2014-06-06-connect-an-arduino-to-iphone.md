@@ -25,11 +25,11 @@ Long story short, Carduino donated to the cause and I used my robot allowance (y
 
 Mac Mid 2009
 
-![](http://letsmakerobots.com/images/Mac_Pro.png)
+![](/images/Mac_Pro.png)
 
 Price ended at $469.99\.  I spent a little more than I should, but since Carduino had added to the kitty I was worried about getting something I'd be unable to run Xcode.  Therefore, I spent a little extra in hopes to get a machine that would allow me to write code efficiently.
 
-![](http://letsmakerobots.com/images/Amys_Mac.png)
+![](/images/Amys_Mac.png)
 
 I have to take a moment and remind people, I wear a white hat.  Dear [Amy2865](http://www.ebay.com/usr/amy2865), before you sell a laptop, be sure to log out of your eBay account. Also, [Jared Kusma](https://www.amherst.edu/athletics/archives/2011-12/golf-m/roster/bios/kusma), I'm liking your laptop, but I _did _clean the keyboard thoroughly before using it.  And the spots on the screen.
 
@@ -63,7 +63,7 @@ So, price for the Mac: **$469.99**
 
 
 
-![](http://letsmakerobots.com/images/Dev_Web2.png)
+![](/images/Dev_Web2.png)
 
 Well, I had the Mac, now what?
 
@@ -81,7 +81,7 @@ Once you have your Mac and Developer License, time to setup Xcode.
 
 *   [Xcode 5](https://itunes.apple.com/us/app/xcode/id497799835?mt=12#)
 
-![](http://letsmakerobots.com/images/Screenshot_2014-07-14_22_41_42.png)
+![](/images/Screenshot_2014-07-14_22_41_42.png)
 
 If you try to compile your app and you **get an error regarding a certificate,** and doesn't automatically resolve, you can download a certificate manually.
 
@@ -89,7 +89,7 @@ If you try to compile your app and you **get an error regarding a certificate,**
 
 1\. Log on to [iOS Dev Center](https://developer.apple.com/devcenter/ios/index.action) and Download you Developer Certificate
 
-![](http://letsmakerobots.com/images/Screenshot_2014-07-14_22_59_42.png)
+![](/images/Screenshot_2014-07-14_22_59_42.png)
 
 You will need to apply this certificate to the apps you write to publish them--even on an ad hoc basis.
 
@@ -141,7 +141,7 @@ The app we're going to write is pretty simple.  _Really_, it is. It takes the va
 
 Ok, open Xcode and let's start a new project.  We are going to use a Single View project.
 
-![](http://letsmakerobots.com/images/Screenshot_2014-07-15_19_16_47.png)
+![](/images/Screenshot_2014-07-15_19_16_47.png)
 
 The first step in creating our app will be laying out the user interface. This boils down to a few items.
 
@@ -195,7 +195,7 @@ Before we get going, it'll help to be slightly familiar with Bluetooth 4.0's sta
 
 The big take away for us is the differences between Central and Peripheral roles.
 
-![](http://letsmakerobots.com/images/Central_Peri_LMR.png)
+![](/images/Central_Peri_LMR.png)
 
 This doesn't mean our bot cant receive data or iOS device can't send data, it simply defines the relationship between the devices.  The role decides which device controls the connection and data flow.  For the sake of this app the **bot will be setup as a Peripheral** and the **iOS device will be the Central**.  This is my opinion, but it seems the BLE hardware connected to the uC or CPU with the greatest speed should take the Central role.
 

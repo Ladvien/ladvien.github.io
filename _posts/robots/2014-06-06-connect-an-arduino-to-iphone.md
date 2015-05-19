@@ -374,11 +374,11 @@ Ok, let's get our Bluetooth going.  Objective-C has a method that runs once if t
 
 We will add more code in this method later, but for now this will work.  Here, we are simply allocating and initializing an instance of the CBCentralManager object.  It has two arguments, **initWithDelegate**, we set this to self and the queue we set to nil.  This allows us to inherit the CBDelegate from the ViewController.h.  The queue being set to nil simply means we are going to allow the CentralManager to manage our data.
 
-****![](/images/Msg_sir_3.jpg)****
+![](/images/Msg_sir_3.jpg)
 
 ![](/images/bluetoothOniOs.jpg)
 
-****centralManagerDidUpdateState****
+**centralManagerDidUpdateState**
 
 This method is called each time the BLE hardware on the iOS device changes state.  Here, we are using it to check if the iOS' Bluetooth hardware has been turned on.
 
@@ -400,13 +400,13 @@ The **centralManagerDidUpdateState** is a method called by the CoreBluetooth (CB
 }
 {% endhighlight %}
 
-The **[central.state](https://developer.apple.com/library/ios/documentation/CoreBluetooth/Reference/CBCentralManager_Class/translated_content/CBCentralManager.html)** property is set by the CBCentralManager Delegate.  It has six states:
+The [central.state](https://developer.apple.com/library/ios/documentation/CoreBluetooth/Reference/CBCentralManager_Class/translated_content/CBCentralManager.html)** property is set by the CBCentralManager Delegate.  It has six states:
 
 1.  CBCentralManagerStateUnknown  -- Device can't be read, etc.
 2.  CBCentralManagerStateResetting -- Device is resetting
 3.  CBCentralManagerStateUnsupported -- this device doesn't support BLE.
 4.  CBCentralManagerStateUnauthorized -- Your app isn't authorized to use BLE
-5.  **CBCentralManagerStatePoweredOff **
+5.  **CBCentralManagerStatePoweredOff**
 6.  **CBCentralManagerStatePoweredOn**
 
 We will only be using the last two states.  Our code checks if the BLE hardware is enabled; if it is not, it does nothing.  Eventually, I'll probably add an alert to notify the user, but right now, it does nothing. If the hardware is enabled, then it executes the centralManager instance method with two arguments **scanForPeripheralsWithServices: nil** and **options: nil.**  

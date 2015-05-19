@@ -359,4 +359,4 @@ If all goes well, when you run your auto-probe data  you'll get a nice lump on t
 
 Of course, I'm not great with math and I'm pure hack, so someone with more understanding of the logic let me know if that is incorrect.
 
-And with that I'll close by saying: **I'm a hack.  I wrote this article not to point out everything I know, but rather, what I've learned.  If anyone finds incorrect information, please comment; I'll make changes quickly. The last thing I'd like to do is steer someone wrong. **
+And with that I'll close by saying: **I'm a hack.  I wrote this article not to point out everything I know, but rather, what I've learned.  If anyone finds incorrect information, please comment; I'll make changes quickly. The last thing I'd like to do is steer someone wrong.**

@@ -56,7 +56,7 @@ As for editing, I've really grown to love [Sublime Text 2](http://www.sublimetex
 
 If you have issues**, make sure directory containing your files is in your PATH environment variable **(I go over how to add the directory to your environment variables in this [post](http://letsmakerobots.com/content/lpc1114-setup-bare-metal-arm)).
 
-<span style="font-size: medium;"><span style="line-height: 22px;">**![](/files/userpics/u19048/Command_line_menu.png)**
+<span style="font-size: medium;"><span style="line-height: 22px;">**![](/images/Command_line_menu.png)**
 
 <span style="font-size: medium;"><span style="line-height: 22px;">**How to Write a Command Line Menu**
 

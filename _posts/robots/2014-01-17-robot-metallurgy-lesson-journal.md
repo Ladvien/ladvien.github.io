@@ -166,7 +166,7 @@ After this, I uploaded the code and it ran just as I had hoped.  The LED would b
 
 Alright, a few other notes.
 
-****Note #2****:** Pin shortcuts and [Bitwise Operators](http://en.wikipedia.org/wiki/Bitwise_operations_in_C).**
+**Note #2: Pin shortcuts and [Bitwise Operators](http://en.wikipedia.org/wiki/Bitwise_operations_in_C).**
 
 Bitwise operators are arithmetic operations that may be performed on binary numbers.  There are four main ones:
 

@@ -329,7 +329,7 @@ _Buuut_, I don't have MATLAB and I'm not currently tied to a university, so I ha
 
 ![](/images/Excel_auto_probe3.png)
 
-**4\. Once you have your data in Excel correctly, let's make a graph.  **Select your data set then go to the graph type "Surface."
+**4\. Once you have your data in Excel correctly, let's make a graph. Select your data set then go to the graph type "Surface."**
 
 ![](/images/Excel_auto_probe4.png)
 

@@ -187,7 +187,6 @@ Alright, need a different solution; sadly, the solution was something I'd been a
 
 I'm not the sharpest when it comes to electronics, before July 2012 all I'd ever done with electronics was turned'em on and checked Facebook. (By the way, **up yours Facebook.****)**  Since my hardware education began I've avoided learning about interrupts because they've intimidated me.  
 
-In Arduino C, intrerrupts are incorporated in most function calls provided by the core.  That is, they operate in the background and do the magic for you.  But in AVR you have to know how to use them to get stuff done; like receive serial data as soon as it arrives without locking up the CPU.
 
 I won't go into interrupts here, since I'm just learning about them.  But I'll mention there are two types, [internal and external](http://www.avrfreaks.net/index.php?name=PNphpBB2&file=viewtopic&t=89843&start=all&postdays=0&postorder=asc).
 

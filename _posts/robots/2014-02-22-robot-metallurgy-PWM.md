@@ -129,7 +129,9 @@ void pwm_init()
 
 I left the assignment of the TCCR registers in a binary format.  This was just easier for me, but you could as easily use bitwise operations, e.g.,
 
-\*TCCR1A |= (1<<COM1A1)|(1<<WGM01)\*
+{% highlight c %}
+TCCR1A |= (1<<COM1A1)|(1<<WGM01)
+{% endhighlight %}
 
 You notice we set the COM0A1 or COM1A1 bits, but later I'll change this so they are not set at initialization.  I found if you connect the pins to the timers at the beginning, then they'll constantly have a nominal voltage on them.  This is made clearer if you have an LED on the pin.  Therefore, unless you set the COM0A1 and COM1A1 bits low then the LED will never fully turn off.
 

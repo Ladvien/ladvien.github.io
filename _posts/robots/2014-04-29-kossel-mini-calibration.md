@@ -179,7 +179,7 @@ Now, there is a way to set the center of your build plate in your Marlin firmwar
 
 ![](/images/IMG_0782.jpg)
 
-*   [170mm Diameter Circle Template](http://letsmakerobots.com/images/Kossel_Calibration.pdf)
+*   [170mm Diameter Circle Template](/images/Kossel_Calibration.pdf)
 
 Next, I lowered my hotend until it was near to center.
 
@@ -287,7 +287,7 @@ And yes, I spent 20 hours or so adjusting my auto-level and scratching my head e
 
 The Z-probe doesn't sit directly over the tip of the hot-end, so we have to adjust for this offset.  To find this number, I did the following.
 
-1.  Place and center the [paper-template](http://letsmakerobots.com/images/Kossel_Calibration.pdf).
+1.  Place and center the [paper-template](/images/Kossel_Calibration.pdf).
 2.  Send the command: **G X0 Y0 Z10**
 3.  Put the auto-probe in its active position (as if to take readings).
 4.  Using Repetier or Pronterface, move the effector from the hotend being centered, until the tip of the Z-probe is centered.
@@ -323,24 +323,24 @@ _Buuut_, I don't have MATLAB and I'm not currently tied to a university, so I ha
 
 2\. **Paste the points into Excel.**  It'll complain about formatting, press OK.
 
-![](http://letsmakerobots.com/images/Excel_auto_probe2.png)
+![](/images/Excel_auto_probe2.png)
 
 **3\. I**f you click on the formating options and select "**Text Import Wizard.**"  You can then select a "Space Delimited" pasting option.  Basically, this will cause Excel to translate th
 
-![](http://letsmakerobots.com/images/Excel_auto_probe3.png)
+![](/images/Excel_auto_probe3.png)
 
 **4\. Once you have your data in Excel correctly, let's make a graph.  **Select your data set then go to the graph type "Surface."
 
-**![](http://letsmakerobots.com/images/Excel_auto_probe4.png)
+**![](/images/Excel_auto_probe4.png)
 **
 
 **5\. There's the graph.**
 
-**![](http://letsmakerobots.com/images/Excel_auto_probe5.png)**
+**![](/images/Excel_auto_probe5.png)**
 
 6\. There are several things you can do with this data, but only if you have a point of orientation.  That is, what area on the graph represent the area on the print surface.  To find the auto-probe data orientation, I built a lump on my print surface near one of the towers, like this:
 
-![](http://letsmakerobots.com/images/IMG_0792.jpg)
+![](/images/IMG_0792.jpg)
 
 Be careful, if your Z-probe doesn't retract far enough, it'll knock your lump into the belt.  
 

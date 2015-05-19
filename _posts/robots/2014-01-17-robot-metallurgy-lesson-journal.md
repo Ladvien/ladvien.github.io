@@ -217,7 +217,9 @@ Bitwise operators, like OR'ing, are done on the entire byte.  That is, each bit,
 
 In electronics registers usually have a fixed width.  For example, the PORTB registry has the width of 8 bits (0-7).  The left-shift operator (<<) allows you to address a specific bit in a registry, it does this by moving the bits in the registry to the left.  The registry itself stays at a fixed width, so when this happens the new places introduced are zero.  The bits that get shifted past the width of the registry get detroyed.  Going back to the PORTB registry, you could address a different pin besides PB0 by using a shift-left operator.  The left-shift operator allows us to quickly create a bit-mask from a byte.  In code, this looks like the following:
 
-*   **PORTB = DDRB | 1 << 3;**
+{% highlight c %}
+PORTB = DDRB | 1 << 3;
+{% endhighlight %}
 
 The above takes the binary number assigned in DDRB and OR's it with a bit mask that is exactly the same, except the third pin, that pin is equal to 1\.  Therefore, **PORTB** would look like this after the operation,
 

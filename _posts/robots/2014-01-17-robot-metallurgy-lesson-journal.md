@@ -193,7 +193,7 @@ But we can use the bitwise operator, OR, to do the same,
 *   DDRB |= 0b00000001;
 {% endhighlight %}
 
-The "|=" is an abbreviated operation that represents the following,
+The "\|=" is an abbreviated operation that represents the following,
 
 {% highlight c %}
 *   DDRB = DDRB | 0b0000001;

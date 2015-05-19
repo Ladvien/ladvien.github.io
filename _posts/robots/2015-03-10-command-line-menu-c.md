@@ -17,13 +17,13 @@ Originally posted on [www.letsmakerobots.com](www.letsmakerobots.com)
 
 I wanted to post this simply because it working on it brought my a dry nostalgic joy.  When I was young, 8-9, my parents got a old computer.  All I remember was its screen was orange and black; having a [Hercules graphics card](http://en.wikipedia.org/wiki/Hercules_Graphics_Card).  I quickly learned to get around from the command prompt.  But I was always thrilled to run into menu driven program.  It was like going to a fancy restaurant of abstractness.  Anyway, when I wanted my code to slow down a bit and branch directions based upon user input, a command menu was a natural choice.
 
-**<span style="font-size: large;">A Break from the LPC1114 Uploader**
+**A Break from the LPC1114 Uploader**
 
 I thought I'd take some time away from coding my [LPC1114 Uploader](http://letsmakerobots.com/lpc1114-usb-serial-solution-rerolling-boot-uploader) and verbally process a few things I've learned.  As always, feel free to critique any of it; it'll only serve to make my code more robust in the end.  
 
 This post will be a series of post leading up to the large post I'll make on writing the uploader.  All posts will rely on the GCC compiler.
 
-**![](/files/userpics/u19048/GCCLogo.png)<span style="font-size: large;">Setting Up the GCC Compiler**
+![](/images/GCCLogo.png)Setting Up the GCC Compiler
 
 I setup a C environment as basic I could.  There may be easier ways to go about this, but I wanted to use GCC to compile.  
 

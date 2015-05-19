@@ -561,9 +561,9 @@ didDiscoverCharacteristicsForService:(CBService *)service
 
 **7:** We call the**discoverDescriptorsForCharacteristic** method on each discovered characteristics.
 
-**![](/images/Msg_sir_3.jpg)**
+![](/images/Msg_sir_3.jpg)
 
-****peripheral** didDiscoverDescriptorsForCharacteristic**
+**peripheral didDiscoverDescriptorsForCharacteristic**
 
 We are accomplishing two things in this method.  First, we are getting the character version of the hex values FFE0
 

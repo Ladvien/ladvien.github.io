@@ -13,7 +13,6 @@ comments: true
 
 Originally posted on [www.letsmakerobots.com](www.letsmakerobots.com)
 
-This is a continuation of my [Robot Metallurgy 101 Lesson Journal](http://letsmakerobots.com/node/39996).
 
 UPDATE: I tweaked the source and rebuilt lpc21isp to allow for automatic mode switching, bootloader and program, from an FTDI breakout.
 

@@ -183,15 +183,21 @@ So, I'll cover two that apply to our example and one bitwise helper: **OR,** **X
 
 We learned that the following sets pin PB0 as an OUTPUT.
 
+{% highlight c %}
 *   DDRB = 0b00000001;
+{% endhighlight %}
 
 But we can use the bitwise operator, OR, to do the same,
 
+{% highlight c %}
 *   DDRB |= 0b00000001;
+c33
 
 The "|=" is an abbreviated operation that represents the following,
 
+c22
 *   DDRB = DDRB | 0b0000001;
+c33
 
 In English, "Whatever is in DDRB is equal to whatever is in DDRB **OR** 0b0000001."
 
@@ -207,7 +213,7 @@ Bitwise operators, like OR'ing, are done on the entire byte.  That is, each bit,
 
 **The Left Shift <<:**
 
-**(NOTE: ****I originally made some mistakes regarding the left-shift operator; ****[6677 has given a very clear description of the left-shift operator](http://letsmakerobots.com/node/39996#comment-114517) in the comments.)  **
+**(NOTE: I originally made some mistakes regarding the left-shift operator;[6677 has given a very clear description of the left-shift operator](http://letsmakerobots.com/node/39996#comment-114517) in the comments.)**
 
 In electronics registers usually have a fixed width.  For example, the PORTB registry has the width of 8 bits (0-7).  The left-shift operator (<<) allows you to address a specific bit in a registry, it does this by moving the bits in the registry to the left.  The registry itself stays at a fixed width, so when this happens the new places introduced are zero.  The bits that get shifted past the width of the registry get detroyed.  Going back to the PORTB registry, you could address a different pin besides PB0 by using a shift-left operator.  The left-shift operator allows us to quickly create a bit-mask from a byte.  In code, this looks like the following:
 
@@ -221,11 +227,15 @@ This seems more complex to me, but I understand it becomes very important when y
 
 One last thing, the <avr/io.h> contains defined pin constants.  So, this operation,
 
+c22
 *   DDRB |= 0b00000001;
+c33
 
 Can be written like so,
 
+c22
 *   DDRB |= 1 << PINB0;
+c33
 
 They do exactly the same thing--and _I guess_ the latter is easier to read.  Pfft.
 
@@ -363,9 +373,9 @@ I spent some time with in Newbie Hack's tutorial: [MCU LED Blink](http://www.new
 
 Now we're cooking.
 
-We already know the bitwise operator (and mask) to set one bit high: **OR.  **
+We already know the bitwise operator (and mask) to set one bit high: **OR.**
 
-The **OR (|) **operator sets the a pin HIGH:
+The **OR (\|)**operator sets the a pin HIGH:
 
 ![](/images/LED_Bitwise_5_OR_bb.jpg)
 
@@ -426,9 +436,9 @@ int main(void)
 }
 {% endhighlight %}
 
-Code to NOT a PIN looks like this **PORTA &= ~ (1 << PINA1);.  **In plain English and in order of operation, "Set PORTA PIN1 to HIGH, create a bitmask of PORTA, then NOT that bitmask.  After, take the NOT'ed bitmask and AND it with PORTA's original state."  
+Code to NOT a PIN looks like this ``PORTA &= ~ (1 << PINA1);.`` In plain English and in order of operation, "Set PORTA PIN1 to HIGH, create a bitmask of PORTA, then NOT that bitmask.  After, take the NOT'ed bitmask and AND it with PORTA's original state."  
 
-**Whew.** I'm not sure I follow that even after writing it.  But I understand it.  Really, **"PORTA &= ~ (1 << PINA1)" = "Set PA1 LOW."**
+**Whew.** I'm not sure I follow that even after writing it.  But I understand it.  Really, ``PORTA &= ~ (1 << PINA1) = Set PA1 LOW.``
 
 But this is good.  We now can dynamically change the state of one PIN without destroying the state of the other PINs on the same port.  Booyah!  
 

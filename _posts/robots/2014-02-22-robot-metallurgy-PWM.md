@@ -189,6 +189,7 @@ The above code provided this output,
 
 <div class="flex-video">
 <iframe width="560" height="315" src="https://www.youtube.com/embed/6dTCbc8Pd1Q?list=UUKodYd0Fj3TSHzXg7aOJYYQ" frameborder="0" allowfullscreen></iframe>
+</div>
 
 
 

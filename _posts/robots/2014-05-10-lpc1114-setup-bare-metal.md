@@ -77,12 +77,12 @@ Really, we are only using Binutils for **objcopy**, which is at the end of the b
 
 Create a build batch file recommend by Duignan and Burke.  Open your workspace folder, create a new text file, enter the following:
 
-
+{% highlight bash %}
 arm-none-eabi-gcc -mcpu=0 -mthumb -v -g -c init.c -o init.o
 arm-none-eabi-gcc -mcpu=0 -mthumb -v -g -c main.c -o main.o
 arm-none-eabi-ld init.o main.o -v -L "C:\Program Files (x86)\GNU Tools ARM Embedded\4.7 2013q3\lib\gcc\arm-none-eabi\4.7.4\armv6-m" -lgcc -T linker_script.ld --cref -Map main.map -nostartfiles -o main.elf
 objcopy -O ihex main.elf main.hex
-
+{% highlight bash %}
 
 **Save the text file in your workspace as "build.bat"**  Be sure to include the quotation marks, since this will convert the file from a text file to a batch file.  This is the same build commands put together by Duignan, but I've added the "-v" option.  This is the verbose mode and will spit out an errors during compiling.
 

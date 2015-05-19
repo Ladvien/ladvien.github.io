@@ -123,8 +123,8 @@ His written tutorials are free, but giving the visual component of Xcode I paid 
 
 I would list other tutorials, but really, Ray's covers everything you'd need to write this app--well, besides the Bluetooth part, which I'll cover.  But one surprisingly helpful video was Apple's introduction to **CoreBluetooth Framework**.
 
-1.  [101 Core Bluetooth](https://developer.apple.com/videos/wwdc/2012/?include=703#703) (You need an Apple Device to watch it :| )
-2.  [Advanced Core Bluetooth](https://developer.apple.com/videos/wwdc/2012/?include=705#705) (You need an Apple Device to watch it :| )
+1.  [101 Core Bluetooth](https://developer.apple.com/videos/wwdc/2012/?include=703#703) (You need an Apple Device to watch it.)
+2.  [Advanced Core Bluetooth](https://developer.apple.com/videos/wwdc/2012/?include=705#705) (You need an Apple Device to watch it .)
 
 Also, several videos and articles I found:
 

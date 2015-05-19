@@ -301,8 +301,8 @@ All good, now how do we make IBOutlets and IBActions?  First, click on the "Tuxe
 
 Now, hold CONTROL and click on the UI element you want to create an Action or Outlet, then drag to your code between **@interface** and **@end.**
 
-**![](/images/Drag_for_Outlet.png)  
-**
+![](/images/Drag_for_Outlet.png)  
+
 
 [Ray Wenderlich's tutorials](http://www.raywenderlich.com/25561/learn-to-code-ios-apps-3-your-first-app) explain this process well.  So, I wont rehash.  A couple hints though, you can type out each of the IBOutlets and IBActions, but unless the dot on the bar next to where it is written is filled in, it is not connected to an element.  Also, if you hover your mouse over the little dot while in tuxedo-view, the element it is connected to will be highlighted.  
 

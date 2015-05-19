@@ -715,7 +715,7 @@ Ok! Let's step through the code.
 
 **3-6:**Like before, we are enumerating through all services and characteristics on our connected peripheral.
 
-**8-9**: We get the slider values, round them into an integer and load them into appropriate integer variables**steeringValue** and** accelerationValue**.
+**8-9**: We get the slider values, round them into an integer and load them into appropriate integer variables **steeringValue** and **accelerationValue**.
 
 **14:**Setup a data variable to hold our send string.
 

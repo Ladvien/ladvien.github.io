@@ -429,7 +429,7 @@ When iDevice scans the HM-10 it'll report back the FFE1 characteristic, which is
 
 **![](/images/Msg_sir_3.jpg)**
 
-** centralManager didDiscoverPeripheral**
+**centralManager didDiscoverPeripheral**
 
 The centralManager didDiscoverPeripheral method executes every time a new service has been discovered.  It provides several bits of information about the discovered peripheral.  First, the peripheral information itself, this includes its name, UUID, etc.  Further information can be pulled from the advertisementData dictionary.  Lastly, which is a neat attribute of BLE, you can access the RSSI of the discovered device before ever connecting.
 

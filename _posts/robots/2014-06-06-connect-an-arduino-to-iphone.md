@@ -205,7 +205,7 @@ To access the Bluetooth 4.0 functionality of compatible iOS devices, Apple provi
 
 {% highlight objective-c %}
 #import <CoreBluetooth/CoreBluetooth.h>
-{% endhighlight }
+{% endhighlight %}
 
 Once the framework is imported we have access to the API methods.  
 
@@ -221,7 +221,7 @@ I believe a delegate is a collection of services your code can subscribe.  I thi
 {% highlight objective-c %}
 @interface ViewController : UIViewController <CBPeripheralDelegate,
 CBCentralManagerDelegate, UITableViewDelegate, UITableViewDataSource>
-{% endhighlight }
+{% endhighlight %}
 
 Here we are calling on subscribing to four delegates:
 
@@ -279,7 +279,7 @@ CBCentralManagerDelegate, UITableViewDelegate, UITableViewDataSource>
 // Stores the advertising data of a peripheral.
 @property (strong, nonatomic) NSMutableData *data;
 @end
-{% endhighlight }
+{% endhighlight %}
 
 That should be all the code we need in our header file.
 
@@ -356,7 +356,7 @@ Either way, we need to end up with code that looks something like this:
 // Menu
 - (IBAction)menuButtonTouchUp:(id)sender;
 @end
-{% endhighlight }
+{% endhighlight %}
 
 **1\. CBCentralManager**
 
@@ -370,7 +370,7 @@ Ok, let's get our Bluetooth going.  Objective-C has a method that runs once if t
     // Allocates and initializes an instance of the CBCentralManager.
     _centralManager = [[CBCentralManager alloc] initWithDelegate:self queue:nil];
 }
-{% endhighlight }
+{% endhighlight %}
 
 We will add more code in this method later, but for now this will work.  Here, we are simply allocating and initializing an instance of the CBCentralManager object.  It has two arguments, **initWithDelegate**, we set this to self and the queue we set to nil.  This allows us to inherit the CBDelegate from the ViewController.h.  The queue being set to nil simply means we are going to allow the CentralManager to manage our data.
 
@@ -398,7 +398,7 @@ The **centralManagerDidUpdateState** is a method called by the CoreBluetooth (CB
         [_centralManager scanForPeripheralsWithServices:nil options:nil];
     }
 }
-{% endhighlight }
+{% endhighlight %}
 
 The **[central.state](https://developer.apple.com/library/ios/documentation/CoreBluetooth/Reference/CBCentralManager_Class/translated_content/CBCentralManager.html)** property is set by the CBCentralManager Delegate.  It has six states:
 
@@ -457,7 +457,7 @@ The centralManager didDiscoverPeripheral method executes every time a new servic
     [self.tableView reloadData];
 
 }
-{% endhighlight }
+{% endhighlight %}
 
 **9: **Our code set an instance variable **_discoveredPeripheral** to the most recent discovered peripheral.
 
@@ -483,7 +483,7 @@ We are going to store the last six peripherals discovered.
     // Return a dictionary of devices.
     return _devices;
 }
-{% endhighlight }
+{% endhighlight %}
 
 **4:** We check to see if we've initialized the dictionary.  **7:** If we haven't then we setup the dictionary with a six device slots, then, we set a slot to the last discovered device.
 
@@ -507,7 +507,7 @@ The centralManager didConnect method executes whenever your app connects to a sp
     // this searches for all services, its slower but inclusive.
     [peripheral discoverServices:nil];
 }
-{% endhighlight }
+{% endhighlight %}
 
 **5: **Once we've connected we activate the peripheral delegate methods.
 
@@ -531,7 +531,7 @@ Here, we enumerate through all the services on the connected peripheral.  This i
         [_selectedPeripheral discoverCharacteristics:nil forService:service];
     }
 }
-{% endhighlight }
+{% endhighlight %}
 
 **4:** This is a fancy for-loop called enumeration.  It goes through all the services listed in the **(CBPeripheral *)peripheral**, which is a small list on the HM-10\.  If it is in the peripheral role, which is default, it only has one service.
 
@@ -555,7 +555,7 @@ didDiscoverCharacteristicsForService:(CBService *)service
         [_selectedPeripheral discoverDescriptorsForCharacteristic:character];
     }
 }
-{% endhighlight }
+{% endhighlight %}
 
 **4:** We go through each characteristic of each service on the connected peripheral.
 
@@ -583,7 +583,7 @@ We are accomplishing two things in this method.  First, we are getting the chara
     //Put RX data collection here.
 
 }
-{% endhighlight }
+{% endhighlight %}
 
 We'll write our RX method when we get to UI, since we'll set our rxDataLabel to automatically update with incoming data.
 
@@ -613,7 +613,7 @@ didDiscoverDescriptorsForCharacteristic:(CBCharacteristic *)characteristic
         }
     }
 }
-{% endhighlight }
+{% endhighlight %}
 
 **![](/images/Msg_sir_3.jpg)**
 
@@ -711,7 +711,7 @@ Ok! Let's step through the code.
         }
     }
 }
-{% endhighlight }
+{% endhighlight %}
 
 **3-6:**Like before, we are enumerating through all services and characteristics on our connected peripheral.
 

@@ -296,7 +296,7 @@ The Z-probe doesn't sit directly over the tip of the hot-end, so we have to adju
 
 Take your readings and put them into the three defines in Marlin
 
-*   **#define X_PROBE_OFFSET_FROM_EXTRUDER **
+*   **#define X_PROBE_OFFSET_FROM_EXTRUDER**
 *   **#define Y_PROBE_OFFSET_FROM_EXTRUDER**
 *   **#define Z_PROBE_OFFSET_FROM_EXTRUDER**
 

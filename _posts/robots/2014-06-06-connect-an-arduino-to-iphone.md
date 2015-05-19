@@ -400,7 +400,7 @@ The**centralManagerDidUpdateState** is a method called by the CoreBluetooth (CB)
 }
 {% endhighlight %}
 
-The [central.state](https://developer.apple.com/library/ios/documentation/CoreBluetooth/Reference/CBCentralManager_Class/translated_content/CBCentralManager.html)** property is set by the CBCentralManager Delegate.  It has six states:
+The [central.state](https://developer.apple.com/library/ios/documentation/CoreBluetooth/Reference/CBCentralManager_Class/translated_content/CBCentralManager.html) property is set by the CBCentralManager Delegate.  It has six states:
 
 1.  CBCentralManagerStateUnknown  -- Device can't be read, etc.
 2.  CBCentralManagerStateResetting -- Device is resetting

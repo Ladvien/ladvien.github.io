@@ -137,10 +137,10 @@
 
 	@include font-size(36,no);
 	@include media($large) {
-		@include font-size(50,no);
+		@include font-size(72,no);
 	}
 
-	line-height: 5.35 * $masthead-height; // half the height to center vertically
+	line-height: .65 * $masthead-height; // half the height to center vertically
 	text-transform: uppercase;
 	&:hover {
 			font-color: $black;

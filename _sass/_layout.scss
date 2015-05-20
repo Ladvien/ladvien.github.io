@@ -169,6 +169,7 @@
 			height: $masthead-height;
 			font-family: $alt-font;
 			-webkit-text-stroke: 2px $black;
+
 			&:before,
 			&:after {
 				content: '';
@@ -200,7 +201,6 @@
 .top-menu {
 	display: none;
 	position: relative;
-	padding-right: 20px;
 	@include media($medium) {
 		@include span-columns(12);
 	}
@@ -218,9 +218,6 @@
 	li {
 		a {
 			font-weight: 700;
-			@include media($large){
-				@include font-size(34,no);
-			}
 			@include font-size(24,no);
 			line-height: .5 * $masthead-height; // half the height to center vertically
 			color: $black;

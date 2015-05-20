@@ -48,11 +48,14 @@
   </head>
 
   <body id="js-body">
-    <progress value="0" id="progressBar">
+
+    {% if page.categories %}
+    <progress value="0" id="progressBar" class="single flat">
       <div class="progress-container">
         <span class="progress-bar"></span>
       </div>
     </progress>
+		{% endif %}
 
     {% include browser-upgrade.html %}
     {% include header.html %}

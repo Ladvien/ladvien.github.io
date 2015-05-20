@@ -62,10 +62,12 @@
 
 	.flat::-webkit-progress-value {
 	  background-color: $progress-bar-color;
+		z-index: 999;
 	}
 
 	.flat::-moz-progress-bar {
 	  background-color: $progress-bar-color;
+		z-index: 999;
 	}
 
 	.single::-webkit-progress-value {
@@ -100,6 +102,7 @@
 	  left: 0;
 	  height: .25em;
 	  display: block;
+		z-index: 999;
 	}
 
 	.progress-bar {
@@ -107,6 +110,7 @@
 	  width: 50%;
 	  display: block;
 	  height: inherit;
+		z-index: 999;
 	}
 
 .no-wrap-child {

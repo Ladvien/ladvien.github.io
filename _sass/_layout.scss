@@ -361,21 +361,21 @@
 		padding: 3em;
 	}
 	h1 {
-		@include font-size(48);
+		@include font-size(100);
 		@include media($medium) {
-			@include font-size(60);
+			@include font-size(100);
 		}
 		@include media($large) {
-			@include font-size(72);
+			@include font-size(100);
 		}
 	}
 	h2 {
-		@include font-size(20);
+		@include font-size(100);
 		@include media($medium) {
-			@include font-size(24);
+			@include font-size(100);
 		}
 		@include media($large) {
-			@include font-size(50);
+			@include font-size(100);
 		}
 	}
 }

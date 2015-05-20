@@ -219,7 +219,7 @@
 		a {
 			font-weight: 700;
 			@include media($large){
-				@include font-size(44,no);
+				@include font-size(34,no);
 			}
 			@include font-size(24,no);
 			line-height: .5 * $masthead-height; // half the height to center vertically

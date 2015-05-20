@@ -135,9 +135,9 @@
 	font-family: $alt-font;
 	font-weight: 700;
 
-	@include font-size($font-size-offset+36,no);
+	@include font-size(36,no);
 	@include media($large) {
-		@include font-size($font-size-offset+72,no);
+		@include font-size(72,no);
 	}
 
 	line-height: .65 * $masthead-height; // half the height to center vertically
@@ -218,7 +218,7 @@
 	li {
 		a {
 			font-weight: 700;
-			@include font-size($font-size-offset+24,no);
+			@include font-size(24,no);
 			line-height: .5 * $masthead-height; // half the height to center vertically
 			color: $black;
 			text-transform: uppercase;
@@ -272,7 +272,7 @@
 			// larger font for intro paragraph
 			> p {
 				&:first-child {
-					@include font-size($font-size-offset+20,yes,30);
+					@include font-size(20,yes,30);
 				}
 			}
 			// cleaner underlines for links
@@ -296,7 +296,7 @@
 			}
 			.page-meta {
 				p{
-					@include font-size($font-size-offset+14,no);
+					@include font-size(14,no);
 					font-family: $alt-font;
 					color: lighten($black,60);
 				}
@@ -333,7 +333,7 @@
 			width: 100%;
 			text-align: center;
 			display: block;
-			@include font-size($font-size-offset+9,no);
+			@include font-size(9,no);
 			font-family: $alt-font;
 		}
 		ins {
@@ -361,21 +361,21 @@
 		padding: 3em;
 	}
 	h1 {
-		@include font-size($font-size-offset+48);
+		@include font-size(48);
 		@include media($medium) {
-			@include font-size($font-size-offset+60);
+			@include font-size(60);
 		}
 		@include media($large) {
-			@include font-size($font-size-offset+72);
+			@include font-size(72);
 		}
 	}
 	h2 {
-		@include font-size($font-size-offset+20);
+		@include font-size(20);
 		@include media($medium) {
-			@include font-size($font-size-offset+24);
+			@include font-size(24);
 		}
 		@include media($large) {
-			@include font-size($font-size-offset+32);
+			@include font-size(32);
 		}
 	}
 }
@@ -405,7 +405,7 @@
 		background-color: rgba($black,.5);
 		color: $white;
 		font-family: $alt-font;
-		@include font-size($font-size-offset+12,no);
+		@include font-size(12,no);
 		text-align: right;
 		z-index: 10;
 		a {
@@ -435,7 +435,7 @@
 	img {
 		width: 80px;
 		height: 80px;
-		border-radius: $border-radius;
+		border-radius: 20px;
 	}
 }
 .author-content {
@@ -444,11 +444,11 @@
 	min-height: 80px; //mirrors avatar height
 }
 .author-name {
-	@include font-size($font-size-offset+20,no);
+	@include font-size(20,no);
 }
 .author-bio {
 	margin-top: 0;
-	@include font-size($font-size-offset+16);
+	@include font-size(16);
 }
 
 /*
@@ -463,7 +463,7 @@
 	font-family: $alt-font;
   /* Copyright text */
 	.copyright {
-		@include font-size($font-size-offset+12);
+		@include font-size(12);
 		color: lighten($black,60);
 		a {
 			color: lighten($black,60);

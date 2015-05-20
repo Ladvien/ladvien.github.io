@@ -55,7 +55,7 @@
 	}
 
 	progress::-webkit-progress-bar {
-	  background-color: transparent;
+	  background-color: $progress-bar-color;
 	}
 
 	.flat::-webkit-progress-value {

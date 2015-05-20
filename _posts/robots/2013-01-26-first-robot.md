@@ -22,7 +22,7 @@ Originally posted on [www.letsmakerobots.com](www.letsmakerobots.com)
 
 **I will update with "4.x" build.  But wanted to get video up as demonstration of concept.  SSH-->RPi-->I2C Optoisolator-->Arduino Mini Pro--->Self Designed Motor shield-->Tracks :)**
 
-<span style="font-size: 13px; line-height: 1.231;">This is my first robot.  Of course, he is very modular.  I'm alright with that--I'm a homeless outreach worker and this entire project was simply meant to take my mind off the bad stuff for a bit.
+This is my first robot.  Of course, he is very modular.  I'm alright with that--I'm a homeless outreach worker and this entire project was simply meant to take my mind off the bad stuff for a bit.
 
 I do love this little guy though, his general hodge-podge appearance reminds me of Tank Girl's monster--good flick.
 
@@ -133,7 +133,7 @@ Total for Basic RPi: $43.67
 
 My delusional mind, obviously ahead of my ability, began to run through how this RPi setup would look.  I began to see my little bot as having two separate components to its existence.  The RPi would be the central nervous system and the Arduino would be the peripheral.  The Arduino would be tasked with executing movement and perception functions and the RPi would be tasked with computation and analysis.  So, with my inability to see my inability, towards the end of writing the Processing code to act as controller I realized that it would be a good place to begin testing the peripheral nervous system (Arduino code) of my little bot.  Moreover, that when I did finally reach the point where I was skilled enough to write intelligent code, then that code would replace the my commands sent from Processing.  
 
-Of course, a problem hit me upside the head--" <span style="color: #333333; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; line-height: 19.5px;">By default, we’ll be supporting Python as the educational language."  F'ing RPi makers.  Oh well--I'd been needing to learn another programming language.  Well, after several days of delving into a scripting language (it was friggin like trying to speak Koiné of the Late Empire) I finally pieced together working(?) Python code.  The Python code I wanted to act as the equivalent to my Processing code, which to my surprise, it did.  So, I was able to leave my Arduino sketch the very same, i.e., my Python script and Processing code will both work on the same version of Arduino sketch.
+Of course, a problem hit me upside the head--" By default, we’ll be supporting Python as the educational language."  F'ing RPi makers.  Oh well--I'd been needing to learn another programming language.  Well, after several days of delving into a scripting language (it was friggin like trying to speak Koiné of the Late Empire) I finally pieced together working(?) Python code.  The Python code I wanted to act as the equivalent to my Processing code, which to my surprise, it did.  So, I was able to leave my Arduino sketch the very same, i.e., my Python script and Processing code will both work on the same version of Arduino sketch.
 
  I did notice the potential of Python.  I was capable of incorporating threading and Tkinter's gui.
 
@@ -155,17 +155,17 @@ Therefore, the eventual information flow will be like so:
 
 Raspberry Pi ---> I2C Optoisolator --> Arduino Pro Mini --> M3 Motor Shield.
 
-<span style="font-size: 13px; line-height: 1.231;">I'll do my best to out line my code and resources needed to get the code working.
+I'll do my best to out line my code and resources needed to get the code working.
 
-<span style="font-size: 13px; line-height: 1.231;">First off, setting up the RPi.
+First off, setting up the RPi.
 
 **Instead of including in this build, I made a separate walking through.**
 
 **[Blueberry Pi](http://letsmakerobots.com/node/36884)**
 
-The code is actually pretty simple right now.  The Python comes up with something to do (right now generated from keystrokes) and tells the Arduino to do it.  It does this by capturing keystrokes, converting them to byes, sending them over the I2C bus where the Arduino captures them, translates them back from bytes into something human readable.  Each keystroke then is associated with a routine.  If it captures the "W" key code, it turns it into bytes, over I2C, Ardy grabs it, turns it back into a "W," then runs the Forward() function.  <span style="font-size: 13px; line-height: 1.231;">Likewise, the Arduino can send information back through the bus to the Pi, which the Pi converts from a byte, into character, then compiles the characters into a string until it predefined delimiter.  Simple.
+The code is actually pretty simple right now.  The Python comes up with something to do (right now generated from keystrokes) and tells the Arduino to do it.  It does this by capturing keystrokes, converting them to byes, sending them over the I2C bus where the Arduino captures them, translates them back from bytes into something human readable.  Each keystroke then is associated with a routine.  If it captures the "W" key code, it turns it into bytes, over I2C, Ardy grabs it, turns it back into a "W," then runs the Forward() function.  Likewise, the Arduino can send information back through the bus to the Pi, which the Pi converts from a byte, into character, then compiles the characters into a string until it predefined delimiter.  Simple.
 
-<span style="font-size: 13px; line-height: 1.231;">The keystroke will eventually be replaced with Raspberry Pi calculations--therefore, it's the central nervous system.  The Arduino will be responsible for carrying out functions; in this metaphor, it's the autonomous nervous system.  The idea is, even if the Pi goes down, the Ardy will hold on to some basic functionality.  This allows the synergy of high-functions (e.g., speech synthesizing) and system stability (Arduino's "survival code").  Of course, it's not done yet. :)
+The keystroke will eventually be replaced with Raspberry Pi calculations--therefore, it's the central nervous system.  The Arduino will be responsible for carrying out functions; in this metaphor, it's the autonomous nervous system.  The idea is, even if the Pi goes down, the Ardy will hold on to some basic functionality.  This allows the synergy of high-functions (e.g., speech synthesizing) and system stability (Arduino's "survival code").  Of course, it's not done yet. :)
 
 **Dicussion v1.x:**
 

@@ -97,7 +97,10 @@ You will need to apply this certificate to the apps you write to publish them--e
 
 This write-up describes writing an app for Bluetooth 4.0 iOS devices to enable a serial connection to an Arduino. To facilitate the serial connection on the Arduino-end a HM-10 acts as a peripheral, which in turn, interacts with the Ardunio via a serial connection.
 
-[![](https://i1.ytimg.com/vi/CfkU0xoOSNU/0.jpg)](http://youtu.be/CfkU0xoOSNU)
+<div class="flex-video">
+<iframe width="560" height="315" src="https://www.youtube.com/embed/CfkU0xoOSNU" frameborder="0" allowfullscreen></iframe>
+</div>
+
 
 The HM-10 operates on 3.3v and the Arduino 5v, but I created an Instructable on how to convert the HM-10 to 5v.
 
@@ -166,7 +169,9 @@ If all goes right, our UI should end up looking something like this:
 
 If you'd like to create your own layout, I've created a video you can follow along:
 
-[![](https://i1.ytimg.com/vi/yy91GB2trpA/0.jpg?time=1405398901904)](http://youtu.be/yy91GB2trpA)
+<div class="flex-video">
+<iframe width="560" height="315" src="https://www.youtube.com/embed/yy91GB2trpA" frameborder="0" allowfullscreen></iframe>
+</div>
 
 Or if you prefer, you can download my skeleton layout:
 

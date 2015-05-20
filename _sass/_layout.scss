@@ -58,37 +58,7 @@
 	  background-color: transparent;
 	}
 
-	.flat::-webkit-progress-value {
-	  background-color: red;
-	}
 
-	.flat::-moz-progress-bar {
-	  background-color: red;
-	}
-
-	.single::-webkit-progress-value {
-	  background-color: transparent;
-	  background-image: -webkit-linear-gradient(left, transparent, red);
-	}
-
-	.single::-moz-progress-bar {
-	  background-color: transparent;
-	  background-image: -moz-linear-gradient(left, transparent, red);
-	}
-
-	.multiple::-webkit-progress-value {
-	  background-image: -webkit-linear-gradient(-45deg,
-		transparent 33%, rgba(0, 0, 0, .1) 33%,
-		rgba(0,0, 0, .1) 66%, transparent 66%),
-		webkit-linear-gradient(left, green, red);
-	}
-
-	.multiple::-moz-progress-bar {
-		background-image: -moz-linear-gradient(-45deg,
-		transparent 33%, rgba(0, 0, 0, .1) 33%,
-		rgba(0,0, 0, .1) 66%, transparent 66%),
-		-moz-linear-gradient(left, green, red);
-	}
 
 	.progress-container {
 	  width: 100%;

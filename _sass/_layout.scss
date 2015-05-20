@@ -48,7 +48,7 @@
 	//border-radius: 5px;
 	&:hover {
 		//@include animation(pop .3s 0 linear);
-		//box-shadow: -2px -2px 10px rgba($black, .90);
+		//box-shadow: -2px -2px 10px rgba($$black, .90);
 		background:rgba(#BC0000, .60);
 
 	}
@@ -123,7 +123,7 @@
 	padding: (.01 * $masthead-height) 0; // fourth the height to center vertically
 	height: $masthead-height;
 	text-decoration: none;
-	color: $black;
+	color: $$black;
 	//-webkit-text-stroke: 2px #BC0000;
 //	text-shadow:
 //			3px 3px 0 #999,
@@ -143,7 +143,7 @@
 	line-height: .65 * $masthead-height; // half the height to center vertically
 	text-transform: uppercase;
 	&:hover {
-			font-color: black;
+			font-color: $black;
 	}
 }
 
@@ -168,7 +168,7 @@
 			padding: (.25 * $masthead-height) 0 (.25 * $masthead-height) ;
 			height: $masthead-height;
 			font-family: $alt-font;
-			-webkit-text-stroke: 2px black;
+			-webkit-text-stroke: 2px $black;
 			//text-shadow:
 			//		2px 2px 0 #999,
 			//		-2px -2px 0 #999,
@@ -191,7 +191,7 @@
 			}
 			&:after {
 				width: 0;
-				background: $black;
+				background: $$black;
 			}
 			&:active:after,
 			&:hover:after {
@@ -225,7 +225,7 @@
 			font-weight: 700;
 			@include font-size(24,no);
 			line-height: .5 * $masthead-height; // half the height to center vertically
-			color: $black;
+			color: $$black;
 			text-transform: uppercase;
 		}
 	}
@@ -237,7 +237,7 @@
 	@include clearfix;
 	font-weight: 700;
 	a {
-		color: lighten($black,60);
+		color: lighten($$black,60);
 	}
 }
 
@@ -303,7 +303,7 @@
 				p{
 					@include font-size(14,no);
 					font-family: $alt-font;
-					color: lighten($black,60);
+					color: lighten($$black,60);
 				}
 			}
 		}
@@ -407,7 +407,7 @@
 		right: 0;
 		margin: 0 auto;
 		padding: 10px 15px;
-		background-color: rgba($black,.5);
+		background-color: rgba($$black,.5);
 		color: $white;
 		font-family: $alt-font;
 		@include font-size(12,no);
@@ -469,9 +469,9 @@
   /* Copyright text */
 	.copyright {
 		@include font-size(12);
-		color: lighten($black,60);
+		color: lighten($$black,60);
 		a {
-			color: lighten($black,60);
+			color: lighten($$black,60);
 			text-decoration: none;
 		}
 	}

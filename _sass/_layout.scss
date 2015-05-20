@@ -52,6 +52,8 @@
 
 	  /* For IE10+, color of the progress bar */
 	  color: $progress-bar-color;
+
+		z-index: 999;
 	}
 
 	progress::-webkit-progress-bar {

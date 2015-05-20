@@ -213,7 +213,7 @@
 		@include span-columns(7);
 		ul {
 			position: absolute;
-			right: 0;
+			right: 02
 		}
 	}
 	.home,
@@ -224,7 +224,7 @@
 		a {
 			font-weight: 700;
 			@include font-size(24,no);
-			line-height: .7 * $masthead-height; // half the height to center vertically
+			line-height: .2 * $masthead-height; // half the height to center vertically
 			color: $black;
 			text-transform: uppercase;
 		}

@@ -217,7 +217,7 @@ Lessons learned:
 *   Designing OSHPark boards has the added benefit of encouraging you to be efficient about PCB design, since you are charged by the square inch.  It pays to learn to design compact boards, with SMD parts.
 *   It's not Python that annoys me, rather, it is the lack of ways to manage Python version compatibility.
 
-**COGs Breakdown 1.x: **
+**COGs Breakdown 1.x:**
 
 *   Interia's base (4 motors, treads, hubs, and CNC'ed aluminum): $109.00
 *   Arduino Uno: $34
@@ -228,7 +228,7 @@ Lessons learned:
 *   Medium Servo $10.95
 *   **Total: $223.80**
 
-**COGs Breakdown 2.x: **
+**COGs Breakdown 2.x:**
 
 *   Interia's base (4 motors, treads, hubs, and CNC'ed aluminum): $109.00
 *   Arduino Uno: $34

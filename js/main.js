@@ -38,7 +38,7 @@ $(document).ready(function(){
   }
   else {
       var progressBar = $('.progress-bar'),
-          max = getMax(), 
+          max = getMax(),
           value, width;
 
       var getWidth = function(){
@@ -64,7 +64,16 @@ $(document).ready(function(){
 
 });
 
+$(window).on('resize', function() {
+  winHeight = $(window).height(),
+  docHeight = $(document).height();
 
+  max = docHeight - winHeight;
+  progressBar.attr('max', max);
+
+  value =  $(window).scrollTop();
+  progressBar.attr('value', value);
+});
 
 
 // Table of Contents title. Change text to localize

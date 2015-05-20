@@ -123,8 +123,8 @@
 	padding: (.01 * $masthead-height) 0; // fourth the height to center vertically
 	height: $masthead-height;
 	text-decoration: none;
-	color: $black;
-	-webkit-text-stroke: 2px #BC0000;
+	color: #bc0000;
+	//-webkit-text-stroke: 2px #BC0000;
 //	text-shadow:
 //			3px 3px 0 #999,
 //			-3px -3px 0 #999,

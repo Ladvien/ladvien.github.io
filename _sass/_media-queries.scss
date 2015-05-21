@@ -4,7 +4,7 @@
 
 }
 
-@media (max-width: 560px){
+@media only screen and (max-width: 1020px){
   .post-list-item-date {
     display: none;
   }

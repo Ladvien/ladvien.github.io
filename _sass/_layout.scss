@@ -144,7 +144,7 @@
 .post-list-item-title {
 	padding-left: 1px;
 	padding-right: 1px;
-	line-height: .50;
+	line-height: .65 * $masthead-height; // half the height to center vertically
 }
 
 

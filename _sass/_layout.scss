@@ -199,7 +199,7 @@
 		@include transform(translate(-1600px,0));
 	}
 	.inner-wrap {
-		@include outer-container;
+		@include outer-container;F
 	}
 }
 
@@ -289,7 +289,8 @@
 		@include span-columns(7);
 		ul {
 			position: absolute;
-			right: 0;
+			right: -118px;
+			top: 155px;
 		}
 	}
 	.home,

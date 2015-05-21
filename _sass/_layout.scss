@@ -147,11 +147,6 @@
 	padding-right: 1px;
 }
 
-@media only screen and (max-device-width: 480px) {
-	.post-list-item-date {
-		display: none;
-	}
-}
 
 .post-list-item-date {
 	float:right;
@@ -344,9 +339,6 @@
 	@include transition(500ms cubic-bezier(.645,.045,.355,1.000));
 	&.slide {
 		@include transform(translate(-60rem,0));
-	}
-	.wrap{
-		margin-top: 100px;
 	}
 }
 

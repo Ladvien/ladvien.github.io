@@ -135,7 +135,7 @@
 	&:hover {
 		//@include animation(pop .3s 0 linear);
 		//box-shadow: -2px -2px 10px rgba($black, .90);
-		//background:rgba(#666, .60);
+		background:rgba(#666, .60);
 
 	}
 }
@@ -216,7 +216,7 @@
 	text-decoration: none;
 	color: $black;
 
-	font-family: $title-font-family;  
+	font-family: $title-font-family;
 	font-weight: 700;
 
 	@include font-size(36,no);

@@ -189,9 +189,9 @@
 
 #masthead {
 	padding-left: $gutter;
-	padding-top: $gutter + 5;
-	padding-bottom: $gutter + 5;
-	padding-right: $gutter + 5;
+	padding-top: $gutter;
+	padding-bottom: $gutter;
+	padding-right: $gutter;
 	z-index: 5;
 	//background: url("/images/bandana7.svg") no-repeat;
 	background-size: cover;
@@ -307,7 +307,7 @@
 	}
 	li {
 		a {
-			font-weight: 700;
+			font-weight: 400;
 			@include font-size(24,no);
 			line-height: .5 * $masthead-height; // half the height to center vertically
 			color: $black;

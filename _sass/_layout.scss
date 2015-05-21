@@ -120,7 +120,6 @@
 
 
 .post-list-wrapper {
-	margin-top: 100px;
 	padding: 10px;
 	margin: 10px;
 }
@@ -345,6 +344,9 @@
 	@include transition(500ms cubic-bezier(.645,.045,.355,1.000));
 	&.slide {
 		@include transform(translate(-60rem,0));
+	}
+	.wrap{
+		margin-top: 100px;
 	}
 }
 

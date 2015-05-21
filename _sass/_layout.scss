@@ -224,12 +224,16 @@
 	  @include font-size(72,no);
 	}
 
-
 	line-height: .65 * $masthead-height; // half the height to center vertically
 	text-transform: uppercase;
 	&:hover {
 			font-color: $black;
 	}
+}
+
+.title-link {
+	background-color: transparent;
+	text-decoration: none;
 }
 
 

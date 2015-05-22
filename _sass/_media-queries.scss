@@ -9,10 +9,8 @@
     display: none;
   }
 
-  .sliding-menu-button {
-    top: $gutter;
-  }
-  
+
+
 }
 
 @media only screen and (min-device-width: 960px){
@@ -24,5 +22,8 @@
 @media only screen and (max-width: 820px){
   .menu {
     display: none;
+  }
+  .sliding-menu-button {
+    top: $gutter;
   }
 }

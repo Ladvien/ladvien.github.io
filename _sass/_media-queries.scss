@@ -8,7 +8,7 @@
     color: green;
   }
   .post-list-item-title {
-    line-height: 1 * $masthead-height; // half the height to center vertically
+    line-height: 1.0 * $masthead-height; // half the height to center vertically
   }
 }
 
@@ -25,6 +25,9 @@
   }
   .site-menu {
     display: block;
+  }
+  .post-list-item-title {
+    line-height: .5 * $masthead-height; // half the height to center vertically
   }
 
 }

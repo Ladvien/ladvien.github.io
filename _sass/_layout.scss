@@ -242,7 +242,7 @@
 
 .menu {
 	li {
-		float: right;
+		float: left;
 		padding-right: 20px;
 		&:last-child a {
 			@include media($medium) {
@@ -252,7 +252,6 @@
 		a {
 			// line hover effect
 			position: relative;
-			display: block;
 			margin-right: $gutter;
 			padding: (.25 * $masthead-height) 0 (.25 * $masthead-height) ;
 			height: $masthead-height;

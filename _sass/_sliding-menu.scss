@@ -22,6 +22,7 @@
 
 .sliding-menu-button {
   position: fixed;
+  z-index: 450;
   transform: translateZ(0);
   backface-visibility: hidden; /* fix scroll jank */
   bottom: 20px;

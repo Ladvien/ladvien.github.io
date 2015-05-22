@@ -8,9 +8,11 @@
   .post-list-item-date {
     display: none;
   }
-  @include media($large){
+
+  .sliding-menu-button {
     top: $gutter;
   }
+  
 }
 
 @media only screen and (min-device-width: 960px){

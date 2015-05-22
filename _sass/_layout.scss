@@ -218,6 +218,7 @@
 
 	font-family: $title-font-family;
 	font-weight: 700;
+	position: relative;
 
 	@include font-size(36,no);
 	@include media($large) {

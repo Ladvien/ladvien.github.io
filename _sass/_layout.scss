@@ -288,8 +288,8 @@
 /* Top menu navigation */
 
 .top-menu {
-	float:right;
-	display: none;
+	//float:right;
+	display: inline;
 	position: relative;
 	@include media($medium) {
 		@include span-columns(12);

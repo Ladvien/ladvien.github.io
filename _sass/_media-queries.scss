@@ -1,20 +1,22 @@
 
 
-@media only screen and (min-device-width: 320px){
-
+@media only screen and (min-device-width: 460){
+  .wrap{
+		margin-top: 100px;
+	 }
   .site-title {
     color: green;
   }
 }
 
-@media only screen and (max-width: 720px){
+@media only screen and (max-width: 720){
   .post-list-item-date {
     display: none;
   }
 
 }
 
-@media only screen and (min-width: 960px){
+@media only screen and (max-width: 960){
   .site-title {
     color: blue;
   }

@@ -1,14 +1,11 @@
 
 
-@media only screen and (min-width: 460px){
+@media only screen and (min-device-width: 460px){
   .wrap{
 		margin-top: 100px;
 	 }
   .site-title {
     color: green;
-  }
-  .post-list-item-title {
-    line-height: 250px; // half the height to center vertically
   }
 }
 
@@ -27,7 +24,7 @@
     display: block;
   }
   .post-list-item-title {
-    line-height: .5 * $masthead-height; // half the height to center vertically
+    line-height: 1.45 * $masthead-height; // half the height to center vertically
   }
 
 }

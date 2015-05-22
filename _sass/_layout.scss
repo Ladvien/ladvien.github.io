@@ -242,7 +242,7 @@
 
 .menu {
 	li {
-		float: left;
+		float: right;
 		padding-right: 20px;
 		&:last-child a {
 			@include media($medium) {

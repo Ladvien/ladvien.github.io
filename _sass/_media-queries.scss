@@ -8,22 +8,10 @@
   .post-list-item-date {
     display: none;
   }
-
-
-
 }
 
 @media only screen and (min-device-width: 960px){
   .wrap{
 		margin-top: 100px;
 	}
-}
-
-@media only screen and (max-width: 820px){
-  .menu {
-    display: none;
-  }
-  .sliding-menu-button {
-    bottom: 20px;
-  }
 }

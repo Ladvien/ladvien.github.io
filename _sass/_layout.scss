@@ -242,6 +242,7 @@
 
 .menu {
 	li {
+		display: none;
 		float: left;
 		padding-right: 20px;
 		&:last-child a {

@@ -224,8 +224,6 @@
 	  @include font-size(72,no);
 	}
 
-	text-decoration: none;
-
 	line-height: .65 * $masthead-height; // half the height to center vertically
 	text-transform: uppercase;
 	&:hover {

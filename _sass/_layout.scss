@@ -215,10 +215,9 @@
 	height: $masthead-height;
 	text-decoration: none;
 	color: $black;
-	float: left;
+
 	font-family: $title-font-family;
 	font-weight: 700;
-	position: relative;
 
 	@include font-size(36,no);
 	@include media($large) {
@@ -243,7 +242,7 @@
 
 .menu {
 	li {
-		float: right;
+		float: left;
 		padding-right: 20px;
 		&:last-child a {
 			@include media($medium) {

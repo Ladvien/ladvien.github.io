@@ -224,7 +224,7 @@
 	  @include font-size(72,no);
 	}
 
-	word-wrap: none;
+
 	line-height: .65 * $masthead-height; // half the height to center vertically
 	text-transform: uppercase;
 	&:hover {
@@ -289,7 +289,7 @@
 
 .top-menu {
 	top: -38px;
-
+	display: inline;
 	position: relative;
 	@include media($medium) {
 		@include span-columns(12);

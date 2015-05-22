@@ -243,6 +243,7 @@
 .menu {
 	li {
 
+		display: inline-block;
 		&:last-child a {
 			@include media($medium) {
 				margin-right: 0; // remove spacing from last menu link

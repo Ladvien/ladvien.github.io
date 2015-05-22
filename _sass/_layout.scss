@@ -288,7 +288,7 @@
 /* Top menu navigation */
 
 .top-menu {
-	width: auto;
+	float:right;
 	display: none;
 	position: relative;
 	@include media($medium) {

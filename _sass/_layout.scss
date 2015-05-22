@@ -155,7 +155,7 @@
 }
 
 .post-list-item-image-wrapper {
-		float: left;
+		//float: left;
 		padding-right: 10px;
 		padding-left: 10px;
 		//padding-bottom: 2px;
@@ -311,7 +311,7 @@
 			@include font-size(24,no);
 			line-height: .5 * $masthead-height; // half the height to center vertically
 			color: $black;
-			text-transform: uppercase;
+			//text-transform: uppercase;
 		}
 	}
 }

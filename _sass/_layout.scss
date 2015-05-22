@@ -290,7 +290,7 @@
 .top-menu {
 	top: -38px;
 	display: inline;
-	position: relative;
+	//position: ;
 	@include media($medium) {
 		@include span-columns(12);
 	}

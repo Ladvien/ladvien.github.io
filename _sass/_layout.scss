@@ -155,7 +155,7 @@
 }
 
 .post-list-item-image-wrapper {
-		//float: left;
+		float: left;
 		padding-right: 10px;
 		padding-left: 10px;
 		//padding-bottom: 2px;
@@ -189,7 +189,6 @@
    ========================================================================== */
 
 #masthead {
-	display: inline;
 	padding-left: $gutter;
 	padding-top: $gutter;
 	padding-bottom: $gutter;
@@ -243,8 +242,7 @@
 
 .menu {
 	li {
-
-		display: inline-block;
+		float: left;
 		&:last-child a {
 			@include media($medium) {
 				margin-right: 0; // remove spacing from last menu link
@@ -289,7 +287,7 @@
 /* Top menu navigation */
 
 .top-menu {
-	display: inline;
+	display: none;
 	position: relative;
 	@include media($medium) {
 		@include span-columns(12);
@@ -312,7 +310,7 @@
 			@include font-size(24,no);
 			line-height: .5 * $masthead-height; // half the height to center vertically
 			color: $black;
-			//text-transform: uppercase;
+			text-transform: uppercase;
 		}
 	}
 }

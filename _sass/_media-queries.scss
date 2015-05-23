@@ -20,10 +20,7 @@
 @media only screen and (max-width: 960px){
   .site-title {
     color: blue;
-  }
-  .site-menu {
-    display: block;
-  }
+  
   .post-list-item-title {
     line-height: 1.0 * $masthead-height; // half the height to center vertically
     text-align: center;

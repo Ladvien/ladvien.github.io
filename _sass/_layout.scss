@@ -191,6 +191,7 @@
 		@include transform(translate(-1600px,0));
 	}
 	.inner-wrap {
+		float: left;
 		@include outer-container;
 	}
 }
@@ -342,7 +343,6 @@
 
 #main {
 	.inner-wrap {
-		float: left;
 		@include media($medium) {
 			@include span-columns(9);
 		}

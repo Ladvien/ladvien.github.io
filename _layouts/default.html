@@ -44,7 +44,21 @@
 
 
   </head>
+  <!-- COLORIZE POSTS -->
 
+
+
+      <style>
+        #masthead {
+          background-color: {{ page.color }};
+        }
+        .post-list-item-wrapper {
+        	width: auto;
+          background: {{ site.color }}
+        }
+      </style>
+
+  <!-- END COLORIZE POSTS -->
   <body id="js-body">
     {% if page.categories %}
     <progress value="0" id="progressBar" class="flat">
@@ -66,19 +80,5 @@
 
   </body>
 
-<!-- COLORIZE POSTS -->
 
-
-
-    <style>
-      #masthead {
-        background-color: {{ page.color }};
-      }
-      .post-list-item-wrapper {
-      	width: auto;
-        background: {{ site.color }}
-      }
-    </style>
-
-<!-- END COLORIZE POSTS -->
 </html>

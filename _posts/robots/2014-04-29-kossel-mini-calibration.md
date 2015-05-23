@@ -4,6 +4,8 @@ title: Kossel Mini Calibration
 categories: robots
 excerpt:
 tags: [robots]
+color: blue
+color: blue
 image:
   feature: 8730999022_8c997d84b1_z.jpg
   teaser: 8730999022_8c997d84b1_z.jpg

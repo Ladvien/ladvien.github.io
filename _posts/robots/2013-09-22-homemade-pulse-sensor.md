@@ -4,6 +4,8 @@ title: Homemade Pulse Sensor
 categories: robots
 excerpt:
 tags: [robots]
+color: blue
+color: blue
 image:
   feature: IMG_9109.JPG
   teaser: IMG_9109.JPG

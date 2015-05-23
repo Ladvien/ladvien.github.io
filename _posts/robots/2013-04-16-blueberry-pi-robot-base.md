@@ -4,6 +4,7 @@ title: Blueberry Pi -- How I Setup My Raspberry Pi as a Robot Base
 categories: robots
 excerpt:
 tags: [robots]
+color: blue
 image:
   feature: ArdyPi.jpg
   teaser: ArdyPi.jpg

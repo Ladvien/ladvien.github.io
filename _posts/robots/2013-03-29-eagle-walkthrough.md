@@ -4,6 +4,7 @@ title: My Eagle PCB Walkthrough
 categories: robots
 excerpt:
 tags: [robots]
+color: blue
 image:
   feature: EagleIcon.png
   teaser: EagleIcon.png

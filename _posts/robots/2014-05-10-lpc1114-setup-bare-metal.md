@@ -4,6 +4,8 @@ title: LPC1114 -- GCC Toolchain Setup
 categories: robots
 excerpt:
 tags: [robots]
+color: blue
+color: blue
 image:
   feature: LPC1114_Bare_Metal_ARM2.jpg
   teaser: LPC1114_Bare_Metal_ARM2.jpg

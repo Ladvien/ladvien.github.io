@@ -4,6 +4,8 @@ title: A Friendly Overlord
 categories: robots
 excerpt:
 tags: [robots]
+color: blue
+color: blue
 image:
   feature: Friendly_Overlord.jpg
   teaser: Friendly_Overlord.jpg

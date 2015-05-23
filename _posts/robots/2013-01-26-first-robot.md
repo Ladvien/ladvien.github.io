@@ -4,6 +4,7 @@ title: First Robot
 categories: robots
 excerpt:
 tags: [robots]
+color: blue
 image:
   feature: IMG_8961.JPG
   teaser: IMG_8961.JPG

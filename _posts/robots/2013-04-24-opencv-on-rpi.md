@@ -4,6 +4,7 @@ title: OpenCV on a Raspberry Pi
 categories: robots
 excerpt:
 tags: [robots]
+color: blue
 image:
   feature: USBPi.JPG
   teaser: USBPi.JPG

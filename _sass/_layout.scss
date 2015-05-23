@@ -191,7 +191,6 @@
 		@include transform(translate(-1600px,0));
 	}
 	.inner-wrap {
-		float: left;
 		@include outer-container;
 	}
 }

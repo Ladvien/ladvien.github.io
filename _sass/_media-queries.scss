@@ -2,28 +2,53 @@
 
 @media only screen and (min-device-width: 460px){
 
-
-}
-
-@media only screen media and (max-width: $medium){
-  .sliding-menu-button {
-    top: $gutter;
+  .site-title {
+    color: green;
   }
-  .wrap{
-    margin-top: 100px;
-   }
-   .post-list-item-title {
-     line-height: .7 * $masthead-height; // half the height to center vertically
-     font-size: 44px;
-   }
-   .site-title {
-     color: green;
-   }
 }
+
+@include media($medium){
+
+
+}
+
 // EQUAL TO OR LESS THAN 960px;
 @media only screen and (max-width: 960px){
-  .site-title {
-    color: blue;
+  .site-title-text {
+    line-height: 1.0;
   }
+  .lines-button {
+    bottom: 10px;
+  }
+  #js-menu-trigger {
+    bottom: 10px;
+  }
+  .sliding-menu-button {
+    bottom: 10px;
+    color: red;
+  }
+  .wrap{
+    margin-top: 50px;
+   }
 
+   .post-list-item-wrapper {
+     padding: 30px;
+   }
+   .post-list-item-date{
+     display: none;
+   }
+   .post-list-item-title {
+     line-height: .6 * $masthead-height; // half the height to center vertically
+     font-size: 38px;
+   }
+
+   .top-menu {
+   	 display: none;
+   }
+}
+
+@media only screen and (min-width: 961px){
+  .sliding-menu-button {
+    top: 10px;
+  }
 }

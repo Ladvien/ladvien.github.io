@@ -1,7 +1,7 @@
 ---
 layout: archive
 permalink: /
-title: "Writings"
+title: "Works"
 ---
 <div class="post-list-wrapper">
 {% for post in site.posts %}

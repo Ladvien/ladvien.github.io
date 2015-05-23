@@ -68,14 +68,13 @@
 
 <!-- COLORIZE POSTS -->
 
-  {% if page.color.red %}
-  <h1> WOW! </h1>
-    <style>
 
+
+    <style>
       #masthead {
-        background-color: #BC0000;
+        background-color: {{ page.color }};
       }
     </style>
-  {% endif %}
+
 <!-- END COLORIZE POSTS -->
 </html>

@@ -231,7 +231,6 @@
 
 .menu {
 	li {
-		float: left;
 		padding-right: 20px;
 		&:last-child a {
 			@include media($medium) {
@@ -281,8 +280,8 @@
 
 .top-menu {
 	//top: -38px;
-	display: inline;
-	position: relative;
+	//display: inline;
+	//position: relative;
 	@include media($medium) {
 		@include span-columns(12);
 	}

@@ -137,8 +137,8 @@
 	border-width: thin;
 	//border-radius: 5px;
 	&:hover {
-		@include animation(hang .1s 0 linear);
-		box-shadow: -.1em -.1em 10px rgba($black, .90);
+		@include animation(pop .1s 0 linear);
+		box-shadow: -.1em -.1em 2px rgba($black, .90);
 		background:rgba(#666, .30);
 
 	}

@@ -274,6 +274,10 @@
 }
 
 /* Top menu navigation */
+.sub-menu-wrapper {
+	float: right;
+
+}
 
 .top-menu {
 	top: -38px;
@@ -286,8 +290,8 @@
 		@include span-columns(7);
 		ul {
 			position: absolute;
-			right: -118px;
-			top: 155px;
+			//right: -118px;
+			//top: 155px;
 		}
 	}
 	.home,

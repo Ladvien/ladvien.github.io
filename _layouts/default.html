@@ -66,8 +66,15 @@
 
   </body>
 
+<!-- COLORIZE POSTS -->
   {% if site.categories.robots %}
-
+    <style>
+      #masthead {
+        background-color:$blue-bandana;
+      }
+    </style>
+  {% endif %}
+  {% if post.categories.robots %}
     <style>
       #masthead {
         background-color:$blue-bandana;
@@ -88,4 +95,5 @@
       }
     </style>
   {% endif %}
+<!-- END COLORIZE POSTS -->
 </html>

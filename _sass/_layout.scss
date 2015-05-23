@@ -222,8 +222,6 @@
 	height: $masthead-height;
 	text-decoration: none;
 	color: $white;
-	//152a55
-
 	font-family: $title-font-family;
 	font-weight: 700;
 
@@ -304,8 +302,8 @@
 		//@include span-columns(7);
 		ul {
 			position: absolute;
-			right: 20px;
-			top: 15px;
+			right: 0px;
+			top: 0px;
 		}
 	//}
 	.home,

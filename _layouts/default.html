@@ -46,15 +46,16 @@
   </head>
 
   <body id="js-body">
-    {% if site.category-list.robots %}
-    <h1>WOW!</h1>
+    {% if site.categories.robots %}
+
       <style>
         #masthead {
           background-color:$blue-bandana;
         }
       </style>
     {% endif %}
-    {% if site.category-list.homeless %}
+    {% if site.categories.homeless %}
+    <h1>WOW!</h1>
       <style>
         #masthead {
           background-color: $red-bandana;

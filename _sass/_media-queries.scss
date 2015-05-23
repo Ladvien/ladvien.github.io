@@ -28,7 +28,7 @@
      line-height: .6 * $masthead-height; // half the height to center vertically
      font-size: 38px;
    }
-   
+
    .top-menu {
    	 display: none;
    }
@@ -37,6 +37,6 @@
 // DESKTOP SECOND
 @media only screen and (min-width: 961px){
   .sliding-menu-button {
-    top: 10px;
+    top: 20px;
   }
 }

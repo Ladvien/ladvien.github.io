@@ -9,6 +9,11 @@
   }
 }
 
+@include media($large){
+  .sliding-menu-button {
+    top: $gutter;
+  }
+}
 // EQUAL TO OR LESS THAN 960px;
 @media only screen and (max-width: 960px){
   .site-title {

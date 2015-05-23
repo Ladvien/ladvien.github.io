@@ -25,9 +25,7 @@
   transform: translateZ(0);
   backface-visibility: hidden; /* fix scroll jank */
   bottom: 20px;
-  @include media($large){
-    top: $gutter;
-  }
+
   right: $gutter;
   display: block;
   width: $button-size * 2;

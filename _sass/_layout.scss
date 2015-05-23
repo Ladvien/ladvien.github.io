@@ -219,13 +219,12 @@
 	//	@include span-columns(4);
 	//}
 	padding: (.01 * $masthead-height) 0; // fourth the height to center vertically
-	padding-top: 0px;
 	height: $masthead-height;
 	text-decoration: none;
 	color: $white;
 	font-family: $title-font-family;
 	font-weight: 700;
-
+	margin-top: 0px;
 	@include font-size(36,no);
 	@include media($large) {
 	  @include font-size(72,no);

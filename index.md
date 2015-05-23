@@ -2,6 +2,7 @@
 layout: archive
 permalink: /
 title: "Works"
+color: "#BC0000"
 ---
 <div class="post-list-wrapper">
 {% for post in site.posts %}

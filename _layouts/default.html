@@ -74,6 +74,21 @@
       #masthead {
         background-color: {{ page.color }};
       }
+      .post-list-item-wrapper {
+      	width: auto;
+      	padding: 5px;
+      	//margin: 10px;
+      	border-top-style: solid;
+      	border-color:#000000;
+      	border-width: thin;
+      	//border-radius: 5px;
+      	&:hover {
+      		@include animation(hang .1s 0 linear);
+      		box-shadow: -2px -2px 10px rgba($black, .90);
+      		background:rgba({{ page.color }}, .60);
+
+      	}
+      }
     </style>
 
 <!-- END COLORIZE POSTS -->

@@ -4,8 +4,8 @@ title: Incomplete Works
 categories: robots
 excerpt:
 tags: [robots]
-color: blue
-color: blue
+
+
 image:
   feature: IMG_0641.JPG
   teaser: IMG_0641.JPG

@@ -4,7 +4,7 @@ title: Arduino to RPi -- Galvanically Isolated I2C
 categories: robots
 excerpt:
 tags: [robots]
-color: blue
+
 image:
   feature: IMG_0602.JPG
   teaser: IMG_0602.JPG

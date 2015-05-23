@@ -4,8 +4,8 @@ title: iOS to µC Using HM-1X in Objective-C
 categories: robots
 excerpt:
 tags: [robots]
-color: blue
-color: blue
+
+
 image:
   feature: Botting_iOS.png
   teaser: Botting_iOS.png

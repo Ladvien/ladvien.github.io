@@ -4,8 +4,8 @@ title: Intel Hexfile to Array
 categories: robots
 excerpt:
 tags: [robots]
-color: blue
-color: blue
+
+
 image:
   feature: my_uC_icon_5_300x300.png
   teaser: my_uC_icon_5_300x300.png

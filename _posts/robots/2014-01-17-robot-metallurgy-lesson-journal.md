@@ -4,8 +4,8 @@ title: Metallurgy 101 - AVR Lesson Journal
 categories: robots
 excerpt:
 tags: [robots]
-color: blue
-color: blue
+
+
 image:
   feature: Simply-AVR-Infographic-1200x11022_0.jpg
   teaser: Simply-AVR-Infographic-1200x11022_0.jpg

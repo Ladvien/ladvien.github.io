@@ -4,7 +4,7 @@ title: Populating and Programming and APM
 categories: robots
 excerpt:
 tags: [robots]
-color: blue
+
 image:
   feature: 11114-02_i_ma.jpg
   teaser: 11114-02_i_ma.jpg

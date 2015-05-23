@@ -211,6 +211,7 @@
 
 .site-title {
 	@include row;
+	width: 400px;
 	//@include media($large) {
 	//	@include span-columns(4);
 	//}

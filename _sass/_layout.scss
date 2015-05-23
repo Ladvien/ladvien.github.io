@@ -291,9 +291,6 @@
 	position: relative;
 	@include media($medium) {
 		@include span-columns(12);
-		position: absolute;
-		right: -118px;
-		top: 155px;
 	}
 	@include media($large) {
 		@include span-columns(7);

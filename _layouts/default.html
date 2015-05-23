@@ -67,28 +67,7 @@
   </body>
 
 <!-- COLORIZE POSTS -->
-  {% if site.categories.robots %}
-    <style>
-      #masthead {
-        background-color:$blue-bandana;
-      }
-    </style>
-  {% endif %}
-  {% if post.categories.robots %}
-    <style>
-      #masthead {
-        background-color:$blue-bandana;
-      }
-    </style>
-  {% endif %}
-  {% if site.categories.homeless %}
-    <style>
-      #masthead {
-        background-color: #BC0000;
-      }
-    </style>
-  {% endif %}
-  {% if post.categories.homeless %}
+  {% if post.color.red %}
     <style>
       #masthead {
         background-color: #BC0000;

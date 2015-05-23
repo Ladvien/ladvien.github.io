@@ -122,7 +122,6 @@
 
 .no-line-under-link {
 	text-decoration: none;
-
 }
 
 .post-list-wrapper {
@@ -202,6 +201,7 @@
 	z-index: 5;
 	//background: url("/images/bandana7.svg") no-repeat;
 	background-size: cover;
+	color: #BC0000;
 	@include transform(translate(0,0));
 	@include transition(500ms cubic-bezier(.645,.045,.355,1.000));
 	&.slide {

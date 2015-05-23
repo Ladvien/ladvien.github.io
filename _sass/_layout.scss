@@ -293,14 +293,14 @@
 	@include media($medium) {
 		@include span-columns(12);
 	}
-	@include media($large) {
-		@include span-columns(7);
+	//@include media($large) {
+		//@include span-columns(7);
 		ul {
 			position: absolute;
 			right: -118px;
 			top: 155px;
 		}
-	}
+	//}
 	.home,
 	.sub-menu-item {
 		display: none;

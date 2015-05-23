@@ -46,22 +46,6 @@
   </head>
 
   <body id="js-body">
-    {% if site.categories.robots %}
-
-      <style>
-        #masthead {
-          background-color:$blue-bandana;
-        }
-      </style>
-    {% endif %}
-    {% if site.categories.homeless %}
-    <h1>WOW!</h1>
-      <style>
-        #masthead {
-          background-color: $red-bandana;
-        }
-      </style>
-    {% endif %}
     {% if page.categories %}
     <progress value="0" id="progressBar" class="flat">
       <div class="progress-container">
@@ -82,4 +66,20 @@
 
   </body>
 
+  {% if site.categories.robots %}
+
+    <style>
+      #masthead {
+        background-color:$blue-bandana;
+      }
+    </style>
+  {% endif %}
+  {% if site.categories.homeless %}
+  <h1>WOW!</h1>
+    <style>
+      #masthead {
+        background-color: $red-bandana;
+      }
+    </style>
+  {% endif %}
 </html>

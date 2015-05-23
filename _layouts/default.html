@@ -35,7 +35,13 @@
     <script src="{{ site.url }}/js/foundation.min.js"></script>
     <script src="{{ site.url }}/js/vendor/jquery.js"></script>
 
-
+    {% if page.categories.robots %}
+      <style>
+        #masthead {
+          background-color: $red-bandana;
+        }
+      </style>
+    {% endif %}
 
 
 
@@ -58,6 +64,7 @@
       </div>
     </progress>
 		{% endif %}
+
 
     {% include browser-upgrade.html %}
     {% include header.html %}

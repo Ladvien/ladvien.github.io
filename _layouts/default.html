@@ -35,14 +35,7 @@
     <script src="{{ site.url }}/js/foundation.min.js"></script>
     <script src="{{ site.url }}/js/vendor/jquery.js"></script>
 
-    {% if page.categories %}
-      <div><h1> WOW! </h1></div>
-      <style>
-        #masthead {
-          background-color: #BC0000;
-        }
-      </style>
-    {% endif %}
+
 
 
 
@@ -57,7 +50,14 @@
   </head>
 
   <body id="js-body">
-
+    {% if page.categories %}
+      <div><h1> WOW! </h1></div>
+      <style>
+        #masthead {
+          background-color: #BC0000;
+        }
+      </style>
+    {% endif %}
     {% if page.categories %}
     <progress value="0" id="progressBar" class="flat">
       <div class="progress-container">

@@ -36,8 +36,18 @@
     <script src="{{ site.url }}/js/vendor/jquery.js"></script>
 
 
+    <!-- HTML5 Shiv and Media Query Support for IE -->
+    <!--[if lt IE 9]>
+      <script src="{{ site.url }}/js/vendor/html5shiv.min.js"></script>
+      <script src="{{ site.url }}/js/vendor/respond.min.js"></script>
+    <![endif]-->
+
+
+  </head>
+
+  <body id="js-body">
     {% if site.category-list.robots %}
-    <h1> WOW! </h1>
+    <h1>WOW!</h1>
       <style>
         #masthead {
           background-color:$blue-bandana;
@@ -51,21 +61,6 @@
         }
       </style>
     {% endif %}
-
-
-
-
-    <!-- HTML5 Shiv and Media Query Support for IE -->
-    <!--[if lt IE 9]>
-      <script src="{{ site.url }}/js/vendor/html5shiv.min.js"></script>
-      <script src="{{ site.url }}/js/vendor/respond.min.js"></script>
-    <![endif]-->
-
-
-  </head>
-
-  <body id="js-body">
-
     {% if page.categories %}
     <progress value="0" id="progressBar" class="flat">
       <div class="progress-container">

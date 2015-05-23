@@ -1,6 +1,11 @@
 
 
-@media only screen and (min-width: $medium){
+@media only screen and (min-device-width: 460px){
+
+
+}
+
+@media only screen media and (max-width: $medium){
   .sliding-menu-button {
     top: $gutter;
   }
@@ -11,12 +16,10 @@
      line-height: .7 * $masthead-height; // half the height to center vertically
      font-size: 44px;
    }
-  .site-title {
-    color: green;
-  }
+   .site-title {
+     color: green;
+   }
 }
-
-
 // EQUAL TO OR LESS THAN 960px;
 @media only screen and (max-width: 960px){
   .site-title {

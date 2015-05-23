@@ -4,7 +4,7 @@ title: Beaglebone Black
 categories: robots
 excerpt:
 tags: [robots]
-
+color: "#152a55"
 image:
   feature: B_3PinOut3.png
   teaser: B_3PinOut3.png

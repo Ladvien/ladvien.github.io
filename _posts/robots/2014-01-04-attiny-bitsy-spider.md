@@ -4,8 +4,7 @@ title: ATtiny Bits
 categories: robots
 excerpt:
 tags: [robots]
-
-
+color: "#152a55"
 comments: true
 image:
   feature: Itsy_Bitsy_Spider.jpg

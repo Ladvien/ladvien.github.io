@@ -4,7 +4,7 @@ title: The Hunter S. Thompson Board -- Arduino Mega Mini
 categories: robots
 excerpt:
 tags: [robots]
-
+color: "#152a55"
 image:
   feature: IMG_0476.JPG
   teaser: IMG_0476.JPG

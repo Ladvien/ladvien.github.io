@@ -4,8 +4,7 @@ title: UUEncode in C
 categories: robots
 excerpt:
 tags: [robots]
-
-
+color: "#152a55"
 image:
   feature: my_uC_icon_9.png
   teaser: my_uC_icon_9.png

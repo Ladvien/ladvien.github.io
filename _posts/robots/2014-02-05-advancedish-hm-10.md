@@ -4,8 +4,7 @@ title: Advanced(ish) HM-10
 categories: robots
 excerpt:
 tags: [robots]
-
-
+color: "#152a55"
 comments: true
 image:
   feature: bluetooth-4.01_1.jpg

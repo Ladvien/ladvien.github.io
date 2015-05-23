@@ -4,8 +4,7 @@ title: Command Line Menu in C
 categories: robots
 excerpt:
 tags: [robots]
-
-
+color: "#152a55"
 image:
   feature: my_uC_icon_12.png
   teaser: my_uC_icon_12.png

@@ -4,8 +4,7 @@ title: The Valdez Mutant -- LPC1114 QFN
 categories: robots
 excerpt:
 tags: [robots]
-
-
+color: "#152a55"
 image:
   feature: LPC1114_Bare_Metal_ARM3.jpg
   teaser: LPC1114_Bare_Metal_ARM3.jpg

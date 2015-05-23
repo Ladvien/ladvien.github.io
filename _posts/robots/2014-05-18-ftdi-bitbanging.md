@@ -4,8 +4,7 @@ title: FTDI Bitbanging GCC
 categories: robots
 excerpt:
 tags: [robots]
-
-
+color: "#152a55"
 image:
   feature: FTDI.jpg
   teaser: FTDI.jpg

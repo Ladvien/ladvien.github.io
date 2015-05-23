@@ -4,8 +4,7 @@ title: Dot Muncher
 categories: robots
 excerpt:
 tags: [robots]
-
-
+color: "#152a55"
 image:
   feature: Silas_Bot_63.JPG
   teaser: Silas_Bot_63.JPG

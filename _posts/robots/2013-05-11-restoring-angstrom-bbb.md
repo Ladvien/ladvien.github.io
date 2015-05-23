@@ -4,7 +4,7 @@ title: Restoring Angstrom to eMMC on Beaglebone Black
 categories: robots
 excerpt:
 tags: [robots]
-
+color: "#152a55"
 image:
   feature:
   teaser:

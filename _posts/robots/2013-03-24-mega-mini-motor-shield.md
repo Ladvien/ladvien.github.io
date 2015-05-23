@@ -4,6 +4,8 @@ title: Mega Mini Motor Shield (M^3)
 categories: robots
 excerpt:
 tags: [robots]
+color: "#152a55"
+color: "#152a55"
 
 image:
   feature: IMG_8629.JPG

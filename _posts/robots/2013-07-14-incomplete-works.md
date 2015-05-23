@@ -4,8 +4,7 @@ title: Incomplete Works
 categories: robots
 excerpt:
 tags: [robots]
-
-
+color: "#152a55"
 image:
   feature: IMG_0641.JPG
   teaser: IMG_0641.JPG

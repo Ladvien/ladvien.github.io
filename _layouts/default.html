@@ -36,6 +36,20 @@
     <script src="{{ site.url }}/js/vendor/jquery.js"></script>
 
 
+    {% if site.category-list.robots %}
+      <style>
+        #masthead {
+          background-color:$blue-bandana;
+        }
+      </style>
+    {% endif %}
+    {% if site.category-list.homeless %}
+      <style>
+        #masthead {
+          background-color: $red-bandana;
+        }
+      </style>
+    {% endif %}
 
 
 
@@ -50,14 +64,7 @@
   </head>
 
   <body id="js-body">
-    {% if page.categories %}
-      <div><h1> WOW! </h1></div>
-      <style>
-        #masthead {
-          background-color: #BC0000;
-        }
-      </style>
-    {% endif %}
+
     {% if page.categories %}
     <progress value="0" id="progressBar" class="flat">
       <div class="progress-container">

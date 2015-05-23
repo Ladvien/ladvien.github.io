@@ -201,7 +201,8 @@
 	z-index: 5;
 	//background: url("/images/bandana7.svg") no-repeat;
 	background-size: cover;
-	background-color: #BC0000;
+
+	background-color: $blue-bandana;
 	@include transform(translate(0,0));
 	@include transition(500ms cubic-bezier(.645,.045,.355,1.000));
 	&.slide {
@@ -220,7 +221,7 @@
 	padding: (.01 * $masthead-height) 0; // fourth the height to center vertically
 	height: $masthead-height;
 	text-decoration: none;
-	color: #152a55;
+	color: $white;
 	//152a55
 
 	font-family: $title-font-family;

@@ -2,6 +2,7 @@
 layout: archive
 permalink: /
 title: "Writings"
+---
 
 <div>
 <nav role="navigation" class="menu top-menu">

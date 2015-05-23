@@ -121,7 +121,9 @@
 }
 
 .no-line-under-link {
-	text-dectoration: none;
+	a:visited {
+		text-dectoration: none;
+	}
 }
 
 .post-list-wrapper {

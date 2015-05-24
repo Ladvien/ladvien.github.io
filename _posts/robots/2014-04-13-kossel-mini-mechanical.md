@@ -1,6 +1,6 @@
 ---
 layout: article
-title: First Robot
+title: Kossel Mini Build
 categories: robots
 excerpt:
 tags: [robots]

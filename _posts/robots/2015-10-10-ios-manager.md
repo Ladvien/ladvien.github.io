@@ -1,6 +1,6 @@
 ---
 layout: article
-title: Apple Serial Manager
+title: iOS Serial Manager
 categories: robots
 excerpt:
 tags: [robots]

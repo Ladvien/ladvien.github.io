@@ -1,13 +1,13 @@
 ---
 layout: article
-title: Lab Controlle PCB
+title: Lab Controller PCB
 categories: robots
 excerpt:
 tags: [robots]
 color: "#152a55"
 image:
-  feature: Lab%20Controller%20Board%20Top%20and%20Bottom(1)
-  teaser: aLab%20Controller%20Board%20Top%20and%20Bottom(1)
+  feature: robot_lab3.png
+  teaser: robot_lab3.png
   thumb:
 comments: true
 ---

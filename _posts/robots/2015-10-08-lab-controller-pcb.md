@@ -33,7 +33,7 @@ The heart of the circuit is around a high-power constant current driver.  I rip
 
 Here is my go at adding the circuit to a controller board,
 
-[![](/images/Lab%20Controller%20Schem%20image.PNG)](https://github.com/Ladvien/ladvien.github.io/blob/master/images/Lab%20Controller%20Board%20v01.pdf)
+[![](/images/Lab Controller Schem image.png)](https://github.com/Ladvien/ladvien.github.io/blob/master/images/Lab%20Controller%20Board%20v01.pdf)
 
 Regarding how the circuit it works....black magic.  Well, at least, that's how I understand it.  I tried reading this excellent article but ended up deciding it was attempting to reason away what was obviously black magic.
 

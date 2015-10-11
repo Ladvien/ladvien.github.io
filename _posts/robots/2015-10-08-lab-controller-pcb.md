@@ -39,15 +39,15 @@ Regarding how the circuit it works....black magic.  Well, at least, that's how 
 
 *   [The Transistor -- MOSFET Constant Current Driver](http://www.pcbheaven.com/userpages/LED_driving_and_controlling_methods/)
 
-![](/sites/default/files//users/Ladvien/images/IMG_0133.JPG)
+![](/images/IMG_0133.JPG)
 
 I originally designed a minimal PCB to hold the circuit.  I was hoping a small little board would allow me to attach it wherever needed,
 
-![5V regulator](/sites/default/files//users/Ladvien/images/5v_regulator_lab_controller_labeled.jpeg)
+![5V regulator](/images/5v_regulator_lab_controller_labeled.jpeg)
 
 Here's where it gets fun.  See that red alligator clip so neatly gripping the leg of the 5V regulator, well, just keep it in mind when looking at our next exhibit.
 
-![](/sites/default/files//users/Ladvien/images/IMG_0134.jpeg)
+![](/images/IMG_0134.jpeg)
 
  Gross and note safe, right? _C'est la vie,_ it has been working for a about a year this way.
 

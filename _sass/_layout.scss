@@ -227,7 +227,7 @@
 	font-family: $title-font-family;
 	font-weight: 700;
 	margin-top: 0px;
-	margin-bottom: 10px;
+	margin-bottom: 0px;
 	@include font-size(36,no);
 	@include media($small) {
 	  @include font-size(38,no);

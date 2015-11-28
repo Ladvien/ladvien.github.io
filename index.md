@@ -1,7 +1,7 @@
 ---
 layout: archive
 permalink: /
-title: "Works"
+title: ""
 color: "#BC0000"
 ---
 <div class="post-list-wrapper">

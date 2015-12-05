@@ -1,0 +1,145 @@
+ViewController.swift
+	let hm10serialManager = bleSerialManager()
+	class ViewController: UIViewController, bleSerialDelegate, CLLocationManagerDelegate
+	override func viewDidLoad()
+	override func viewWillAppear(animated: Bool)
+	override func viewDidAppear(animated: Bool)
+	override func didReceiveMemoryWarning()
+AppDelegate.swift
+	class AppDelegate: UIResponder, UIApplicationDelegate
+	var window: UIWindow?
+	func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool
+	func applicationWillResignActive(application: UIApplication)
+	func applicationDidEnterBackground(application: UIApplication)
+	func applicationWillEnterForeground(application: UIApplication)
+	func applicationDidBecomeActive(application: UIApplication)
+	func applicationWillTerminate(application: UIApplication)
+	lazy var applicationDocumentsDirectory: NSURL =
+	lazy var managedObjectModel: NSManagedObjectModel =
+	lazy var persistentStoreCoordinator: NSPersistentStoreCoordinator =
+	lazy var managedObjectContext: NSManagedObjectContext =
+	func saveContext ()
+TableViewController.swift
+	class TableViewController: UITableViewController, CBPeripheralDelegate, bleSerialDelegate
+	var discoveredDevicesNSUUIDSortedByRSSI: Array<NSUUID> = []
+	var refreshController = UIRefreshControl()
+	func searchTimerExpired()
+	func deviceStatusChanged(nsuuidOfDevice: NSUUID, thisDeviceState: Int)
+	func connectedToDevice()
+	override func viewDidLoad()
+	override func viewDidAppear(animated: Bool)
+	override func didReceiveMemoryWarning()
+	override func numberOfSectionsInTableView(tableView: UITableView) -> Int
+	override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int
+	override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell
+	override func tableView(tableView: UITableView, didHighlightRowAtIndexPath indexPath: NSIndexPath)
+	func refreshTableOnPullDown()
+	func mapNumber(x: Int, inMin: Double, inMax: Double, outMin: Double, outMax: Double) -> Double
+	class devicesCell: UITableViewCell
+	@IBOutlet weak var nameLabel: UILabel!
+	@IBOutlet weak var deviceView: UIView!
+	override func awakeFromNib()
+	override func setSelected(selected: Bool, animated: Bool)
+bleSerialManager.swift
+	optional func searchTimerExpired()
+	optional func deviceStatusChanged(nsuuidOfDevice: NSUUID, thisDeviceState: Int)
+	optional func connectedToDevice()
+	class remoteDeviceState
+	private var hardwareID: NSUUID = NSUUID()
+	private var connected: Bool = false
+	func setDeviceOfInterestHardwareID(deviceNSUUID: NSUUID)
+	func setConnectedFlag(connectedFlag: Bool)
+	class centralDeviceState
+	class bleSerialManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
+	var delegate:bleSerialDelegate? = nil
+	var activeCentralManager = CBCentralManager()
+	var activePeripheralManager = CBPeripheralManager()
+	private var connectedPeripheralState = remoteDeviceState()
+	var peripheralDevice: CBPeripheral?
+	var lastConnectedPeripheralNSUUID: NSUUID?
+	private var searchComplete: Bool = false
+	var searchTimeoutTimer: NSTimer = NSTimer()
+	var reconnectTimer: NSTimer = NSTimer()
+	private var discoveredDeviceList: Dictionary<NSUUID, CBPeripheral> = Dictionary()
+	private var discoveredDeviceListRSSI: Dictionary<NSUUID, NSNumber> = Dictionary()
+	private var discoveredDeviceListAdvertisementData: Dictionary<NSUUID, [String : AnyObject]> = Dictionary()
+	private var discoveredDeviceListUUIDString: Dictionary<NSUUID, String> = Dictionary()
+	private var discoveredDeviceListNameString: Dictionary<NSUUID, String> = Dictionary()
+	private var discoveredDevicekCBAdvDataManufacturerData: Dictionary<NSUUID, AnyObject> = Dictionary()
+	private var discoveredDevicekCBAdvDataIsConnectable: Dictionary<NSUUID, AnyObject> = Dictionary()
+	private var discoveredDevicekCBAdvDataServiceUUIDs: Dictionary<NSUUID, AnyObject> = Dictionary()
+	private var discoveredDevicekCBAdvDataTxPowerLevel: Dictionary<NSUUID, AnyObject> = Dictionary()
+	private var discoveredDevicekCBAdvDataServiceData: Dictionary<NSUUID, AnyObject> = Dictionary()
+	private var discoveredDevicekCBAdvSolicitedServiceUUID: Dictionary<NSUUID, AnyObject> = Dictionary()
+	private var discoveredDevicekCBAdvDataLocalName: Dictionary<NSUUID, AnyObject> = Dictionary()
+	private var connectedPeripherals: Dictionary<NSUUID, CBPeripheral> = Dictionary()
+	private var connectedPeripheralServices: Array<CBService> = Array()
+	private var connectedPeripheralCharacteristics: Array<CBCharacteristic> = Array()
+	private var connectedPeripheralCharacteristicsDescriptors: Array<CBDescriptor> = Array()
+	private var connectedDevicesStateDictionary: Dictionary<NSUUID, remoteDeviceState> = Dictionary()
+	enum masterDeviceStates: Int
+	case Unknown = 0
+	case Resetting
+	case Unsupported
+	case Unauthorized
+	case PoweredOff
+	case PoweredOn
+	case Reconnecting
+	enum deviceState: Int
+	case unknown = 1
+	case connectedState
+	case disconnectedState
+	let state = deviceState.unknown
+	private(set) var activeCentralManagerState: Int = 0
+	private var connectionsLimit = 1
+	private var automaticReconnectOnDisconnect = true
+	private var timeBeforeAttemptingReconnectOnDisconnect = 1.0
+	private var numberOfRetriesOnDisconnect = 3
+	private var automaticConnectionRetryOnFail = true
+	private var timeBeforeAttemptingReconnectOnConnectionFail = 1.0
+	private var numberOfRetriesAfterConnectionFail = 3
+	private var retryIndexOnDisconnect = 0
+	private var retryIndexOnFail = 0
+	var purposefulDisconnect = false
+	override init()
+	func setMutipleConnections(connectionLimit: Int)
+	func setAutomaticReconnectOnDisconnect(flag: Bool, tries: Int, timeBetweenTries: Double)
+	func setRetryConnectAfterFail(flag: Bool, tries: Int, timeBetweenTries: Double)
+	func centralManagerDidUpdateState(central: CBCentralManager)
+	func getdiscoveredDeviceDictionary()->Dictionary<NSUUID, CBPeripheral>
+	func getNumberOfDiscoveredDevices()->Int
+	func getDeviceListAsArray()->Array<NSUUID>
+	func getDeviceName(deviceOfInterest: NSUUID)->String
+	func getDeviceUUIDAsString(deviceOfInterest: NSUUID)->String
+	func getDeviceRSSI(deviceOfInterest: NSUUID)->Int
+	func getAdvDeviceConnectable(deviceOfInterest: NSUUID)->Bool
+	func getAdvDeviceName(deviceOfInterest: NSUUID)->String
+	func getAdvDeviceManufactureData(deviceOfInterest: NSUUID)->String
+	func getAdvDeviceServiceData(deviceOfInterest: NSUUID) -> Array<String>
+	func getAdvDeviceServiceUUIDasNSArray(deviceOfInterest: NSUUID)->NSArray
+	func getAdvTxPowerLevel(deviceOfInterest: NSUUID)->Int
+	func getAdvSolicitedUUID(deviceOfInterest: NSUUID)->NSArray?
+	func getSortedArraysBasedOnRSSI()-> (nsuuids: Array<NSUUID>, rssies: Array<NSNumber>)
+	func getDeviceState()->Int
+	func centralManager(central: CBCentralManager, didDiscoverPeripheral peripheral: CBPeripheral, advertisementData: [String : AnyObject], RSSI: NSNumber)
+	func search(timeoutSecs: NSTimeInterval)
+	func searchTimerExpire()
+	func connectToDevice(deviceNSUUID: NSUUID) -> Bool
+	func alreadyConnected(deviceNSUUID: NSUUID) -> Bool
+	func centralManager(central: CBCentralManager, didConnectPeripheral peripheral: CBPeripheral)
+	func peripheral(peripheral: CBPeripheral, didDiscoverServices error: NSError?)
+	func peripheral(peripheral: CBPeripheral, didDiscoverCharacteristicsForService service: CBService, error: NSError?)
+	func peripheral(peripheral: CBPeripheral, didDiscoverDescriptorsForCharacteristic characteristic: CBCharacteristic, error: NSError?)
+	func centralManager(central: CBCentralManager, didFailToConnectPeripheral peripheral: CBPeripheral, error: NSError?)
+	func clearDiscoveredDevices()
+	func clearDiscoveredDevicesAdvertisementData()
+	func clearConnectedDevices()
+	func centralManager(central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: NSError?)
+	func disconnectFromPeriphera(deviceOfInterest: NSUUID)->Bool
+	func reconnectTimerExpired()
+	func printDiscoveredDeviceListInfo()
+	func printConnectedDevices()
+	enum State: Int
+	case disconnected = 0
+	case connected
+	case attemptingToReconnect

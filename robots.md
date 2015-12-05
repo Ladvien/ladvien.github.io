@@ -1,6 +1,5 @@
 ---
 layout: archive
-permalink: /
 title: "Robots"
 color: "#BC0000"
 ---

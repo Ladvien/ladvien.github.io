@@ -13,11 +13,11 @@ sass:
     sass_dir: _sass
     style: compressed
 permalink: /:categories/:title/
-#markdown: kramdown
+markdown: kramdown
 #  toc_levels: 1..2
 highlighter: rouge
-#gems:
-  #- jekyll-sitemap
+gems:
+  - jekyll-sitemap
 
 
 # Site owner

@@ -344,6 +344,7 @@
    ========================================================================== */
 
 #page-wrapper {
+	margin-top: 90px;
 	padding: 0 $gutter; // add white space for smaller screens
 	@include size(100% 100%);
 	-webkit-overflow-scrolling: touch;
@@ -443,6 +444,15 @@
 		}
 	}
 }
+
+
+// Floating Navigation Menu
+#floating-navigation-menu {
+	margin-right: $gutter;
+	margin-top: 10px;
+}
+
+
 // page lead
 .page-lead {
 	background-position: center top;

@@ -1,0 +1,38 @@
+# Site wide configuration
+
+title: Bandana Philosophy
+description: Bipolar Blog
+logo:  # 120x120 px default image used for Twitter summary card
+teaser: # 400x250 px default teaser image used in image archive grid
+locale:
+url:
+
+# Jekyll configuration
+
+sass:
+    sass_dir: _sass
+    style: compressed
+permalink: /:categories/:title/
+markdown: kramdown
+#  toc_levels: 1..2
+highlighter: rouge
+#gems:
+  #- jekyll-sitemap
+
+
+# Site owner
+owner:
+  name: C. Thomas Brittain
+  email: design@ubermentis.com
+  twitter:
+  google:
+    ad-client:
+    ad-slot:
+  bio:
+  avatar: bio-photo.jpg # 160x160 px image for author byline
+  disqus-shortname: ladvien
+
+
+exclude: ["lib", "config.rb", ".sass-cache", "Capfile", "config", "log", "Rakefile", "Rakefile.rb", "tmp", "*.sublime-project", "*.sublime-workspace", "Gemfile", "Gemfile.lock", "README.md", "LICENSE", "node_modules", "Gruntfile.js", "package.json"]
+
+category-list: [homeless, robots, misc]

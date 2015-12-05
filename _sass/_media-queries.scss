@@ -1,0 +1,38 @@
+
+// MOBILE FIRST!
+@media only screen and (max-width: 960px){
+
+  .lines-button {
+    bottom: 10px;
+  }
+
+  .sliding-menu-button {
+    bottom: 20px;
+    color: red;
+  }
+  .wrap{
+    margin-top: 50px;
+   }
+
+   .post-list-item-wrapper {
+     padding: 30px;
+   }
+   .post-list-item-date{
+     display: none;
+   }
+   .post-list-item-title {
+     line-height: .6 * $masthead-height; // half the height to center vertically
+     font-size: 32px;
+   }
+
+   .top-menu {
+   	 display: none;
+   }
+}
+
+// DESKTOP SECOND
+@media only screen and (min-width: 961px){
+  .sliding-menu-button {
+    top: 20px;
+  }
+}

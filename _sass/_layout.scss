@@ -140,9 +140,9 @@
 		//@include animation(pop .1s 0 linear);
 		//box-shadow: .3em .3em 2px rgba($black, .90);
 		//background:rgba(#666, .30);
-		-moz-box-shadow:    inset 0 0 5px #B00000;
-   -webkit-box-shadow: inset 0 0 5px #B00000;
-   box-shadow:         inset 0 0 5px #B00000;
+		-moz-box-shadow:    inset 0 0 5px #000000;
+   -webkit-box-shadow: inset 0 0 5px #000000;
+   box-shadow:         inset 0 0 5px #000000;
 	}
 }
 
@@ -227,13 +227,13 @@
 	font-family: $title-font-family;
 	font-weight: 700;
 	margin-top: 0px;
-	margin-bottom: 0px;
+	margin-bottom: 10px;
 	@include font-size(36,no);
 	@include media($small) {
-	  @include font-size(44,no);
+	  @include font-size(38,no);
 	}
 	@include media($medium) {
-	  @include font-size(56,no);
+	  @include font-size(44,no);
 	}
 	@include media($large) {
 	  @include font-size(72,no);
@@ -344,7 +344,6 @@
    ========================================================================== */
 
 #page-wrapper {
-	margin-top: 90px;
 	padding: 0 $gutter; // add white space for smaller screens
 	@include size(100% 100%);
 	-webkit-overflow-scrolling: touch;
@@ -444,13 +443,6 @@
 		}
 	}
 }
-
-// Floating Navigation Menu
-#floating-navigation-menu {
-	margin-right: $gutter;
-	margin-top: 10px;
-}
-
 // page lead
 .page-lead {
 	background-position: center top;

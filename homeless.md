@@ -1,10 +1,11 @@
 ---
 layout: archive
-title: "Robotics"
-color: "#152a55"
+permalink: /homeless
+title: ""
+color: "#BC0000"
 ---
 <div class="post-list-wrapper">
-{% for post in site.categories.robots %}
+{% for post in site.posts %}
 	{% include post-simple-list.html %}
 {% endfor %}
 </div><!-- /.tiles -->

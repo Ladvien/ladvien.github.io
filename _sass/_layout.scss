@@ -371,6 +371,7 @@
 	}
 	@at-root {
 		.page-content {
+			word-wrap: break-word;
 			@include fill-parent;
 			// larger font for intro paragraph
 			> p {
@@ -526,9 +527,6 @@
 		}
 	}
 }
-
-
-
 
 
 /*

@@ -1,5 +1,6 @@
 #!/bin/bash
 # Bloggin CLI shortcut
+git pull
 git add -A
 git commit -m "Writing"
 git push

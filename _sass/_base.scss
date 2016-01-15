@@ -95,8 +95,7 @@ pre {
 	overflow-x: auto; // add scrollbars to wide code blocks
 }
 p code {
-	.stitched {
-   padding: 20px;
+	 padding: 20px;
    margin: 10px;
    background: #ff0030;
    color: #fff;
@@ -108,7 +107,6 @@ p code {
    box-shadow: 0 0 0 4px #ff0030, 2px 1px 6px 4px rgba(10, 10, 0, 0.5);
    text-shadow: -1px -1px #aa3030;
    font-weight: normal;
-}
 }
 li code {
 	@include font-size(16,no);

@@ -14,6 +14,7 @@ sass:
     style: compressed
 permalink: /:categories/:title/
 markdown: kramdown
+  gfmBreaks: true
 #  toc_levels: 1..2
 highlighter: pygments
 #gems:

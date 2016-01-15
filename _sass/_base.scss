@@ -97,7 +97,7 @@ pre {
 p code {
 	@include font-size(16,no);
 	color: $text-color;
-	white-space: normal;
+	white-space: pre-wrap;
 	margin: 0 2px;
 	padding: 0 5px;
 	border: 1px solid $border-color;

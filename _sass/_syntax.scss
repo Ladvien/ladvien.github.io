@@ -12,6 +12,7 @@
 	border: 2px solid darken($body-color, 5);
 	border-radius: $border-radius;
 	background-color: #EFE;
+	word-wrap: break-word;
 	@include font-size(18);
 }
 .linenodiv {

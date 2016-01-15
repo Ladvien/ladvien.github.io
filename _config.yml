@@ -15,8 +15,8 @@ sass:
     sass_dir: _sass
     style: compressed
 permalink: /:categories/:title/
-markdown: GFM
-  #input: GFM
+markdown: kramdown
+  input: GFM
 #  toc_levels: 1..2
 highlighter: pygments
 #gems:

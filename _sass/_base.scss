@@ -96,14 +96,14 @@ pre {
 }
 p code,
 li code {
-	// @include font-size(16,no);
-	// color: $text-color;
-	// white-space: pre-wrap;
-	// margin: 0 2px;
-	// padding: 0 5px;
-	// border: 1px solid $border-color;
-	// background-color: lighten($primary-color, 95);
-	// border-radius: $border-radius;
+	@include font-size(16,no);
+	color: $text-color;
+	white-space: pre-wrap;
+	margin: 0 2px;
+	padding: 0 5px;
+	border: 1px solid $border-color;
+	background-color: lighten($primary-color, 95);
+	border-radius: $border-radius;
 }
 
 /*

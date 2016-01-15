@@ -106,13 +106,14 @@ p code {
 	margin-left: 20px;
 }
 
-.technical-box{
+.technical-box {
 	@include font-size(16, no);
 	font-family: monospace;
 	margin-left: 20px;
-	border: .9em;
+	border: 1em;
 	border-color: black;
-	background-color: #888888;
+	background-color: #666666;
+	white-space: pre-wrap;
 }
 
 li code {

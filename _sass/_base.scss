@@ -98,6 +98,7 @@ p code,
 li code {
 	@include font-size(16,no);
 	color: $text-color;
+	font-family: monospace;
 	white-space: pre-wrap;
 	//margin: 0 2px;
 	//padding: 0 5px;

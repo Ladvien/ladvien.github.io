@@ -15,10 +15,7 @@ sass:
     sass_dir: _sass
     style: compressed
 permalink: /:categories/:title/
-#markdown: kramdown
-# Markdown Processors
-redcarpet:
-  extensions: ["fenced_code_blocks"]
+markdown: kramdown
 
 #  toc_levels: 1..2
 highlighter: pygments

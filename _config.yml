@@ -7,7 +7,7 @@ teaser: # 400x250 px default teaser image used in image archive grid
 locale:
 url:
 application:
-
+  
 
 # Jekyll configuration
 
@@ -15,14 +15,7 @@ sass:
     sass_dir: _sass
     style: compressed
 permalink: /:categories/:title/
-#markdown: kramdown
-# Markdown Processors
-# Build settings
-markdown: redcarpet
-markdown_ext:  markdown,mkdown,mkdn,mkd,md
-
-redcarpet:
-  extensions: ["tables", "autolink", "strikethrough", "space_after_headers", "with_toc_data", "fenced_code_blocks"]
+markdown: kramdown
 
 #  toc_levels: 1..2
 highlighter: pygments

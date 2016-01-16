@@ -94,7 +94,28 @@ tt, code, kbd, samp, pre {
 pre {
 	overflow-x: auto; // add scrollbars to wide code blocks
 }
-p code,
+p code {
+	@include font-size(16,no);
+	color: $text-color;
+	white-space: pre-wrap;
+	margin: 0 2px;
+	padding: 0 5px;
+	border: 1px solid $border-color;
+	background-color: lighten($primary-color, 95);
+	border-radius: $border-radius;
+	margin-left: 20px;
+}
+
+.technical-box {
+	@include font-size(16, no);
+	font-family: monospace;
+	margin-left: 20px;
+	border-width: .9em;
+	border-color: black;
+	background-color: #666666;
+	white-space: pre-wrap;
+}
+
 li code {
 	@include font-size(16,no);
 	color: $text-color;
@@ -104,6 +125,7 @@ li code {
 	border: 1px solid $border-color;
 	background-color: lighten($primary-color, 95);
 	border-radius: $border-radius;
+	margin-left: 20px;
 }
 
 /*

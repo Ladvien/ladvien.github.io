@@ -103,7 +103,6 @@ p code {
 	border: 1px solid $border-color;
 	background-color: lighten($primary-color, 95);
 	border-radius: $border-radius;
-
 	outline: 1px solid $black;
 }
 
@@ -117,7 +116,6 @@ li code {
 	border: 1px solid $border-color;
 	background-color: lighten($primary-color, 95);
 	border-radius: $border-radius;
-	margin-left: 20px;
 }
 
 /*

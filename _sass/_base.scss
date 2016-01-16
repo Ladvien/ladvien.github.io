@@ -95,6 +95,7 @@ pre {
 	overflow-x: auto; // add scrollbars to wide code blocks
 }
 p code {
+	<span>
 	@include font-size(16,no);
 	color: $text-color;
 	white-space: pre-wrap;

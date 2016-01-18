@@ -30,13 +30,12 @@ Adafruit_SSD1306 display(OLED_RESET);
 #define LOGO16_GLCD_HEIGHT 16 
 #define LOGO16_GLCD_WIDTH  16 
 
-#if (SSD1306_LCDHEIGHT != 32)
-#error("Height incorrect, please fix Adafruit_SSD1306.h!");
-#endif
+
 
 #include <SoftwareSerial.h>
 SoftwareSerial hm10Serial(9, 8); // RX, TX
 
+String inputString = "";
 
 void setup()   {                
   Serial.begin(9600);
@@ -62,20 +61,26 @@ void setup()   {
 
 
 void loop() {
-    if(hm10Serial.available() > 0){
-        display.setCursor(0,0);
-        display.clearDisplay();
-        display.setTextColor(WHITE);
-        display.setTextSize(2);         
-        display.print(String(hm10Serial.available()));
-        Serial.print(String(hm10Serial.available()));
-        display.display();
-        hm10Serial.flush();
-    }
-    delay(300);
-    
-    
+    while(hm10Serial.available() > 0){
+      char newChar = hm10Serial.read();
+      if(newChar == '\n'){
+        printString();
+      } else {
+        inputString += newChar;
+      }
+    }  
 }
 
 
+void printString(){
+    display.setCursor(0,0);
+    display.clearDisplay();
+    display.setTextColor(WHITE);
+    display.setTextSize(4);         
+    display.print(inputString);
+    display.display();
+    Serial.print(inputString);
+    inputString = "";
+    
+}
 

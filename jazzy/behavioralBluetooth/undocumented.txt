@@ -1,18 +1,54 @@
-ViewController.swift
-	class ViewController: UIViewController
-	override func viewDidLoad()
-	override func didReceiveMemoryWarning()
-AppDelegate.swift
-	class AppDelegate: UIResponder, UIApplicationDelegate
-	var window: UIWindow?
-	func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool
-	func applicationWillResignActive(application: UIApplication)
-	func applicationDidEnterBackground(application: UIApplication)
-	func applicationWillEnterForeground(application: UIApplication)
-	func applicationDidBecomeActive(application: UIApplication)
-	func applicationWillTerminate(application: UIApplication)
-	lazy var applicationDocumentsDirectory: NSURL =
-	lazy var managedObjectModel: NSManagedObjectModel =
-	lazy var persistentStoreCoordinator: NSPersistentStoreCoordinator =
-	lazy var managedObjectContext: NSManagedObjectContext =
-	func saveContext ()
+behavioralSerialDeviceRemote.swift
+	public var bbState = DeviceState()
+	public func serialDataAvailable(deviceOfInterest: NSUUID, data: String)
+	public func setBackgroundConnection(allow: Bool)
+	public func getRxBufferChar(deviceOfInterest: NSUUID)
+	public func clearRxBuffer(deviceOfInterest: NSUUID)
+	public class RemoteCentral: RemoteBehavioralSerialDevice
+	public class RemotePeripheral: RemoteBehavioralSerialDevice
+	public class RemoteBluetoothLEPeripheral: RemotePeripheral, CBPeripheralDelegate
+	public var dataLocalNameString: String?
+	public var bbPeripheral: CBPeripheral?
+	public var bbServices: Array<CBService>?
+	public var serviceUUIDString: Array<String>?
+	public var bbCharacteristics: Array<CBCharacteristic>?
+	public var characteristicsString: String?
+	public var bbDescriptors: Array<CBDescriptor>?
+	public var advDataLocalName: String?
+	public var advDataManufacturerData: String?
+	public var advDataServiceData: String?
+	public var advDataServiceUUIDs: Dictionary<CBUUID, String>?
+	public var advDataOverflowServiceUUIDsKey: Array<String>?
+	public var advDataTxPowerLevel: Int?
+	public var advDataIsConnectable: String?
+	public var advSolicitedServiceUUID: Array<String>?
+behavioralSerialDeviceLocal.swift
+	public var discoveredDeviceList: Dictionary<NSUUID, RemoteBehavioralSerialDevice> = [:]
+	public var discoveredDeviceIdByName: Dictionary<String, NSUUID> = [:]
+	public var state = DeviceState()
+	public var hardwareID: NSUUID?
+	public var lastConnectedDevice: NSUUID?
+	public var allowConnectionInBackground: Bool = false
+	public var rxSerialBuffer: String?
+	public var purposefulDisconnect = false
+	public var timeBeforeAttemptingReconnectOnConnectionFail: Double = 0.5
+	public var timeBeforeAttemptingReconnectOnDisconnect: Double = 0.5
+	public var retryIndexOnFail: Int = 0
+	public var retryIndexOnDisconnect: Int = 0
+	public func getDeviceIdByName(name: String)->NSUUID
+	public func printDiscoveredDeviceListInfo()
+	public func printConnectedDevices()
+	public class LocalCentral: LocalBehavioralSerialDevice
+	public class LocalPeripheral: LocalBehavioralSerialDevice
+	public class LocalBluetoothCentral: LocalPeripheral
+	public var discoveredPeripherals: Dictionary<NSUUID, RemoteBluetoothLEPeripheral> = [:]
+	public var discoveredPeripheralNames: Array<String> = [""]
+	@objc public func centralManager(central: CBCentralManager, didConnectPeripheral peripheral: CBPeripheral)
+	@objc public func centralManager(central: CBCentralManager, didFailToConnectPeripheral peripheral: CBPeripheral, error: NSError?)
+	public func search(timeoutSecs: NSTimeInterval)
+	public func connectToDevice(serviceOfInterest: CBService, characteristicOfInterest: CBCharacteristic)
+	@objc public func centralManager(central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: NSError?)
+	public func centralManager(central: CBCentralManager, didDiscoverPeripheral peripheral: CBPeripheral, advertisementData: [String : AnyObject], RSSI: NSNumber)
+	@objc public func peripheral(peripheral: CBPeripheral, didDiscoverServices error: NSError?)
+	@objc public func peripheral(peripheral: CBPeripheral, didDiscoverCharacteristicsForService service: CBService, error: NSError?)
+	@objc public func peripheral(peripheral: CBPeripheral, didDiscoverDescriptorsForCharacteristic characteristic: CBCharacteristic, error: NSError?)

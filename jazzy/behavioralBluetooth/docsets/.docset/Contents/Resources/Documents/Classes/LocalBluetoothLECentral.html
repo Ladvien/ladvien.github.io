@@ -14,7 +14,7 @@
     <a title="LocalBluetoothLECentral Class Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="../index.html"> Docs</a> (28% documented)</p>
+        <p><a href="../index.html"> Docs</a> (39% documented)</p>
       </div>
     </header>
     <div class="content-wrapper">
@@ -59,6 +59,14 @@
               </li>
             </ul>
           </li>
+          <li class="nav-group-name">
+            <a href="../Enums.html">Enums</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Enums/DeviceState.html">DeviceState</a>
+              </li>
+            </ul>
+          </li>
         </ul>
       </nav>
       <article class="main-content">
@@ -76,13 +84,20 @@
           </section>
           <section class="section task-group-section">
             <div class="task-group">
+              <div class="task-name-container">
+                <a name="/LocalBluetoothLECentral:%20Getters%20/%20Setters"></a>
+                <a name="//apple_ref/swift/Section/LocalBluetoothLECentral: Getters / Setters" class="dashAnchor"></a>
+                <a href="#/LocalBluetoothLECentral:%20Getters%20/%20Setters">
+                  <h3 class="section-name">LocalBluetoothLECentral: Getters / Setters</h3>
+                </a>
+              </div>
               <ul>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:vC19behavioralBluetooth23LocalBluetoothLECentral21discoveredPeripheralsGVSs10DictionaryCSo6NSUUIDCS_27RemoteBluetoothLEPeripheral_"></a>
-                    <a name="//apple_ref/swift/Property/discoveredPeripherals" class="dashAnchor"></a>
-                    <a class="token" href="#/s:vC19behavioralBluetooth23LocalBluetoothLECentral21discoveredPeripheralsGVSs10DictionaryCSo6NSUUIDCS_27RemoteBluetoothLEPeripheral_">discoveredPeripherals</a>
+                    <a name="/s:FC19behavioralBluetooth23LocalBluetoothLECentral17getDeviceIdByNameFS0_FSSGSqCSo6NSUUID_"></a>
+                    <a name="//apple_ref/swift/Method/getDeviceIdByName(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC19behavioralBluetooth23LocalBluetoothLECentral17getDeviceIdByNameFS0_FSSGSqCSo6NSUUID_">getDeviceIdByName(_:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -90,16 +105,36 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p><a href='#returns_a_discovered_device_39_s_nsuuid' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h3 id='returns_a_discovered_device_39_s_nsuuid'>Returns a discovered device&rsquo;s NSUUID.</h3></p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">LocalBluetoothLECentral</span><span class="p">:</span> <span class="kt">LocalPeripheral</span><span class="p">,</span> <span class="kt">CBCentralManagerDelegate</span><span class="p">,</span> <span class="kt">CBPeripheralDelegate</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">override</span> <span class="kd">func</span> <span class="nf">getDeviceIdByName</span><span class="p">(</span><span class="nv">name</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span><span class="o">-&gt;</span><span class="kt">NSUUID</span><span class="p">?</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>name</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>String representing the device&rsquo;s advertized name.</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
                     </section>
                   </div>
@@ -107,9 +142,150 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:vC19behavioralBluetooth23LocalBluetoothLECentral25discoveredPeripheralNamesGSaSS_"></a>
-                    <a name="//apple_ref/swift/Property/discoveredPeripheralNames" class="dashAnchor"></a>
-                    <a class="token" href="#/s:vC19behavioralBluetooth23LocalBluetoothLECentral25discoveredPeripheralNamesGSaSS_">discoveredPeripheralNames</a>
+                    <a name="/s:FC19behavioralBluetooth23LocalBluetoothLECentral13getDeviceNameFS0_FCSo6NSUUIDGSqSS_"></a>
+                    <a name="//apple_ref/swift/Method/getDeviceName(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC19behavioralBluetooth23LocalBluetoothLECentral13getDeviceNameFS0_FCSo6NSUUIDGSqSS_">getDeviceName(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p><a href='#returns_a_string_representing_a_discovered_device_39_s_advertized_name' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h3 id='returns_a_string_representing_a_discovered_device_39_s_advertized_name'>Returns a string representing a discovered device&rsquo;s advertized name.</h3></p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">override</span> <span class="kd">func</span> <span class="nf">getDeviceName</span><span class="p">(</span><span class="nv">deviceOfInterest</span><span class="p">:</span> <span class="kt">NSUUID</span><span class="p">)</span><span class="o">-&gt;</span><span class="kt">String</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>deviceOfInterest</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>NSUUID</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC19behavioralBluetooth23LocalBluetoothLECentral29getDiscoveredRemoteDeviceByIDFS0_FCSo6NSUUIDGSqCS_27RemoteBluetoothLEPeripheral_"></a>
+                    <a name="//apple_ref/swift/Method/getDiscoveredRemoteDeviceByID(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC19behavioralBluetooth23LocalBluetoothLECentral29getDiscoveredRemoteDeviceByIDFS0_FCSo6NSUUIDGSqCS_27RemoteBluetoothLEPeripheral_">getDiscoveredRemoteDeviceByID(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p><a href='#returns_a_remotebluetoothleperipheral_object_of_interest' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h3 id='returns_a_remotebluetoothleperipheral_object_of_interest'>Returns a RemoteBluetoothLEPeripheral object of interest.</h3></p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">override</span> <span class="kd">func</span> <span class="nf">getDiscoveredRemoteDeviceByID</span><span class="p">(</span><span class="nv">deviceNSUUID</span><span class="p">:</span> <span class="kt">NSUUID</span><span class="p">)</span><span class="o">-&gt;</span><span class="kt">RemoteBluetoothLEPeripheral</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>deviceOfInterest</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>NSUUID</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC19behavioralBluetooth23LocalBluetoothLECentral31getDiscoveredRemoteDeviceByNameFS0_FSSGSqCS_27RemoteBluetoothLEPeripheral_"></a>
+                    <a name="//apple_ref/swift/Method/getDiscoveredRemoteDeviceByName(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC19behavioralBluetooth23LocalBluetoothLECentral31getDiscoveredRemoteDeviceByNameFS0_FSSGSqCS_27RemoteBluetoothLEPeripheral_">getDiscoveredRemoteDeviceByName(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p><a href='#returns_a_remotebluetoothleperipheral_object_of_interest' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h3 id='returns_a_remotebluetoothleperipheral_object_of_interest'>Returns a RemoteBluetoothLEPeripheral object of interest.</h3></p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">override</span> <span class="kd">func</span> <span class="nf">getDiscoveredRemoteDeviceByName</span><span class="p">(</span><span class="nv">name</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span><span class="o">-&gt;</span><span class="kt">RemoteBluetoothLEPeripheral</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>name</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>String representing a RemoteBluetoothLEPeripheral object&rsquo;s advertized name.</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC19behavioralBluetooth23LocalBluetoothLECentral21getDeviceNamesAsArrayFS0_FT_GSaSS_"></a>
+                    <a name="//apple_ref/swift/Method/getDeviceNamesAsArray()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC19behavioralBluetooth23LocalBluetoothLECentral21getDeviceNamesAsArrayFS0_FT_GSaSS_">getDeviceNamesAsArray()</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -135,10 +311,95 @@
             </div>
             <div class="task-group">
               <div class="task-name-container">
-                <a name="/Central%20Manager%20init."></a>
-                <a name="//apple_ref/swift/Section/Central Manager init." class="dashAnchor"></a>
-                <a href="#/Central%20Manager%20init.">
-                  <h3 class="section-name">Central Manager init.</h3>
+                <a name="/LocalBluetoothLECentral:%20Actions"></a>
+                <a name="//apple_ref/swift/Section/LocalBluetoothLECentral: Actions" class="dashAnchor"></a>
+                <a href="#/LocalBluetoothLECentral:%20Actions">
+                  <h3 class="section-name">LocalBluetoothLECentral: Actions</h3>
+                </a>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC19behavioralBluetooth23LocalBluetoothLECentral6searchFS0_FSdT_"></a>
+                    <a name="//apple_ref/swift/Method/search(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC19behavioralBluetooth23LocalBluetoothLECentral6searchFS0_FSdT_">search(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p><a href='#method_called_to_initiate_the_cbcentralmanager_didscanforperipherals_the_method_is_an_nstimeinterval_representing_how_long_the_cbcentralmanager_should_search_before_stopping_the_method_searchtimerexpired_is_called_after_the_interval_expires' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h3 id='method_called_to_initiate_the_cbcentralmanager_didscanforperipherals_the_method_is_an_nstimeinterval_representing_how_long_the_cbcentralmanager_should_search_before_stopping_the_method_searchtimerexpired_is_called_after_the_interval_expires'>Method called to initiate the CBCentralManager didScanForPeripherals.  The method is an NSTimeInterval representing how long the CBCentralManager should search before stopping.  The method SearchTimerExpired is called after the interval expires.</h3></p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">search</span><span class="p">(</span><span class="nv">timeoutSecs</span><span class="p">:</span> <span class="kt">NSTimeInterval</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>timeoutSecs</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>An NSTimeInterval representing the search duration.</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC19behavioralBluetooth23LocalBluetoothLECentral13writeToDeviceFS0_FTCSo6NSUUID4dataSS_T_"></a>
+                    <a name="//apple_ref/swift/Method/writeToDevice(_:data:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC19behavioralBluetooth23LocalBluetoothLECentral13writeToDeviceFS0_FTCSo6NSUUID4dataSS_T_">writeToDevice(_:data:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p><a href='#writes_data_to_a_particular_remotedevice' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h3 id='writes_data_to_a_particular_remotedevice'>Writes data to a particular RemoteDevice</h3></p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">writeToDevice</span><span class="p">(</span><span class="nv">deviceOfInterest</span><span class="p">:</span> <span class="kt">NSUUID</span><span class="p">,</span> <span class="nv">data</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Central%20Manager%20Methods"></a>
+                <a name="//apple_ref/swift/Section/Central Manager Methods" class="dashAnchor"></a>
+                <a href="#/Central%20Manager%20Methods">
+                  <h3 class="section-name">Central Manager Methods</h3>
                 </a>
               </div>
               <ul>
@@ -169,17 +430,33 @@
                     </section>
                   </div>
                 </li>
-              </ul>
-            </div>
-            <div class="task-group">
-              <div class="task-name-container">
-                <a name="/Connect%20to%20device"></a>
-                <a name="//apple_ref/swift/Section/Connect to device" class="dashAnchor"></a>
-                <a href="#/Connect%20to%20device">
-                  <h3 class="section-name">Connect to device</h3>
-                </a>
-              </div>
-              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC19behavioralBluetooth23LocalBluetoothLECentral14centralManagerFS0_FTCSo16CBCentralManager21didDiscoverPeripheralCSo12CBPeripheral17advertisementDataGVSs10DictionarySSPSs9AnyObject__4RSSICSo8NSNumber_T_"></a>
+                    <a name="//apple_ref/swift/Method/centralManager(_:didDiscoverPeripheral:advertisementData:RSSI:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC19behavioralBluetooth23LocalBluetoothLECentral14centralManagerFS0_FTCSo16CBCentralManager21didDiscoverPeripheralCSo12CBPeripheral17advertisementDataGVSs10DictionarySSPSs9AnyObject__4RSSICSo8NSNumber_T_">centralManager(_:didDiscoverPeripheral:advertisementData:RSSI:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p><a href='#corebluteooth_method_called_when_cbcentralmanager_when_scan_discovers_peripherals' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h3 id='corebluteooth_method_called_when_cbcentralmanager_when_scan_discovers_peripherals'>CoreBluteooth method called when CBCentralManager when scan discovers peripherals.</h3></p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">centralManager</span><span class="p">(</span><span class="nv">central</span><span class="p">:</span> <span class="kt">CBCentralManager</span><span class="p">,</span> <span class="n">didDiscoverPeripheral</span> <span class="nv">peripheral</span><span class="p">:</span> <span class="kt">CBPeripheral</span><span class="p">,</span> <span class="nv">advertisementData</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span> <span class="p">:</span> <span class="kt">AnyObject</span><span class="p">],</span> <span class="kt">RSSI</span><span class="p">:</span> <span class="kt">NSNumber</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
                 <li class="item">
                   <div>
                     <code>
@@ -193,14 +470,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p><a href='#corebluetooth_method_called_when_cbcentralmanager_connects_to_peripheral' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h3 id='corebluetooth_method_called_when_cbcentralmanager_connects_to_peripheral'>CoreBluetooth method called when CBCentralManager connects to peripheral.</h3></p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">LocalBluetoothLECentral</span><span class="p">:</span> <span class="kt">LocalPeripheral</span><span class="p">,</span> <span class="kt">CBCentralManagerDelegate</span><span class="p">,</span> <span class="kt">CBPeripheralDelegate</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">@objc</span> <span class="kd">public</span> <span class="kd">func</span> <span class="nf">centralManager</span><span class="p">(</span><span class="nv">central</span><span class="p">:</span> <span class="kt">CBCentralManager</span><span class="p">,</span> <span class="n">didConnectPeripheral</span> <span class="nv">peripheral</span><span class="p">:</span> <span class="kt">CBPeripheral</span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -220,85 +497,20 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p><a href='#corebluteooth_method_called_when_cbcentralmanager_fails_to_connect_to_a_peripheral' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h3 id='corebluteooth_method_called_when_cbcentralmanager_fails_to_connect_to_a_peripheral'>CoreBluteooth method called when CBCentralManager fails to connect to a peripheral.</h3></p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">LocalBluetoothLECentral</span><span class="p">:</span> <span class="kt">LocalPeripheral</span><span class="p">,</span> <span class="kt">CBCentralManagerDelegate</span><span class="p">,</span> <span class="kt">CBPeripheralDelegate</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">@objc</span> <span class="kd">public</span> <span class="kd">func</span> <span class="nf">centralManager</span><span class="p">(</span><span class="nv">central</span><span class="p">:</span> <span class="kt">CBCentralManager</span><span class="p">,</span> <span class="n">didFailToConnectPeripheral</span> <span class="nv">peripheral</span><span class="p">:</span> <span class="kt">CBPeripheral</span><span class="p">,</span> <span class="nv">error</span><span class="p">:</span> <span class="kt">NSError</span><span class="p">?)</span></code></pre>
 
                         </div>
                       </div>
                     </section>
                   </div>
                 </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:FC19behavioralBluetooth23LocalBluetoothLECentral6searchFS0_FSdT_"></a>
-                    <a name="//apple_ref/swift/Method/search(_:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:FC19behavioralBluetooth23LocalBluetoothLECentral6searchFS0_FSdT_">search(_:)</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Undocumented</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">LocalBluetoothLECentral</span><span class="p">:</span> <span class="kt">LocalPeripheral</span><span class="p">,</span> <span class="kt">CBCentralManagerDelegate</span><span class="p">,</span> <span class="kt">CBPeripheralDelegate</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:FC19behavioralBluetooth23LocalBluetoothLECentral15connectToDeviceFS0_FTCSo9CBService24characteristicOfInterestCSo16CBCharacteristic_T_"></a>
-                    <a name="//apple_ref/swift/Method/connectToDevice(_:characteristicOfInterest:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:FC19behavioralBluetooth23LocalBluetoothLECentral15connectToDeviceFS0_FTCSo9CBService24characteristicOfInterestCSo16CBCharacteristic_T_">connectToDevice(_:characteristicOfInterest:)</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Undocumented</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">LocalBluetoothLECentral</span><span class="p">:</span> <span class="kt">LocalPeripheral</span><span class="p">,</span> <span class="kt">CBCentralManagerDelegate</span><span class="p">,</span> <span class="kt">CBPeripheralDelegate</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-              </ul>
-            </div>
-            <div class="task-group">
-              <div class="task-name-container">
-                <a name="/Connection%20Lost."></a>
-                <a name="//apple_ref/swift/Section/Connection Lost." class="dashAnchor"></a>
-                <a href="#/Connection%20Lost.">
-                  <h3 class="section-name">Connection Lost.</h3>
-                </a>
-              </div>
-              <ul>
                 <li class="item">
                   <div>
                     <code>
@@ -312,14 +524,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p><a href='#corebluteooth_method_called_when_cbcentralmanager_loses_connection' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h3 id='corebluteooth_method_called_when_cbcentralmanager_loses_connection'>CoreBluteooth method called when CBCentralManager loses connection.</h3></p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">LocalBluetoothLECentral</span><span class="p">:</span> <span class="kt">LocalPeripheral</span><span class="p">,</span> <span class="kt">CBCentralManagerDelegate</span><span class="p">,</span> <span class="kt">CBPeripheralDelegate</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">@objc</span> <span class="kd">public</span> <span class="kd">func</span> <span class="nf">centralManager</span><span class="p">(</span><span class="nv">central</span><span class="p">:</span> <span class="kt">CBCentralManager</span><span class="p">,</span> <span class="n">didDisconnectPeripheral</span> <span class="nv">peripheral</span><span class="p">:</span> <span class="kt">CBPeripheral</span><span class="p">,</span> <span class="nv">error</span><span class="p">:</span> <span class="kt">NSError</span><span class="p">?)</span></code></pre>
 
                         </div>
                       </div>
@@ -330,40 +542,13 @@
             </div>
             <div class="task-group">
               <div class="task-name-container">
-                <a name="/CoreBluetooth%20Central%20Manager"></a>
-                <a name="//apple_ref/swift/Section/CoreBluetooth Central Manager" class="dashAnchor"></a>
-                <a href="#/CoreBluetooth%20Central%20Manager">
-                  <h3 class="section-name">CoreBluetooth Central Manager</h3>
+                <a name="/Peripheral%20Manager%20Methods"></a>
+                <a name="//apple_ref/swift/Section/Peripheral Manager Methods" class="dashAnchor"></a>
+                <a href="#/Peripheral%20Manager%20Methods">
+                  <h3 class="section-name">Peripheral Manager Methods</h3>
                 </a>
               </div>
               <ul>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:FC19behavioralBluetooth23LocalBluetoothLECentral14centralManagerFS0_FTCSo16CBCentralManager21didDiscoverPeripheralCSo12CBPeripheral17advertisementDataGVSs10DictionarySSPSs9AnyObject__4RSSICSo8NSNumber_T_"></a>
-                    <a name="//apple_ref/swift/Method/centralManager(_:didDiscoverPeripheral:advertisementData:RSSI:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:FC19behavioralBluetooth23LocalBluetoothLECentral14centralManagerFS0_FTCSo16CBCentralManager21didDiscoverPeripheralCSo12CBPeripheral17advertisementDataGVSs10DictionarySSPSs9AnyObject__4RSSICSo8NSNumber_T_">centralManager(_:didDiscoverPeripheral:advertisementData:RSSI:)</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Undocumented</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">LocalBluetoothLECentral</span><span class="p">:</span> <span class="kt">LocalPeripheral</span><span class="p">,</span> <span class="kt">CBCentralManagerDelegate</span><span class="p">,</span> <span class="kt">CBPeripheralDelegate</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
                 <li class="item">
                   <div>
                     <code>
@@ -377,14 +562,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p><a href='#corebluteooth_method_called_when_cbcentralmanager_discovers_a_peripheral_39_s_services' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h3 id='corebluteooth_method_called_when_cbcentralmanager_discovers_a_peripheral_39_s_services'>CoreBluteooth method called when CBCentralManager discovers a peripheral&rsquo;s services.</h3></p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">LocalBluetoothLECentral</span><span class="p">:</span> <span class="kt">LocalPeripheral</span><span class="p">,</span> <span class="kt">CBCentralManagerDelegate</span><span class="p">,</span> <span class="kt">CBPeripheralDelegate</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">@objc</span> <span class="kd">public</span> <span class="kd">func</span> <span class="nf">peripheral</span><span class="p">(</span><span class="nv">peripheral</span><span class="p">:</span> <span class="kt">CBPeripheral</span><span class="p">,</span> <span class="n">didDiscoverServices</span> <span class="nv">error</span><span class="p">:</span> <span class="kt">NSError</span><span class="p">?)</span></code></pre>
 
                         </div>
                       </div>
@@ -404,14 +589,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p><a href='#corebluteooth_method_called_when_cbcentralmanager_discovers_a_service_39_s_characteristics' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h3 id='corebluteooth_method_called_when_cbcentralmanager_discovers_a_service_39_s_characteristics'>CoreBluteooth method called when CBCentralManager discovers a service&rsquo;s characteristics.</h3></p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">LocalBluetoothLECentral</span><span class="p">:</span> <span class="kt">LocalPeripheral</span><span class="p">,</span> <span class="kt">CBCentralManagerDelegate</span><span class="p">,</span> <span class="kt">CBPeripheralDelegate</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">@objc</span> <span class="kd">public</span> <span class="kd">func</span> <span class="nf">peripheral</span><span class="p">(</span><span class="nv">peripheral</span><span class="p">:</span> <span class="kt">CBPeripheral</span><span class="p">,</span> <span class="n">didDiscoverCharacteristicsForService</span> <span class="nv">service</span><span class="p">:</span> <span class="kt">CBService</span><span class="p">,</span> <span class="nv">error</span><span class="p">:</span> <span class="kt">NSError</span><span class="p">?)</span></code></pre>
 
                         </div>
                       </div>
@@ -431,14 +616,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p><a href='#corebluteooth_method_called_when_cbcentralmanager_discovers_a_characteristic_39_s_descriptors' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h3 id='corebluteooth_method_called_when_cbcentralmanager_discovers_a_characteristic_39_s_descriptors'>CoreBluteooth method called when CBCentralManager discovers a characteristic&rsquo;s descriptors.</h3></p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">LocalBluetoothLECentral</span><span class="p">:</span> <span class="kt">LocalPeripheral</span><span class="p">,</span> <span class="kt">CBCentralManagerDelegate</span><span class="p">,</span> <span class="kt">CBPeripheralDelegate</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">@objc</span> <span class="kd">public</span> <span class="kd">func</span> <span class="nf">peripheral</span><span class="p">(</span><span class="nv">peripheral</span><span class="p">:</span> <span class="kt">CBPeripheral</span><span class="p">,</span> <span class="n">didDiscoverDescriptorsForCharacteristic</span> <span class="nv">characteristic</span><span class="p">:</span> <span class="kt">CBCharacteristic</span><span class="p">,</span> <span class="nv">error</span><span class="p">:</span> <span class="kt">NSError</span><span class="p">?)</span></code></pre>
 
                         </div>
                       </div>
@@ -450,7 +635,7 @@
           </section>
         </section>
         <section id="footer">
-          <p>&copy; 2016 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2016-01-30)</p>
+          <p>&copy; 2016 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2016-02-06)</p>
           <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.5.0</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>

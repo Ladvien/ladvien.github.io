@@ -1,9 +1,9 @@
 behavioralSerialDeviceRemote.swift
-	public var bbState = DeviceState()
 	public func serialDataAvailable(deviceOfInterest: NSUUID, data: String)
 	public func setBackgroundConnection(allow: Bool)
 	public func getRxBufferChar(deviceOfInterest: NSUUID)
 	public func clearRxBuffer(deviceOfInterest: NSUUID)
+	public func getDeviceName()->String?
 	public class RemoteCentral: RemoteBehavioralSerialDevice
 	public class RemotePeripheral: RemoteBehavioralSerialDevice
 	public class RemoteBluetoothLEPeripheral: RemotePeripheral, CBPeripheralDelegate
@@ -22,10 +22,24 @@ behavioralSerialDeviceRemote.swift
 	public var advDataTxPowerLevel: Int?
 	public var advDataIsConnectable: String?
 	public var advSolicitedServiceUUID: Array<String>?
+LocalBluetoothLECentral.swift
+	public func getDeviceNamesAsArray()->Array<String>
+deviceState.swift
+	public enum DeviceState: Int
+	case unknown = 0,
+	disconnected,
+	failedToConnect,
+	purposefulDisconnect,
+	lostConnection,
+	connecting,
+	connected,
+	scanning,
+	off,
+	idle,
+	resetting,
+	unsupported,
+	unauthorized
 behavioralSerialDeviceLocal.swift
-	public var discoveredDeviceList: Dictionary<NSUUID, RemoteBehavioralSerialDevice> = [:]
-	public var discoveredDeviceIdByName: Dictionary<String, NSUUID> = [:]
-	public var state = DeviceState()
 	public var hardwareID: NSUUID?
 	public var lastConnectedDevice: NSUUID?
 	public var allowConnectionInBackground: Bool = false
@@ -35,20 +49,9 @@ behavioralSerialDeviceLocal.swift
 	public var timeBeforeAttemptingReconnectOnDisconnect: Double = 0.5
 	public var retryIndexOnFail: Int = 0
 	public var retryIndexOnDisconnect: Int = 0
-	public func getDeviceIdByName(name: String)->NSUUID
+	public func getDiscoveredDeviceByRSSIDictionary()->Dictionary<NSUUID, Int>
 	public func printDiscoveredDeviceListInfo()
 	public func printConnectedDevices()
 	public class LocalCentral: LocalBehavioralSerialDevice
 	public class LocalPeripheral: LocalBehavioralSerialDevice
 	public class LocalBluetoothCentral: LocalPeripheral
-	public var discoveredPeripherals: Dictionary<NSUUID, RemoteBluetoothLEPeripheral> = [:]
-	public var discoveredPeripheralNames: Array<String> = [""]
-	@objc public func centralManager(central: CBCentralManager, didConnectPeripheral peripheral: CBPeripheral)
-	@objc public func centralManager(central: CBCentralManager, didFailToConnectPeripheral peripheral: CBPeripheral, error: NSError?)
-	public func search(timeoutSecs: NSTimeInterval)
-	public func connectToDevice(serviceOfInterest: CBService, characteristicOfInterest: CBCharacteristic)
-	@objc public func centralManager(central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: NSError?)
-	public func centralManager(central: CBCentralManager, didDiscoverPeripheral peripheral: CBPeripheral, advertisementData: [String : AnyObject], RSSI: NSNumber)
-	@objc public func peripheral(peripheral: CBPeripheral, didDiscoverServices error: NSError?)
-	@objc public func peripheral(peripheral: CBPeripheral, didDiscoverCharacteristicsForService service: CBService, error: NSError?)
-	@objc public func peripheral(peripheral: CBPeripheral, didDiscoverDescriptorsForCharacteristic characteristic: CBCharacteristic, error: NSError?)

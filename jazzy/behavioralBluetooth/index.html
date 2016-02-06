@@ -13,7 +13,7 @@
     <a title="  Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="index.html"> Docs</a> (28% documented)</p>
+        <p><a href="index.html"> Docs</a> (39% documented)</p>
       </div>
     </header>
     <div class="content-wrapper">
@@ -58,6 +58,14 @@
               </li>
             </ul>
           </li>
+          <li class="nav-group-name">
+            <a href="Enums.html">Enums</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Enums/DeviceState.html">DeviceState</a>
+              </li>
+            </ul>
+          </li>
         </ul>
       </nav>
       <article class="main-content">
@@ -71,44 +79,103 @@
 <p>CoreBluetooth is amazing! It&rsquo;s good times, for real.  Sadly, it is lacks a few features I find very useful when dealing with lesser devices such as the HM-10.  For example, a search which is based on a timer.  Of course, it&rsquo;s fairly easy to implement these features, but I got tired of rewriting the same helpers over-and-over.</p>
 
 <p>I am pushing the design of the module to be behavior based.  I&rsquo;m not sure this is the correct term, but it does describe what I am trying to accomplish.  Often, I want to switch how the iOS BLE device acts, these <q>behaviors</q> are really all I care about.  Well, that and actually getting data from the iOS to a nearby microcontroller.  Anyway, I decided to try and focus on getting these desired behaviors out the iOS device, rather than conforming to sound OO code.</p>
+<a href='#it_39_s_an_expirement' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='it_39_s_an_expirement'>It&rsquo;s an expirement!</h2>
+<a href='#getting_started' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='getting_started'>Getting Started</h2>
 
-<p>It&rsquo;s an expirement!</p>
+<p>The full code to get connected to a remote device would be,</p>
+<pre class="highlight swift"><code><span class="kd">import</span> <span class="kt">UIKit</span>
 
-<p><a href="http://ladvien.github.io/jazzy/behavioralBluetooth/index.html">Documentation</a></p>
-<pre class="highlight swift"><code><span class="c1">// Create an object acting as an iOS central BLE device.</span>
-<span class="k">var</span> <span class="nv">myLocalBLE</span> <span class="o">=</span> <span class="kt">LocalBluetoothLECentral</span><span class="p">()</span>
+<span class="kd">class</span> <span class="kt">ViewController</span><span class="p">:</span> <span class="kt">UIViewController</span><span class="p">,</span> <span class="kt">LocalBehavioralSerialDeviceDelegate</span> <span class="p">{</span>
+  <span class="k">var</span> <span class="nv">myLocal</span> <span class="o">=</span> <span class="kt">LocalBluetoothLECentral</span><span class="p">()</span>
+  <span class="k">var</span> <span class="nv">myRemote</span> <span class="o">=</span> <span class="kt">RemoteBluetoothLEPeripheral</span><span class="p">()</span>
 
-<span class="c1">// Tells the iOS BLE to attempt to retry connecting 3 times, with 1.5</span>
-<span class="c1">// seconds inbetween attempts.</span>
-<span class="n">myLocalBLE</span><span class="o">.</span><span class="nf">reconnectOnDisconnect</span><span class="p">(</span><span class="nv">tries</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="nv">timeBetweenTries</span><span class="p">:</span> <span class="mf">1.5</span><span class="p">)</span>
-<span class="c1">// Instructs the iOS BLE to gather advertizing data on search</span>
-<span class="n">myLocalBLE</span><span class="o">.</span><span class="n">discoverAdvertizingDataOnSearch</span> <span class="o">=</span> <span class="kc">false</span>
-<span class="c1">// Tells the iOS BLE to search for peripherals for two seconds.</span>
-<span class="n">myLocalBLE</span><span class="o">.</span><span class="nf">search</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+  <span class="k">override</span> <span class="kd">func</span> <span class="nf">viewDidLoad</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">super</span><span class="o">.</span><span class="nf">viewDidLoad</span><span class="p">()</span>
+
+    <span class="c1">// Attach the delegate to ViewController.</span>
+    <span class="n">myLocal</span><span class="o">.</span><span class="n">delegate</span> <span class="o">=</span> <span class="k">self</span>
+
+    <span class="c1">// Tells the iOS BLE to attempt to retry connecting 3 times, with 1.5</span>
+    <span class="c1">// seconds inbetween attempts.</span>
+    <span class="n">myLocalBLE</span><span class="o">.</span><span class="nf">reconnectOnDisconnect</span><span class="p">(</span><span class="nv">tries</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="nv">timeBetweenTries</span><span class="p">:</span> <span class="mf">1.5</span><span class="p">)</span>
+    <span class="c1">// Instructs the iOS BLE to gather advertizing data on search</span>
+    <span class="n">myLocalBLE</span><span class="o">.</span><span class="n">discoverAdvertizingDataOnSearch</span> <span class="o">=</span> <span class="kc">false</span>
+    <span class="c1">// Tells the iOS BLE to search for peripherals for two seconds.</span>
+    <span class="n">myLocalBLE</span><span class="o">.</span><span class="nf">search</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+  <span class="p">}</span>
+
+  <span class="kd">func</span> <span class="nf">searchTimerExpired</span><span class="p">()</span> <span class="p">{</span>
+    <span class="c1">// Look up a discovered remote device by its advertized name.</span>
+    <span class="k">if</span> <span class="k">let</span> <span class="nv">foundRemote</span> <span class="o">=</span> <span class="n">myLocal</span><span class="o">.</span><span class="nf">getDiscoveredRemoteDeviceByName</span><span class="p">(</span><span class="s">"HMSoft"</span><span class="p">){</span>
+        <span class="n">myRemote</span> <span class="o">=</span> <span class="n">foundRemote</span>
+        <span class="c1">// Connect to the device, returning true if successful.</span>
+        <span class="k">let</span> <span class="nv">didConnect</span> <span class="o">=</span> <span class="n">myLocal</span><span class="o">.</span><span class="nf">connectToDevice</span><span class="p">(</span><span class="n">myRemote</span><span class="p">)</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+<a href='#functions_and_behaviors' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='functions_and_behaviors'>Functions and Behaviors</h2>
+<a href='#list_of_devices_sorted_by_rssi' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h3 id='list_of_devices_sorted_by_rssi'>List of Devices sorted by RSSI</h3>
+<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">sortedDeviceArrayByRSSI</span> <span class="o">=</span> <span class="n">myLocal</span><span class="o">.</span><span class="nf">getAscendingSortedArraysBasedOnRSSI</span><span class="p">()</span>
+
+<span class="k">for</span><span class="p">(</span><span class="k">var</span> <span class="nv">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">sortedDeviceArrayByRSSI</span><span class="o">.</span><span class="n">nsuuids</span><span class="o">.</span><span class="n">count</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">){</span>
+    <span class="k">if</span> <span class="k">let</span> <span class="nv">name</span> <span class="o">=</span> <span class="n">myLocal</span><span class="o">.</span><span class="nf">getDeviceName</span><span class="p">(</span><span class="n">sortedDeviceArrayByRSSI</span><span class="o">.</span><span class="n">nsuuids</span><span class="p">[</span><span class="n">i</span><span class="p">]){</span>
+        <span class="nf">print</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="nf">print</span><span class="p">(</span><span class="s">"NSUUID: "</span> <span class="o">+</span> <span class="kt">String</span><span class="p">(</span><span class="n">sortedDeviceArrayByRSSI</span><span class="o">.</span><span class="n">nsuuids</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="kt">UUIDString</span><span class="p">)</span> 
+    <span class="o">+</span> <span class="s">"</span><span class="se">\n\t</span><span class="s">RSSI: "</span> <span class="o">+</span> <span class="kt">String</span><span class="p">(</span><span class="n">sortedDeviceArrayByRSSI</span><span class="o">.</span><span class="n">rssies</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
+<span class="p">}</span>
+
 </code></pre>
 
-<p>If a remote device is discovered, let&rsquo;s connect,
-&ldquo;`swift
-// Create an object representing a remote peripheral of interest.
-var myRemote = RemoteBluetoothLEPeripheral()</p>
+<p>Console output,
+<code>
+Apple TV
+NSUUID: C35327C8-DAEE-0959-C047-F0D9B02ED90C
+    RSSI: -85
+Apple TV
+NSUUID: A311FF27-FD16-8F62-971E-FEB023B0EA96
+    RSSI: -87
+Unknown_0
+NSUUID: 12FE30E7-9DA0-A791-B9E4-F618CB4482C9
+    RSSI: -95
+</code></p>
+<a href='#debug_output' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h3 id='debug_output'>Debug Output</h3>
+<pre class="highlight swift"><code><span class="n">myLocal</span><span class="o">.</span><span class="nf">verboseOutput</span><span class="p">(</span><span class="kc">true</span><span class="p">)</span>
+</code></pre>
 
-<p>func searchTimerExpired() {
-  // Look up a discovered remote device by its advertized name.
-  if let deviceID = myLocal.discoveredDeviceIdByName[<q>HMSoft</q>]{
-      if let foundRemote = myLocal.discoveredPeripherals[deviceID] {
-          myRemote = foundRemote
-      }
-      // Connect to the device, returning true if successful.
-      let didConnect = myLocal.connectToDevice(deviceID)
-  }
-&rdquo;`</p>
+<p>Console output,
+<code>
+Started search with 2.0 sec timeout
+Searching for BLE Devices
+didDiscoverPeripheral A311FF27-FD16-8F62-971E-FEB023B0EA96
+didDiscoverPeripheral 8BF37705-5698-8306-F8CF-5203D6DB16C9
+didDiscoverPeripheral C35327C8-DAEE-0959-C047-F0D9B02ED90C
+didDiscoverPeripheral 12FE30E7-9DA0-A791-B9E4-F618CB4482C9
+Attempting to connect to: HMSoft
+setConnectedDevice
+didConnectToPeripheral: 8BF37705-5698-8306-F8CF-5203D6DB16C9
+didDiscoverServices: FFE0
+</code></p>
+<a href='#local_device_state_change' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h3 id='local_device_state_change'>Local Device State Change</h3>
+
+<p>This will start the search when the iOS BLE device is powered on and ready.  This allows the app to start scanning on load.  It is often tempting to put the Search method in the ViewDidLoad method, however, if the iOS BLE device had not yet powered on the scan will not discover peripherals resulting in the search always failing.</p>
+<pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">localDeviceStateChange</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">myLocal</span><span class="o">.</span><span class="n">deviceState</span> <span class="o">==</span> <span class="kt">DeviceState</span><span class="o">.</span><span class="n">idle</span><span class="p">){</span>
+        <span class="n">myLocal</span><span class="o">.</span><span class="nf">search</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+
+<p><a href="http://ladvien.github.io/jazzy/behavioralBluetooth/index.html">Documentation</a>
+<a href="https://wakatime.com/@ladvien/projects/ysdncpuqyt?start=2016-01-25&amp;end=2016-01-31">Waka Report</a></p>
 
 <p><a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Attribution-NonCommercial 4.0 International License</a>.</p>
 
           </section>
         </section>
         <section id="footer">
-          <p>&copy; 2016 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2016-01-30)</p>
+          <p>&copy; 2016 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2016-02-06)</p>
           <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.5.0</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>

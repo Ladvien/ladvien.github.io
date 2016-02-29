@@ -1,6 +1,6 @@
 ---
 layout: article
-title: Lab LED Controller v09
+title: Lab Controller v05-09
 categories: robots
 excerpt:
 tags: [robots]
@@ -13,13 +13,11 @@ comments: true
 ---
 
 
-### Lab Controller v05-09
 
-<img height="110" width="160" style="margin: 10px;" src="/images/led-lab-controller-schematic-v09-drivers.png">
+<a href="/images/LED_lab_Controller_2.pdf"><img height="110" width="160" style="margin: 10px;" src="/images/led-lab-controller-schematic-v09-drivers.png"></a>
 
-<img height="110" width="160" style="margin: 10px;" src="/images/led-lab-controller-schematic-v09-main.png">
+Ma href="/images/LAB_LED_Controller_schematic_v09.pdf"><img height="110" width="160" style="margin: 10px;" src="/images/led-lab-controller-schematic-v09-main.png"></a>
 
-Hmm
 
 <div class="flex-video">
 <iframe width="560" height="315" src="https://www.youtube.com/embed/KYiagQ0kjwc" frameborder="0" allowfullscreen></iframe>

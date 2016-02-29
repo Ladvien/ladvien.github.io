@@ -18,7 +18,7 @@ permalink: /:categories/:title/
 markdown: kramdown
 
 #  toc_levels: 1..2
-highlighter: pygments
+highlighter: rouge
 #gems:
 #  - jekyll-sitemap
 

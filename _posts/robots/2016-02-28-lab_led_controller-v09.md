@@ -13,9 +13,9 @@ comments: true
 ---
 
 
-<img height="110" width="160" style="float: left; margin: 10px;" src="/images/led-lab-controller-schematic-drivers.png">
-
+<img height="110" width="160" style="float: left; margin: 10px;" src="/images/led-lab-controller-schematic-v09-drivers.png">
+<img height="110" width="160" style="float: left; margin: 10px;" src="/images/led-lab-controller-schematic-v09-main.png">
 
 <div class="flex-video">
-<iframe width="420" height="315" src="https://www.youtube.com/embed/XtrS7ENc1EU" frameborder="0" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/KYiagQ0kjwc" frameborder="0" allowfullscreen></iframe>
 </div>

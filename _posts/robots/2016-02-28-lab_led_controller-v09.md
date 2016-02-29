@@ -46,3 +46,8 @@ The last piece of interest added to this board was a DS18B20.  This is a one wir
 <div class="flex-video">
 <iframe width="560" height="315" src="https://www.youtube.com/embed/KYiagQ0kjwc" frameborder="0" allowfullscreen></iframe>
 </div>
+
+
+The design files can be found,
+
+[Lab LED Controller v09]

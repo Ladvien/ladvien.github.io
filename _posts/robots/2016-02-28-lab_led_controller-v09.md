@@ -13,7 +13,7 @@ comments: true
 ---
 
 
-<img height="110" width="160" style="float: left; margin: 10px;" src="/images/">
+<img height="110" width="160" style="float: left; margin: 10px;" src="/images/led-lab-controller-schematic-drivers.png">
 
 
 <div class="flex-video">

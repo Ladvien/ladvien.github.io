@@ -14,9 +14,9 @@ comments: true
 
 
 
-<a href="/images/LED_lab_Controller_2.pdf"><img height="110" width="160" style="margin: 10px;" src="/images/led-lab-controller-schematic-v09-drivers.png"></a>
+<a href="/images/LED_lab_Controller_2.pdf"><img height="735" width="630" style="margin: 10px;" src="/images/led-lab-controller-schematic-v09-drivers.png"></a>
 
-<a href="/images/LAB_LED_Controller_schematic_v09.pdf"><img height="110" width="160" style="margin: 10px;" src="/images/led-lab-controller-schematic-v09-main.png"></a>
+<a href="/images/LAB_LED_Controller_schematic_v09.pdf"><img height="700" width="617" style="margin: 10px;" src="/images/led-lab-controller-schematic-v09-main.png"></a>
 
 
 <div class="flex-video">

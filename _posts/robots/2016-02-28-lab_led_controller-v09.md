@@ -33,6 +33,7 @@ I have also added a CH340G for USB-to-UART.  The CH340G SOIC chips were ordered 
 These little chips only cost me like $.65
 
 [CH340G](http://www.ebay.com/itm/381476894812?_trksid=p2057872.m2749.l2649&ssPageName=STRK%3AMEBIDX%3AIT) $5 / 10 = .50
+
 [12mhz Crystal](http://www.ebay.com/itm/251550015572?_trksid=p2057872.m2749.l2649&ssPageName=STRK%3AMEBIDX%3AIT) 1.42 / 01 = .14
 
 The last piece of interest added to this board was a DS18B20.  This is a one wire temperature probe, which I plan to thermal-paste on the heatsink as an auto-shutdown measure.  Or perhaps, to reduce the amount of time a fan makes noise by kicking it on-and-off.
@@ -50,4 +51,4 @@ The last piece of interest added to this board was a DS18B20.  This is a one wir
 
 The design files can be found,
 
-[Lab LED Controller v09]
+[Lab LED Controller v09](https://github.com/Ladvien/Ladviens-Eagle-Files/tree/master/Lab%20Controller%20Board)

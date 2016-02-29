@@ -13,8 +13,13 @@ comments: true
 ---
 
 
-<img height="110" width="160" style="float: left; margin: 10px;" src="/images/led-lab-controller-schematic-v09-drivers.png">
-<img height="110" width="160" style="float: left; margin: 10px;" src="/images/led-lab-controller-schematic-v09-main.png">
+### Lab Controller v05-09
+
+<img height="110" width="160" style="margin: 10px;" src="/images/led-lab-controller-schematic-v09-drivers.png">
+
+<img height="110" width="160" style="margin: 10px;" src="/images/led-lab-controller-schematic-v09-main.png">
+
+Hmm
 
 <div class="flex-video">
 <iframe width="560" height="315" src="https://www.youtube.com/embed/KYiagQ0kjwc" frameborder="0" allowfullscreen></iframe>

@@ -44,6 +44,164 @@
 	  box-sizing: border-box;
 	}
 
+	progress {
+	  /* Positioning */
+	  position: fixed;
+	  left: 0;
+	  top: 0;
+
+	  /* Dimensions */
+	  width: 100%;
+	  height: .25em;
+
+	  /* Reset the apperance */
+	  -webkit-appearance: none;
+	     -moz-appearance: none;
+	          appearance: none;
+
+	  /* Get rid of the default border in Firefox/Opera. */
+	  border: none;
+
+	  /* For Firefox/IE10+ */
+	  background-color: transparent;
+
+	  /* For IE10+, color of the progress bar */
+	  color: $progress-bar-color;
+
+		z-index: 999;
+	}
+
+	progress::-webkit-progress-bar {
+	  background-color: transparent;
+	}
+
+	.flat::-webkit-progress-value {
+	  background-color: $progress-bar-color;
+		z-index: 999;
+	}
+
+	.flat::-moz-progress-bar {
+	  background-color: $progress-bar-color;
+		z-index: 999;
+	}
+
+	.single::-webkit-progress-value {
+	  background-color: transparent;
+	  background-image: -webkit-linear-gradient(left, transparent, $progress-bar-color);
+	}
+
+	.single::-moz-progress-bar {
+	  background-color: transparent;
+	  background-image: -moz-linear-gradient(left, transparent, $progress-bar-color);
+	}
+
+	.multiple::-webkit-progress-value {
+	  background-image: -webkit-linear-gradient(-45deg,
+		transparent 33%, rgba(0, 0, 0, .1) 33%,
+		rgba(0,0, 0, .1) 66%, transparent 66%),
+		webkit-linear-gradient(left, green, $progress-bar-color);
+	}
+
+	.multiple::-moz-progress-bar {
+		background-image: -moz-linear-gradient(-45deg,
+		transparent 33%, rgba(0, 0, 0, .1) 33%,
+		rgba(0,0, 0, .1) 66%, transparent 66%),
+		-moz-linear-gradient(left, green, $progress-bar-color);
+	}
+
+	.progress-container {
+	  width: 100%;
+	  background-color: transparent;
+	  position: fixed;
+	  top: 0;
+	  left: 0;
+	  height: .25em;
+	  display: block;
+		z-index: 999;
+	}
+
+	.progress-bar {
+	  background-color: $red-bandana;
+	  width: 50%;
+	  display: block;
+	  height: inherit;
+		z-index: 999;
+	}
+
+.no-wrap-child {
+	display:inline;
+}
+
+.no-line-under-link {
+	text-decoration: none;
+}
+
+.post-list-wrapper {
+
+}
+
+.post-list-item-wrapper {
+	width: auto;
+	padding: 5px;
+	//margin: 10px;
+	border-top-style: solid;
+	border-color:#000000;
+	border-width: thin;
+	//border-radius: 5px;
+	&:hover {
+		//@include animation(pop .1s 0 linear);
+		//box-shadow: .3em .3em 2px rgba($black, .90);
+		//background:rgba(#666, .30);
+		-moz-box-shadow:    inset 0 0 5px #000000;
+   -webkit-box-shadow: inset 0 0 5px #000000;
+   box-shadow:         inset 0 0 5px #000000;
+	}
+}
+
+
+
+.post-list-item-title {
+	padding-left: 1px;
+	padding-right: 1px;
+	line-height: .45 * $masthead-height; // half the height to center vertically
+}
+
+
+.post-list-item-date {
+	float:right;
+	padding-top: 15px;
+	font-size: 100%;
+}
+
+.post-list-item-image-wrapper {
+		float: left;
+		padding-right: 10px;
+		padding-left: 10px;
+		//padding-bottom: 2px;
+		padding-top: 2px;
+		border-radius: 5px;
+}
+
+.post-list-image {
+	// Makes a circle.
+	width: 80px;
+ 	height: 80px;
+ 	background-size: cover;
+ 	display: block;
+ 	//border-radius: 45px;
+ 	//-webkit-border-radius: 45px;
+ 	//-moz-border-radius: 45px;
+	// End circle clipping.
+	border-radius: 5px;
+	display:inline;
+	//border-style: solid;
+	//border-color:#000000;
+	//border-width: .1em;
+}
+
+.post-grid-image {
+
+}
 
 /*
    Masthead

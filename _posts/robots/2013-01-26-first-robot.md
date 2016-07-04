@@ -63,7 +63,9 @@ And, of course, a feedback LED.
 <iframe width="560" height="315" src="https://www.youtube.com/embed/jElQulP4eYY" frameborder="0" allowfullscreen></iframe>
 </div>
 
-![](/images/IMG_0423.jpg)**The Build v2.x:**
+![](/images/IMG_0423.jpg)
+
+**The Build v2.x:**
 
 I felt I had finally assembled the "kit."  But I wanted to own it.  I wanted to get rid of the electrical tape holding the whole thing down.  I made this little mess.  I took some plexi and cut a hole in the middle, then put a slit down some poly-flex tubing and hot glued around the edge as bumper.  I used a medium servo and threaded through the hole for the MaxSonar.  I found some flexible wire that had enough give to keep from the wire breaking down.  Last, hot glue and semi-firm putty held the other bits in place.  I felt like I "owned" it a little more now--and the whole thing worked pretty great, except how I chose to mount the servo.  The MaxSonar sensor stuck over the edge and would bump into things first.
 
@@ -91,8 +93,9 @@ One plate to cover the base, which I glued two 3 AA battery holders.  I put thes
 Next, I cut a plexiglass template for the Arduino and Motor Shield, lastly, I cut a plexiglass template and cut out where the pins from the an Arduino Wireless Shield could sit down into the Motor Shield. I secured all this down with some 3 inch aluminimum stand offs and some plastic screw knobs (obtained from Alliedelec.com).  I screwed the stand offs into the closure mounting holes.
 
 As I mentioned wanting to earlier, I removed the servo and MaxSensor; in place, I put a breadboard for testing sensors.  
+![](/images/IMG_1503.jpg)
 
-To power the sensors, I replaced the 5v linear voltage regulator with this neat little DC-DC regulator (LM2596).  The little trim![](/images/IMG_1503.jpg) pot lets you set the output 1.5v to 35v, 2A (input is 4.5v-40v).  And it made me happy at $1.56 on eBay.  I also notched out the plexi and put a little two-state switch for turning the bot on and off.
+To power the sensors, I replaced the 5v linear voltage regulator with this neat little DC-DC regulator (LM2596).  The little trim pot lets you set the output 1.5v to 35v, 2A (input is 4.5v-40v).  And it made me happy at $1.56 on eBay.  I also notched out the plexi and put a little two-state switch for turning the bot on and off.
 
 Of course, the sensor I actually worked into the code of this build was simply a HC-SR04 stuck percariously into the breadboard.  (I didn't want to pull the MaxSonar out of the rather stable block of wood I had it screwed on.)
 

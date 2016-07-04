@@ -16,7 +16,6 @@ Originally posted on [www.letsmakerobots.com](www.letsmakerobots.com)
 
 <a class="btn" href="/files/First_Bot.tar.gz" target="">First Bot Files</a>
 
-
 <div class="flex-video">
 <iframe width="420" height="315" src="https://www.youtube.com/embed/FmJV9werCjQ" frameborder="0" allowfullscreen></iframe>
 </div>
@@ -165,7 +164,7 @@ First off, setting up the RPi.
 
 **Instead of including in this build, I made a separate walking through.**
 
-**[Blueberry Pi](http://letsmakerobots.com/node/36884)**
+**[Blueberry Pi](http://ladvien.github.io/robots/blueberry-pi-robot-base/)**
 
 The code is actually pretty simple right now.  The Python comes up with something to do (right now generated from keystrokes) and tells the Arduino to do it.  It does this by capturing keystrokes, converting them to byes, sending them over the I2C bus where the Arduino captures them, translates them back from bytes into something human readable.  Each keystroke then is associated with a routine.  If it captures the "W" key code, it turns it into bytes, over I2C, Ardy grabs it, turns it back into a "W," then runs the Forward() function.  Likewise, the Arduino can send information back through the bus to the Pi, which the Pi converts from a byte, into character, then compiles the characters into a string until it predefined delimiter.  Simple.
 

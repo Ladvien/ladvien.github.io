@@ -1,0 +1,46 @@
+HM-1X Tutorial Ideas:
+
+I. Introduction to HM-1X
+  1. HM-1X
+    A. What is the HM-10?
+      Bluetooth Low Energy Serial Module
+      Show: HM-10 Image, Show HM-11 Image
+    B. Specs: Review Page 3 of HM-10 Manual
+  2. HM-10 Setup
+    A. Huamao Technology Co., Ltd.
+      1. www.jnhuamao.cn
+      2. VIRUS!
+      3. Datasheets
+      4. Firmware upgrades
+    A. Where to buy?
+      1. Fasttech
+      2. eBay pre-Breakout
+    B. Breakout board (show soldering video)
+    B. Wiring up to UART-to-USB
+    B. Powering Up
+    B. Interacting using a Serial Terminal
+      1. No Carriage Return or Line Feed after AT
+    B. Baud, Stop Bits, Parity
+    B. AT+RESET after to make sure commands take
+    B. AT+RENEW Resets to factory firmware
+    C. Central and Slave
+    B. "Oh Crap!" Hardware Reset
+II. HM-1X and PIO Fun I
+  1. HM-10's PIO pins and their abilities (ADC, PWM, H/L)
+  2. HM-11's PIO pins and their abilities (H/L)
+  3. Reminder of current sink / source limits.
+  4. Special pins (Refer to page 17 of HM manual)
+    A. System LED
+    B. System KEY
+  4. AT+PIO send pins high, low.
+  5. AT+PIO set PWM of pin
+  6. AT+ADC read ADC of pin
+  11. AT+PIO1 -- Set System LED pin behavior
+III. HM-1X and PIO Fun II
+  7. AT+BEFC pin state after power on -- use bit calculator
+  8. AT+AFTC pin state after connection -- use bit calculator.
+  9. AT+COL? Get pin status in 12 bits -- use bit calculator.
+  10. AT+CYC Set the pin collection rate (00-99 seconds)
+    A. HM will send pin state every X seconds in the form of, "OK+Col:0xFFF"
+IV. Remote module
+V. Other Commands

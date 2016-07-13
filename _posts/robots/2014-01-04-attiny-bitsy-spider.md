@@ -1,6 +1,6 @@
 ---
 layout: article
-title: ATtiny Bits
+title: ATtiny Bitsy Spider
 categories: robots
 excerpt:
 tags: [robots]

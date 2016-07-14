@@ -83,7 +83,7 @@ Another thing I noticed, the plateform I had created worked nicely as a handle f
 
 I wanted to own more of my build; I procceeded to cut plates using Home Depot grade Plexiglass and long ago I bought a pair of Xbees to be used in a project. I decided that until I had the kinks worked out in my platform, I would make a simple Xbee controller using Processing 2.0\. I removed all the electric tape and pulled out LSN's guts.  I cut several Plexiglass plates to act as component holders.  
 
-![](/images/IMG_1502.jpg){:height="360px" width="360px"}
+![](/images/IMG_1502.jpg){class="ll-image"}
 
 One plate to cover the base, which I glued two 3 AA battery holders.  I put these in parellel, using 3 LiFePo4 600 mAh batteries.  I ended up with 9.6v at 1200 mAh LiFePo4\.  I had found the batteries at Wal-Mart on sale and bought them with the intention of learning how to make my own battery packs.  Unfortantely, it has been more of a challenge than I expected; no easy charger setup, so I found some chips to charge them in series and I bought the chips thinking I could etch a board real easy like and make my own chargable pack.  Well, I didn't check what chip I was getting and ended up with a DFN that was approaching singularity in size (http://ww1.microchip.com/downloads/en/AppNotes/01276a.pdf).  I didn't give up on a charger board--but I knew it was going to take me longer than I wanted (I've included my current board verzion, a little more work and I'll send it off to OshPark).
 

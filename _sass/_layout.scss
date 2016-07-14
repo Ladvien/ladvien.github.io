@@ -44,6 +44,17 @@
 	  box-sizing: border-box;
 	}
 
+
+	.ll-image
+	{
+    padding: 20px;
+    border: 1px solid #f0f0f0;
+    border-bottom: 2px solid #ccc;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+	}
+
 	progress {
 	  /* Positioning */
 	  position: fixed;

@@ -45,13 +45,34 @@
 	}
 
 
-	.ll-image {
+	.ll-image-fr {
     padding: 20px;
+		float: right;
     border: 1px solid #f0f0f0;
     border-bottom: 2px solid #ccc;
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     border-radius: 5px;
+	}
+
+	.ll-image-fl {
+    padding: 20px;
+		float: left;
+    border: 1px solid #f0f0f0;
+    border-bottom: 2px solid #ccc;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+	}
+
+	.ll-image-c {
+		padding: 20px;
+		align: center;
+		border: 1px solid #f0f0f0;
+		border-bottom: 2px solid #ccc;
+		-webkit-border-radius: 5px;
+		-moz-border-radius: 5px;
+		border-radius: 5px;
 	}
 
 	progress {

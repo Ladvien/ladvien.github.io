@@ -71,14 +71,16 @@ I felt I had finally assembled the "kit."  But I wanted to own it.  I wanted to 
 ![](/images/IMG_0980.jpg){: class="ll-image-fl"}
 
 Another thing I noticed, the plateform I had created worked nicely as a handle for Silas, my son.  This led him to play with the bot a little more--even "saving" him a few times.
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 
 2.x Video (Be warned, baby in diaper.)
 
-<br>
-<br>
-<br>
-<br>
-<br>
 
 <div class="flex-video">
 <iframe width="560" height="315" src="https://www.youtube.com/embed/XshoH3vyt7g" frameborder="0" allowfullscreen></iframe>

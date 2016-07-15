@@ -64,6 +64,15 @@ And, of course, a feedback LED.
 
 ![](/images/IMG_0423.jpg){: class="ll-image-fr"}
 
+
+
+
+
+
+
+
+
+
 **The Build v2.x:**
 
 I felt I had finally assembled the "kit."  But I wanted to own it.  I wanted to get rid of the electrical tape holding the whole thing down.  I made this little mess.  I took some plexi and cut a hole in the middle, then put a slit down some poly-flex tubing and hot glued around the edge as bumper.  I used a medium servo and threaded through the hole for the MaxSonar.  I found some flexible wire that had enough give to keep from the wire breaking down.  Last, hot glue and semi-firm putty held the other bits in place.  I felt like I "owned" it a little more now--and the whole thing worked pretty great, except how I chose to mount the servo.  The MaxSonar sensor stuck over the edge and would bump into things first.
@@ -97,6 +106,14 @@ As I mentioned wanting to earlier, I removed the servo and MaxSensor; in place, 
 To power the sensors, I replaced the 5v linear voltage regulator with this neat little DC-DC regulator (LM2596).  The little trim pot lets you set the output 1.5v to 35v, 2A (input is 4.5v-40v).  And it made me happy at $1.56 on eBay.  I also notched out the plexi and put a little two-state switch for turning the bot on and off.
 
 Of course, the sensor I actually worked into the code of this build was simply a HC-SR04 stuck percariously into the breadboard.  (I didn't want to pull the MaxSonar out of the rather stable block of wood I had it screwed on.)
+
+
+
+
+
+
+
+
 
 **The Build 4.x**
 

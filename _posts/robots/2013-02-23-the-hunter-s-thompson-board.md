@@ -14,7 +14,7 @@ comments: true
 
 Originally posted on [www.letsmakerobots.com](www.letsmakerobots.com)
 
-[](/images/IMG_0494.jpg){:class="ll-image-fl"}
+![](/images/IMG_0494.jpg){:class="ll-image-fl"}
 
 Six months ago I bought my first Arduino.  Bought it at the Shack.  I'd never worked with electronics, but I had to replace a momentary switch on my computer and wanted more.  I quickly woke to the Open Hardware community.
 
@@ -38,7 +38,7 @@ I began Goog-searching any information I could find on etching homemade boards (
 
 ![Homemad PCBs via Lithography](/images/Making_Mega_Mini.jpg){:class="ll-image-fl"}
 
-![](/images/Making_Mega_Mini__15_.jpg){:class="ll-image-fl"}
+![](/images/Making_Mega_Mini__15_.jpg){:class="ll-image-fr"}
 
 This isn't going to be a guide on homemade PCBs for three reasons: (1) I don't _ever_ want to talk about it, (2) others have already done a much better job than I could, (3) there is a better and cheaper way.  Stick with me, there is an exciting cost analysis coming.
 
@@ -80,13 +80,13 @@ My conclusion: **OSHPark is awesome.**
 
 **2\. Populating**
 
-**![](/images/Making_Mega_Mini__49_.jpg)**
+![](/images/Making_Mega_Mini__49_.jpg){:class="ll-image-fl"}
 
 Actually putting the pieces on the board turned out to be the easiest step.  I had anticipated this was going to be the hardest, therefore, I had devoted must of my study time to learning how to solder fine SMDs.  I knew right away that I wouldn't be able to use my $7 Shack iron on this board.  My wife and I allow ourselves $100 a month for entertainment, so I blew one month's on a [Hakko FX-888](http://www.ebay.com/itm/270842901473?ssPageName=STRK:MEWNX:IT&_trksid=p3984.m1439.l2648) from eBay.  I also bought a [T18 CF1 tip](http://www.ebay.com/itm/380320904716?ssPageName=STRK:MEWNX:IT&_trksid=p3984.m1439.l2649).  **I love this iron.** Sturdy and a nifty blue.  I felt professional with it.
 
 I had read somewhere when populating a SMD you should start with the largest component and work down to the smallest.  That's what I did.  I started by trying to pin the Atmega chip to its pads.  In the end, I used the dragging tip method with plenty of solder flux.
 
-![](/images/Making_Mega_Mini__50_2_0.jpg)
+![](/images/Making_Mega_Mini__50_2_0.jpg){:class="ll-image-fr"}
 
 I had also invested in one of these [do-hickies](http://www.ebay.com/itm/130722791217?ssPageName=STRK:MEWNX:IT&_trksid=p3984.m1439.l2649) so I could check all my pins.  I hate the way it looks, but it saved me so many times I don't care.
 

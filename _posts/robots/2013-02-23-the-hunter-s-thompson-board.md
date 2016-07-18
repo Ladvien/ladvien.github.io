@@ -14,7 +14,9 @@ comments: true
 
 Originally posted on [www.letsmakerobots.com](www.letsmakerobots.com)
 
-Six months ago I bought my first Arduino.  Bought it at the Shack.  I'd never worked with electronics, but I had to replace a![](/images/IMG_0494.jpg) momentary switch on my computer and wanted more.  I quickly woke to the Open Hardware community.
+[](/images/IMG_0494.jpg){:class="ll-image-fl"}
+
+Six months ago I bought my first Arduino.  Bought it at the Shack.  I'd never worked with electronics, but I had to replace a momentary switch on my computer and wanted more.  I quickly woke to the Open Hardware community.
 
 A month later, I was reading about making your own PCBs at home.  I made my first home board a few days later.  It was a motor driver board, and well, it was a mixed success.  Definitely not a looker (http://wp.me/p37cuD-3q).  But I was hooked.  I wanted to do something more sophisticated.  And I was spurred on by a story I once heard about Hunter S. Thompson.  It was said that he'd often copy pages out of the Great Gastby because he, "wanted to feel for the music of such great words."  That's a paraphrase but only cause I didn't want to reread the forward of _Fear and Loathing on the Campaign Trail '72 (_once was enough, thanks)_._  Still, the logic seemed sound.  So, I thought of how to apply it to electronics.
 
@@ -34,9 +36,9 @@ Little did I know, there was no Andy Dick, but the other was definitely ahead of
 
 I began Goog-searching any information I could find on etching homemade boards (I'll provide my fairly comprehensive link list at bottom).  After trying all the different methods, I landed on  the fact that the lithography method combined with MG Chemicals was probably going to be my best bet. I began collecting everything I needed.
 
-![Homemad PCBs via Lithography](/images/Making_Mega_Mini.jpg)
+![Homemad PCBs via Lithography](/images/Making_Mega_Mini.jpg){:class="ll-image-fl"}
 
-![](/images/Making_Mega_Mini__15_.jpg)
+![](/images/Making_Mega_Mini__15_.jpg){:class="ll-image-fl"}
 
 This isn't going to be a guide on homemade PCBs for three reasons: (1) I don't _ever_ want to talk about it, (2) others have already done a much better job than I could, (3) there is a better and cheaper way.  Stick with me, there is an exciting cost analysis coming.
 
@@ -49,15 +51,16 @@ Cost of materials to attempt etching a Mega Mini:
 
 Total per attempt at etching a Mega Mini: **$2.65**
 
-![Last few attempts](/images/Making_Mega_Mini__25_.jpg)I came to these numbers after 16 attempts.  I priced my materials across America, included shipping, cut many boards, and then averaged the costs to come to that final figure.  Per attempt, $2.65 was the best I could manage.  My problem was several fold.  First, I didn't know what I was doing.  I understand this will happen: prototyping is more expensive than production units.  Second, I picked a mother-of-some-puppies kinda board to etch.  The traces are most commonly 8mil, so, it took me about 14 attempts to get to the point where I knew how to etch such small traces.  But attempts 15 and 16 revealed to me a hurdle I simply couldn't overcome.  I had been relying on FedEx-Kinkos and Staples to print my transparencies and I discovered their print size was off.  I had learned that you can compensate for this in Eagle by changing the![Best one (16)](/images/Making_Mega_Mini__25_.jpg) "Scale" of your print size, sadly, it only lets you change units to the hundredths place.  Any thousandths it will round down.  My MegaMini PCB needed to be around 1.025\.  Of course, this would be rounded to 1.02\.  **Suck**
+![Last few attempts](/images/Making_Mega_Mini__25_.jpg){:class="ll-image-fl"}
+I came to these numbers after 16 attempts.  I priced my materials across America, included shipping, cut many boards, and then averaged the costs to come to that final figure.  Per attempt, $2.65 was the best I could manage.  My problem was several fold.  First, I didn't know what I was doing.  I understand this will happen: prototyping is more expensive than production units.  Second, I picked a mother-of-some-puppies kinda board to etch.  The traces are most commonly 8mil, so, it took me about 14 attempts to get to the point where I knew how to etch such small traces.  But attempts 15 and 16 revealed to me a hurdle I simply couldn't overcome.  I had been relying on FedEx-Kinkos and Staples to print my transparencies and I discovered their print size was off.  ![Best one (16)](/images/Making_Mega_Mini__25_.jpg){:class="ll-image-fr"}I had learned that you can compensate for this in Eagle by changing the "Scale" of your print size, sadly, it only lets you change units to the hundredths place.  Any thousandths it will round down.  My MegaMini PCB needed to be around 1.025\.  Of course, this would be rounded to 1.02\.  **Suck**
 
 Not going to lie.  I got depressed.  I had sunk much time, money, and passion into etching.
 
-I put the project on the shelf for awhile.  I started working on my bot some (http://letsmakerobots.com/node/35922).  Then, while I was looking at all the neat little things others made on LMR, I noticed in a remark about OSHPark.  A while back, I had briefly considered BatchPCB but after I learned the price and tried getting Eagle to produce Gerber files without errors, I gave up.  But, I was bored and thought I'd look at OSHPark. I was pretty happy to see I could upload Eagle files directly.  Once I got the board uploaded I got depressed again, it was going to be $10.80--oh, wait, that was for three boards.  Well, that came to be $3.60 a board.  Now, that wasn't so bad.  So I sent off for a trio.
+I put the project on the shelf for awhile.  I started working on my bot some.  Then, while I was looking at all the neat little things others made on LMR, I noticed in a remark about OSHPark.  A while back, I had briefly considered BatchPCB but after I learned the price and tried getting Eagle to produce Gerber files without errors, I gave up.  But, I was bored and thought I'd look at OSHPark. I was pretty happy to see I could upload Eagle files directly.  Once I got the board uploaded I got depressed again, it was going to be $10.80--oh, wait, that was for three boards.  Well, that came to be $3.60 a board.  Now, that wasn't so bad.  So I sent off for a trio.
 
 Two weeks later--these amazing little purple boards came in.
 
-![](/images/Making_Mega_Mini__47_.jpg)
+![](/images/Making_Mega_Mini__47_.jpg){:class="ll-image-fl"}
 
 Costs for OSHPark Board: **$3.60**
 

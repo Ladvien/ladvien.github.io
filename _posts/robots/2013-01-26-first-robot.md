@@ -63,12 +63,6 @@ And, of course, a feedback LED.
 </div>
 
 ![](/images/IMG_0423.jpg){: class="ll-image-fr"}
-<br>
-<br>
-<br>
-<br>
-<br>
-
 **The Build v2.x:**
 
 I felt I had finally assembled the "kit."  But I wanted to own it.  I wanted to get rid of the electrical tape holding the whole thing down.  I made this little mess.  I took some plexi and cut a hole in the middle, then put a slit down some poly-flex tubing and hot glued around the edge as bumper.  I used a medium servo and threaded through the hole for the MaxSonar.  I found some flexible wire that had enough give to keep from the wire breaking down.  Last, hot glue and semi-firm putty held the other bits in place.  I felt like I "owned" it a little more now--and the whole thing worked pretty great, except how I chose to mount the servo.  The MaxSonar sensor stuck over the edge and would bump into things first.
@@ -77,6 +71,11 @@ I felt I had finally assembled the "kit."  But I wanted to own it.  I wanted to 
 
 Another thing I noticed, the plateform I had created worked nicely as a handle for Silas, my son.  This led him to play with the bot a little more--even "saving" him a few times.
 
+<br>
+<br>
+<br>
+<br>
+<br>
 
 2.x Video (Be warned, baby in diaper.)
 

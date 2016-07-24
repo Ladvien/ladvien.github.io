@@ -63,6 +63,11 @@ And, of course, a feedback LED.
 </div>
 
 ![](/images/IMG_0423.jpg){: class="ll-image-fr"}
+<br>
+<br>
+<br>
+<br>
+<br>
 
 **The Build v2.x:**
 
@@ -71,13 +76,7 @@ I felt I had finally assembled the "kit."  But I wanted to own it.  I wanted to 
 ![](/images/IMG_0980.jpg){: class="ll-image-fl"}
 
 Another thing I noticed, the plateform I had created worked nicely as a handle for Silas, my son.  This led him to play with the bot a little more--even "saving" him a few times.
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
+
 
 2.x Video (Be warned, baby in diaper.)
 
@@ -104,6 +103,11 @@ As I mentioned wanting to earlier, I removed the servo and MaxSensor; in place, 
 To power the sensors, I replaced the 5v linear voltage regulator with this neat little DC-DC regulator (LM2596).  The little trim pot lets you set the output 1.5v to 35v, 2A (input is 4.5v-40v).  And it made me happy at $1.56 on eBay.  I also notched out the plexi and put a little two-state switch for turning the bot on and off.
 
 Of course, the sensor I actually worked into the code of this build was simply a HC-SR04 stuck percariously into the breadboard.  (I didn't want to pull the MaxSonar out of the rather stable block of wood I had it screwed on.)
+<br>
+<br>
+<br>
+<br>
+<br>
 
 **The Build 4.x**
 

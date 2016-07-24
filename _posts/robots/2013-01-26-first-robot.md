@@ -58,7 +58,7 @@ And, of course, a feedback LED.
 
 **1.x Video**
 
-<div class="flex-video">
+<div class="flex-video" class="ll-image-c">
 <iframe width="560" height="315" src="https://www.youtube.com/embed/jElQulP4eYY" frameborder="0" allowfullscreen></iframe>
 </div>
 

@@ -57,6 +57,11 @@
     <script src="https://d3js.org/d3.v4.min.js"></script>
     <script>
 
+    var paragraphs = document.getElementsByTagName("p");
+    for (var i = 0; i < paragraphs.length; i++) {
+      var paragraph = paragraphs.item(i);
+      paragraph.style.setProperty("color", "white", null);
+    }
       d3.select("body").style("background-color", "black");
 
     </script>

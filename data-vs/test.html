@@ -17,6 +17,18 @@ body {
 
     var errorsBySite = d3.csv("http://ladvien.github.io/files/errors-by-site.csv", function (data) {
 
+      var canvas = d3.select("body").append("svg")
+            .attr("width", 500)
+            .attr("height", 500)
+
+      canvas.selectAll("rect")
+          .data(data)
+          .enter()
+              .append("rect")
+              .attr("width", function (d)(d.june))
+              .attr("height", 50)
+              .attr("y", function (d)(d.site))
+              .attr("fill", "blue")
     }
   )
 

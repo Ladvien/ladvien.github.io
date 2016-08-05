@@ -35,7 +35,7 @@ body {
           .enter()
               .append("text")
               .attr("fill", "white")
-              .attr("y", function (d, ){return i * 50 + 25;})
+              .attr("y", function (d,i){return i * 50 + 25;})
               .text(function(d){return.site;})
     }
   )

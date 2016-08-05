@@ -14,6 +14,12 @@ body {
 <script src="https://d3js.org/d3.v4.js"></script>
 <body>
     <script>
+
+    var errorsBySite = d3.csv("http://ladvien.github.io/files/errors-by-site.csv", function (data) {
+
+    }
+  )
+
     var jsonCircles = [
       { "x_axis": 30, "y_axis": 30, "radius": 20, "color" : "green" },
       { "x_axis": 70, "y_axis": 70, "radius": 20, "color" : "purple"},

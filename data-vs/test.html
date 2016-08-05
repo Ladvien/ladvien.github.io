@@ -25,9 +25,9 @@ body {
           .data(data)
           .enter()
               .append("rect")
-              .attr("width", function (d)(d.june))
+              .attr("width", function (d)( return d.june))
               .attr("height", 50)
-              .attr("y", function (d)(d.site))
+              .attr("y", function (d)(return d.site))
               .attr("fill", "blue")
     }
   )

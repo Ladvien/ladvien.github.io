@@ -57,12 +57,9 @@
     <script src="https://d3js.org/d3.v4.min.js"></script>
     <script>
 
-    var paragraphs = document.getElementsByTagName("p");
-    for (var i = 0; i < paragraphs.length; i++) {
-      var paragraph = paragraphs.item(i);
-      paragraph.style.setProperty("color", "white", null);
-    }
-      d3.select("body").style("background-color", "black");
+      d3.selectAll("p").style("color", function() {
+        return "hsl(" + Math.random() * 360 + ",100%,50%)";
+      });
 
     </script>
     <!-- HTML5 Shiv and Media Query Support for IE -->

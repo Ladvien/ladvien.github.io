@@ -37,7 +37,7 @@ body {
           .data(data)
           .enter()
               .append("rect")
-              .attr("width", function (d){return widthScale(d);})
+              .attr("width", function (d){return widthScale(d.june);})
               .attr("height", 50)
               .attr("y", function (d,i){return i * 50;})
               .attr("fill", "blue")

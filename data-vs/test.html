@@ -24,7 +24,7 @@ body {
             .domain([0, d3.max(errorsBySite)])
             .range([0, width])
 
-      var colorScale = d3.scale()
+      var colorScale = d3.scaleLinear()
             .domain([0,60])
             .range(["red", "green"])
 

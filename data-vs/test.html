@@ -22,7 +22,11 @@ body {
 
       var widthScale = d3.scale.linear()
             .domain([0, d3.max(errorsBySite)])
-            .range([0, width]);
+            .range([0, width])
+
+      var colorScale = d3.scale.linear()
+            .domain([0,60])
+            .range(["red", "green"])
 
       var canvas = d3.select("body")
             .append("svg")

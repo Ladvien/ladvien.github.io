@@ -33,7 +33,7 @@ body {
             .attr("width", 500)
             .attr("height", 500)
 
-      canvas.selectAll("rect")
+      var bars = canvas.selectAll("rect")
           .data(data)
           .enter()
               .append("rect")

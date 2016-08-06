@@ -8,11 +8,12 @@
   <script type="text/javascript">
     var svg = dimple.newSvg("body", 800, 600);
     var errorsBySite = d3.csv("http://ladvien.github.io/files/errors-by-site.csv", function (data) {
-      var myChart = new dimple.chart(svg, data.june);
-      myChart.setBounds(20, 20, 460, 360)
-      myChart.addMeasureAxis("p", "Unit Sales");
-      myChart.addSeries("june", dimple.plot.pie);
-      myChart.addLegend(500, 20, 90, 300, "left");
+      var myChart = new dimple.chart(svg, data);
+      myChart.setBounds(60, 30, 510, 305)
+      var x = myChart.addCategoryAxis("x", "Month");
+      x.addOrderRule("Date");
+      myChart.addMeasureAxis("y", "Unit Sales");
+      myChart.addSeries(null, dimple.plot.bar);
       myChart.draw();
     });
   </script>

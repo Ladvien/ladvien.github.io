@@ -31,7 +31,7 @@ body {
       var canvas = d3.select("body")
             .append("svg")
             .attr("width", 500)
-            .attr("height", 500);
+            .attr("height", 500)
 
       canvas.selectAll("rect")
           .data(data)
@@ -40,7 +40,7 @@ body {
               .attr("width", function (d){return widthScale(d);})
               .attr("height", 50)
               .attr("y", function (d,i){return i * 50;})
-              .attr("fill", "blue");
+              .attr("fill", "blue")
 
       canvas.selectAll("text")
           .data(data)
@@ -48,7 +48,7 @@ body {
               .append("text")
               .attr("fill", "white")
               .attr("y", function (d,i){return i * 50 + 25;})
-              .text(function(d){return d.site;});
+              .text(function(d){return d.site;})
     }
   )
     </script>

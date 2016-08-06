@@ -18,7 +18,7 @@ body {
     var errorsBySite = d3.csv("http://ladvien.github.io/files/errors-by-site.csv", function (data) {
 
       var width = 500;
-      var height = 500;
+      var height = 1200;
 
       var max = d3.max(data, function(d) { return +d.june;} );
 

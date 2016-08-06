@@ -21,7 +21,7 @@ body {
       var height = 500;
 
       var widthScale = d3.scaleLinear()
-            .domain([0, d3.max(d.june)])
+            .domain([0, d3.max(errorsBySite)])
             .range([0, width])
 
       var colorScale = d3.scale()

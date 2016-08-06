@@ -20,8 +20,10 @@ body {
       var width = 500;
       var height = 500;
 
+      var max = d3.max(data, function(d) { return +d.june;} );
+
       var widthScale = d3.scaleLinear()
-            .domain([0, d3.max(errorsBySite)])
+            .domain([0, d3.max(max)])
             .range([0, width])
 
       var colorScale = d3.scaleLinear()
@@ -37,7 +39,7 @@ body {
           .data(data)
           .enter()
               .append("rect")
-              .attr("width", function (d){return widthScale(d.june);})
+              .attr("width", function (d){return widthScale(d);})
               .attr("height", 50)
               .attr("y", function (d,i){return i * 50;})
               .attr("fill", "blue")

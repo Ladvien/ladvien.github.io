@@ -17,18 +17,25 @@ body {
 
     var errorsBySite = d3.csv("http://ladvien.github.io/files/errors-by-site.csv", function (data) {
 
+      var width = 500;
+      var height = 500;
+
+      var widthScale = d3.scale.linear()
+            .domain(0, d3.max(errorsBySite))
+            .range([0, width]);
+
       var canvas = d3.select("body").append("svg")
             .attr("width", 500)
-            .attr("height", 500)
+            .attr("height", 500);
 
       canvas.selectAll("rect")
           .data(data)
           .enter()
               .append("rect")
-              .attr("width", function (d){return d.june;})
+              .attr("width", function (d){return widthScale(d);})
               .attr("height", 50)
               .attr("y", function (d,i){return i * 50;})
-              .attr("fill", "blue")
+              .attr("fill", "blue");
 
       canvas.selectAll("text")
           .data(data)
@@ -36,29 +43,8 @@ body {
               .append("text")
               .attr("fill", "white")
               .attr("y", function (d,i){return i * 50 + 25;})
-              .text(function(d){return d.site;})
+              .text(function(d){return d.site;});
     }
   )
-
-    var jsonCircles = [
-      { "x_axis": 30, "y_axis": 30, "radius": 20, "color" : "green" },
-      { "x_axis": 70, "y_axis": 70, "radius": 20, "color" : "purple"},
-      { "x_axis": 110, "y_axis": 100, "radius": 20, "color" : "red"}];
-
-    var svgContainer = d3.select("body").append("svg")
-                                        .attr("width", 200)
-                                        .attr("height", 200);
-
-    var circles = svgContainer.selectAll("circle")
-                              .data(jsonCircles)
-                              .enter()
-                              .append("circle");
-
-    var circleAttributes = circles
-                           .attr("cx", function (d) { return d.x_axis; })
-                           .attr("cy", function (d) { return d.y_axis; })
-                           .attr("r", function (d) { return d.radius; })
-                           .style("fill", function(d) { return d.color; });
-
     </script>
 </body>

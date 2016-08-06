@@ -21,14 +21,15 @@ body {
       var height = 500;
 
       var widthScale = d3.scale.linear()
-            .domain(0, d3.max(errorsBySite))
+            .domain([0, d3.max(errorsBySite)])
             .range([0, width]);
 
-      var canvas = d3.select("body").append("svg")
+      var canvas = d3.select("body")
+            .append("svg")
             .attr("width", 500)
             .attr("height", 500);
 
-      canvas.selectAll("rect")
+      var bars = canvas.selectAll("rect")
           .data(data)
           .enter()
               .append("rect")

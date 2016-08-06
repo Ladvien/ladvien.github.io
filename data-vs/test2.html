@@ -7,7 +7,7 @@
 <body>
   <script type="text/javascript">
     var svg = dimple.newSvg("body", 800, 600);
-    var errorsBySite = d3.csv("http://ladvien.github.io/files/errors-by-site.csv", function (data) {}
+    var errorsBySite = d3.csv("http://ladvien.github.io/files/errors-by-site.csv", function (data) {
 
       // Create and position the chart
       var myChart = new dimple.chart(svg, data);

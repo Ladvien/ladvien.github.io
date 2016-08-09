@@ -11,13 +11,16 @@
       data = dimple.filterData(data, "Date", [
         "01/01/2016", "02/01/2016", "03/01/2016",
         "04/01/2016", "05/01/2016", "06/01/2016"]);
+      function tryConsole() {
+        console.log(d.Date);
+      }
       var myChart = new dimple.chart(svg, data);
       myChart.setBounds(75, 30, 480, 330)
-      myChart.addMeasureAxis("x", "Site");
-      var y = myChart.addCategoryAxis("y", "Date");
-      y.addOrderRule("Date");
-      myChart.addMeasureAxis("z", "Date");
-      myChart.addSeries("Date", dimple.plot.bubble);
+      myChart.addMeasureAxis("x", "Date");
+      var y = myChart.addCategoryAxis("y", d.ACH);
+      y.addOrderRule(d);
+      myChart.addMeasureAxis("z", d.ACH);
+      myChart.addSeries("Date", dimple.plot.bar);
       myChart.addLegend(180, 10, 360, 20, "right");
       myChart.draw();
     });

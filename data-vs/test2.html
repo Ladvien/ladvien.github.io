@@ -8,15 +8,15 @@
   <script type="text/javascript">
     var svg = dimple.newSvg("body", 800, 600);
     var errorsBySite = d3.csv("http://ladvien.github.io/files/errors-by-site.json", function (data) {
-      data = dimple.filterData(data, "Date", [
-        "01/01/2016", "02/01/2016", "03/01/2016",
-        "04/01/2016", "05/01/2016", "06/01/2016"]);
+      //data = dimple.filterData(data, "Date", [
+      //  "01/01/2016", "02/01/2016", "03/01/2016",
+      //  "04/01/2016", "05/01/2016", "06/01/2016"]);
       var myChart = new dimple.chart(svg, data);
       myChart.setBounds(75, 30, 480, 330)
-      myChart.addMeasureAxis("x", "ACH");
-      var y = myChart.addCategoryAxis("y", "ACH");
-      y.addOrderRule("ACH");
-      myChart.addMeasureAxis("z", "ACH");
+      myChart.addMeasureAxis("x", "Site");
+      var y = myChart.addCategoryAxis("y", "Date");
+      y.addOrderRule("Date");
+      myChart.addMeasureAxis("z", "Date");
       myChart.addSeries("Date", dimple.plot.bubble);
       myChart.addLegend(180, 10, 360, 20, "right");
       myChart.draw();

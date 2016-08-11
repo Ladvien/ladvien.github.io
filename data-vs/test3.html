@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+
+</style>
+
+<script src="https://d3js.org/d3.v4.js"></script>
+<body>
+    <script>
+
+    var errorsBySite = d3.csv("http://ladvien.github.io/files/errors-by-site.csv", function (data) {
+
+      var width = 500;
+      var height = 1200;
+
+      var max = d3.max(data, function(d) { return +d.june;} );
+
+      var widthScale = d3.scaleLinear()
+            .domain([0, max])
+            .range([0, width])
+
+      var color = d3.scaleOrdinal(d3.schemeCategory20b);
+
+      var colorScale = d3.scaleLinear()
+            .domain([0,60])
+            .range(["green", "red"])
+
+      var canvas = d3.select("body")
+            .append("svg")
+            .attr("width", width)
+            .attr("height", height)
+
+      var bars = canvas.selectAll("rect")
+          .data(data)
+          .enter()
+              .append("g")
+              .append("rect")
+              .attr("width", function (d){return widthScale(d["june"]);})
+              .attr("height", 50)
+              .attr("y", function (d,i){return i * 50;})
+              .attr("fill", function(d){return color(d.june);})
+
+      canvas.selectAll("g")
+          .attr("transform", "translate(100, 0)")
+
+      var text = canvas.selectAll("text")
+          .data(data)
+          .enter()
+              .append("g")
+              .append("text")
+              .attr("fill", "black")
+              .attr("y", function (d,i){return (i+1) * 50;})
+              .text(function(d){return d.site;})
+
+      text.attr("transform", "translate(10, -25)")
+    }
+  )
+    </script>
+</body>

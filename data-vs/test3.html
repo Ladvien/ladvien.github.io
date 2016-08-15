@@ -4,56 +4,40 @@
 
 </style>
 
-<script src="https://d3js.org/d3.v4.js"></script>
+
 <body>
+  <div id="RecallsChart"></div>
+  <div id="RecallDetails"></div>
+  <div id="chart" style="background:grey"></div>
+  <div id="chartContainer">
+    <script src="../PapaParse-4.1.2/papaparse.min.js"></script>
+    <script src="https://d3js.org/d3.v3.js"></script>
+    <script src="http://dimplejs.org/dist/dimple.v2.2.0.min.js"></script>
     <script>
+        var svg = dimple.newSvg("#chartContainer", 590, 400);
+          var parsed = d3.csv("../data-vs/errors-by-site4.csv", function (data){
+              var svg1 = dimple.newSvg("#chart", 600, 400);
 
-    var errorsBySite = d3.csv("http://ladvien.github.io/files/errors-by-site.csv", function (data) {
+              var months = []
+              var sites = Object.keys(data[0])
+              sites = sites.splice(1, sites.length)
 
-      var width = 500;
-      var height = 1200;
+              for(i = 0; i < data.length; i++){
+                months.push(data[i].Month)
+              }
 
-      var max = d3.max(data, function(d) { return +d.june;} );
+              var dataErrorsBySite = []
+              for(i = 0; i < months.length; i ++){
+                var dataForMonth = data[i]
 
-      var widthScale = d3.scaleLinear()
-            .domain([0, max])
-            .range([0, width])
+                sites.forEach(function(site){
+                  dataErrorsBySite.push({"site":site, "month": months[i], "dataErrors": dataForMonth[site]})
+                })
+              }
 
-      var color = d3.scaleOrdinal(d3.schemeCategory20b);
+              console.log(dataErrorsBySite)
+          })
 
-      var colorScale = d3.scaleLinear()
-            .domain([0,60])
-            .range(["green", "red"])
-
-      var canvas = d3.select("body")
-            .append("svg")
-            .attr("width", width)
-            .attr("height", height)
-
-      var bars = canvas.selectAll("rect")
-          .data(data)
-          .enter()
-              .append("g")
-              .append("rect")
-              .attr("width", function (d){return widthScale(d["june"]);})
-              .attr("height", 50)
-              .attr("y", function (d,i){return i * 50;})
-              .attr("fill", function(d){return color(d.june);})
-
-      canvas.selectAll("g")
-          .attr("transform", "translate(100, 0)")
-
-      var text = canvas.selectAll("text")
-          .data(data)
-          .enter()
-              .append("g")
-              .append("text")
-              .attr("fill", "black")
-              .attr("y", function (d,i){return (i+1) * 50;})
-              .text(function(d){return d.site;})
-
-      text.attr("transform", "translate(10, -25)")
-    }
-  )
     </script>
+  </div>
 </body>

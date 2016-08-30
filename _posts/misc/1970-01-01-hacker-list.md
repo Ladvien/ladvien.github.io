@@ -18,3 +18,4 @@ Hacker Projects:
 |---|---|---|
 | Write SharperDevices |   |   |
 | Buy .44 Ohm Resistors |   |   |
+| Draw out UML diagram of SharperDevices |   |   |

@@ -5,7 +5,7 @@ categories: misc
 excerpt:
 tags: [philosophy]
 image:
-  feature: Msg_sir_3.jpg
+  feature: csharper-ladvien-learning-journal.png
   teaser: C#-ladvien-learning-journal.png
   thumb:
 ---

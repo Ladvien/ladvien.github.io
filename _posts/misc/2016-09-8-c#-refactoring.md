@@ -24,9 +24,7 @@ Strangely, I actually finished the project--I ended being able to upload to ATti
 
 * [Lumi Uploader Proof of Concept](https://www.youtube.com/watch?v=mLfFbrijakc)
 
-[](https://www.thestar.com/content/dam/thestar/life/homes/2014/02/27/sweet_price_for_winnie_the_poohs_tree_house/winnie.jpg.size.custom.crop.866x650.jpg){:class="ll-image-fl"}
-
-
+[](https://pixabay.com/static/uploads/photo/2015/09/24/07/59/isometry-954867_960_720.png){:class="ll-image-fl"}
 
 However, when I Started trying to setup the code base for adding ESP8266 support--well, things went to the poo-house.
 

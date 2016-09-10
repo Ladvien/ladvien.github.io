@@ -24,36 +24,12 @@ Strangely, I actually finished the project--I ended being able to upload to ATti
 
 * [Lumi Uploader Proof of Concept](https://www.youtube.com/watch?v=mLfFbrijakc)
 
-[](http://ladvien.github.io/images/pooh.png){:class="ll-image-fl"}
+![](http://ladvien.github.io/images/pooh.png){:class="ll-image-fl"}
 
 However, when I Started trying to setup the code base for adding ESP8266 support--well, things went to the poo-house.
 
-
-
+The problem resided around the BLE write functions in C#.  There were several issues.  First, the API for Bluetooth LE is found within the newer Windows Universal App.  This API has plenty of issues.  On example would be the following:
 
 {% highlight c# %}
-public bool CreateWatcher(SharperDevice.DeviceTypes watcherType, Int32 watcherTimeout)
-{
-    // 1. Create the watcher based on consumer choice.
-    // 2. If constructed, add to dictionary and events.
-    // 3. If creation was successful, return true.
 
-    DeviceWatcher watcher = DeviceInformation.CreateWatcher(GetSelector(watcherType));
-    if(watcher != null)
-    {
-        ListOfActiveDeviceWatchers.Add(watcher);
-        SharperDeviceWatcherInfo watcherInfo = new SharperDeviceWatcherInfo(watcherType);
-        DictSharperDeviceWatcherInfo[watcher] = watcherInfo;
-        watcher.Added += Watcher_Added;
-        watcher.Updated += Watcher_Updated;
-        watcher.Stopped += Watcher_Stopped;
-        watcher.Removed += Watcher_Removed;
-        watcher.EnumerationCompleted += Watcher_EnumerationCompleted;
-        WatcherRunTimer = new Timer(WatcherTimerExpired, null, watcherTimeout, Timeout.Infinite);
-        return true;
-    } else
-    {
-        return false;
-    }
-}
 {% endhighlight %}

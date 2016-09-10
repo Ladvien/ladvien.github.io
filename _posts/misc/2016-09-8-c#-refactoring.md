@@ -28,6 +28,12 @@ Here's the code base:
 
 * [Lumi Uploader -- Windows Forms Version](https://github.com/Ladvien/Lumi_TinySafeBoot_Uploader)
 
+Of course, there is are a lot of problems with the code.  Most center around inexperience writing object-oriented code properly.  Here are some of the problems I identified:
+
+| Error  |
+|---|
+| [Too many god objects](https://en.wikipedia.org/wiki/God_object) |
+| [C# Conventions were not followed](https://msdn.microsoft.com/en-us/library/ff926074.aspx) | 
 
 --I ended being able to upload to ATtiny chips and ATMega chips over Bluetooth LE.
 

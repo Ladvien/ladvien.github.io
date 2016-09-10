@@ -20,7 +20,16 @@ Unfortunately, the project was _way_ out of my league.  After spending months, a
 
 Well, fast-forward a couple of years.  I started on a code base to upload compiled Atmel ATMega and ATtiny programs using the same method outlined in the Valdez Mutant article.  But this time, the uploader would be written in C# on Windows.  And it would interface with the [TinySafeBootloader](http://ladvien.github.io/robots/tsb/) on the Atmel chips.
 
-Strangely, I actually finished the project--I ended being able to upload to ATtiny chips and ATMega chips over Bluetooth LE.
+Strangely, I actually finished the project.  The first code base was written as a [C# Forms application](https://msdn.microsoft.com/en-us/library/360kwx3z(v=vs.90).aspx).  This worked out great!  I was actually able to use the `System.Devices.Ports` to access a CH340G or FTDI chip.  The USB-to-UART then shook hands with the bootloader on either an ATMega328P, ATtiny84, or ATtiny85 (others should be supported, but these were the only tested due to the simplicity of the Arduino HAL).
+
+![](http://ladvien.github.io/images/lumi_blink_upload2.PNG){:class="ll-image-fl"}
+
+Here's the code base:
+
+* [Lumi Uploader -- Windows Forms Version](https://github.com/Ladvien/Lumi_TinySafeBoot_Uploader)
+
+
+--I ended being able to upload to ATtiny chips and ATMega chips over Bluetooth LE.
 
 * [Lumi Uploader Proof of Concept](https://www.youtube.com/watch?v=mLfFbrijakc)
 

@@ -22,7 +22,7 @@ Well, fast-forward a couple of years.  I started on a code base to upload compil
 
 Strangely, I actually finished the project.  The first code base was written as a [C# Forms application](https://msdn.microsoft.com/en-us/library/360kwx3z(v=vs.90).aspx).  This worked out great!  I was actually able to use the `System.Devices.Ports` to access a CH340G or FTDI chip.  The USB-to-UART then shook hands with the bootloader on either an ATMega328P, ATtiny84, or ATtiny85 (others should be supported, but these were the only tested due to the simplicity of the Arduino HAL).
 
-![](http://ladvien.github.io/images/lumi_blink_upload2.PNG){:class="ll-image-fl"}
+![](http://ladvien.github.io/images/lumi_blink_upload2.PNG){:class="ll-image-fl width="320px" height="320px""}
 
 Here's the code base:
 

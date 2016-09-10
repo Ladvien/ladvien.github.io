@@ -32,8 +32,10 @@ Of course, there is are a lot of problems with the code.  Most center around ine
 
 | Error  |
 |---|
-| [Too many god objects](https://en.wikipedia.org/wiki/God_object) |
-| [C# Conventions were not followed](https://msdn.microsoft.com/en-us/library/ff926074.aspx) | 
+| [Too many god objects](https://sourcemaking.com/antipatterns/the-blob) |
+| [C# Conventions were not followed](https://msdn.microsoft.com/en-us/library/ff926074.aspx) |
+| [Deprecation (Forms->Universal)] |
+| [Synchronous IO](https://msdn.microsoft.com/en-us/library/windows/desktop/aa365683(v=vs.85).aspx)|
 
 --I ended being able to upload to ATtiny chips and ATMega chips over Bluetooth LE.
 

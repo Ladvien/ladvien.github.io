@@ -1,5 +1,5 @@
 @ECHO OFF
-SET /p comment=Comment:
+//SET /p comment=Comment:
 git add *
-git commit -a -m "%comment%"
+git commit -a -m "Blogging"//"%comment%"
 git push

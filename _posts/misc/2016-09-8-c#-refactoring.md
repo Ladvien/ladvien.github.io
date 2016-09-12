@@ -32,21 +32,21 @@ Of course, there is are a lot of problems with the code.  Most center around ine
 
 | Error  |
 |---|
-| [Too many god objects](https://sourcemaking.com/antipatterns/the-blob) |
-| [C# Conventions were not followed](https://msdn.microsoft.com/en-us/library/ff926074.aspx) |
-| Deprecation (Forms->Universal) |
-| [Synchronous IO](https://msdn.microsoft.com/en-us/library/windows/desktop/aa365683(v=vs.85).aspx)|
-| No robust support for BLE|
+| 1. [Too many god objects](https://sourcemaking.com/antipatterns/the-blob) |
+| 2. [C# Conventions were not followed](https://msdn.microsoft.com/en-us/library/ff926074.aspx) |
+| 3. Deprecation (Forms->Universal) |
+| 4. [Synchronous IO](https://msdn.microsoft.com/en-us/library/windows/desktop/aa365683(v=vs.85).aspx)|
+| 5. No robust support for BLE|
 
-It was really the last point which made forced a change of directions.  The elusive wireless upload to an AVR was just too close.  Reluctantly, I created yet _another_ code base.  This time, it was derived from the [Windows Universal App](https://msdn.microsoft.com/en-us/windows/uwp/get-started/whats-a-uwp) platform.
+It was really the last point which forced a change in directions.  The elusive wireless upload to an AVR was just too close.  Reluctantly, I created yet _another_ code base.  This time, it was derived from the [Windows Universal App](https://msdn.microsoft.com/en-us/windows/uwp/get-started/whats-a-uwp) platform.
 
---I ended being able to upload to ATtiny chips and ATMega chips over Bluetooth LE.
+After many months later I had procuded a working version. It was able to upload to ATtiny chips and ATMega chips over Bluetooth LE.
 
 * [Lumi Uploader Proof of Concept](https://www.youtube.com/watch?v=mLfFbrijakc)
 
-![](http://ladvien.github.io/images/pooh.png){:class="ll-image-fl"}
+However, when I Started trying to setup the code base for adding ESP8266 support--well, things went to the poo-house.  It seemed of all the problems listed above, the only problem I resolved in the rebuild was the lack of Bluetooth LE support.
 
-However, when I Started trying to setup the code base for adding ESP8266 support--well, things went to the poo-house.
+![](http://ladvien.github.io/images/pooh.png){:class="ll-image-fl"}
 
 The problem resided around the BLE write functions in C#.  There were several issues.  First, the API for Bluetooth LE is found within the newer Windows Universal App.  This API has plenty of issues.  On example would be the following:
 

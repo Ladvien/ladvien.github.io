@@ -44,9 +44,10 @@ After many months later I had procuded a working version. It was able to upload 
 
 * [Lumi Uploader Proof of Concept](https://www.youtube.com/watch?v=mLfFbrijakc)
 
-However, when I Started trying to setup the code base for adding ESP8266 support--well, things went to the poo-house.  It seemed of all the problems listed above, the only problem I resolved in the rebuild was the lack of Bluetooth LE support.
-
 ![](http://ladvien.github.io/images/pooh.png){:class="ll-image-med-fr"}
+However, when I Started trying to add ESP8266 support--well, things went to the poo-house.  It seemed of all the problems listed above the only one resolved, by rebuilding, was the adding of Bluetooth LE support.
+
+
 
 The problem resided around the BLE write functions in C#.  There were several issues.  First, the API for Bluetooth LE is found within the newer Windows Universal App.  This API has plenty of issues.  On example would be the following:
 

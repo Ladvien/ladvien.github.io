@@ -36,7 +36,7 @@ Of course, there is are a lot of problems with the code.  Most center around ine
 | [C# Conventions were not followed](https://msdn.microsoft.com/en-us/library/ff926074.aspx) |
 | Deprecation (Forms->Universal) |
 | [Synchronous IO](https://msdn.microsoft.com/en-us/library/windows/desktop/aa365683(v=vs.85).aspx)|
-| [No robust support for BLE]()|
+| No robust support for BLE|
 
 It was really the last point which made forced a change of directions.  The elusive wireless upload to an AVR was just too close.  Reluctantly, I created yet _another_ code base.  This time, it was derived from the [Windows Universal App](https://msdn.microsoft.com/en-us/windows/uwp/get-started/whats-a-uwp) platform.
 

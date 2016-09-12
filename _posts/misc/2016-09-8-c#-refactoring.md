@@ -22,7 +22,7 @@ Well, fast-forward a couple of years.  I started on a code base to upload compil
 
 Strangely, I actually finished the project.  The first code-base was written as a [C# Forms application](https://msdn.microsoft.com/en-us/library/360kwx3z(v=vs.90).aspx).  This worked out great!  I was actually able to use the `System.Devices.Ports` to access a CH340G or FTDI chip.  The USB-to-UART then shook hands with the bootloader on either an ATMega328P, ATtiny84, or ATtiny85 (others should be supported, but these were the only tested due to the simplicity of the Arduino HAL).
 
-![](http://ladvien.github.io/images/lumi_blink_upload2.PNG){:class="ll-image-fl width="320px" height="320px""}
+![](http://ladvien.github.io/images/lumi_blink_upload2.PNG){:class="ll-image-small-fl width="320px" height="320px""}
 
 Here's the code base:
 
@@ -46,7 +46,7 @@ After many months later I had procuded a working version. It was able to upload 
 
 However, when I Started trying to setup the code base for adding ESP8266 support--well, things went to the poo-house.  It seemed of all the problems listed above, the only problem I resolved in the rebuild was the lack of Bluetooth LE support.
 
-![](http://ladvien.github.io/images/pooh.png){:class="ll-image-fl"}
+![](http://ladvien.github.io/images/pooh.png){:class="ll-image-small-fl"}
 
 The problem resided around the BLE write functions in C#.  There were several issues.  First, the API for Bluetooth LE is found within the newer Windows Universal App.  This API has plenty of issues.  On example would be the following:
 

@@ -52,7 +52,7 @@ Also, there were two additional issues which arose:
 1. Handling advertisement and connection for Bluetooth.  
 2. There was a rather nasty bug around writing to a connected device.
 
-The first issue was a nightmare.  I was able to work around it--but, it was horrifically hackish. In sum, there are two namespaces which must be drawn on: `[Windows.Devices.Bluetooth](https://msdn.microsoft.com/library/windows/apps/windows.devices.bluetooth.aspx)` and `[Windows.Devices.Bluetooth.BluetoothAdvertisement](https://msdn.microsoft.com/library/windows/apps/windows.devices.bluetooth.advertisement.aspx)`.  First, to find the find BluetoothLE devices you'd need to setup a [BluetoothLEAdvertisementWatcher](https://msdn.microsoft.com/en-us/library/windows.devices.bluetooth.advertisement.bluetoothleadvertisementwatcher.aspx) object.  Like this:
+The first issue was a nightmare.  I was able to work around it--but, it was horrifically hackish. In sum, there are two namespaces which must be drawn on: [Windows.Devices.Bluetooth](https://msdn.microsoft.com/library/windows/apps/windows.devices.bluetooth.aspx) and [Windows.Devices.Bluetooth.BluetoothAdvertisement](https://msdn.microsoft.com/library/windows/apps/windows.devices.bluetooth.advertisement.aspx).  First, to find the find BluetoothLE devices you'd need to setup a [BluetoothLEAdvertisementWatcher](https://msdn.microsoft.com/en-us/library/windows.devices.bluetooth.advertisement.bluetoothleadvertisementwatcher.aspx) object.  Like this:
 
 {% highlight c# %}
   // Bluetooth LE Discovery

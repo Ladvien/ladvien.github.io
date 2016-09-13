@@ -70,11 +70,11 @@ The first issue was a nightmare.  I was able to work around it--but, it was horr
 
 I'll not dig into the details, but with this sample in mind here are the other steps which should be followed:
 
-1. When `OnAdvertisementReceived` fires you get the discovered devices ID from the `EventArgs`
+1. When OnAdvertisementReceived fires you get the discovered devices ID from the EventArgs
 2. After the user discovers the device sought, then a user input would start a the asynchronous creation of a BluetoothLEDevice using the ID found from the AdvertisementWatcher.
 3. Here's where it gets hackish: If the device is successful in connecting, then there is no event--rather, a callback timer should be started with enough time for the BluetoothLEDevice to connect and enumerate.
-4. When the timer callback fires then, using the new `var device = await BluetoothLEDevice.FromBluetoothAddressAsync(ID)`.
-5. After the wait, the services variable should have all of the services found on the BluetoothLEDevice.  At this point, all the services on the remote device should be enumerated--and `var services = device.GattServices` may be started.
+4. When the timer callback fires then, using the new var device = await BluetoothLEDevice.FromBluetoothAddressAsync(ID).
+5. After the wait, the services variable should have all of the services found on the BluetoothLEDevice.  At this point, all the services on the remote device should be enumerated--and var services = device.GattServices may be started.
 6.
 
-The `BluetoothLEScanningMode` needs to be set to `Active` to get a lot of the advertised information.  
+The BluetoothLEScanningMode needs to be set to Active to get a lot of the advertised information.  

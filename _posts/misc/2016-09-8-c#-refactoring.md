@@ -55,17 +55,17 @@ Also, there were two additional issues which arose:
 The first issue was a nightmare.  I was able to work around it--but, it was horrifically hackish. In sum, there are two namespaces which must be drawn on: `[Windows.Devices.Bluetooth](https://msdn.microsoft.com/library/windows/apps/windows.devices.bluetooth.aspx)` and `[Windows.Devices.Bluetooth.BluetoothAdvertisement](https://msdn.microsoft.com/library/windows/apps/windows.devices.bluetooth.advertisement.aspx)`.  First, to find the find BluetoothLE devices you'd need to setup a [BluetoothLEAdvertisementWatcher](https://msdn.microsoft.com/en-us/library/windows.devices.bluetooth.advertisement.bluetoothleadvertisementwatcher.aspx) object.  Like this:
 
 {% highlight c# %}
-        // Bluetooth LE Discovery
-        BluetoothLEAdvertisementWatcher bleAdvertWatcher = new BluetoothLEAdvertisementWatcher();
-        public sealed partial class MainPage : Page
-        {
-              // Create and initialize a new watcher instance.
-              bleAdvertWatcher = new BluetoothLEAdvertisementWatcher();
-              bleAdvertWatcher.Received += OnAdvertisementReceived;
-              bleAdvertWatcher.Stopped += OnAdvertisementWatcherStopped;
-              bleAdvertWatcher.ScanningMode = BluetoothLEScanningMode.Active;
-              bleAdvertWatcher.Start();
-        }
+  // Bluetooth LE Discovery
+  BluetoothLEAdvertisementWatcher bleAdvertWatcher = new BluetoothLEAdvertisementWatcher();
+  public sealed partial class MainPage : Page
+  {
+        // Create and initialize a new watcher instance.
+        bleAdvertWatcher = new BluetoothLEAdvertisementWatcher();
+        bleAdvertWatcher.Received += OnAdvertisementReceived;
+        bleAdvertWatcher.Stopped += OnAdvertisementWatcherStopped;
+        bleAdvertWatcher.ScanningMode = BluetoothLEScanningMode.Active;
+        bleAdvertWatcher.Start();
+  }
 {% endhighlight %}
 
 I'll not dig into the details, but with this sample in mind here are the other steps which should be followed:

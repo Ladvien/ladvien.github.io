@@ -72,5 +72,7 @@ I'll not dig into the details, but with this sample in mind here are the other s
 
 1. When `OnAdvertisementReceived` fires you get the discovered devices ID from the `EventArgs`
 2. After the user discovers the device sought, then a user input would start a the asynchronous creation of a BluetoothLEDevice using the ID found from the AdvertisementWatcher.
+3. Here's where it gets hackish: If the device is successful in connecting, then there is no event--rather, a callback timer should be started with enough time for the BluetoothLEDevice to connect and enumerate.
+4. When the timer callback fires then a Gas
 
 The `BluetoothLEScanningMode` needs to be set to `Active` to get a lot of the advertised information.  

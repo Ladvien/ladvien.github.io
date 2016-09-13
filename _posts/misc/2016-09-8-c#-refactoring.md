@@ -47,9 +47,14 @@ After many months later I had procuded a working version. It was able to upload 
 ![](http://ladvien.github.io/images/pooh.png){:class="ll-image-med-fr"}
 However, when I Started trying to add ESP8266 support--well, things went to the poo-house.  It seemed of all the problems listed above the only one resolved, by rebuilding, was the adding of Bluetooth LE support.
 
+Also, there were two additional issues which arose:
 
+1. Handling advertisement and connection for Bluetooth.  
+2. There was a rather nasty bug around writing to a connected device.
 
-The problem resided around the BLE write functions in C#.  There were several issues.  First, the API for Bluetooth LE is found within the newer Windows Universal App.  This API has plenty of issues.  On example would be the following:
+The first issue was a nightmare.  I was able to work around it--but, it was horrifically hackish. In sum, there are two namespaces which must be drawn on: `[Windows.Devices.Bluetooth](https://msdn.microsoft.com/library/windows/apps/windows.devices.bluetooth.aspx)` and `[Windows.Devices.Bluetooth.BluetoothAdvertisement](https://msdn.microsoft.com/library/windows/apps/windows.devices.bluetooth.advertisement.aspx)`
+
+The real critical problem was in the BLE write functions.  
 
 {% highlight c# %}
 

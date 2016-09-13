@@ -45,7 +45,7 @@ After many months later I had procuded a working version. It was able to upload 
 * [Lumi Uploader Proof of Concept](https://www.youtube.com/watch?v=mLfFbrijakc)
 
 ![](http://ladvien.github.io/images/pooh.png){:class="ll-image-med-fr"}
-However, when I Started trying to add ESP8266 support--well, things went to the poo-house.  It seemed of all the problems listed above the only one resolved, by rebuilding, was the adding of Bluetooth LE support.
+However, when I Started trying to add ESP8266 support--well, things went to the poo-house.  It seemed of all the problems listed above the only one resolved was the adding of Bluetooth LE support.
 
 Also, there were two additional issues which arose:
 
@@ -74,7 +74,8 @@ I'll not dig into the details, but with this sample in mind here are the other s
 2. After the user discovers the device sought, then a user input would start a the asynchronous creation of a BluetoothLEDevice using the ID found from the AdvertisementWatcher.
 3. Here's where it gets hackish: If the device is successful in connecting, then there is no event--rather, a callback timer should be started with enough time for the BluetoothLEDevice to connect and enumerate.
 4. When the timer callback fires then, using the new var device = await BluetoothLEDevice.FromBluetoothAddressAsync(ID).
-5. After the wait, the services variable should have all of the services found on the BluetoothLEDevice.  At this point, all the services on the remote device should be enumerated--and var services = device.GattServices may be started.
-6.
+5. After the wait, the services variable should have all of the services found on the BluetoothLEDevice.  At this point, all the services on the remote device should be enumerated--and var services = device.GattServices, which includes enumerating services and characteristics.
+
+What the API actually expects is the user will connect to the device using Windows built-in Bluetooth support. This API seems poorly thought out and unfortunate.  Even Apple, with all of their "developer guidance", doesn't tie the developers' hands when searching and connecting to BluetoothLE devices.  Of course, CoreBluetooth was developed early in BluetoothLE's lifecycle, so maybe that's before API developers knew better than turn too much power over to code-consumers?  Who knows! But I've strong feelings on the matter, given it took me so much time to figure out Microsoft's intentions.
 
 The BluetoothLEScanningMode needs to be set to Active to get a lot of the advertised information.  

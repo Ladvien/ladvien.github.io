@@ -1,117 +1,76 @@
-/* ==========================================================================
-   SCSS Variables
-   ========================================================================== */
+/* SCSS Variables */
 
-/*
-   Typography variables
-   ========================================================================== */
+/*--------------
+  Font
+  -------------- */
+$base-font: 'Spoqa Han Sans', 'Source Sans Pro', Apple SD Gothic Neo, Nanum Barun Gothic, Nanum Gothic, Verdana, Arial, Dotum, sans-serif;
+$code-font: Menlo, 'Ubuntu Mono', Monaco, 'Spoqa Han Sans', monospace;
+$code-gist-font: Menlo, 'Ubuntu Mono', Monaco, 'Spoqa Han Sans', monospace;
 
-$base-font                   	: Georgia,Times,"Times New Roman",serif;
-$heading-font                	: "Segoe UI",Arial,sans-serif;
-$caption-font                	: $base-font;
-$code-font                   	: monospace;
-$alt-font                    	: $heading-font;
-/*$title-font-family            : 'Indie Flower', cursive, Georgia,Times,"Times New Roman",serif;*/
-$title-font-family            : 'Courier New', cursive, Georgia,Times,"Times New Roman",serif;
-$doc-font-size               	: 16;
-$doc-line-height             	: 24;
+$base-font-size: 18px;
+$base-font-size-sm: 14px;
 
-$border-radius               	: 3px;
-
-$font-size-offset             : 12;
+$mobile-font-size: 16px;
 
 
-/*
-   Color variables
-   ========================================================================== */
-$red-bandana                  : #BC0000;
-$blue-bandana                 : #152a55;
-$white                        : #fff;
-$black                        : #000;
+/*--------------
+  Color
+  -------------- */
+//$base-color: $oc-gray-8;
+//$base-lighten-color: $oc-gray-6;
+//
+//$background-color: $oc-white;
+//$background-over-color: $oc-gray-1;
+//
+//$text-color: $oc-gray-8;
+//$link-color: $oc-blue-8;
+//$code-color: $oc-indigo-9;
+//$code-background-color: $oc-gray-1;
+//$table-border-color: $oc-gray-2;
+//$table-background-color: $oc-gray-1;
+//
+//$divider-color: $oc-gray-1;
 
-$progress-bar-color           : #000;
+/*--------------
+  Darcula
+  -------------- */
+$base-color: #CB772F;
+$base-lighten-color: #FFC66D;
 
-$body-color                  	: #ebebeb;
+$background-color: #2B2B2B;
+$background-over-color: #A5C25C;
 
-$text-color                  	: #313130;
-$caption-color                : mix($white, $text-color, 25%);
+$text-color: #FFC66D;
+$link-color: #CB772F;
+$code-color: #A5C25C;
+$code-background-color: #000000;
+$table-border-color: #A5C25C;
+$table-background-color: #000000;
 
-$base-color                  	: #343434;
-$comp-color                  	: complement($base-color);
-$border-color                	: #ddd;
-$link-color                  	: #222;
+$divider-color: #619647;
 
-$primary-color               	: $black;
-$success-color               	: #2ecc71;
-$warning-color               	: #f1c40f;
-$danger-color                	: #e74c3c;
-$info-color                  	: #3498db;
+$white: #FFFFFF;
 
-$table-border-color          	: $border-color;
-$table-border                	: 1px solid $table-border-color;
-$table-background            	: $body-color;
-$table-header-color          	: lighten($table-background, 10);
-$table-hover-color           	: darken($table-background, 2);
-$table-stripe-color          	: darken($table-background, 4);
-$table-stripe-color-hover    	: darken($table-stripe-color, 5);
+/*--------------
+  List
+  -------------- */
 
-$facebook-color					      : #3b5998;
-$flickr-color					        : #ff0084;
-$foursquare-color				      : #0cbadf;
-$google-plus-color				    : #dd4b39;
-$instagram-color				      : #4e433c;
-$linkedin-color					      : #4875b4;
-$pinterest-color				      : #cb2027;
-$rss-color						        : #fa9b39;
-$tumblr-color					        : #2c4762;
-$twitter-color					      : #55acee;
-$vimeo-color					        : #1ab7ea;
-$youtube-color		            : #ff3333;
+$li-bottom-space: 0.8em;
+$li-bullets-width: 1.7em;
+$li-line-height: 1.55;
 
+$ul-bullets-font: inherit;
+$ul-bullets-font-size: 1.2em;
+$ul-bullets-font-line-height: 1.2;
+$ul-bullets-right-space: 0.65em;
 
-/*
-   Form variables
-   ========================================================================== */
+$ol-bullets-font: inherit;
+$ol-bullets-font-size: 1em;
+$ol-bullets-font-line-height: inherit;
+$ol-bullets-right-space: 0.65em;
 
-$form-border-color           	: $border-color;
-$form-border-color-hover     	: darken($border-color, 10);
-$form-border-color-focus     	: $primary-color;
-$form-border-radius          	: $border-radius;
-$form-box-shadow             	: inset 0 1px 3px hsla(0, 0%, 0%, 0.06);
-$form-box-shadow-focus       	: $form-box-shadow, 0 0 5px rgba(darken($form-border-color-focus, 5), 0.7);
-$form-font-family            	: $base-font;
-$form-font-size              	: $doc-font-size;
+$li-child-size-ratio: 0.95;
 
-
-/*
-   Sliding menu navigation variables
-   ========================================================================== */
-
-$sliding-menu-border-color	 	 : $black;
-$sliding-menu-background 		   : $black;
-$sliding-menu-color 	 		     : $white;
-$sliding-menu-background-hover : $black;
-$sliding-menu-color-hover	 	   : $white;
-$sliding-menu-border   			   : 1px solid $sliding-menu-border-color;
-$button-size		         	     : 40px;
-$transition						         : 0.3s; // increase this to see the transformations in slow-motion
-$sliding-menu-animation        : all 150ms cubic-bezier(.86,.01,.77,.78);
-
-/*
-   Badge variables
-   ========================================================================== */
-
-$badge-background              : $primary-color;
-$badge-dark-color              : $black;
-$badge-danger-color            : $danger-color;
-$badge-info-color              : $info-color;
-$badge-warning-color           : $warning-color;
-$badge-success-color           : $success-color;
-$badge-font-color              : $white;
-
-
-/*
-   Masthead variables
-   ========================================================================== */
-
-$masthead-height: $button-size * 2;
+$dt-width: 180px;
+$dt-dd-space: 20px;
+$dd-position: $dt-width+$dt-dd-space

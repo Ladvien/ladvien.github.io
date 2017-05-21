@@ -1,41 +1,91 @@
-# Site wide configuration
+# # # # # # # # # # # # #
+#   K i k o - p l u s   #
+# # # # # # # # # # # # #
 
-title: Ladvien's Lab
-description: Bipolar Blog
-logo:  # 120x120 px default image used for Twitter summary card
-teaser: # 400x250 px default teaser image used in image archive grid
-locale:
-url:
-application:
+# Basic
+name:               "Ladvien's Lab"
+
+author:
+  facebook:         cthomasbrittain
+#  youtubeUser:      KodYd0Fj3TSHzXg7aOJYYQ
+  youtubeChannel:   UCKodYd0Fj3TSHzXg7aOJYYQ
+#  twitter:          your-id
+  github:           ladvien
+  stackoverflow:    2108441
+#  quora:            your-id
+#  linkedin:         your-id
+#  pinterest:        your-id
+  googlePlus:       107593241462097127567
+#  instagram:        your-id
+#  reddit:           your-id
+#  medium:           your-id
+#  tumblr:           your-id
+  email:            honeysucklehardware@gmail.com
+
+copyright:
+  year:             2017
+  name:             Ladvien
+
+# Google-analytics
+google-analytics:
+  id:               ""
+
+# Disqus
+disqus:
+  id:               "ladvien"
+
+# URL
+url:                "https://ladvien.github.io" # the base hostname & protocol for your site
+# url:                "http://localhost:4000" # use this url when you develop
+baseurl:            "/ladviens-lab/" # the subpath of your site, e.g. /blog
 
 
-# Jekyll configuration
+# http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+timezone:           US/Central
+permalink:          /:year-:month-:day/:title/
 
+# Pagination
+paginate:           20
+paginate_path:      /page:num/
+
+# Markdown
+markdown:           kramdown
+kramdown:
+  input:            GFM
+
+# Navigation
+nav:
+  - name:           "Projects"
+    url:            "/projects"
+  - name:           "Interests"
+    url:            "/tags"
+#  - name:           "About"
+#    url:            "/about"
+
+# Sass
 sass:
-    sass_dir: _sass
-    style: compressed
-permalink: /:categories/:title/
-markdown: kramdown
+  sass_dir:         _sass
+  style:            :compressed
 
-#  toc_levels: 1..2
-highlighter: rouge
-#gems:
-#  - jekyll-sitemap
+# Scopes
+defaults:
+  -
+    scope:
+      path:         ""
+      type:         "pages"
+    values:
+      layout:       "page"
+  -
+    scope:
+      path:         ""
+      type:         "posts"
+    values:
+      layout:       "post"
 
+# jekyll-seo-tag, see: http://www.rubydoc.info/gems/jekyll-seo-tag/1.2.0
+gems:
+  - jekyll-seo-tag
+  - jekyll-paginate
+  - jekyll-admin
 
-# Site owner
-owner:
-  name: C. Thomas Brittain
-  email: design@ubermentis.com
-  twitter:
-  google:
-    ad-client:
-    ad-slot:
-  bio:
-  avatar: bio-photo.jpg # 160x160 px image for author byline
-  disqus-shortname: ladvien
-
-
-exclude: ["lib", "config.rb", ".sass-cache", "Capfile", "config", "log", "Rakefile", "Rakefile.rb", "tmp", "*.sublime-project", "*.sublime-workspace", "Gemfile", "Gemfile.lock", "README.md", "LICENSE", "node_modules", "Gruntfile.js", "package.json"]
-
-category-list: [homeless, robots, misc]
+exclude:            [vendor]

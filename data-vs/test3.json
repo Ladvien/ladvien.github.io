@@ -1,8 +1,0 @@
-[
-{"Month":"January","dataErrors":58, "Site": "ACH"},
-{"Month":"January","dataErrors":10, "Site": "AHA"},
-{"Month":"February","dataErrors":58, "Site": "ACH"},
-{"Month":"February","dataErrors":7, "Site": "AHA"},
-{"Month":"March","dataErrors":52, "Site": "ACH"},
-{"Month":"March","dataErrors":8, "Site": "AHA"}
-]

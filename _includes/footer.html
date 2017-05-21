@@ -62,6 +62,12 @@
     <a href="mailto:{{ site.author.email }}"><i class="fa fa-envelope" aria-hidden="true"></i></a>
     {% endif %}
 
+
   </div>
   © {{ site.copyright.year }} {{ site.copyright.name }}. All rights reserved.
+  {% if page.custom_js %}
+  {% for js_file in page.custom_js %}
+  <script src='/../../../javascripts/{{ js_file }}.js' type="text/javascript"></script>
+  {% endfor %}
+{% endif %}
 </div>

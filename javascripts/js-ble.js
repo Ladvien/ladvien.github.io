@@ -3,6 +3,7 @@ var log = console.log;
 var writeCharacteristic;
 var descriptor;
 var receivedString = "";
+var terminalLineCounter = 0;
 
 function onScanButtonClick() {
   // Validate services UUID entered by user first.
@@ -58,6 +59,12 @@ function onReceivedData(event){
     for(var i = 0; i < event.target.value.byteLength; i ++){
         receivedString += String.fromCharCode(event.target.value.getUint8(i));
     }
+    var terminal = document.getElementById('terminal')
+    var newLine = document.createElement('div');
+    newLine.innerHTML = receivedString;
+    terminalLineCounter++;
+    terminal.appendChild(newLine);
+    
     log(receivedString);
     receivedString = "";
 }

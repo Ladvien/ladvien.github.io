@@ -76,17 +76,30 @@ function onWriteButtonClick(){
         writeCharacteristic.writeValue(encoder.encode(textToWrite))
         .then(_ => {
             log("Sent: " + textToWrite);
-            var terminal = document.getElementById('terminal')
-            var newLine = document.createElement('div');
-            newLine.innerHTML = "-> " + textToWrite;
-            newLine.classList.add('sent-text');
-            terminalLineCounter++;
-            terminal.appendChild(newLine);
+            addTerminalLine('terminal', textToWrite, '-> ', 'sent-text')
+            
             terminal.scrollTop = terminal.scrollHeight;
         })
     }
 }
 
+
+function addTerminalLine(displayElement, text, pretext, lineStyle){
+    
+    // 1. Get the element to display text on.
+    // 2. Create a div for the new line.
+    // 3. Concactenate pre-text and text.
+    // 4. Check for style, apply
+    // 5. Append the new line DIV to target element.
+    // 6. Increment line count.
+    
+    var terminal = document.getElementById(displayElement);
+    var newLine = document.createElement('div');
+    newLine.innerHTML = pretext + textToWrite;
+    if(lineStyle !=) { newLine.classList.add(lineStyle); }
+    terminal.appendChild(newLine);
+    terminalLineCounter++;    
+}
 
 /* Utils */
 
@@ -102,3 +115,8 @@ function getSupportedProperties(characteristic) {
 
 document.getElementById('btn-1').onclick = onScanButtonClick;
 document.getElementById('btn-write-ble').onclick = onWriteButtonClick;
+
+
+TSB function (){
+    
+}

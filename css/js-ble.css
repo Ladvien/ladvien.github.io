@@ -39,7 +39,7 @@ input {
     box-sizing: border-box;
 }
 
-textarea {
+.terminal {
     width: 100%;
     height: 100%;
     padding: 12px 20px;
@@ -50,3 +50,4 @@ textarea {
     resize: none;
     color: #FFFFFF;
 }
+

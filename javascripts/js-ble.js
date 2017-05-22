@@ -73,12 +73,10 @@ function onWriteButtonClick(){
     if(writeCharacteristic != null){
         let encoder = new TextEncoder('utf-8');
         let textToWrite = document.getElementById('textToWrite').value;
-        writeCharacteristic.writeValue(encoder.encode(textToWrite));
+        writeCharacteristic.writeValue(encoder.encode(textToWrite))
         .then(_ => {
             log("Sent: " + textToWrite);
             addTerminalLine('terminal', textToWrite, '-> ', 'sent-text');
-            
-            terminal.scrollTop = terminal.scrollHeight;
         })
     }
 }
@@ -99,6 +97,7 @@ function addTerminalLine(displayElement, text, pretext, lineStyle){
        newLine.classList.add(lineStyle); 
     }
     terminal.appendChild(newLine);
+    terminal.scrollTop = terminal.scrollHeight;
     terminalLineCounter++;    
 }
 

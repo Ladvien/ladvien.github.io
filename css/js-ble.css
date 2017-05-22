@@ -16,13 +16,15 @@
     background-color: #008CBA; /* Green */
     border: none;
     color: white;
-    padding: 15px 32px;
+    padding: 10px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
     font-size: 16px;
-    margin: 5px;
     border-radius: 12px;
+    vertical-align: middle;
+    width: 25%;
+    float: left;
 }
 
 .ble-form {
@@ -31,9 +33,9 @@
 
 input {
     width: 100%;
-    padding: 12px 20px;
-    margin: 8px 0;
-    display: inline-block;
+    padding: 10px;
+/*    margin: 8px 0;*/
+/*    display: inline-block;*/
     border: 1px solid #619647;
     border-radius: 4px;
     box-sizing: border-box;
@@ -41,6 +43,7 @@ input {
     background-color: #000000;
     font-stretch: 20;
     font-size: 20;
+    width: 75%;
 }
 
 .terminal {
@@ -56,16 +59,27 @@ input {
 }
 
 .received-text {
-    color: #FFC66D;
+    color: #D25252;
     width: 100%;
+    padding: 1px;
 /*    border-width: .01em;*/
 /*    border-style: solid;*/
 /*    border-color: #666;*/
 }
 
 .sent-text {
+    color: #9876AA;
+    width: 100%;
+    padding: 1px;
+/*    border-width: .01em;*/
+/*    border-style: solid;*/
+/*    border-color: #666;*/
+}
+
+.system-text {
     color: #619647;
     width: 100%;
+    padding: 1px;
 /*    border-width: .01em;*/
 /*    border-style: solid;*/
 /*    border-color: #666;*/
@@ -74,5 +88,7 @@ input {
 .same-line-container {
     display: inline-block;
     padding: 3px;
+    width: 100%;
+    float: left;
 }
 

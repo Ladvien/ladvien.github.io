@@ -37,6 +37,8 @@ input {
     border: 1px solid #ccc;
     border-radius: 4px;
     box-sizing: border-box;
+    color: #FFC66D;
+    background-color: #000000;
 }
 
 .terminal {

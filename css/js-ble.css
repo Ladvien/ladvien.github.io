@@ -71,3 +71,8 @@ input {
 /*    border-color: #666;*/
 }
 
+.same-line-container {
+    display: inline-block;
+    padding: 3px;
+}
+

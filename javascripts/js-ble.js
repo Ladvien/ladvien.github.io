@@ -61,11 +61,11 @@ function onReceivedData(event){
     }
     var terminal = document.getElementById('terminal')
     var newLine = document.createElement('div');
-    newLine.innerHTML = receivedString;
+    newLine.innerHTML = "<- " + receivedString;
+    newLine.classList.add('received-text');
     terminalLineCounter++;
     terminal.appendChild(newLine);
-    
-    log(receivedString);
+    terminal.scrollTop = terminal.scrollHeight;
     receivedString = "";
 }
 
@@ -76,6 +76,13 @@ function onWriteButtonClick(){
         writeCharacteristic.writeValue(encoder.encode(textToWrite))
         .then(_ => {
             log("Sent: " + textToWrite);
+            var terminal = document.getElementById('terminal')
+            var newLine = document.createElement('div');
+            newLine.innerHTML = "-> " + textToWrite;
+            newLine.classList.add('sent-text');
+            terminalLineCounter++;
+            terminal.appendChild(newLine);
+            terminal.scrollTop = terminal.scrollHeight;
         })
     }
 }

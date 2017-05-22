@@ -12,7 +12,7 @@
     border-radius: 12px;
 }
 
-.pair-button {
+.send-button {
     background-color: #008CBA; /* Green */
     border: none;
     color: white;
@@ -52,5 +52,22 @@ input {
     border: 1px solid #619647;
     user-select: text;
     border-radius: 3px 3px 0 0;
+    padding: 3px;
+}
+
+.received-text {
+    color: #FFC66D;
+    width: 100%;
+/*    border-width: .01em;*/
+/*    border-style: solid;*/
+/*    border-color: #666;*/
+}
+
+.sent-text {
+    color: #619647;
+    width: 100%;
+/*    border-width: .01em;*/
+/*    border-style: solid;*/
+/*    border-color: #666;*/
 }
 

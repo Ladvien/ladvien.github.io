@@ -44,7 +44,7 @@ input {
 
 .terminal {
     background: #000000;
-    height: 500px;
+    height: 200px;
     overflow: scroll;
     margin: 20px 0 0;
     padding: 10px 0;

@@ -95,7 +95,7 @@ function addTerminalLine(displayElement, text, pretext, lineStyle){
     var terminal = document.getElementById(displayElement);
     var newLine = document.createElement('div');
     newLine.innerHTML = pretext + textToWrite;
-    if(lineStyle !=) { 
+    if(lineStyle != "") { 
        newLine.classList.add(lineStyle); 
     }
     terminal.appendChild(newLine);

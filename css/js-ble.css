@@ -42,12 +42,12 @@ input {
 }
 
 .terminal {
-    background: #fafafa;
+    background: #000000;
     height: 500px;
     overflow: scroll;
     margin: 20px 0 0;
     padding: 10px 0;
-    border: 1px solid #ccc;
+    border: 1px solid #619647;
     user-select: text;
     border-radius: 3px 3px 0 0;
 }

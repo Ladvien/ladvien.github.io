@@ -25,6 +25,10 @@ body {
 .entry-content {
 	@include font-size($doc-font-size);
 
+    p {
+        font-size: $doc-font-size;
+    }
+    
 	// Dotted line underlines for links
 	p > a,
 	li > a {

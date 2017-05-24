@@ -17,7 +17,7 @@ body {
 .hentry {
 	@include clearfix;
 
-	h1, h2, h3, h4, h5, h6, p, li {
+	h1, h2, h3, h4, h5, h6, li {
 		word-wrap: break-word;
 	}
 }
@@ -26,7 +26,7 @@ body {
 	@include font-size($doc-font-size);
 
     p {
-        font-size: $doc-font-size;
+        font-size: 18px;
     }
     
 	// Dotted line underlines for links
@@ -288,7 +288,7 @@ header .entry-meta {
 		}
 
 		@media #{$large} {
-			max-width: 1200px;
+			max-width: 800px;
 			margin: 50px auto 30px auto;
 			padding: 50px 80px;
 

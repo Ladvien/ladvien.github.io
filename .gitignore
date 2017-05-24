@@ -1,5 +1,9 @@
 _site
-.sass-cache
+.DS_Store
+*.sublime-project
+*.sublime-workspace
+codekit-config.json
+node_modules
 Gemfile.lock
-_drafts
-.jsbeautifyrc
+.sass-cache
+.jekyll-metadata

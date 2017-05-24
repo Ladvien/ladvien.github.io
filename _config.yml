@@ -1,91 +1,89 @@
-# # # # # # # # # # # # #
-#   K i k o - p l u s   #
-# # # # # # # # # # # # #
+title:            Ladvien's Lab
+description:      A hacker's journey
+disqus_shortname: ladvien
+reading_time:     true
+words_per_minute: 200
+# Your site's domain goes here (eg: https://mmistakes.github.io, http://yourdomain.com, etc)
+# When testing locally leave blank or use http://localhost:4000
+url:
 
-# Basic
-name:               "Ladvien's Lab"
+# Owner/author information
+owner:
+  name:           C. Thomas Brittain (Ladvien)
+  avatar:         ladvien2.jpg
+  bio:            "A polyglot hacker"
+  email:          cthomasbrittain@hotmail.com
+  # Social networking links used in footer. Update and remove as you like.
+  twitter:        
+  facebook: cthomasbrittain      
+  github: ladvien         
+  stackexchange: 2108441  
+  linkedin:       
+  instagram:      
+  flickr:         
+  tumblr:         
+  # google plus id, include the '+', eg +mmistakes
+  google_plus: 107593241462097127567
 
-author:
-  facebook:         cthomasbrittain
-#  youtubeUser:      KodYd0Fj3TSHzXg7aOJYYQ
-  youtubeChannel:   UCKodYd0Fj3TSHzXg7aOJYYQ
-#  twitter:          your-id
-  github:           ladvien
-  stackoverflow:    2108441
-#  quora:            your-id
-#  linkedin:         your-id
-#  pinterest:        your-id
-  googlePlus:       107593241462097127567
-#  instagram:        your-id
-#  reddit:           your-id
-#  medium:           your-id
-#  tumblr:           your-id
-  email:            honeysucklehardware@gmail.com
+# Background image to be tiled on all pages
+background: 
 
-copyright:
-  year:             2017
-  name:             Ladvien
-
-# Google-analytics
-google-analytics:
-  id:               ""
-
-# Disqus
-disqus:
-  id:               "ladvien"
-
-# URL
-#url:                "https://ladvien.github.io" # the base hostname & protocol for your site
-# url:                "http://localhost:4000" # use this url when you develop
-#baseurl:            "/ladviens-lab/" # the subpath of your site, e.g. /blog
-
+# Analytics and webmaster tools stuff goes here
+google_analytics:   
+google_verify:      
+# https://ssl.bing.com/webmaster/configure/verify/ownership Option 2 content= goes here
+bing_verify:         
 
 # http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
-timezone:           US/Central
-permalink:          /:year-:month-:day/:title/
-
-# Pagination
-paginate:           20
-paginate_path:      /page:num/
-
-# Markdown
-markdown:           kramdown
-kramdown:
-  input:            GFM
-
-# Navigation
-nav:
-  - name:           "Projects"
-    url:            "/projects"
-  - name:           "Interests"
-    url:            "/tags"
-#  - name:           "About"
-#    url:            "/about"
-
-# Sass
-sass:
-  sass_dir:         _sass
-  style:            :compressed
-
-# Scopes
-defaults:
-  -
-    scope:
-      path:         ""
-      type:         "pages"
-    values:
-      layout:       "page"
-  -
-    scope:
-      path:         ""
-      type:         "posts"
-    values:
-      layout:       "post"
-
-# jekyll-seo-tag, see: http://www.rubydoc.info/gems/jekyll-seo-tag/1.2.0
+timezone:    US/Central
+future:      false  # publish future dated posts --  true, false (default) 
+highlighter: rouge
+markdown:    kramdown
 gems:
-  - jekyll-seo-tag
+  - jekyll-sitemap
   - jekyll-paginate
-  - jekyll-admin
+  - jekyll-gist
+  - jekyll-feed
+sass:
+  sass_dir: _sass
+  style: compressed
 
-exclude:            [vendor]
+# https://github.com/mojombo/jekyll/wiki/Permalinks
+permalink:   /:categories/:title/
+
+# Amount of post to show on home page
+paginate: 5
+
+kramdown:
+  input: GFM
+  auto_ids: true
+  footnote_nr: 1
+  entity_output: as_char
+  toc_levels: 1..6
+  enable_coderay: false
+
+include: 
+  - .htaccess
+exclude: 
+  - "*.less"
+  - "*.sublime-project"
+  - "*.sublime-workspace"
+  - .asset-cache
+  - .bundle
+  - .jekyll-assets-cache
+  - .sass-cache
+  - CHANGELOG
+  - Capfile
+  - Gemfile
+  - Gruntfile.js
+  - LICENSE
+  - README
+  - Rakefile
+  - config
+  - gulpfile.js
+  - lib
+  - log
+  - node_modules
+  - package.json
+  - spec
+  - tmp

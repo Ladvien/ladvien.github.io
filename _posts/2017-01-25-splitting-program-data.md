@@ -11,7 +11,7 @@ custom_css:
 custom_js: 
 ---
 
-{% highlight csharp %}
+{% highlight r %}
 options(java.parameters = "-Xmx14336m")  ## memory set to 14 GB
 library("sqldf")
 library("XLConnect")

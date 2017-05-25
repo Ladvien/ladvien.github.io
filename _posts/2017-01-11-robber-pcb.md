@@ -25,8 +25,9 @@ Here are some of the features of the board:
 
 My purpose in completing the board is to continue to test my TinySafeBoot BLE uploader:
 
-[Lumi](https://github.com/Ladvien/Lumi_Windows_App) (v2)  
- 
+[Lumi(v2)](https://github.com/Ladvien/Lumi_Windows_App)
+
+
 I'm also in the process of re-writing the uploader to be cross platform, targetting Android, iOS, and Windows 10\.  It'll be a feat, but I'm thinking I'll center the project around Dropbox.  The consumer would:
 
 1.  Compile an AVR binary using Arduino, Atmel Studio, or AVRDude

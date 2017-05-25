@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Annualized Count
-categories: HMIS, R, SQL, Choropleth
+categories: HMIS, R, SQL
 excerpt: 
 tags: [ETO, HMIS, R, SQL]
 image: 

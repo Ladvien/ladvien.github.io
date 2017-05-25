@@ -71,26 +71,6 @@ A few commands which I _think_ make the connection more reliable:
 
 The boards came in from OSHPark.  They look sharp--but, it's time to test the board and see what mistakes were made.  
 
-Circuits tested:  
-
-
-
-|Circuit Abstraction|Tested|Pass|Description of Issues|
-|---|---|---|---|
-|Mini USB|Yes|100%||
-|MCP73831|Yes|100%|Battery Charges.  Used a 2k resistor for the charge rate.|
-|MCP73831 - LED Charge Indicator|Yes|100%||
-|   |   |   |   |
-|   |   |   |   |
-|   |   |   |   |
-|   |   |   |   |
-|   |   |   |   |
-|   |   |   |   |
-|   |   |   |   |
-|   |   |   |   |
-
-
-
 Circuits tested:
 
 |Circuit Abstraction|Tested|Pass|Description of Issues|

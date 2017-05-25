@@ -4,7 +4,8 @@ title: ETO REST API in Swift
 categories: robots
 excerpt:
 tags: [ETO, HMIS, iOS, REST, Swift]
-image: ETO_and_Swift_0.png
+image: 
+    feature: ETO_and_Swift_0.png
 comments: true
 custom_css:
 custom_js: 

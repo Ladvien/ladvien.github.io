@@ -4,7 +4,8 @@ title: HMIS, R, and SQL -- Introduction
 categories: HMIS, R, SQL
 excerpt:
 tags: [ETO, HMIS, R, SQL]
-image: SQL-HMIS-R3.png
+image: 
+    feature: SQL-HMIS-R3.png
 comments: true
 custom_css:
 custom_js: 

@@ -3,7 +3,7 @@ layout: post
 title: ESPER -- ESP8266 Serial Communication Web Server
 categories: robot
 excerpt:
-tags: [robot, PCB, SMD, ATtiny84, HM-11, BLE]
+tags: [robot, C#, ESP8266, Arduino, HTTP]
 image: 
     feature: 
 comments: true

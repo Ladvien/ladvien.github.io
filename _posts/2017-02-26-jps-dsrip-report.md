@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Identifying Chronically Homeless and Veteran Participants throughout a COC
+title: JPS DSRIP Report V2.0  
 categories: HMIS, R, SQL
 excerpt: 
 tags: [ETO, HMIS, R, SQL]

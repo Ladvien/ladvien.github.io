@@ -11,7 +11,7 @@ let primaryService = document.getElementById('optionalServices').value;
 var terminal = new Terminal(displayDOM);
 
 function onScanButtonClick() {
-    lumiBle.searchAndConnect(0xFFE0).
+    lumiBle.searchAndConnect(parseInt(primaryService)).
     then(() => {
         lumiBle.addReceivedDataCallback(onReceivedData)     
     })

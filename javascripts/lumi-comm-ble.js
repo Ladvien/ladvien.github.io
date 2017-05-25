@@ -67,6 +67,7 @@ var LumiBluetooth = function(){
                 writeCharacteristic.writeValue(encoder.encode(data));
                 resolve();
             } else {
+                if(addSystemText){ addSystemText("Wo write characteristic set");}
                 reject("No write characteristic.")
             }            
         });

@@ -5,7 +5,7 @@ categories: robot
 excerpt:
 tags: [robot, C#, TinySafeBoot]
 image: 
-    feature: Robber-T%20v01.PNG
+    feature: Wide310x150Logo.scale-100.png 
 comments: true
 custom_css:
 custom_js: 
@@ -17,7 +17,7 @@ custom_js:
 
 I’ve been working on writing my own flash UART uploader since May 2014\. Originally, I was trying to write an uploader in C using the GCC compiler. The idea was to upload a Intel HEX file compiled for the LPC1114 to the uC remotely, using a Bluetooth LE connection. Here’s a description of the custom circuit board designed for the project:
 
-*   [Valdez Mutant Board](http://ladvien.github.io/robots/valdez-mutant-board/)
+*[Valdez Mutant Board](http://ladvien.github.io/robots/valdez-mutant-board/)
 
 Unfortunately, the project was out of my league. After spending months writing C code there it was not usable. Of course, learned a lot about C in the process.
 
@@ -29,7 +29,7 @@ Strangely, I actually finished the project. The first code-base was written as a
 
 Here’s the code base:
 
-*   [Lumi Uploader – Windows Forms Version](https://github.com/Ladvien/Lumi_TinySafeBoot_Uploader)
+*[Lumi Uploader – Windows Forms Version](https://github.com/Ladvien/Lumi_TinySafeBoot_Uploader)
 
 Of course, there is are a lot of problems with the code. Most center around inexperience writing object-oriented code.  
 

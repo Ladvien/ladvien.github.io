@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Robber Board
-categories: HMIS, R, SQL
+categories: robot
 excerpt:
 tags: [robot, PCB, SMD, ATtiny84, HM-11, BLE]
 image: 

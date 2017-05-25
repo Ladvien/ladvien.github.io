@@ -28,6 +28,8 @@ owner:
 # Background image to be tiled on all pages
 background: 
 
+excerpt_separator: "" 
+
 # Analytics and webmaster tools stuff goes here
 google_analytics:   
 google_verify:      

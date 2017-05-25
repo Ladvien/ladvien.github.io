@@ -25,12 +25,9 @@ Here are some of the features of the board:
 
 My purpose in completing the board is to continue to test my TinySafeBoot BLE uploader:
 
-<div class="rteindent1">  
 [Lumi](https://github.com/Ladvien/Lumi_Windows_App) (v2)  
- </div>
-
-<div>  
-I'm also in the process of re-writing the uploader to be cross platform, targetting Android, iOS, and Windows 10\.  It'll be a feat, but I'm thinking I'll center the project around Dropbox.  The consumer would:</div>
+ 
+I'm also in the process of re-writing the uploader to be cross platform, targetting Android, iOS, and Windows 10\.  It'll be a feat, but I'm thinking I'll center the project around Dropbox.  The consumer would:
 
 1.  Compile an AVR binary using Arduino, Atmel Studio, or AVRDude
 2.  Save the binary in Dropbox
@@ -39,33 +36,31 @@ I'm also in the process of re-writing the uploader to be cross platform, targett
 
 Not sure if I can pull it off; wish me luck.  And feel free to follow the code base here:
 
-<div class="rteindent1">  
 [Lumi3](https://github.com/Ladvien/Lumi3)  
- </div>
 
 ## Design Info
 
-<div>[Robber_Schematic.pdf](http://ladvien.com/../../images/Robber_Schematic.pdf)  
+[Robber_Schematic.pdf](http://ladvien.com/../../images/Robber_Schematic.pdf)  
 
 ![Robber v01 Schematic.PNG](/../../images/Robber%20v01%20Schematic.PNG)  
 
 ![Robber v01 T Solder Guide.PNG](/../../images/Robber%20v01%20T%20Solder%20Guide.PNG)  
 
-![Robber v01 B Solder Guide.PNG](/../../images/Robber%20v01%20B%20Solder%20Guide.PNG)</div>
+![Robber v01 B Solder Guide.PNG](/../../images/Robber%20v01%20B%20Solder%20Guide.PNG)
 
 ## HM-11 Setup
 
  A few commands which are required to make the OTA process work correctly
 
-1.  **AT+AFTC3FF**  --  This command sets all IO pins to go HIGH after connection.  This isn't needed for OTA but, since the AVR would be pulled low as soon as it connects, any sketch you have running would immediately be shutdown as the AVR's RESET is pulled low.
-2.  **AT+BEFC3FF -- **This is like the AFTC command, however, it set IO pins HIGH after the HM-11 is powered.  For the Robber, if this is not setup the AVR will stay reset until connected.  Initially, I didn't notice this and spent a lot of time trying to figure out what the AVR wouldn't respond.  Sigh.
-3.  **AT+MODE2 -- **this put the HM-11 into "Remote" mode.  This will allow AT commands to be sent to the HM-11 after it has been connected, through the BLE connection.  This is what allows the commands to be sent to remotely toggle the PIO connected to the AVR's RESET.
+1. AT+AFTC3FF  --  This command sets all IO pins to go HIGH after connection.  This isn't needed for OTA but, since the AVR would be pulled low as soon as it connects, any sketch you have running would immediately be shutdown as the AVR's RESET is pulled low.
+2. AT+BEFC3FF -- This is like the AFTC command, however, it set IO pins HIGH after the HM-11 is powered.  For the Robber, if this is not setup the AVR will stay reset until connected.  Initially, I didn't notice this and spent a lot of time trying to figure out what the AVR wouldn't respond.  Sigh.
+3. AT+MODE2 -- this put the HM-11 into "Remote" mode.  This will allow AT commands to be sent to the HM-11 after it has been connected, through the BLE connection.  This is what allows the commands to be sent to remotely toggle the PIO connected to the AVR's RESET.
 
 A few commands which I _think_ make the connection more reliable:
 
-1.  **AT+BAUD2** -- this sets the communication rate between the HM-11 and AVR to 38400\.  After testing, this is about the highest speed ATtiny's can for the TSB auto-baud.
-2.  **AT+POWE3** -- this raises the radio gain of the HM-11\.  Power-convseration is not the friend of prototyping.
-3.  **AT+GAIN1 -- **I think this raises the gain on the HM-11's RX?  I'm not sure.  The documentation is a little crappy.
+1. AT+BAUD2 -- this sets the communication rate between the HM-11 and AVR to 38400\.  After testing, this is about the highest speed ATtiny's can for the TSB auto-baud.
+2. AT+POWE3 -- this raises the radio gain of the HM-11\.  Power-convseration is not the friend of prototyping.
+3. AT+GAIN1 -- I think this raises the gain on the HM-11's RX?  I'm not sure.  The documentation is a little crappy.
 
 ## Debugging First Iteration 
 
@@ -89,7 +84,7 @@ Circuits tested:
 
 ![IMG_1616_0.JPG](/../../images/IMG_1616_0.JPG)  
 
-![IMG_1617_0.JPG](/../../images/IMG_1617_0.JPG)</div>
+![IMG_1617_0.JPG](/../../images/IMG_1617_0.JPG)
 
 ## Debugging Wireless UART Connection
 
@@ -100,7 +95,7 @@ When the ATtiny84 and HM-11 combination were tested using Lumi the Robber board 
 
 Back to the Robber board issue.  I got wore out trying to do stuff like this:  
 
-<div>![2017-01-22 14.16.09.jpg](/../../images/2017-01-22%2014.16.09.jpg)</div>
+![2017-01-22 14.16.09.jpg](/../../images/2017-01-22%2014.16.09.jpg)
 
 The wires kept popping off, they'd need to be resoldered, then pop off again.  Finally, I broke down and bought a [SOIC-14 AVR Programmer](http://www.ebay.com/itm/ATtiny24A-SSU-ATtiny24-ATtiny44-ATtiny84-SOIC14-150-mil-AVR-Programmer-Adapter-/250670056425?hash=item3a5d1983e9:g:ijAAAOxyyFhTdw1-).  _Dear lord,_ where has this thing been all of my life?  Instead of taking two hours of setting up a chip, wiring leads, and programming it, I was done in about 10 minutes.  If you like SOIC ATtiny85/84 chips, get one!   
 

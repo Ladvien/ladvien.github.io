@@ -1,11 +1,11 @@
 ---
 layout: post
-title: Shaping and Combining HMIS Data from ETO
+title: Robber Board
 categories: HMIS, R, SQL
 excerpt:
 tags: [robot, PCB, SMD, ATtiny84, HM-11, BLE]
 image: 
-    feature: Rlogo-300x263.png
+    feature: Robber-T%20v01.PNG
 comments: true
 custom_css:
 custom_js: 
@@ -26,7 +26,6 @@ Here are some of the features of the board:
 My purpose in completing the board is to continue to test my TinySafeBoot BLE uploader:
 
 [Lumi(v2)](https://github.com/Ladvien/Lumi_Windows_App)
-
 
 I'm also in the process of re-writing the uploader to be cross platform, targetting Android, iOS, and Windows 10\.  It'll be a feat, but I'm thinking I'll center the project around Dropbox.  The consumer would:
 

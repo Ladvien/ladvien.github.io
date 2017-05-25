@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Splitting Program Data
+title: Sampling Large Data
 categories: HMIS, R, SQL
 excerpt: 
 tags: [ETO, HMIS, R, SQL]

@@ -1,4 +1,6 @@
 #!/bin/sh
+sudo jekyll build
+
 rsync -av --exclude 'lad-u' /Users/user/ladvien.github.io/_site/* root@ladvien.com:/usr/share/nginx/html
 
 cd /Users/user/ladvien.github.io/

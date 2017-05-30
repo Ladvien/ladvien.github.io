@@ -41,7 +41,7 @@
 		border-radius: 0 0 3px 0;
 		opacity: 0.6;
 		box-shadow: 0 12px 24px rgba(#000,0.4);
-		transition: 0.2s ease-in-out;
+		transition: 0.4s ease-in-out;
 
 		&:hover {
 			opacity: 1;
@@ -219,27 +219,27 @@ All this is done for any sub-level being entered.
 
 /* Animation classes for moving out and in */
 .dl-menu.dl-animate-out {
-	-webkit-animation: MenuAnimOut 0.2s ease;
-	-moz-animation: MenuAnimOut 0.2s ease;
-	animation: MenuAnimOut 0.2s ease;
+	-webkit-animation: MenuAnimOut 0.4s ease;
+	-moz-animation: MenuAnimOut 0.4s ease;
+	animation: MenuAnimOut 0.4s ease;
 }
 
 .dl-menu.dl-animate-in {
-	-webkit-animation: MenuAnimIn 0.2s ease;
-	-moz-animation: MenuAnimIn 0.2s ease;
-	animation: MenuAnimIn 0.2s ease;
+	-webkit-animation: MenuAnimIn 0.4s ease;
+	-moz-animation: MenuAnimIn 0.4s ease;
+	animation: MenuAnimIn 0.4s ease;
 }
 
 .dl-menuwrapper > .dl-submenu.dl-animate-in {
-	-webkit-animation: SubMenuAnimIn 0.2s ease;
-	-moz-animation: SubMenuAnimIn 0.2s ease;
-	animation: SubMenuAnimIn 0.2s ease;
+	-webkit-animation: SubMenuAnimIn 0.4s ease;
+	-moz-animation: SubMenuAnimIn 0.4s ease;
+	animation: SubMenuAnimIn 0.4s ease;
 }
 
 .dl-menuwrapper > .dl-submenu.dl-animate-out {
-	-webkit-animation: SubMenuAnimOut 0.2s ease;
-	-moz-animation: SubMenuAnimOut 0.2s ease;
-	animation: SubMenuAnimOut 0.2s ease;
+	-webkit-animation: SubMenuAnimOut 0.4s ease;
+	-moz-animation: SubMenuAnimOut 0.4s ease;
+	animation: SubMenuAnimOut 0.4s ease;
 }
 
 /* No Touch Fallback */

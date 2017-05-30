@@ -3,7 +3,7 @@ layout: post
 title: Arduino to RPi -- Galvanically Isolated I2C
 categories: robots
 excerpt:
-tags: [robots]
+tags: [robots, I2C, SMD, PCB, ADUM1250]
 color: "#152a55"
 image:
   feature: IMG_0602.JPG

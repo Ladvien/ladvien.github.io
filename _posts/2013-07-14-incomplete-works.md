@@ -3,7 +3,7 @@ layout: post
 title: Incomplete Works
 categories: robots
 excerpt:
-tags: [robots]
+tags: [robots, HM-10, BLE, Pulse Sensor, SMD, PCB, Linux, Hack]
 color: "#152a55"
 image:
   feature: IMG_0641.JPG

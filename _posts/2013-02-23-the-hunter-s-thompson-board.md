@@ -3,7 +3,7 @@ layout: post
 title: The Hunter S. Thompson Board -- Arduino Mega Mini
 categories: robots
 excerpt:
-tags: [robots]
+tags: [robots, SMD, PCB, Atmega2560]
 color: "#152a55"
 image:
   feature: IMG_0476.JPG

@@ -3,7 +3,7 @@ layout: post
 title: Populating and Programming and APM
 categories: robots
 excerpt:
-tags: [robots]
+tags: [robots, AVR, Atmega328P]
 color: "#152a55"
 color: "#152a55"
 

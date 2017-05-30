@@ -3,7 +3,7 @@ layout: post
 title: Kossel Mini Build
 categories: robots
 excerpt:
-tags: [robots]
+tags: [robots, 3D Printer, Kossel Mini]
 color: "#152a55"
 image:
   feature: IMG_0646.JPG

@@ -3,7 +3,7 @@ layout: post
 title: ATtiny Bitsy Spider
 categories: robots
 excerpt:
-tags: [robots]
+tags: [robots, PCB, SMD, HM-10, ATtiny85]
 color: "#152a55"
 comments: true
 image:

@@ -3,7 +3,7 @@ layout: post
 title: Blueberry Pi -- How I Setup My Raspberry Pi as a Robot Base
 categories: robots
 excerpt:
-tags: [robots]
+tags: [robots, Raspberry Pi, SN754410]
 color: "#152a55"
 image:
   feature: ArdyPi.jpg

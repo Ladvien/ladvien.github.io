@@ -3,7 +3,7 @@ layout: post
 title: OpenCV on a Raspberry Pi
 categories: robots
 excerpt:
-tags: [robots]
+tags: [robots, OpenCV, Python]
 color: "#152a55"
 image:
   feature: USBPi.JPG

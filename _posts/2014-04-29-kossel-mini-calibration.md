@@ -3,7 +3,7 @@ layout: post
 title: Kossel Mini Calibration
 categories: robots
 excerpt:
-tags: [robots]
+tags: [robots, 3D Printer, Kossel Mini]
 color: "#152a55"
 image:
   feature: 8730999022_8c997d84b1_z.jpg

@@ -3,7 +3,7 @@ layout: post
 title: iOS to µC Using HM-1X in Objective-C
 categories: robots
 excerpt:
-tags: [robots]
+tags: [robots, HM-10, iOS, Objective-C, XCode]
 color: "#152a55"
 image:
   feature: Botting_iOS.png

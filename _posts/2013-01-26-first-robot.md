@@ -3,7 +3,7 @@ layout: post
 title: First Robot
 categories: robots
 excerpt:
-tags: [robots]
+tags: [robots, PCB, SMD]
 color: "#152a55"
 image:
   feature: IMG_8961.JPG

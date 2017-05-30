@@ -3,7 +3,7 @@ layout: post
 title: Command Line Menu in C
 categories: robots
 excerpt:
-tags: [robots]
+tags: [robots, C]
 color: "#152a55"
 image:
   feature: my_uC_icon_12.png

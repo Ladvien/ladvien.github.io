@@ -3,7 +3,7 @@ layout: post
 title: Mega Mini Motor Shield (M^3)
 categories: robots
 excerpt:
-tags: [robots]
+tags: [robots, SN755410]
 color: "#152a55"
 color: "#152a55"
 

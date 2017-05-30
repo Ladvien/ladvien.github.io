@@ -31,7 +31,7 @@ background:
 excerpt_separator: "" 
 
 # Analytics and webmaster tools stuff goes here
-google_analytics:   
+google_analytics: UA-89503811-1
 google_verify:      
 # https://ssl.bing.com/webmaster/configure/verify/ownership Option 2 content= goes here
 bing_verify:         
@@ -46,7 +46,6 @@ gems:
   - jekyll-paginate
   - jekyll-gist
   - jekyll-feed
-  - jekyll-redirect-from
 sass:
   sass_dir: _sass
   style: compressed

@@ -3,7 +3,7 @@ layout: post
 title: My Eagle PCB Walkthrough
 categories: robots
 excerpt:
-tags: [robots]
+tags: [robots, tutorial, Eagle, PCB]
 color: "#152a55"
 color: "#152a55"
 image:

@@ -3,7 +3,7 @@ layout: post
 title: A Friendly Overlord
 categories: robots
 excerpt:
-tags: [robots]
+tags: [robots, OpenCB, Python]
 color: "#152a55"
 image:
   feature: Friendly_Overlord.jpg

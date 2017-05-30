@@ -3,7 +3,7 @@ layout: post
 title: iOS Serial Manager
 categories: robots
 excerpt:
-tags: [robots]
+tags: [robots, Swift, iOS, BLE, HM-10, HM-11]
 color: "#152a55"
 image:
   feature: apple-hardware-logo.png

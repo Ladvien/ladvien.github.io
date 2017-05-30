@@ -3,7 +3,7 @@ layout: post
 title: FTDI Bitbanging GCC
 categories: robots
 excerpt:
-tags: [robots]
+tags: [robots, FTDI, GCC]
 color: "#152a55"
 image:
   feature: FTDI.jpg

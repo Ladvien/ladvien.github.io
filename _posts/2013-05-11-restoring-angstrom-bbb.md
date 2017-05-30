@@ -3,7 +3,7 @@ layout: post
 title: Restoring Angstrom to eMMC on Beaglebone Black
 categories: robots
 excerpt:
-tags: [robots]
+tags: [robots, Beagle Bone Black, Linux, SoC]
 color: "#152a55"
 image:
   feature:

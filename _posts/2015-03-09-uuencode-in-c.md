@@ -3,7 +3,7 @@ layout: post
 title: UUEncode in C
 categories: robots
 excerpt:
-tags: [robots]
+tags: [robots, C, GCC, UUEncode]
 color: "#152a55"
 image:
   feature: my_uC_icon_9.png

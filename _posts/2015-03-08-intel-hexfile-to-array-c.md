@@ -3,7 +3,7 @@ layout: post
 title: Intel Hexfile to Array
 categories: robots
 excerpt:
-tags: [robots]
+tags: [robots, C, IntelHEX]
 color: "#152a55"
 image:
   feature: my_uC_icon_5_300x300.png

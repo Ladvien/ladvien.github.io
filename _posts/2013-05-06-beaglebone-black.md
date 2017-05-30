@@ -3,7 +3,7 @@ layout: post
 title: Beaglebone Black
 categories: robots
 excerpt:
-tags: [robots]
+tags: [robots, Beagle Bone Black, Linux, SoC]
 color: "#152a55"
 image:
   feature: B_3PinOut3.png

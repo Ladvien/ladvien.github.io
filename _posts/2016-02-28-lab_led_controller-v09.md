@@ -3,7 +3,7 @@ layout: post
 title: Lab Controller v05-09
 categories: robots
 excerpt:
-tags: [robots]
+tags: [robots, High Power LED, Atmega328P, PCB]
 color: "#152a55"
 image:
   feature: lab-led-controllerpcb-v09.png

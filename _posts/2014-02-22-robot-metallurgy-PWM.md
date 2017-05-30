@@ -3,7 +3,7 @@ layout: post
 title: Metallurgy 101 - AVR PWM
 categories: robots
 excerpt:
-tags: [robots]
+tags: [robots, AVR, ATtiny1634. PWM]
 color: "#152a55"
 image:
   feature: Simply-AVR-Infographic-1200x11022_0.jpg

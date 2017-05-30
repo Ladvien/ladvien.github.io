@@ -3,7 +3,7 @@ layout: post
 title: The Valdez Mutant -- LPC1114 QFN
 categories: robots
 excerpt:
-tags: [robots]
+tags: [robots, LPC1114, HM-11, GCC, PCB, SMD]
 color: "#152a55"
 image:
   feature: LPC1114_Bare_Metal_ARM3.jpg

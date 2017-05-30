@@ -3,7 +3,7 @@ layout: post
 title: Advanced(ish) HM-10
 categories: robots
 excerpt:
-tags: [robots]
+tags: [robots, HM-10]
 color: "#152a55"
 comments: true
 image:

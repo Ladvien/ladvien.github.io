@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Sampling Large Data
-categories: HMIS, R, SQL
+categories: HMIS
 excerpt: 
 tags: [ETO, HMIS, R, SQL]
 image: 

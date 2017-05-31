@@ -1,13 +1,11 @@
 // Terminal JavaScript.
 // A webbased terminal emulator
+var Terminal = (function (displayDOM) {
 
-
-var Terminal = function (displayDOM) {
-    
     var self = this;
     this.displayDOM = displayDOM;
     this.terminalLineCounter = 0;
-        
+
     this.addTerminalLine = function (displayElement, text, pretext, lineStyle) {
 
         // 1. Get the element to display text on.
@@ -27,8 +25,18 @@ var Terminal = function (displayDOM) {
         terminal.scrollTop = terminal.scrollHeight;
         terminalLineCounter++;
     };
-    
-    this.addSystemText = function (text){
+
+    this.addSystemText = function (text) {
         self.addTerminalLine(displayDOM, text, '-) ', 'system-text');
     }
-};
+    
+    this.setDisplayDOM = function(disDOM){
+        this.displayDOM = disDOM;
+    }
+    
+    return {
+        addTerminalLine: addTerminalLine,
+        addSystemText: addSystemText,
+        setDisplayDOM: setDisplayDOM
+    }
+})();

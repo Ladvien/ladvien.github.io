@@ -49,3 +49,6 @@ document.getElementById('btn-write-ble').onclick = onWriteButtonClick;
 var lumiBle = LumiBluetooth;
 var terminal = Terminal;
 terminal.setDisplayDOM(displayDOM);
+var tsb = tinySafeBoot;
+tsb.setWriteMethod = lumiBle.writeData;
+tsb.init(onReceivedData);

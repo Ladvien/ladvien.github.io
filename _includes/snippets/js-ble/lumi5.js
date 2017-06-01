@@ -5,6 +5,7 @@ var descriptor;
 var receivedString = "";
 var terminalLineCounter = 0;
 var displayDOM = 'terminal';
+var handshakeButton = 'btn-tsb-handshake';
 
 let primaryService = document.getElementById('optionalServices').value;
 
@@ -17,11 +18,13 @@ function onScanButtonClick() {
 }
 
 function onReceivedData(event) {
-    for (var i = 0; i < event.target.value.byteLength; i++) {
-        receivedString += String.fromCharCode(event.target.value.getUint8(i));
+    if (!tsb.getControllingSerial()) {
+        for (var i = 0; i < event.target.value.byteLength; i++) {
+            receivedString += String.fromCharCode(event.target.value.getUint8(i));
+        }
+        terminal.addTerminalLine(displayDOM, receivedString, '<- ', 'received-text');
+        receivedString = "";
     }
-    terminal.addTerminalLine(displayDOM, receivedString, '<- ', 'received-text');
-    receivedString = "";
 }
 
 function onWriteButtonClick() {
@@ -50,4 +53,4 @@ var terminal = Terminal;
 terminal.setDisplayDOM(displayDOM);
 var lumiBle = LumiBluetooth;
 var tsb = TinySafeBoot;
-
+tsb.setHandshakeButton(handshakeButton);

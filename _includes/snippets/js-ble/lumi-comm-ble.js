@@ -35,7 +35,9 @@ var LumiBluetooth = (function () {
                 addSystemText('Requesting any Bluetooth Device...');
             }
             navigator.bluetooth.requestDevice({
-                    acceptAllDevices: true
+                    acceptAllDevices: true,
+                    optionalServices: optionalServices
+                    
                 })
                 .then(device => {
                     pairedDevices[device.name] = device;

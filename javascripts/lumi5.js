@@ -5,28 +5,33 @@ var descriptor;
 var receivedString = "";
 var terminalLineCounter = 0;
 var displayDOM = 'terminal';
+var handshakeButton = 'btn-tsb-handshake';
 
 let primaryService = document.getElementById('optionalServices').value;
 
 function onScanButtonClick() {
-    lumiBle.searchAndConnect(parseInt(primaryService)).
+    lumiBle.searchAndConnect(parseInt(primaryService), terminal.addSystemText).
     then(() => {
-        lumiBle.addReceivedDataCallback(onReceivedData)
+        lumiBle.addReceivedDataCallback(onReceivedData);
+        lumiBle.addReceivedDataCallback(tsb.onReceivedData);
     })
 }
 
+
 function onReceivedData(event) {
-    for (var i = 0; i < event.target.value.byteLength; i++) {
-        receivedString += String.fromCharCode(event.target.value.getUint8(i));
+    console.log(tsb.getControllingSerial());
+    if (!tsb.getControllingSerial()) {
+        for (var i = 0; i < event.target.value.byteLength; i++) {
+            receivedString += String.fromCharCode(event.target.value.getUint8(i));
+        }
+        terminal.addTerminalLine(displayDOM, receivedString, '<- ', 'received-text');
+        receivedString = "";
     }
-    terminal.addTerminalLine(displayDOM, receivedString, '<- ', 'received-text');
-    receivedString = "";
 }
 
 function onWriteButtonClick() {
     let textToWrite = document.getElementById('textToWrite').value;
-    //        writeCharacteristic.writeValue(encoder.encode(textToWrite))
-    lumiBle.writeData(textToWrite)
+    lumiBle.writeData(textToWrite, terminal.addSystemText)
         .then(_ => {
             terminal.addTerminalLine(displayDOM, textToWrite, '-> ', 'sent-text');
         })
@@ -46,6 +51,9 @@ function getSupportedProperties(characteristic) {
 document.getElementById('btn-1').onclick = onScanButtonClick;
 document.getElementById('btn-write-ble').onclick = onWriteButtonClick;
 
-var lumiBle = LumiBluetooth;
 var terminal = Terminal;
 terminal.setDisplayDOM(displayDOM);
+var lumiBle = LumiBluetooth;
+var tsb = TinySafeBoot;
+tsb.setHandshakeButton(handshakeButton);
+tsb.setDisplayText(terminal.addSystemText);

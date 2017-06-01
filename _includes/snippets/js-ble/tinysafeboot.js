@@ -6,7 +6,6 @@ var TinySafeBoot = (function(){
     
     this.init = function(_receivedData){
         onReceivedData = receivedData;
-        self.tsbWriteData("HELLO!");
     }
     
     this.tsbWriteData = function(data) {

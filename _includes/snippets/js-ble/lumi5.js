@@ -18,6 +18,7 @@ function onScanButtonClick() {
 }
 
 function onReceivedData(event) {
+    console.log(tsb.getControllingSerial());
     if (!tsb.getControllingSerial()) {
         for (var i = 0; i < event.target.value.byteLength; i++) {
             receivedString += String.fromCharCode(event.target.value.getUint8(i));
@@ -54,3 +55,4 @@ terminal.setDisplayDOM(displayDOM);
 var lumiBle = LumiBluetooth;
 var tsb = TinySafeBoot;
 tsb.setHandshakeButton(handshakeButton);
+tsb.setDisplayText(terminal.addSystemText);

@@ -1,25 +1,38 @@
 var TinySafeBoot = (function () {
 
     var self = this;
+    
+    // Depedency functions
     var receivedData = function () {};
-    var writeData;
-    var writeToTerminal;
+    var writeData = function () {};
+    var displayText = function () {};
+    
+    // Privates
     var controllingSerial = false;
 
+    // Used for routing commands on received data.
     var CommandEnum = Object.freeze({
         none: 0,
-        handshake: 1
+        handshake: 1,
+        failedCommand: 99
     })
-    var activeCommand;
-
-    var setControllingSerial = function (isTrue) {
-        controllingSerial = isTrue;
+    var activeCommand = CommandEnum['none'];
+    var commandKeys = Object.keys(CommandEnum);
+    
+    var startCommandTimeoutTimer = async function(ms){
+        await sleep(ms);
+        if(activeCommand !== CommandEnum['none']){
+            displayText("Failed command: " + commandKeys[activeCommand])
+            activeCommand = CommandEnum['failed'];
+            commandRouting();
+        }
     }
-
+    
+    // Lets other modules know a TSB command is underway.
     var getControllingSerial = function () {
-        return controllingSerial;
+        return activeCommand !== CommandEnum['none'];
     }
-
+    
     var sleep = function (ms) {
         return new Promise(resolve => setTimeout(resolve, ms));
     }
@@ -29,8 +42,10 @@ var TinySafeBoot = (function () {
     }
 
     var onHandshakeButtonClick = async function () {
+        // HM-1X is set HIGH, LOW, HIGH resetting
+        // the Atmega or ATtiny.  Then, TSB handshake is sent.
         activeCommand = CommandEnum['handshake'];
-        setControllingSerial(true);
+        startCommandTimeoutTimer(5000);
         writeData("AT+PIO31");
         await sleep(200);
         writeData("AT+PIO30");
@@ -52,6 +67,10 @@ var TinySafeBoot = (function () {
 
     this.setWriteMethod = function (writeMethod) {
         self.writeData = writeMethod;
+    }
+    
+    this.setDisplayText = function(_displayText){
+        displayText = _displayText;
     }
 
     this.onReceivedData = function (event) {
@@ -78,14 +97,36 @@ var TinySafeBoot = (function () {
             default:
                 break;
         }
-
     }
     
     var handshakeHandling = function(data){
+        
+        // 1. Check if handshake was succesful
+        // 2. Decode device info.
+        
+        // A full handshake reply is 17 bytes.
         var handshakeReplyCheck = new TextDecoder("utf-8").decode(data);
-        console.log(handshakeReplyCheck.substring(0, 3));
-        if(handshakeReplyCheck.substring(0, 3) === 'tsb'){
-            console.log("Well! Helo there!");
+        // ATtiny will reply 'tsb' and Atmega 'TSB'
+        var prefixToCheck = handshakeReplyCheck.substring(0, 3)
+        // Last character should be "!"
+        var confirm = handshakeReplyCheck.substring(16, 17);
+        if(handshakeReplyCheck.substring(0, 3) === 'tsb' ||
+          handshakeReplyCheck.substring(0, 3) === 'TSB' &&
+          data.length > 16 &&
+          confirm === '!'
+          ){
+            
+            activeCommand = CommandEnum['none'];
+            displayText(handshakeReplyCheck);
+            
+            // Format TSB handshake data
+            var firmwareDatePieces = [];
+            var firmwareStatus = 0x00;
+            var signatureBytes = [];
+            var pagesizeInWords = 0x00;
+            var freeFlash = [];
+            var eepromSize = [];
+            
         }
     }
 
@@ -96,7 +137,7 @@ var TinySafeBoot = (function () {
         setWriteMethod: setWriteMethod,
         onReceivedData: onReceivedData,
         setHandshakeButton: setHandshakeButton,
-        setControllingSerial: setControllingSerial,
-        getControllingSerial: getControllingSerial
+        getControllingSerial: getControllingSerial,
+        setDisplayText: setDisplayText
     }
 })();

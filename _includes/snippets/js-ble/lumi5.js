@@ -17,6 +17,7 @@ function onScanButtonClick() {
     })
 }
 
+
 function onReceivedData(event) {
     console.log(tsb.getControllingSerial());
     if (!tsb.getControllingSerial()) {

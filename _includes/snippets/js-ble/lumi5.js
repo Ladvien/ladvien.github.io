@@ -9,9 +9,10 @@ var displayDOM = 'terminal';
 let primaryService = document.getElementById('optionalServices').value;
 
 function onScanButtonClick() {
-    lumiBle.searchAndConnect(parseInt(primaryService)).
+    lumiBle.searchAndConnect(parseInt(primaryService), terminal.addSystemText).
     then(() => {
-        lumiBle.addReceivedDataCallback(onReceivedData)
+        lumiBle.addReceivedDataCallback(onReceivedData);
+        lumiBle.addReceivedDataCallback(tsb.onReceivedData);
     })
 }
 
@@ -25,8 +26,7 @@ function onReceivedData(event) {
 
 function onWriteButtonClick() {
     let textToWrite = document.getElementById('textToWrite').value;
-    //        writeCharacteristic.writeValue(encoder.encode(textToWrite))
-    lumiBle.writeData(textToWrite)
+    lumiBle.writeData(textToWrite, terminal.addSystemText)
         .then(_ => {
             terminal.addTerminalLine(displayDOM, textToWrite, '-> ', 'sent-text');
         })
@@ -46,9 +46,8 @@ function getSupportedProperties(characteristic) {
 document.getElementById('btn-1').onclick = onScanButtonClick;
 document.getElementById('btn-write-ble').onclick = onWriteButtonClick;
 
-var lumiBle = LumiBluetooth;
 var terminal = Terminal;
 terminal.setDisplayDOM(displayDOM);
-var tsb = tinySafeBoot;
-tsb.setWriteMethod = lumiBle.writeData;
-tsb.init(onReceivedData);
+var lumiBle = LumiBluetooth;
+var tsb = TinySafeBoot;
+

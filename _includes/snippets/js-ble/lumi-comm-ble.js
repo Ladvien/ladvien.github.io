@@ -1,18 +1,20 @@
 var LumiBluetooth = (function () {
-    
+
     // Privates
     var pairedDevices = {};
     var onReceivedDataCallbacks = [];
     var writeCharacteristic;
-    
+
     // Adds a function called when a BLE characteristic changes value.
     // Mutiple callbacks may be added.
     this.addReceivedDataCallback = function (callback) {
-        writeCharacteristic.addEventListener('characteristicvaluechanged', callback);
-        onReceivedDataCallbacks.push({
-            key: callback.name,
-            value: callback
-        })
+        if (writeCharacteristic) {
+            writeCharacteristic.addEventListener('characteristicvaluechanged', callback);
+            onReceivedDataCallbacks.push({
+                key: callback.name,
+                value: callback
+            })
+        }
     }
 
     // Clears the RecievedDataCallback dictionary.
@@ -33,12 +35,10 @@ var LumiBluetooth = (function () {
                 addSystemText('Requesting any Bluetooth Device...');
             }
             navigator.bluetooth.requestDevice({
-                    acceptAllDevices: true,
-                    optionalServices: optionalServices
+                    acceptAllDevices: true
                 })
                 .then(device => {
                     pairedDevices[device.name] = device;
-                    console.log(pairedDevices);
                     if (addSystemText) {
                         addSystemText('Connecting to GATT Server...');
                     }
@@ -75,33 +75,39 @@ var LumiBluetooth = (function () {
                         })); // End queue
                     }) // End enumerating services
                 }). // End Service exploration                   
-            catch (error =>{
-                if(addSystemText){
+            catch(error => {
+                if (addSystemText) {
                     addSystemText(error);
                 }
             })
         }); // End Search and Connect Promise
     } // End Search and Connect Function
 
-    this.writeData = function (data) {
-        return new Promise(function (resolve, reject) {
-            if (writeCharacteristic) {
-                let encoder = new TextEncoder('utf-8');
-                writeCharacteristic.writeValue(encoder.encode(data));
-                resolve();
-            } else {
-                if (addSystemText) {
-                    addSystemText("Wo write characteristic set");
+    this.writeData = function (data, addSystemText = null) {
+        p = new Promise(function (resolve, reject) {
+            if (pairedDevices) {
+                if (writeCharacteristic != null) {
+                    let encoder = new TextEncoder('utf-8');
+                    writeCharacteristic.writeValue(encoder.encode(data));
+                    resolve();
+                } else {
+                    reject("No write characteristic")
                 }
-                reject("No write characteristic.")
+            } else {
+                reject("No devices paired.")
+            }
+        }).catch(error => {
+            if (addSystemText) {
+                addSystemText("No device paired");
             }
         });
+        return p;
     }
-    
-    this.disconnectDevice = function(){
-        
+
+    this.disconnectDevice = function () {
+
     }
-    
+
     return {
         addReceivedDataCallback: addReceivedDataCallback,
         searchAndConnect: searchAndConnect,

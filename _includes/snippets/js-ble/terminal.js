@@ -3,8 +3,8 @@
 var Terminal = (function (displayDOM) {
 
     var self = this;
-    this.displayDOM = displayDOM;
-    this.terminalLineCounter = 0;
+    var displayDOM = displayDOM;
+    var terminalLineCounter = 0;
 
     this.addTerminalLine = function (displayElement, text, pretext, lineStyle) {
 
@@ -15,25 +15,30 @@ var Terminal = (function (displayDOM) {
         // 5. Append the new line DIV to target element.
         // 6. Increment line count.
 
-        var terminal = document.getElementById(displayElement);
-        var newLine = document.createElement('div');
-        newLine.innerHTML = pretext + text;
-        if (lineStyle !== "") {
-            newLine.classList.add(lineStyle);
+        if (text && displayElement) {
+            var terminal = document.getElementById(displayElement);
+            var newLine = document.createElement('div');
+            newLine.innerHTML = pretext + text;
+            if (lineStyle !== "") {
+                newLine.classList.add(lineStyle);
+            }
+            terminal.appendChild(newLine);
+            terminal.scrollTop = terminal.scrollHeight;
+            terminalLineCounter++;
         }
-        terminal.appendChild(newLine);
-        terminal.scrollTop = terminal.scrollHeight;
-        terminalLineCounter++;
     };
 
-    this.addSystemText = function (text) {
-        self.addTerminalLine(displayDOM, text, '-) ', 'system-text');
+    this.addSystemText = function (text, _displayDOM = this.displayDOM) {
+        if (text && _displayDOM)
+        {
+            self.addTerminalLine(_displayDOM, text, '-) ', 'system-text');
+        }
     }
-    
-    this.setDisplayDOM = function(disDOM){
-        this.displayDOM = disDOM;
+
+    this.setDisplayDOM = function (_displayDOM) {
+        this.displayDOM = _displayDOM;
     }
-    
+
     return {
         addTerminalLine: addTerminalLine,
         addSystemText: addSystemText,

@@ -1,23 +1,29 @@
-var tinySafeBoot = (function(){
+var TinySafeBoot = (function(){
     
-    var receivedData;
-    var writeData = function(data)
+    var self = this;
+    var receivedData = function(){};
+    var writeData; 
     
     this.init = function(_receivedData){
         onReceivedData = receivedData;
-        tsbWriteData("HELLO!");
+        self.tsbWriteData("HELLO!");
     }
     
     this.tsbWriteData = function(data) {
-        writeData(data);
+        if(self.writeData){
+            self.writeData(data);
+        }
     }
     
     this.setWriteMethod = function(writeMethod){
-        writeData = writeMethod;
+        self.writeData = writeMethod;
     }
     
-    this.onReceivedData = function(data){
-        
+    this.onReceivedData = function(event){
+        var receivedData = "";
+        for (var i = 0; i < event.target.value.byteLength; i++) {
+            console.log(event.target.value.getUint8(i));
+        }
     }
     
     return {
@@ -26,5 +32,4 @@ var tinySafeBoot = (function(){
         setWriteMethod: setWriteMethod,
         onReceivedData: onReceivedData
     }
-    
 })();

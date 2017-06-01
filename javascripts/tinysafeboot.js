@@ -120,8 +120,10 @@ var TinySafeBoot = (function () {
         ) {
 
             activeCommand = CommandEnum['none'];
-            displayText(handshakeReplyCheck);
-
+            displayText(" ");
+            // TODO: Display what device by comparing device signature to known devices.
+            displayText(" ");
+            
             // Format TSB handshake data
             var firmwareDatePieces = new Uint8Array(2);
             var firmwareStatus = 0x00;
@@ -141,8 +143,8 @@ var TinySafeBoot = (function () {
             freeFlash[1] = data[11];
             eepromSize[0] = data[12];
             eepromSize[1] = data[13];
-         
-            
+
+
             //; Current bootloader date coded into 16-bit number
             //.set    YY      =       16
             //.set    MM      =       10
@@ -150,44 +152,48 @@ var TinySafeBoot = (function () {
             //.equ    BUILDDATE   = YY * 512 + MM * 32 + DD
             //; YY = Year - MM = Month - DD = Day
 
-           //var test = 16 * 512 + 10 * 32 + 27; // = 0010000 1010 11011 OR 215B
-                                                 //     YY     MM   DD
-            
-            var dateStamp = firmwareDatePieces[1] << 8 | firmwareDatePieces[0]; 
+            //var test = 16 * 512 + 10 * 32 + 27; // = 0010000 1010 11011 OR 215B
+            //     YY     MM   DD
+            // Date of firmware
+            var dateStamp = firmwareDatePieces[1] << 8 | firmwareDatePieces[0];
             var day = (dateStamp & 0x3F);
             var month = ((dateStamp & 0x3C0) >> 5);
             var year = ((dateStamp & 0xFC00) >> 9);
 
-            console.log(dateStamp);
-            var testArray = new Uint8Array(2);
-            console.log("Firmware Date: 20" + year + "-" + month + "-" + day);
-            
-            
-//            testArray[0] = (test & 0xFF);
-//            testArray[1] = ((test >> 8) & 0xFF );
-//            console.log(testArray);
-//            var day = (testArray[0]);
-//            var month = ((testArray[1] & 0xF0) >> 4);
-//            var year = (testArray[1] & 0x0F); 
-//            console.log("Firmware Date: 20" + year + "-" + month + "-" + day);
-//            // Date of firmware.
-//            var day = (firmwareDatePieces[0]);
-//            var month = ((firmwareDatePieces[1] & 0xF0) >> 1);
-//            var year = (firmwareDatePieces[1] & 0x0F);
-//            console.log("Firmware Date: 20" + year + "-" + month + "-" + day);
-//            
+            displayText("Firmware Date: 20" + year + "-" + month + "-" + day);
+
             // Atmel device signature.
-            deviceSignature = toByteString(signatureBytes[0]) + " " + 
-                              toByteString(signatureBytes[1]) + " " + 
-                              toByteString(signatureBytes[2]);
-            
+            deviceSignature = toByteString(signatureBytes[0]) + " " +
+                toByteString(signatureBytes[1]) + " " +
+                toByteString(signatureBytes[2]);
+
             displayText("Device Signature: " + deviceSignature);
-                        
+
+            // TODO: Create a prototype for TSB Device
+            // This will be used later
             var combinedDeviceSignature = (((signatureBytes[0] << 16) | signatureBytes[1] << 8) | signatureBytes[2]);
+
+
+            // The size is in words, make it bytes.
+            var pageSize = (pagesizeInWords * 2);
+            displayText("Pages: " + pageSize);
+
+            // Get flash size.
+            var flashSize = ((freeFlash[1] << 8) | freeFlash[0]) * 2;
+            displayText("Free Flash: " + flashSize);
+            
+            var numberOfPages = flashSize / pageSize;
+            
+            // Get EEPROM size.
+            fullEepromSize = ((eepromSize[1] << 8) | eepromSize[0]) + 1;
+            displayText("EEPROM Size: " + fullEepromSize);
+            
+            activeCommand = CommandEnum['none'];
+
         }
     }
 
-    var toByteString = function(byte){
+    var toByteString = function (byte) {
         return ('0' + (byte & 0xFF).toString(16)).slice(-2).toUpperCase();
     }
 

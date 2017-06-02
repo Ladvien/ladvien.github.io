@@ -20,10 +20,11 @@ homebase <- function(
   staffInfoDataPath,
   executionPath,
   hmisFunctionsFilePath,
-  viSpdat2DataPath) {
+  viSpdat2DataPath,
+  clientContactInfoPath) {
 
   library("tcltk")
-
+  
   # Load the weights for progress bar
   loadingPackagesIncrement <- 2
   loadingHMISDataIncrement <- 10
@@ -38,10 +39,11 @@ homebase <- function(
   loadServicesIncrement <- 15
   nbnStaysIncrement <- 5
   outreachContactsIncrement <- 5
-  outreachAndNbnCountIncrement <- 5
+    outreachAndNbnCountIncrement <- 5
+    clientContactinfoIncrement <- 3
   makeHmisCodesReadableIncrement <- 2
   formatHomebaseIncrement <- 1
-
+  
   # Find the progress bar max.
   total <- (loadingPackagesIncrement +
               loadingHMISDataIncrement +
@@ -57,13 +59,14 @@ homebase <- function(
               nbnStaysIncrement +
               outreachAndNbnCountIncrement +
               makeHmisCodesReadableIncrement +
-              formatHomebaseIncrement
+              formatHomebaseIncrement +
+              clientContactinfoIncrement
   )
       # Initialize progress bar
   pbCounter = 0
   pb <- tkProgressBar(title = "Homebase Function", min = 0,
                       max = total, width = 300)
-
+  
   ###### START ##########
   setTkProgressBar(pb, pbCounter, label = "Loading Packages")
 
@@ -75,16 +78,17 @@ homebase <- function(
   library(XLConnect)
   library(xlsx)
 
+
   # Load the HMIS functions.
   source(hmisFunctionsFilePath)
-
+  
   # Return to execution path.
   setwd(executionPath)
-
+  
   # Update progress bar
   pbCounter <- pbCounter + loadingPackagesIncrement
   setTkProgressBar(pb, pbCounter, label = "Loading HMIS Data")
-
+  
   # Load HMIS Data
   client <- loadClient(hmisDataPath)
   enrollment <- loadEnrollment(hmisDataPath)
@@ -95,77 +99,91 @@ homebase <- function(
 
   # Return to execution path.
   setwd(executionPath)
-
+  
   pbCounter <- pbCounter + loadingHMISDataIncrement
   setTkProgressBar(pb, pbCounter, label = "Getting Disabilities")
-
+  
   # Takes the Disabilities.csv and breaks out the disabilities reported
   # for each participants into individual elements with binary resposnes.
   client <- addDisabilityInfoToClient(client, disabilities)
-
+  
   # Update progress bar
   pbCounter <- pbCounter + addDisabilitiesIncrement
   setTkProgressBar(pb, pbCounter, label = "Getting Household IDs")
-
+  
   # Gets the PersonalIDs of participants with a HUD Entry or Update in last 90 days.
   enrollmentCoc <- getMostRecentRecordsPerId(enrollmentCoc, "PersonalID", "DateCreated")
   enrollmentCoc$DateCreated <- as.character(enrollmentCoc$DateCreated)
-
+  
   # Get Household IDs from EnrollmentCoc.csv
-  client <- sqldf("SELECT DISTINCT a.*, b.HouseholdID
+  client_HHIDs <- sqldf("SELECT DISTINCT a.PersonalID, b.HouseholdID
                   FROM client a
                   LEFT JOIN enrollmentCoc b
                   ON a.PersonalID=b.PersonalID
+                  WHERE HouseholdID != 'NA'
                   ")
+
+  client_HHIDs <- sqldf("SELECT PersonalID, MAX(HouseholdID) As 'HouseholdID' FROM client_HHIDs GROUP BY PersonalID")
 
   # Update progress bar
   pbCounter <- pbCounter + householdIdIncrement
   setTkProgressBar(pb, pbCounter, label = "Calculating Age")
-
+  
   # Calculate age
   client <- sqldf("SELECT DISTINCT *, (DATE('NOW') - DATE(DOB)) As 'Age' FROM client")
-
+  
   pbCounter <- pbCounter + calculatingAgeIncrement
   setTkProgressBar(pb, pbCounter, label = "Getting Enrollments")
 
   # Filters to most recent HUD Assessment per participant
   df1 <- getMostRecentRecordsPerId(enrollment, "PersonalID", "EntryDate")
 
-  # Adds a 'MaxEntryDate' flag to enrollment
-  enrollment <- sqldf("SELECT a.*, b.MaxEntryDate
+  ## Adds a 'MaxEntryDate' flag to enrollment
+  #enrollment <- sqldf("SELECT a.*, b.MaxEntryDate
+                      #FROM enrollment a
+                      #LEFT JOIN df1 b
+                      #ON a.ProjectEntryID=b.ProjectEntryID
+                      #")
+
+
+    # Adds a 'MaxEntryDate' flag to enrollment
+    enrollment <- sqldf("SELECT a.*, b.MaxEntryDate
                       FROM enrollment a
                       LEFT JOIN df1 b
                       ON a.ProjectEntryID=b.ProjectEntryID
+                      WHERE b.MaxEntryDate = 'Yes'
                       ")
-
+  
   # Get Project Info for Enrollment
   enrollmentCoc <- addProjectInfoToEnrollment(enrollmentCoc, project)
-
-  df3 <- sqldf("SELECT PersonalID, InformationDate As 'MostRecentHUDAssess', UserID As 'StaffID', ProjectName, ProjectType
+  
+  df3 <- sqldf("SELECT PersonalID, DateCreated As 'MostRecentHUDAssess', UserID As 'StaffID', ProjectName, ProjectType
                FROM enrollmentCoc")
   df3 <- makeProjectTypeReadable(df3)
   pbCounter <- pbCounter + gettingStaffInfoIncrement
   setTkProgressBar(pb, pbCounter, label = "Calculating Chronically Homeless")
-
+  
   # Adds a ChronicallyHomeless flag
   df4 <- addChronicallyHomelessFlagToClient(client, df1)
   # Adds a ActiveInPh flag
-  df5 <- getClientsInPH(enrollment, exit, project)
-
+  df5 <- getClientsInPH(loadEnrollment(hmisDataPath), exit, project)
+  
   # Returns flags to clientDf
-  targetClient <- sqldf("SELECT DISTINCT a.*, b.'ActiveInPh'
+  targetClient <- sqldf("SELECT DISTINCT a.*, b.'ActiveInPh', c.EntryDate
                         FROM df4 a
                         LEFT JOIN df5 b
                         ON a.PersonalID=b.PersonalID
+                        LEFT JOIN enrollment c
+                        ON a.PersonalID=c.PersonalID
                         ")
 
-  colnames(targetClient)[32] <- "RecentHUDEntryDate"
-
+  colnames(targetClient)[which(colnames(targetClient) == "EntryDate")] <- "RecentHUDEntryDate"
+  
   # Load staff information
   staffInfo <- readWorksheetFromFile(staffInfoDataPath, sheet = 1, startRow = 1)
   colnames(staffInfo)[1] <- "StaffID"
   staffInfo <- sqldf("SELECT DISTINCT StaffID, Name, Email FROM staffInfo")
-
+  
   # Find the staff information for who completed each HUD Assessment.
   df7 <- sqldf("SELECT a.*, b.Name As 'StaffName', b.Email As 'StaffEmail'
                FROM df3 a
@@ -173,22 +191,22 @@ homebase <- function(
                ON a.StaffID=b.StaffID
                ")
   remove(list = c("staffInfo"))
-
+  
   # Add the Staff and Project information back to client list.
   targetClient <- sqldf("SELECT a.*, b.MostRecentHUDAssess, b.StaffName, b.StaffEmail, b.ProjectName As 'LastProgramInContact', b.ReadableProjectType As 'LastProjectTypeContacted'
                         FROM targetClient a
                         LEFT JOIN df7 b
                         ON a.PersonalID=b.PersonalID
                         ")
-
+  
   targetClient <- subset(targetClient)
-
+  
   # Cleanup
   remove(list = c("df4", "df3", "df5", "df1", "enrollmentCoc"))
-
+  
   pbCounter <- pbCounter + calculatingCHIncrement
   setTkProgressBar(pb, pbCounter, label = "Adding VI-SPDAT")
-
+  
   # Load VI-SPDAT information
   viSpdat <- readWorksheetFromFile(vispdatDataPath, sheet = 1, startRow = 1)
   viSpdat2 <- readWorksheetFromFile(viSpdat2DataPath, sheet = 1, startRow = 1)
@@ -205,7 +223,7 @@ homebase <- function(
   # Clean up VI-SPDAT2 formatting
   viSpdat2$DateOfVISPDAT <- as.character(viSpdat2$DateOfVISPDAT)
   viSpdat2$PersonalID <- gsub("-", "", viSpdat2$PersonalID)
-
+    
     # Get most recent VI-SPDAT per client.
   viSpdat <- getMostRecentRecordsPerId(viSpdat, "PersonalID", "DateOfVISPDAT")
   viSpdat2 <- getMostRecentRecordsPerId(viSpdat2, "PersonalID", "DateOfVISPDAT")
@@ -221,6 +239,7 @@ homebase <- function(
 
     allVispdat <- unique(allVispdat)
 
+   
     allVispdat$VISPDATTotalIndividualScore[allVispdat$VISPDATTotalIndividualScore == ''] <- '0'
     allVispdat$VISPDATTotalFamilyScore[allVispdat$VISPDATTotalFamilyScore == ''] <- '0'
     allVispdat$VISPDATTotalYouthScore[allVispdat$VISPDATTotalYouthScore == ''] <- '0'
@@ -229,10 +248,11 @@ homebase <- function(
     allVispdat$VISPDATTotalFamilyScore[is.na(allVispdat$VISPDATTotalFamilyScore)] <- '0'
     allVispdat$VISPDATTotalYouthScore[is.na(allVispdat$VISPDATTotalYouthScore)] <- '0'
 
+
     allVispdat$VISPDATTotalIndividualScore <- as.integer(allVispdat$VISPDATTotalIndividualScore)
     allVispdat$VISPDATTotalFamilyScore <- as.integer(allVispdat$VISPDATTotalFamilyScore)
     allVispdat$VISPDATTotalYouthScore <- as.integer(allVispdat$VISPDATTotalYouthScore)
-
+    
     allVispdat <- subset(allVispdat)
     # Make one column for score.
     #allVispdat <- sqldf("SELECT *, CASE 
@@ -265,64 +285,79 @@ homebase <- function(
 
   targetClient <- subset(targetClient)
 
+
   # Add VI-SPDAT scores and dates to the client list.
   targetClient <- sqldf("SELECT a.*, b.ScoreVISPDAT, b.DateOfVISPDAT, b.TypeOfVispdat
                         FROM targetClient a
                         LEFT JOIN allVispdat b
                         ON a.PersonalID=b.PersonalID
                         ")
-
+  
   # Just in case, make date SQLite friendly.
   targetClient$DateOfVISPDAT <- as.character(targetClient$DateOfVISPDAT)
-
+  
   remove(list = c("viSpdat", "viSpdat2", "allVispdat"))
-
+  
   pbCounter <- pbCounter + addVispdatIncrement
   setTkProgressBar(pb, pbCounter, label = "Getting Family with Child")
 
-  # Get all the households which contain an adult.
-  olderThan18 <- sqldf("SELECT HouseholdID
-                       FROM client
-                       WHERE Age > 17
-                       ")
+ client <- sqldf("SELECT a.*, b.HouseholdID 
+                  FROM client a
+                  LEFT JOIN client_HHIDs b 
+                  ON a.PersonalID=b.PersonalID")
+ targetClient <- sqldf("SELECT a.*, b.HouseholdID 
+                  FROM targetClient a
+                  LEFT JOIN client_HHIDs b 
+                  ON a.PersonalID=b.PersonalID")
 
-  # Get all the households which contain an child.
-  youngerThan18 <- sqldf("SELECT HouseholdID
-                         FROM client
-                         WHERE Age < 18
+    remove(client)
+    remove(enrollment)
+
+    client <- loadClient(hmisDataPath)
+    enrollment <- loadEnrollment(hmisDataPath)
+
+    family_flag_builder <- sqldf("SELECT DISTINCT PersonalID, HouseholdID, RelationshipToHoH FROM enrollment")
+
+    family_flag_builder <- family_flag_builder[!is.na(family_flag_builder$HouseholdID),]
+    family_flag_builder <- sqldf("SELECT HouseholdID, 
+        (CASE WHEN RelationshipToHoH = 1 THEN 'Yes' ELSE 'No' END) As 'Adult', 
+        (CASE WHEN RelationshipToHoH = 2 THEN 'Yes' ELSE 'No' END) As 'Child' 
+        FROM family_flag_builder")
+    hhids_of_adults <- sqldf("SELECT DISTINCT HouseholdID, Adult FROM family_flag_builder WHERE Adult = 'Yes'")
+    hhids_of_child <- sqldf("SELECT DISTINCT HouseholdID, Child FROM family_flag_builder WHERE Child = 'Yes'")
+    family_flag_builder <- sqldf("SELECT a.HouseholdID, a.Adult, b.Child
+                         FROM hhids_of_adults a
+                         INNER JOIN hhids_of_child b
+                         ON a.HouseholdID=b.HouseholdID  
                          ")
 
-  # Create a flag for families with children
-  familyWithChildren <- sqldf("SELECT a.HouseholdID, 'Yes' As FamilyWithChildren
-                              FROM youngerThan18 a
-                              INNER JOIN olderThan18 b
-                              ON a.HouseholdID=b.HouseholdID
-                              ")
-
+    family_flag_builder <- sqldf("SELECT HouseholdID, 'Yes' As FamilyWithChildren FROM family_flag_builder WHERE Adult = 'Yes' AND Child = 'Yes' GROUP BY HouseholdID")
+   
   # Add the family flag back to the client list.
   targetClient <- sqldf("SELECT DISTINCT a.*, b.FamilyWithChildren
                         FROM targetClient a
-                        LEFT JOIN familyWithChildren b
+                        LEFT JOIN family_flag_builder b
                         ON a.HouseholdID=b.HouseholdID
                         ")
-
-  remove(list = c("olderThan18", "youngerThan18", "familyWithChildren"))
-
+  
+  remove(list = c("family_flag_builder"))
+  
   targetClient <- subset(targetClient)
   pbCounter <- pbCounter + getFamilyWithChildIncrement
   setTkProgressBar(pb, pbCounter, label = "Loading Services")
-
+  
+  
   # Free up some memory before attempting Services.csv
   remove(list = c("client", "enrollment", "disabilities", "exit", "project"))
-
+  
   setwd(hmisDataPath)
-
+  
   # Load services -- large files.
   services <- loadServices()
-
+  
   pbCounter <- pbCounter + loadServicesIncrement
   setTkProgressBar(pb, pbCounter, label = "Getting Night-by-Night Stays")
-
+  
   # Get all of te NBN service entries.
   clientNbn <- sqldf("SELECT *
                      FROM services
@@ -334,62 +369,84 @@ homebase <- function(
                             FROM clientNbn
                             GROUP BY PersonalID
                             ")
-
+  
   pbCounter <- pbCounter + nbnStaysIncrement
   setTkProgressBar(pb, pbCounter, label = "Getting Outreach Contacts")
-
+  
   # Get all Outreach Contact services.
   clientOutreach <- sqldf("SELECT *
                           FROM services
                           WHERE RecordType = 12
                           ")
-
+  
   # Count all Outreach Contacts per client.  Count distinct is to get around ETO bug when data is
   # pulled using a program group which includes two outreach agencies.
   outreachContacts <- sqldf("SELECT DISTINCT(PersonalID), COUNT (DISTINCT(DateProvided)) As 'NumberOutreachContacts'
                             FROM clientOutreach
                             GROUP BY PersonalID
                             ")
-
+  
   pbCounter <- pbCounter + outreachContactsIncrement
   setTkProgressBar(pb, pbCounter, label = "Adding Outreach and NBN Count")
-
+  
   # Add NBN stays to client list.
   targetClient <- sqldf("SELECT a.*, b.NonProgramShelterNights
                         FROM targetClient a
                         LEFT JOIN daysCheckedInNBN b
                         ON a.PersonalID=b.PersonalID
                         ")
-
+  
   # Add Outreach Contacts to client list.
   targetClient <- sqldf("SELECT a.*, b.NumberOutreachContacts
                         FROM targetClient a
                         LEFT JOIN outreachContacts b
                         ON a.PersonalID=b.PersonalID
                         ")
-
+  
   remove(list = c("services", "clientOutreach", "daysCheckedInNBN", "clientNbn", "outreachContacts"))
 
-  pbCounter <- pbCounter + outreachAndNbnCountIncrement
+    pbCounter <- pbCounter + outreachAndNbnCountIncrement
+    setTkProgressBar(pb, pbCounter, label = "Add Client Contact Info")
+
+  # Add client contact information
+  clientContactInfo <- readWorksheetFromFile(clientContactInfoPath, sheet = 1, startRow = 1)
+  colnames(clientContactInfo)[1] <- "PersonalID"
+  colnames(clientContactInfo)[2] <- "ProgramStartDate"
+  colnames(clientContactInfo)[3] <- "ClientEmail"
+    colnames(clientContactInfo)[4] <- "ClientPhone"
+    clientContactInfo$PersonalID <- gsub("-", "", clientContactInfo$PersonalID)
+
+  clientContactInfo <- getMostRecentRecordsPerId(clientContactInfo, "PersonalID", "ProgramStartDate")
+
+  targetClient <- sqldf("SELECT a.*, b.ClientEmail, b.ClientPhone 
+                        FROM targetClient a
+                        LEFT JOIN clientContactInfo b
+                        ON a.PersonalID=b.PersonalID
+                        ")
+
+  pbCounter <- pbCounter + clientContactinfoIncrement
   setTkProgressBar(pb, pbCounter, label = "Make HMIS Codes Readable")
-
+  
   setwd(executionPath)
-
+  
   # Make HMIS codes human readable.
   targetClient <- combineRaceColumnsAndMakeReadable(targetClient)
   targetClient <- makeGenderReadable(targetClient)
   targetClient <- makeEthnicityReadable(targetClient)
   targetClient <- makeVeteranStatusReadable(targetClient)
-
+  
+  
   pbCounter <- pbCounter + makeHmisCodesReadableIncrement
   setTkProgressBar(pb, pbCounter, label = "Format Homebase Dataframe")
-
+  
   # Pull and format the client list.
   homebase_all <- sqldf("SELECT DISTINCT
                         PersonalID,
                         FirstName,
                         MiddleName,
                         LastName,
+                        ClientEmail,
+                        ClientPhone,
                         NameSuffix,
                         SSN,
                         DOB,
@@ -426,6 +483,7 @@ homebase <- function(
     setTkProgressBar(pb, pbCounter, label = "Homebase Complete")
 
     # Clean up
+
     close(pb)
     rm(list = setdiff(ls(), "homebase_all"))
     # Retun list.

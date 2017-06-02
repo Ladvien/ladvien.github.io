@@ -127,6 +127,8 @@ var TinySafeBoot = (function () {
 			activeCommand = CommandEnum['none'];
 			displayText(" ");
 			// TODO: Display what device by comparing device signature to known devices.
+			displayText("Welcome to Lumi5");
+			displayText("TinySafeBoot device succesfully connected");
 			displayText(" ");
 
 			// Format TSB handshake data

@@ -11,3 +11,7 @@ echo 'Enter the commit message:'
 read commitMessage
 git commit -m "$commitMessage"
 git push
+
+ECHO "Sending to Ladvien.com"
+
+bash /Users/user/ladvien.github.io/lad-u

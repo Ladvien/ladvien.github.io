@@ -22,7 +22,7 @@ var LumiBluetooth = (function () {
         onReceivedDataCallbacks = [];
     }
 
-    // Searchs for Devices based upon Service IDs.  Then prompts
+    // Searches for Devices based upon Service IDs.  Then prompts
     // a user to select a target device.  Lastly, it conencts to
     // target d evice.
     this.searchAndConnect = function (primaryServicesUUID, addSystemText = "") {

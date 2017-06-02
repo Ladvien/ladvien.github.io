@@ -1,3 +1,9 @@
+// TODO Read in Hexfile
+// TODO Capture display and release
+//
+
+
+
 var TinySafeBoot = (function () {
 
     var self = this;
@@ -11,15 +17,14 @@ var TinySafeBoot = (function () {
     var CommandEnum = Object.freeze({
         none: 0,
         handshake: 1,
-        failedCommand: 99
-    })
+        failed: 2
+    });
     var activeCommand = CommandEnum['none'];
     var commandKeys = Object.keys(CommandEnum);
 
     var startCommandTimeoutTimer = async function (ms) {
         await sleep(ms);
         if (activeCommand !== CommandEnum['none']) {
-            displayText("Failed command: " + commandKeys[activeCommand])
             activeCommand = CommandEnum['failed'];
             commandRouting();
         }
@@ -39,14 +44,13 @@ var TinySafeBoot = (function () {
     }
 
     var onHandshakeButtonClick = async function () {
-
         // TODO: Make reset pin a parameter
         // TODO: Make action timers a parameter
 
         // HM-1X is set HIGH, LOW, HIGH resetting
         // the Atmega or ATtiny.  Then, TSB handshake is sent.
         activeCommand = CommandEnum['handshake'];
-        startCommandTimeoutTimer(5000);
+        startCommandTimeoutTimer(3000);
         writeData("AT+PIO31");
         await sleep(200);
         writeData("AT+PIO30");
@@ -84,7 +88,6 @@ var TinySafeBoot = (function () {
         for (var i = 0; i < event.target.value.byteLength; i++) {
             receivedData[i] = event.target.value.getUint8(i);
         }
-        console.log(activeCommand);
         if (activeCommand != CommandEnum['none']) {
             commandRouting(receivedData);
         }
@@ -96,6 +99,10 @@ var TinySafeBoot = (function () {
                 handshakeHandling(data);
                 break;
             case CommandEnum['none']:
+                break;
+            case CommandEnum['failed']:
+                // TODO Handle failed
+                displayText("Failed command: " + commandKeys[activeCommand]);
                 break;
             default:
                 break;

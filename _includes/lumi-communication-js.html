@@ -1,3 +1,7 @@
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
 <div class="container">
 	<form>
 		<fieldset class="ble-form">
@@ -21,20 +25,23 @@
 </div>
 <div class="grid-container outline">
 	<div class="row">
-		<div class="tsb-button-search tsb-button" id="search">
+		<div id="search-and-connect-btn" class="tsb-button-search tsb-button">
 			<i class="fa fa-bluetooth fa-5x"></i>
 		</div>
-		<div class="tsb-button-handshake tsb-button" id="handshake">
+		<div id="handshake-btn" class="tsb-button-search-and-connect tsb-button" >
 			<i class="fa fa-cogs fa-5x"></i>
 		</div>
-		<div class="tsb-button-file-parse tsb-button">
+		<div id="file-parse-btn" class="tsb-button-file-parse tsb-button">
 			<div class="image-upload">
 				<label for="file-upload">
-					<i class="fa fa-cloud-upload fa-5x"></i>
+					<i class="fa fa-file-text fa-5x"></i>
 				</label>
 				<input type="file" id="file-upload" name="files[]" multiple />
 				<output id="list"></output>
 			</div>
+		</div>
+		<div id="upload-btn" class="tsb-button-upload tsb-button" >
+			<i class="fa fa-cloud-upload fa-5x"></i>
 		</div>
 	</div>
 </div>

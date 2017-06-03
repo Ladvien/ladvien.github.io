@@ -38,6 +38,8 @@ Not sure if I can pull it off; wish me luck.  And feel free to follow the code 
 
 [Lumi3](https://github.com/Ladvien/Lumi3)  
 
+![](/../../images/Robber_PCB_v1.JPG)
+
 ## Design Info
 
 [Robber_Schematic.pdf](http://ladvien.com/../../images/Robber_Schematic.pdf)  
@@ -101,6 +103,8 @@ The wires kept popping off, they'd need to be resoldered, then pop off again.  
 
 Here's an action shot!  
 ![2017-02-01 08.56.38.jpg](/../../images/2017-02-01%2008.56.38.jpg)
+
+
 
 ## SMD RGB LED
 

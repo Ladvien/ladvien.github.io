@@ -18,4 +18,3 @@ git push
 ECHO "Sending to Ladvien.com"
 
 bash /Users/user/ladvien.github.io/lad-u
-exit 1

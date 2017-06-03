@@ -5,7 +5,7 @@ var descriptor;
 var receivedString = "";
 var terminalLineCounter = 0;
 var displayDOM = 'terminal';
-var handshakeButton = 'btn-tsb-handshake';
+var handshakeButton = 'handshake';
 
 let primaryService = document.getElementById('optionalServices').value;
 
@@ -47,7 +47,7 @@ function getSupportedProperties(characteristic) {
     return '[' + supportedProperties.join(', ') + ']';
 }
 
-document.getElementById('btn-1').onclick = onScanButtonClick;
+document.getElementById('search').onclick = onScanButtonClick;
 document.getElementById('btn-write-ble').onclick = onWriteButtonClick;
 
 var terminal = Terminal;

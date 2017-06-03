@@ -5,6 +5,23 @@
 var TinySafeBoot = (function () {
 
 	var self = this;
+	
+	function TSBDevice(
+		deviceName,
+		firmwareDate,
+		deviceSignature,
+		numberOfPages,
+		freeFlash,
+		eepromSize
+	) {
+		this.deviceName = deviceName;
+		this.firmwareDate = firmwareDate;
+		this.deviceSignature = deviceSignature;
+		this.numberOfPages =numberOfPages;
+		this.freeFlash = freeFlash;
+		this.eepromSize = eepromSize;
+	};
+	var connectedDevice;
 
 	// Depedency functions
 	var receivedData = function () {};
@@ -127,9 +144,6 @@ var TinySafeBoot = (function () {
 			activeCommand = CommandEnum['none'];
 			displayText(" ");
 			// TODO: Display what device by comparing device signature to known devices.
-			displayText("Welcome to Lumi5");
-			displayText("TinySafeBoot device succesfully connected");
-			displayText(" ");
 
 			// Format TSB handshake data
 			var firmwareDatePieces = new Uint8Array(2);
@@ -166,44 +180,151 @@ var TinySafeBoot = (function () {
 			var day = (dateStamp & 0x3F);
 			var month = ((dateStamp & 0x3C0) >> 5);
 			var year = ((dateStamp & 0xFC00) >> 9);
-
-			displayText("Firmware Date: 20" + year + "-" + month + "-" + day);
+			var date = ("20" + year + "-" + month + "-" + day);
 
 			// Atmel device signature.
 			deviceSignature = toByteString(signatureBytes[0]) + " " +
 				toByteString(signatureBytes[1]) + " " +
 				toByteString(signatureBytes[2]);
 
-			displayText("Device Signature: " + deviceSignature);
-
 			// TODO: Create a prototype for TSB Device
 			// This will be used later
 			var combinedDeviceSignature = (((signatureBytes[0] << 16) | signatureBytes[1] << 8) | signatureBytes[2]);
 
+			var deviceName = getDeviceFromSignature(combinedDeviceSignature);
 
 			// The size is in words, make it bytes.
 			var pageSize = (pagesizeInWords * 2);
-			displayText("Pages: " + pageSize);
 
 			// Get flash size.
 			var flashSize = ((freeFlash[1] << 8) | freeFlash[0]) * 2;
-			displayText("Free Flash: " + flashSize);
-
 			var numberOfPages = flashSize / pageSize;
 
 			// Get EEPROM size.
 			fullEepromSize = ((eepromSize[1] << 8) | eepromSize[0]) + 1;
-			displayText("EEPROM Size: " + fullEepromSize);
 
 			activeCommand = CommandEnum['none'];
+			
+			connectedDevice = new TSBDevice(deviceName,
+											date,
+											combinedDeviceSignature,
+											pageSize,
+											flashSize,
+											fullEepromSize
+											) 
 
+			displayText("Welcome to Lumi5");
+			displayText("TinySafeBoot connected to: " + deviceName);
+			displayText(" ");
+			displayText("Free Flash: 		" + flashSize);
+			displayText("Pages: 			" + pageSize);
+			displayText("EEPROM Size: 		" + fullEepromSize);
+			displayText("Firmware Date: 	" + date);
+			displayText("Device Signature: 	" + deviceSignature);
 		}
 	}
-
+	
 	var toByteString = function (byte) {
 		return ('0' + (byte & 0xFF).toString(16)).slice(-2).toUpperCase();
 	}
 
+	var getDeviceFromSignature = function(signature){
+		for(key in DEVICE_SIGNATURES){
+			if(DEVICE_SIGNATURES[key] === signature) { 
+				return key; 
+			}
+		}
+	}
+	
+	var DEVICE_SIGNATURES = Object.freeze({
+            ATTINY_13A: 0x1E9007,
+            ATTINY_13: 0x1E9007,
+            ATTINY_1634: 0x1E9412,
+            ATTINY_167: 0x1E9487,
+            ATTINY_2313A: 0x1E910A,
+            ATTINY_2313: 0x1E910A,
+            ATTINY_24A: 0x1E910B,
+            ATTINY_24: 0x1E910B,
+            ATTINY_25: 0x1E910B,
+            ATTINY_261A: 0x1E910C,
+            ATTINY_261: 0x1E910C,
+            ATTINY_4313: 0x1E920D,
+            ATTINY_44A: 0x1E9207,
+            ATTINY_44: 0x1E9207,
+            ATTINY_441: 0x1E9215,
+            ATTINY_45: 0x1E9206,
+            ATTINY_461A: 0x1E9208,
+            ATTINY_461: 0x1E9208,
+            ATTINY_48: 0x1E9209,
+            ATTINY_84A: 0x1E930C,
+            ATTINY_84: 0x1E930C,
+            ATTINY_841: 0x1E9315,
+            ATTINY_85: 0x1E930B,
+            ATTINY_861A: 0x1E930D,
+            ATTINY_861: 0x1E930D,
+            ATTINY_87: 0x1E9387,
+            ATTINY_88: 0x1E9311,
+            ATMEGA_162: 0x1E9403,
+            ATMEGA_164A: 0x1E940F,
+            ATMEGA_164PA: 0x1E940A,
+            ATMEGA_164P: 0x1E940A,
+            ATMEGA_165A: 0x1E9410,
+            ATMEGA_165PA: 0x1E9407,
+            ATMEGA_165P: 0x1E9407,
+            ATMEGA_168A: 0x1E9406,
+            ATMEGA_168: 0x1E9406,
+            ATMEGA_168PA: 0x1E940B,
+            ATMEGA_168P: 0x1E940B,
+            ATMEGA_169A: 0x1E9411,
+            ATMEGA_169PA: 0x1E9405,
+            ATMEGA_169P: 0x1E9405,
+            ATMEGA_16A: 0x1E9403,
+            ATMEGA_16: 0x1E9403,
+            ATMEGA_16HVA: 0x1E940C,
+            ATMEGA_16HVB: 0x1E940D,
+            ATMEGA_16ATMEGA_1: 0x1E9484,
+            ATMEGA_16U2: 0x1E9489,
+            ATMEGA_16U4: 0x1E9488,
+            ATMEGA_324A: 0x1E9515,
+            ATMEGA_324PA: 0x1E9511,
+            ATMEGA_324P: 0x1E9508,
+            ATMEGA_3250A: 0x1E950E,
+            ATMEGA_3250: 0x1E9506,
+            ATMEGA_3250PA: 0x1E950E,
+            ATMEGA_3250P: 0x1E950E,
+            ATMEGA_325A: 0x1E9505,
+            ATMEGA_325: 0x1E9505,
+            ATMEGA_325PA: 0x1E9505,
+            ATMEGA_325P: 0x1E950D,
+            ATMEGA_328: 0x1E9514,
+            ATMEGA_328P: 0x1E950F,
+            ATMEGA_3290A: 0x1E950C,
+            ATMEGA_3290: 0x1E9504,
+            ATMEGA_3290PA: 0x1E950C,
+            ATMEGA_3290P: 0x1E950C,
+            ATMEGA_329A: 0x1E9503,
+            ATMEGA_329: 0x1E9503,
+            ATMEGA_329PA: 0x1E950B,
+            ATMEGA_329P: 0x1E950B,
+            ATMEGA_32A: 0x1E9502,
+            ATMEGA_32C1: 0x1E9586,
+            ATMEGA_32: 0x1E9502,
+            ATMEGA_32HVB: 0x1E9510,
+            ATMEGA_32ATMEGA_1: 0x1E9584,
+            ATMEGA_32U2: 0x1E958A,
+            ATMEGA_32U4: 0x1E9587,
+            ATMEGA_406: 0x1E9507,
+            ATMEGA_48A: 0x1E9205,
+            ATMEGA_48: 0x1E9205,
+            ATMEGA_48PA: 0x1E920A,
+            ATMEGA_48P: 0x1E920A,
+            ATMEGA_640: 0x1E9608,
+            ATMEGA_644A: 0x1E9609,
+            ATMEGA_644: 0x1E9609,
+            ATMEGA_644PA: 0x1E960A,
+            ATMEGA_644P: 0x1E960A
+	});	
+	
 	return {
 		init: init,
 		writeData: writeData,

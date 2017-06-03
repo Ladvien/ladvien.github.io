@@ -50,9 +50,15 @@ function getSupportedProperties(characteristic) {
 document.getElementById('search').onclick = onScanButtonClick;
 document.getElementById('btn-write-ble').onclick = onWriteButtonClick;
 
+
 var terminal = Terminal;
 terminal.setDisplayDOM(displayDOM);
+
 var lumiBle = LumiBluetooth;
+
 var tsb = TinySafeBoot;
 tsb.setHandshakeButton(handshakeButton);
 tsb.setDisplayText(terminal.addSystemText);
+
+var fileHandler = FileHandler;
+document.getElementById('file-upload').addEventListener('change', fileHandler.loadFile, false);

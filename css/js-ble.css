@@ -97,22 +97,36 @@ input {
 /*	display: inline-block;*/
 /*	padding: 20px;*/
 	margin: 20px;
+	width: 100px;
 	float: left;
 }
 
-.tsb-button-search:hover {
+.tsb-button-upload {
+	visibility: hidden;
+}
+.tsb-button-upload-visible {
+  	transition: 0.2s ease;
+	visibility: visible;
+}
+
+.tsb-button-upload-complete {
+	
+}
+
+
+.tsb-button-search-and-connect-complete {
   transition: 0.2s ease;
 /*  padding: 0px 5px 10px 5px;*/
   color: dodgerblue;
 }
 
-.tsb-button-handshake:hover {
+.tsb-button-handshake-complete {
   transition: 0.2s ease;
 /*  padding: 0px 5px 10px 5px;*/
   color: indianred;
 }
 
-.tsb-button-file-parse:hover {
+.tsb-button-file-parse-complete {
   transition: 0.2s ease;
 /*  padding: 0px 5px 10px 5px;*/
   color: forestgreen;

@@ -5,60 +5,79 @@ var descriptor;
 var receivedString = "";
 var terminalLineCounter = 0;
 var displayDOM = 'terminal';
-var handshakeButton = 'handshake';
+var handshakeButton = 'handshake-btn';
+var file;
+var rawHexArrayBuffer;
+var hexArrayBuffer;
 
 let primaryService = document.getElementById('optionalServices').value;
 
 function onScanButtonClick() {
-    lumiBle.searchAndConnect(parseInt(primaryService), terminal.addSystemText).
-    then(() => {
-        lumiBle.addReceivedDataCallback(onReceivedData);
-        lumiBle.addReceivedDataCallback(tsb.onReceivedData);
-    })
+	lumiBle.searchAndConnect(parseInt(primaryService), terminal.addSystemText).
+	then(() => {
+		lumiBle.addReceivedDataCallback(onReceivedData);
+		lumiBle.addReceivedDataCallback(tsb.onReceivedData);
+		document.getElementById("search-and-connect-btn").classList.remove('tsb-button-file-parse');
+		document.getElementById("search-and-connect-btn").classList.add('tsb-button-search-and-connect-complete');
+	})
 }
 
 
 function onReceivedData(event) {
-    if (!tsb.getControllingSerial()) {
-        for (var i = 0; i < event.target.value.byteLength; i++) {
-            receivedString += String.fromCharCode(event.target.value.getUint8(i));
-        }
-        terminal.addTerminalLine(displayDOM, receivedString, '<- ', 'received-text');
-        receivedString = "";
-    }
+	if (!tsb.getControllingSerial()) {
+		for (var i = 0; i < event.target.value.byteLength; i++) {
+			receivedString += String.fromCharCode(event.target.value.getUint8(i));
+		}
+		terminal.addTerminalLine(displayDOM, receivedString, '<- ', 'received-text');
+		receivedString = "";
+	}
 }
 
 function onWriteButtonClick() {
-    let textToWrite = document.getElementById('textToWrite').value;
-    lumiBle.writeData(textToWrite, terminal.addSystemText)
-        .then(_ => {
-            terminal.addTerminalLine(displayDOM, textToWrite, '-> ', 'sent-text');
-        })
+	let textToWrite = document.getElementById('textToWrite').value;
+	lumiBle.writeData(textToWrite, terminal.addSystemText)
+		.then(_ => {
+			terminal.addTerminalLine(displayDOM, textToWrite, '-> ', 'sent-text');
+		})
 }
 
-/* Utils */
-function getSupportedProperties(characteristic) {
-    let supportedProperties = [];
-    for (const p in characteristic.properties) {
-        if (characteristic.properties[p] === true) {
-            supportedProperties.push(p.toUpperCase());
-        }
-    }
-    return '[' + supportedProperties.join(', ') + ']';
+
+var fileFinishedLoading = function (event) {
+	file = event.target;
+	rawHexArrayBuffer = file.result;
+	console.log("Here");
+	document.getElementById("file-parse-btn").classList.remove('tsb-button-file-parse');
+	document.getElementById("file-parse-btn").classList.add('tsb-button-file-parse-complete');
+
+	document.getElementById("upload-btn").classList.remove('tsb-button-upload');
+	document.getElementById("upload-btn").classList.add('tsb-button-upload-visible');
 }
 
-document.getElementById('search').onclick = onScanButtonClick;
-document.getElementById('btn-write-ble').onclick = onWriteButtonClick;
+var onConnectedToTSB = function () {
+	console.log("here");
+	document.getElementById("handshake-btn").classList.remove('tsb-button-handshake');
+	document.getElementById("handshake-btn").classList.add('tsb-button-handshake-complete');
 
+}
 
+// Setup the display terminal
 var terminal = Terminal;
 terminal.setDisplayDOM(displayDOM);
 
+// Setup Web API BLE device
 var lumiBle = LumiBluetooth;
 
+// Prepare the uploader
 var tsb = TinySafeBoot;
 tsb.setHandshakeButton(handshakeButton);
 tsb.setDisplayText(terminal.addSystemText);
+tsb.setOnConnectedToTSB(onConnectedToTSB);
 
+// Get the file handler set.
 var fileHandler = FileHandler;
+fileHandler.setDisplayMethod(terminal.addSystemText);
+fileHandler.setOnFinishedLoadingFile(this.fileFinishedLoading)
+
+document.getElementById('search-and-connect-btn').onclick = onScanButtonClick;
+document.getElementById('btn-write-ble').onclick = onWriteButtonClick;
 document.getElementById('file-upload').addEventListener('change', fileHandler.loadFile, false);

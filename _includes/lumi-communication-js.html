@@ -27,8 +27,14 @@
 		<div class="tsb-button-handshake tsb-button" id="handshake">
 			<i class="fa fa-cogs fa-5x"></i>
 		</div>
-		<div class="tsb-button-file-parse tsb-button" id="file-parse">
-			<i class="fa fa-cloud-upload fa-5x"></i>
+		<div class="tsb-button-file-parse tsb-button">
+			<div class="image-upload">
+				<label for="file-upload">
+					<i class="fa fa-cloud-upload fa-5x"></i>
+				</label>
+				<input type="file" id="file-upload" name="files[]" multiple />
+				<output id="list"></output>
+			</div>
 		</div>
 	</div>
 </div>

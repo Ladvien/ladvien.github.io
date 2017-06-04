@@ -20,7 +20,7 @@
 	padding: 10px;
 	text-align: center;
 	text-decoration: none;
-/*	display: inline-block;*/
+	/*	display: inline-block;*/
 	font-size: 16px;
 	border-radius: 12px;
 	vertical-align: middle;
@@ -94,8 +94,8 @@ input {
 }
 
 .tsb-button {
-/*	display: inline-block;*/
-/*	padding: 20px;*/
+	/*	display: inline-block;*/
+	/*	padding: 20px;*/
 	margin: 20px;
 	width: 100px;
 	float: left;
@@ -104,32 +104,30 @@ input {
 .tsb-button-upload {
 	visibility: hidden;
 }
+
 .tsb-button-upload-visible {
-  	transition: 0.2s ease;
+	transition: 0.2s ease;
 	visibility: visible;
 }
 
-.tsb-button-upload-complete {
-	
-}
-
+.tsb-button-upload-complete {}
 
 .tsb-button-search-and-connect-complete {
-  transition: 0.2s ease;
-/*  padding: 0px 5px 10px 5px;*/
-  color: dodgerblue;
+	transition: 0.2s ease;
+	/*  padding: 0px 5px 10px 5px;*/
+	color: dodgerblue;
 }
 
 .tsb-button-handshake-complete {
-  transition: 0.2s ease;
-/*  padding: 0px 5px 10px 5px;*/
-  color: indianred;
+	transition: 0.2s ease;
+	/*  padding: 0px 5px 10px 5px;*/
+	color: indianred;
 }
 
 .tsb-button-file-parse-complete {
-  transition: 0.2s ease;
-/*  padding: 0px 5px 10px 5px;*/
-  color: forestgreen;
+	transition: 0.2s ease;
+	/*  padding: 0px 5px 10px 5px;*/
+	color: forestgreen;
 }
 
 .grid-container {
@@ -137,10 +135,8 @@ input {
 	max-width: 1200px;
 }
 
-.image-upload > input {
-  visibility:hidden;
-  width:0;
-  height:0
+.image-upload>input {
+	visibility: hidden;
+	width: 0;
+	height: 0
 }
-
-

@@ -18,7 +18,7 @@ var FileHandler = (function () {
 		// TODO Switch to only handling one file at a time.
 		var reader = new FileReader();
 		if(onFinishedLoadingFile){
-			reader.onload = onFinishedLoadingFile;			
+			reader.onloadend = onFinishedLoadingFile;			
 		} else {
 			// TODO Handle no onFinishedLoadingFile set.
 		}
@@ -26,12 +26,8 @@ var FileHandler = (function () {
 		reader.onerror = function (error) {
 			// TODO File load error handling
 		}
-		reader.readAsArrayBuffer(files[0]);
+		reader.readAsText(files[0]);
 	}
-
-//	var onFinishedLoadingFile = function (event) {
-//		var loadedFile = event.target.result;
-//	}
 	
 	var setDisplayMethod = function (_addTextToDisplay) {
 		addTextToDisplay = _addTextToDisplay;

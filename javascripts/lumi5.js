@@ -45,19 +45,18 @@ function onWriteButtonClick() {
 var fileFinishedLoading = function (event) {
 	file = event.target;
 	rawHexArrayBuffer = file.result;
-	console.log("Here");
 	document.getElementById("file-parse-btn").classList.remove('tsb-button-file-parse');
 	document.getElementById("file-parse-btn").classList.add('tsb-button-file-parse-complete');
 
 	document.getElementById("upload-btn").classList.remove('tsb-button-upload');
 	document.getElementById("upload-btn").classList.add('tsb-button-upload-visible');
+	hexDataHandler.setData(rawHexArrayBuffer);
 }
 
 var onConnectedToTSB = function () {
-	console.log("here");
 	document.getElementById("handshake-btn").classList.remove('tsb-button-handshake');
 	document.getElementById("handshake-btn").classList.add('tsb-button-handshake-complete');
-
+	
 }
 
 // Setup the display terminal
@@ -76,8 +75,12 @@ tsb.setOnConnectedToTSB(onConnectedToTSB);
 // Get the file handler set.
 var fileHandler = FileHandler;
 fileHandler.setDisplayMethod(terminal.addSystemText);
-fileHandler.setOnFinishedLoadingFile(this.fileFinishedLoading)
+fileHandler.setOnFinishedLoadingFile(fileFinishedLoading)
+
+var hexDataHandler = HexDataHandler;
+hexDataHandler.setAddTextToDisplayMethod(terminal.addSystemText);
 
 document.getElementById('search-and-connect-btn').onclick = onScanButtonClick;
 document.getElementById('btn-write-ble').onclick = onWriteButtonClick;
-document.getElementById('file-upload').addEventListener('change', fileHandler.loadFile, false);
+document.getElementById('file-parse-btn').addEventListener('change', fileHandler.loadFile, false);
+document.getElementById('file-upload').addEventListener('change', null, false);

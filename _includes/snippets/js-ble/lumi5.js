@@ -59,6 +59,11 @@ var onConnectedToTSB = function () {
 	
 }
 
+var onCompletedParsingFile = function() {
+	var dataArray = hexDataHandler.getAllData();
+	console.log(dataArray);
+}
+
 // Setup the display terminal
 var terminal = Terminal;
 terminal.setDisplayDOM(displayDOM);
@@ -79,6 +84,7 @@ fileHandler.setOnFinishedLoadingFile(fileFinishedLoading)
 
 var hexDataHandler = HexDataHandler;
 hexDataHandler.setAddTextToDisplayMethod(terminal.addSystemText);
+hexDataHandler.setOnCompletedParsingFile(onCompletedParsingFile);
 
 document.getElementById('search-and-connect-btn').onclick = onScanButtonClick;
 document.getElementById('btn-write-ble').onclick = onWriteButtonClick;

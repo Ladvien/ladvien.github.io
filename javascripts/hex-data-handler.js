@@ -26,10 +26,11 @@ var HexDataHandler = (function () {
 	var parsedHexData = [];
 
 	var addTextToDisplay = function () {};
+	var onCompletedParsingFile = function () {};
 
 	var setData = function (_data) {
 
-		data = _data;
+		var data = _data;
 
 		var dataLength = data.byteLength;
 		var lines = data.split(/\n/);
@@ -78,34 +79,15 @@ var HexDataHandler = (function () {
 			}
 
 			// Only save lines with data in them.
-			if (recordType === 0) {
-				lineOfHexData = new LineOfHexData(byteCount,
-					address,
-					recordType,
-					data,
-					checkSum
-				);
-				parsedHexData.push(lineOfHexData);
-			}
-			console.log(parsedHexData[lineIndex]);
+			lineOfHexData = new LineOfHexData(byteCount,
+				address,
+				recordType,
+				data,
+				checkSum
+			);
+			parsedHexData.push(lineOfHexData);
 		}
-		
-
-	}
-	var data;
-
-	var countLines = function (data) {
-		var countOfEOL = 0;
-		for (var i = 0; i < data.Length; i++) {
-			if (data[i] === '\n') {
-				countOfEOL++;
-			}
-		}
-		return countOfEOL;
-	}
-
-	var getChar = function (hexString, index) {
-
+		onCompletedParsingFile();
 	}
 
 	var clearSpecialChar = function (hexLine) {
@@ -117,9 +99,7 @@ var HexDataHandler = (function () {
 		return parseInt(dataByteAsString, 16);
 	}
 
-	var setAddTextToDisplayMethod = function (_addTextToDisplayMethod) {
-		addTextToDisplay = _addTextToDisplayMethod;
-	}
+
 
 	var getCheckSum = function (byteCount,
 		addressOne,
@@ -135,9 +115,42 @@ var HexDataHandler = (function () {
 		return ((0x100 - sum) & 0xFF);
 	}
 
+	var getHexLine = function (index) {
+		return parsedHexData[index];
+	}
+
+	var setAddTextToDisplayMethod = function (_addTextToDisplayMethod) {
+		addTextToDisplay = _addTextToDisplayMethod;
+	}
+
+	var setOnCompletedParsingFile = function (_onCompletedParsingFile) {
+		onCompletedParsingFile = _onCompletedParsingFile;
+	}
+
+	var getAllData = function () {
+		if (!parsedHexData) {
+			return false;
+		}
+		var dataArray = [];
+		var totalElements = 0;
+		for (var i = 0; i < parsedHexData.length; i++) {
+			if (parsedHexData[i].data.length > 0) {
+				if (parsedHexData[i].recordType === 0) {
+					for (var j = 0; j < parsedHexData[i].data.length; j++) {
+						dataArray.push(parsedHexData[i].data[j]);
+					}
+				}
+			}
+		}
+		return dataArray;
+	}
+
 	return {
 		setData: setData,
-		setAddTextToDisplayMethod: setAddTextToDisplayMethod
+		setAddTextToDisplayMethod: setAddTextToDisplayMethod,
+		setOnCompletedParsingFile: setOnCompletedParsingFile,
+		getHexLine: getHexLine,
+		getAllData: getAllData
 	}
 
 })();

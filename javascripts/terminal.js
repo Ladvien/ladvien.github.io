@@ -6,7 +6,7 @@ var Terminal = (function (displayDOM) {
     var displayDOM = displayDOM;
     var terminalLineCounter = 0;
 
-    this.addTerminalLine = function (displayElement, text, pretext, lineStyle) {
+    this.addTerminalLine = function (displayElement, text, pretext, lineStyle, scrollToBottom = true) {
 
         // 1. Get the element to display text on.
         // 2. Create a div for the new line.
@@ -23,15 +23,17 @@ var Terminal = (function (displayDOM) {
                 newLine.classList.add(lineStyle);
             }
             terminal.appendChild(newLine);
-            terminal.scrollTop = terminal.scrollHeight;
+			if(scrollToBottom){
+				terminal.scrollTop = terminal.scrollHeight;	
+			}
             terminalLineCounter++;
         }
     };
 
-    this.addSystemText = function (text, _displayDOM = this.displayDOM) {
+    this.addSystemText = function (text, scrollToBottom = true, _displayDOM = this.displayDOM,) {
         if (text && _displayDOM)
         {
-            self.addTerminalLine(_displayDOM, text, '-) ', 'system-text');
+            self.addTerminalLine(_displayDOM, text, '-) ', 'system-text', scrollToBottom);
         }
     }
 

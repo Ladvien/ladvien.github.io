@@ -6,34 +6,72 @@ var TinySafeBoot = (function () {
 
 	var self = this;
 
+	var dataToUpload;
+
 	function TSBDevice(
 		deviceName,
 		firmwareDate,
 		deviceSignature,
 		numberOfPages,
+		pageSize,
 		freeFlash,
-		eepromSize
+		eepromSize,
+		readIndex,
 	) {
 		this.deviceName = deviceName;
 		this.firmwareDate = firmwareDate;
 		this.deviceSignature = deviceSignature;
 		this.numberOfPages = numberOfPages;
+		this.pageSize = pageSize;
 		this.freeFlash = freeFlash;
 		this.eepromSize = eepromSize;
+		this.resetReadIndex = function () {
+			this.readIndex = 0;
+		}
+		this.incrementReadIndex = function (increment) {
+			previousReadIndex = readIndex;
+			readIndex += increment;
+		}
+		this.readIndex = function () {
+			return readIndex;
+		}
+		this.rewindIndex = function () {
+			readIndex = previousReadIndex;
+		}
+		var readIndex;
+		var previousReadIndex;
 	};
 	var connectedDevice;
 
+	function InstalledProgram(
+		programData,
+		numberOfPages,
+		receivedBuffer
+	) {
+		this.programData = programData;
+		this.numberOfPages = numberOfPages;
+		this.receivedBuffer = receivedBuffer;
+	}
+	var installedProgram;
+
 	// Depedency functions
 	var receivedData = function () {};
+	var writeString = function () {};
 	var writeData = function () {};
 	var displayText = function () {};
 	var onConnectedToTSB = function () {};
+	var onFinishedReading = function() {};
 
 	// Used for routing commands on received data.
 	var CommandEnum = Object.freeze({
 		none: 0,
 		handshake: 1,
-		failed: 2
+		uploadInitiated: 2,
+		readInitiated: 4,
+		waitingReadPage: 5,
+		finishedReading: 6,
+		writingPages: 7,
+		failed: 8
 	});
 	var activeCommand = CommandEnum['none'];
 	var commandKeys = Object.keys(CommandEnum);
@@ -67,27 +105,25 @@ var TinySafeBoot = (function () {
 		// the Atmega or ATtiny.  Then, TSB handshake is sent.
 		activeCommand = CommandEnum['handshake'];
 		startCommandTimeoutTimer(3000);
-		writeData("AT+PIO31");
+		writeString("AT+PIO31");
 		await sleep(200);
-		writeData("AT+PIO30");
+		writeString("AT+PIO30");
 		await sleep(1200);
-		writeData("AT+PIO31");
+		writeString("AT+PIO31");
 		await sleep(1200);
-		writeData("@@@");
+		writeString("@@@");
 	}
 
 	this.init = function (_receivedData) {
 		onReceivedData = receivedData;
 	}
 
-	var writeData = function (data) {
-		if (self.writeData) {
-			self.writeData(data);
-		}
+	this.setWriteString = function (writeMethod) {
+		writeString = writeMethod;
 	}
 
-	this.setWriteMethod = function (writeMethod) {
-		self.writeData = writeMethod;
+	this.setWriteData = function (writeMethod) {
+		writeData = writeMethod;
 	}
 
 	this.setDisplayText = function (_displayText) {
@@ -99,22 +135,39 @@ var TinySafeBoot = (function () {
 		// TODO: Handle received data better.  
 		// NOTE: the TX buffer for the HM-1X is only 20 bytes.  
 		// But other devices differ.
-
-		var receivedData = new Uint8Array(19);
+		var receivedData = new Uint8Array(event.target.value.byteLength);
 		for (var i = 0; i < event.target.value.byteLength; i++) {
 			receivedData[i] = event.target.value.getUint8(i);
 		}
-		if (activeCommand != CommandEnum['none']) {
+		if (activeCommand !== CommandEnum['none']) {
 			commandRouting(receivedData);
 		}
 	}
 
 	var commandRouting = function (data) {
 		switch (activeCommand) {
+			case CommandEnum['none']:
+				break;
 			case CommandEnum['handshake']:
 				handshakeHandling(data);
 				break;
-			case CommandEnum['none']:
+			case CommandEnum['uploadInitiated']:
+
+				break;
+			case CommandEnum['readInitiated']:
+				addSystemText("Connected device Flash Read Started")
+				readInitiated(data);
+				break;
+			case CommandEnum['waitingReadPage']:
+				waitingReadPage(data);
+				break;
+			case CommandEnum['writingPages']:
+
+				break;
+			case CommandEnum['finishedReading']:
+				addSystemText("Completed reading flash: " + installedProgram.programData.length + " bytes read.")
+				onFinishedReading();
+				activeCommand = CommandEnum['none'];
 				break;
 			case CommandEnum['failed']:
 				// TODO Handle failed
@@ -209,9 +262,11 @@ var TinySafeBoot = (function () {
 			connectedDevice = new TSBDevice(deviceName,
 				date,
 				combinedDeviceSignature,
+				numberOfPages,
 				pageSize,
 				flashSize,
-				fullEepromSize
+				fullEepromSize,
+				0
 			)
 
 			displayText("Welcome to Lumi5");
@@ -222,12 +277,48 @@ var TinySafeBoot = (function () {
 			displayText("EEPROM Size: 		" + fullEepromSize);
 			displayText("Firmware Date: 	" + date);
 			displayText("Device Signature: 	" + deviceSignature);
+			displayText("Number of Pages:	" + numberOfPages);
 
 			if (onConnectedToTSB) {
 				onConnectedToTSB();
 			}
 		}
 	}
+
+	var readInitiated = function () {
+		installedProgram = new InstalledProgram([], 0, []);
+		writeString("f!");
+		activeCommand = CommandEnum['waitingReadPage'];
+	}
+
+	var waitingReadPage = function (data) {
+
+		var tmpArr = Array.prototype.slice.call(data);
+		installedProgram.receivedBuffer.push(...tmpArr);
+
+		// Check the bottom dogear.
+		var bfrLength = installedProgram.receivedBuffer.length;
+
+		if (installedProgram.receivedBuffer.length === connectedDevice.pageSize) {
+			installedProgram.programData.push(...installedProgram.receivedBuffer);
+			installedProgram.numberOfPages++;
+			
+			if (installedProgram.receivedBuffer[bfrLength - 3] === 0xFF &&
+				installedProgram.receivedBuffer[bfrLength - 2] === 0xFF &&
+				installedProgram.receivedBuffer[bfrLength - 1] === 0xFF
+			) {
+				activeCommand = CommandEnum['finishedReading'];
+				commandRouting();
+				return;
+			}
+			// TODO Add callback event to update the UI
+			// on each page read from the device
+			writeString("!");
+			installedProgram.receivedBuffer = [];
+		}
+	}
+
+
 
 	var toByteString = function (byte) {
 		return ('0' + (byte & 0xFF).toString(16)).slice(-2).toUpperCase();
@@ -334,14 +425,60 @@ var TinySafeBoot = (function () {
 		onConnectedToTSB = _onConnectedToTSB;
 	}
 
+	var setData = function (_data) {
+		dataToUpload = _data;
+	}
+
+	var upload = function () {
+		if (!writeString || !writeData) {
+			return "No write commands set";
+		}
+		activeCommand = CommandEnum['readInitiated']
+		commandRouting();
+	}
+
+	var writePage = function () {
+		var writeBuffer = [];
+		for (var i = 0; i < connectedDevice.pageSize; i++) {
+			writeBuffer.push(dataToUpload[connectedDevice.readIndex()]);
+			connectedDevice.incrementReadIndex(1);
+		}
+		writeData(writeBuffer);
+	}
+
+
+	var appendUint8Buffer = function (bufferOne, bufferTwo) {
+		var tmp = new Uint8Array(bufferOne.byteLength + bufferTwo.byteLength);
+		tmp.set(new Uint8Array(bufferOne), 0);
+		tmp.set(new Uint8Array(bufferTwo), bufferOne.byteLength)
+		return tmp.buffer;
+	}
+	
+	var setOnFinishedReading = function(_onFinishedReading){
+		onFinishedReading = _onFinishedReading;
+	}
+	
+	var getInstalledProgramData = function(){
+		return installedProgram.programData;
+	}
+	
+	var getInstalledProgramNumberOfPages = function(){
+		return installedProgram.numberOfPages;
+	}
+	
 	return {
 		init: init,
-		writeData: writeData,
-		setWriteMethod: setWriteMethod,
+		setWriteString: setWriteString,
+		setWriteData: setWriteData,
 		onReceivedData: onReceivedData,
 		setHandshakeButton: setHandshakeButton,
 		getControllingSerial: getControllingSerial,
 		setDisplayText: setDisplayText,
-		setOnConnectedToTSB: setOnConnectedToTSB
+		setOnConnectedToTSB: setOnConnectedToTSB,
+		setData: setData,
+		upload: upload,
+		setOnFinishedReading: setOnFinishedReading,
+		getInstalledProgramData: getInstalledProgramData,
+		getInstalledProgramNumberOfPages: getInstalledProgramNumberOfPages
 	}
 })();

@@ -85,13 +85,28 @@ var LumiBluetooth = (function () {
 		}); // End Search and Connect Promise
 	} // End Search and Connect Function
 
+	this.writeString = function (data, addSystemText = null) {
+		write(data, true, addSystemText);
+	}
+
 	this.writeData = function (data, addSystemText = null) {
+		write(data, false, addSystemText);
+	}
+
+	var write = function (data, string = true, addSystemText = null) {
 		p = new Promise(function (resolve, reject) {
 			if (pairedDevices) {
 				if (writeCharacteristic != null) {
-					let encoder = new TextEncoder('utf-8');
-					writeCharacteristic.writeValue(encoder.encode(data));
+					// Don't double encode.
+					if (string) {
+						let encoder = new TextEncoder('utf-8');
+						writeCharacteristic.writeValue(encoder.encode(data));
+					} else {
+						dataInUint8 = Uint8Array.from(data);
+						writeCharacteristic.writeValue(dataInUint8);
+					}
 					resolve();
+
 				} else {
 					reject("No write characteristic")
 				}
@@ -125,6 +140,7 @@ var LumiBluetooth = (function () {
 	return {
 		addReceivedDataCallback: addReceivedDataCallback,
 		searchAndConnect: searchAndConnect,
+		writeString: writeString,
 		writeData: writeData,
 		disconnectDevice: disconnectDevice
 	}

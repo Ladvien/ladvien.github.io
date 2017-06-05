@@ -1,5 +1,7 @@
 var HexDataHandler = (function () {
 
+	var displayIndex = 0;
+
 	var StringOfHexData = function (byteLength,
 		numberOfLines,
 		dataString) {
@@ -23,6 +25,7 @@ var HexDataHandler = (function () {
 		this.data = DATA;
 		this.checkSum = CHECK_SUM;
 	}
+	var parsedHexDataLines = [];
 	var parsedHexData = [];
 
 	var addTextToDisplay = function () {};
@@ -66,6 +69,11 @@ var HexDataHandler = (function () {
 				pos += 2;
 			}
 
+			// Put data in an array based on 
+			for (var i = 0; i < data.length; i++) {
+				parsedHexData[address + i] = data[i];
+			}
+
 			var checkSum = getCheckSum(byteCount,
 				addressOne,
 				addressTwo,
@@ -75,6 +83,7 @@ var HexDataHandler = (function () {
 			if (recordType === 0) {
 				if (checkSum != ascii2Hex(thisHexLine.substring(pos, pos + 2))) {
 					return "Error parsing HEX file."
+					// TODO Bubble up error
 				}
 			}
 
@@ -85,7 +94,7 @@ var HexDataHandler = (function () {
 				data,
 				checkSum
 			);
-			parsedHexData.push(lineOfHexData);
+			parsedHexDataLines.push(lineOfHexData);
 		}
 		onCompletedParsingFile();
 	}
@@ -116,7 +125,7 @@ var HexDataHandler = (function () {
 	}
 
 	var getHexLine = function (index) {
-		return parsedHexData[index];
+		return parsedHexDataLines[index];
 	}
 
 	var setAddTextToDisplayMethod = function (_addTextToDisplayMethod) {
@@ -128,29 +137,45 @@ var HexDataHandler = (function () {
 	}
 
 	var getAllData = function () {
-		if (!parsedHexData) {
+		if (!parsedHexDataLines) {
 			return false;
+		} else {
+			
+			return parsedHexData;
 		}
-		var dataArray = [];
-		var totalElements = 0;
-		for (var i = 0; i < parsedHexData.length; i++) {
-			if (parsedHexData[i].data.length > 0) {
-				if (parsedHexData[i].recordType === 0) {
-					for (var j = 0; j < parsedHexData[i].data.length; j++) {
-						dataArray.push(parsedHexData[i].data[j]);
-					}
-				}
-			}
-		}
-		return dataArray;
 	}
+
+	var getAllDataAsString = function () {
+		if (!parsedHexDataLines) {
+			return false;
+		} else {
+			var dataAsString = formatUint8AsString(parsedHexData);
+			return dataAsString;
+		}
+	}
+
+	var formatUint8AsString = function (data) {
+		var stringBuilder = [];
+		for (var i = 0; i < data.length; i++) {
+			var char = "0x";
+			char += data[i].toString(16).toUpperCase();
+			if (char.length < 4) {
+				char += "0";
+			}
+			stringBuilder.push(char);
+		}
+		return stringBuilder;
+	}
+
 
 	return {
 		setData: setData,
 		setAddTextToDisplayMethod: setAddTextToDisplayMethod,
 		setOnCompletedParsingFile: setOnCompletedParsingFile,
 		getHexLine: getHexLine,
-		getAllData: getAllData
+		getAllData: getAllData,
+		getAllDataAsString: getAllDataAsString,
+		formatUint8AsString: formatUint8AsString
 	}
 
 })();

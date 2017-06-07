@@ -5,7 +5,8 @@ reading_time:     true
 words_per_minute: 200
 # Your site's domain goes here (eg: https://mmistakes.github.io, http://yourdomain.com, etc)
 # When testing locally leave blank or use http://localhost:4000
-url: https://ladvien.com
+#url: https://ladvien.com
+url:
 
 # Owner/author information
 owner:
@@ -46,6 +47,7 @@ gems:
   - jekyll-paginate
   - jekyll-gist
   - jekyll-feed
+  - jekyll-seo-tag
 sass:
   sass_dir: _sass
   style: compressed

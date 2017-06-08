@@ -107,3 +107,7 @@ assets:
       - assets/css
       - assets/js
       - images
+  js_compressor: uglifier
+  css_compressor: scss
+  features:
+    liquid: true

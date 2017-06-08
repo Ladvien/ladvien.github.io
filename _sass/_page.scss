@@ -509,9 +509,9 @@ header .entry-meta {
 	}
 
 	@media #{$large} {
-		margin-top: -50px;
-		margin-left: -80px;
-		margin-right: -80px;
+		margin-top: 51px; //-50px;
+		margin-left: -41px //-80px;
+		margin-right: -41px //-80px;
 		margin-bottom: 20px;
 	}
 

@@ -10,5 +10,5 @@ gem "jekyll-gist"
 gem "jekyll-seo-tag"
 gem "jekyll-assets"
 gem "jekyll-minifier"
+gem "addressable"
 
-require "jekyll-assets"

@@ -12,3 +12,4 @@ gem "jekyll-assets"
 gem "jekyll-minifier"
 gem "addressable"
 
+require "addressable"

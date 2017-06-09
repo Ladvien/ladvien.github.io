@@ -27,7 +27,7 @@ It's pretty amazing.  It allows a developer to right asynchronous JavaScript usi
 Now, this might sound like it open for security issues--and perhaps it will be.  But there are two requirements Google has put in place which hopefully gets around any issues.  First, the API can only be called from user interaction.  Secondly, the API can only be called from a secured connection (HTTP over SSL).  
 
 
-![](https://images/2017-06-08-bluetooth-low-energy-javascript/BLE_scan.png)
+![](https://ladvien.com/images/2017-06-08-bluetooth-low-energy-javascript/BLE_scan.png)
 
 Moving into the fun part:
 

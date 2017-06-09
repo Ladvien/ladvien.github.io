@@ -5,7 +5,7 @@ categories: HMIS, R, SQL
 excerpt:
 tags: [ETO, HMIS, R, SQL]
 image: 
-    feature: Rlogo-300x263.png
+    feature: R_SQL.png
 comments: true
 custom_css:
 custom_js: 

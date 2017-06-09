@@ -8,3 +8,8 @@ gem "jekyll-feed"
 gem "jekyll-paginate"
 gem "jekyll-gist"
 gem "jekyll-seo-tag"
+gem "jekyll-assets"
+gem "jekyll-minifier"
+gem "addressable"
+
+require "addressable"

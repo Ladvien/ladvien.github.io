@@ -5,7 +5,7 @@ categories: robot
 excerpt:
 tags: [robot, C#, TinySafeBoot]
 image: 
-    feature: Lumi_C#.png 
+    feature: Lumi_CSharp.png
 comments: true
 custom_css:
 custom_js: 

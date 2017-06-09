@@ -24,7 +24,7 @@ This toolchain is amazing.  Really, if you are wanting to break away from Arduin
 
 **The Valdez Mutant v04**
 
-![](../../images/Valdez_Mutant_v04_Explained_1.jpg)
+![](https://ladvien.com/images/Valdez_Mutant_v04_Explained_1.jpg)
 
 The chip has ROM boot loader.  This allows you to program the chip right out of the box.  The programming is done over the traditional serial line.  Most ARM chips require a JTAG programmer, which are usually a $50 investment.  This leads into a few of my design goals.
 
@@ -84,7 +84,7 @@ I started [re-rolling my own bootloader](http://letsmakerobots.com/lpc1114-usb-s
 
 **A-3. _Almost _the same size as the Arduino Pro Mini, but with Mounting holes.**
 
-![](../../images/IMG_0921.jpg)I love the Arduino Pro Mini (APM) for robot building.  It is small, powerful, robust, it's just good stuff all around.  When I decided to build an LPC board I wanted it to copy it in design.
+![](https://ladvien.com/images/IMG_0921.jpg)I love the Arduino Pro Mini (APM) for robot building.  It is small, powerful, robust, it's just good stuff all around.  When I decided to build an LPC board I wanted it to copy it in design.
 
 Here are the features I pulled:
 
@@ -106,7 +106,7 @@ I've always dreamed of hooking up a Bluetooth module to an Arduino and uploading
 
 I therefore set out to design a board that would allow for wireless uploading of programs.
 
-![](../../images/HM-11_BLE_Module_03.jpg)
+![](https://ladvien.com/images/HM-11_BLE_Module_03.jpg)
 
 Instead of using my traditional go-to [HM-10](http://letsmakerobots.com/content/bluetooth-40-arduino), I decided to switch it up and attempt using the [HM-11](http://www.fasttech.com/products/0/10008268/1740900-hm-11-bluetooth-v4-0-transceiver-ble-module).
 
@@ -131,11 +131,11 @@ In theory, this is how the wireless uploading would work.
 13.  HM-11-**A **sends "AT+PIO21"
 14.  HM-11-**B **PIO2 goes HIGH and the LPC runs the uploaded program.
 
-![](../../images/FTDI_HM-11_LPC_Layout_2.jpg)
+![](https://ladvien.com/images/FTDI_HM-11_LPC_Layout_2.jpg)
 
 **B-1\. Testing**
 
-![](../../images/Valdez_Mutant_--_Board_v04.png)
+![](https://ladvien.com/images/Valdez_Mutant_--_Board_v04.png)
 
 Testing this board was a bit of a bitch.  The first version (v02) I printed had several major flaws:
 
@@ -183,7 +183,7 @@ Some of my work with the LPC1114
 
 Here are some files specific to the Valdez Mutant:
 
-1.  [Valdez Mutant Schematic v04](http://letsmakerobots.com../../images/Valdez_Mutant_v04_Schematic.pdf)
+1.  [Valdez Mutant Schematic v04](http://letsmakerobots.comhttps://ladvien.com/images/Valdez_Mutant_v04_Schematic.pdf)
 2.  [Eagle Files -- Valdez Mutant v04](http://letsmakerobots.com/files/Valdez_Mutant_v04.zip)
 3.  Pinout Valdez_Mutant_Pins.h (working on).
 

@@ -54,7 +54,7 @@ If you are using Linux, you might try:
 
 **4. Unzip the bbb_angstrom_ga.img.xz file**
 
-**![](../../images/Unzip_with_7-Zip.jpg)
+**![](https://ladvien.com/images/Unzip_with_7-Zip.jpg)
 **
 
 **5. Use Win32diskwriter to write stock Angstrom to your microSD**
@@ -64,7 +64,7 @@ If you are using Linux, you might try:
 3.  Make sure your microSD is your PC, and it is selected (usually listed as H:).
 4.  Hit **Write.**
 
-![](../../images/win32diskimager.jpg)
+![](https://ladvien.com/images/win32diskimager.jpg)
 
 **6. Remove the microSD from your PC, put it into the Beaglebone Black, and boot from it.**
 
@@ -80,7 +80,7 @@ Type:
 
 **wget https://s3.amazonaws.com/angstrom/demo/beaglebone/Angstrom-Cloud9-IDE-GNOME-eglibc-ipk-v2012.12-beaglebone-2013.04.13.img.xz**
 
-**![](../../images/Download_Stock_on_PuTTY.jpg)
+**![](https://ladvien.com/images/Download_Stock_on_PuTTY.jpg)
 **
 
 **9. Write the Angstrom Stock img to your Beaglebone Black eMMC.**

@@ -82,13 +82,13 @@ int main()
 {% endhighlight %}
 
 
-*   **Line 10:** This creates a macro for the UART Baud Rate Register (UBBR).  This number can be calculated using the formula on page 148 of the [datasheet](http://www.atmel.com/Images/Atmel-8303-8-bit-AVR-Microcontroller-tinyAVR-ATtiny1634_Datasheet.pdf).  It should be: UBBR = ((CPU_SPEED)/16*DESIRED_BAUD)-1\.  For me, I wanted to set my rate to 9600, therefore: UBBR = (8,000,000/16*9600)-1; Or: UBBR = (8,000,000/153,600)-1 = **51.083\.  **It can have a slight margin of error, and since we can't use a float, I rounded to 51.![](../../images/BAUD_CALC.png)
+*   **Line 10:** This creates a macro for the UART Baud Rate Register (UBBR).  This number can be calculated using the formula on page 148 of the [datasheet](http://www.atmel.com/Images/Atmel-8303-8-bit-AVR-Microcontroller-tinyAVR-ATtiny1634_Datasheet.pdf).  It should be: UBBR = ((CPU_SPEED)/16*DESIRED_BAUD)-1\.  For me, I wanted to set my rate to 9600, therefore: UBBR = (8,000,000/16*9600)-1; Or: UBBR = (8,000,000/153,600)-1 = **51.083\.  **It can have a slight margin of error, and since we can't use a float, I rounded to 51.![](https://ladvien.com/images/BAUD_CALC.png)
 
 *   We then setup of function to initialize the UART connection.  **Lines 16-17** load our calculated baud rate into a register that will actually set the speed we decided upon.  This is done by using four bits from the UBBR0L and UBBR0H registers.  If the >> is unfamiliar to you, it is the [right-shift operator](http://www.cprogramming.com/tutorial/bitwise_operators.html) and works much like the left-shift, but yanno, in the other direction.
 
-*   Still in initialization, **line 19** enables both the RX0 and the TX0 pins (PA7 and PB0 respectively).  I'm not using the TX0 pin yet, but I figured I might as well enable it since I'll use it later.![](../../images/TX_RX_EN.png)
+*   Still in initialization, **line 19** enables both the RX0 and the TX0 pins (PA7 and PB0 respectively).  I'm not using the TX0 pin yet, but I figured I might as well enable it since I'll use it later.![](https://ladvien.com/images/TX_RX_EN.png)
 
-*   **Line 21** sets the bits to tell the Tiny1634 what sort of communication we want.  We want 8 bit, non-parity, 1 stop bit.  Enabling USBS0, UCSZ00 and UCSZ01 give us these values.![](../../images/UCSR2.png).
+*   **Line 21** sets the bits to tell the Tiny1634 what sort of communication we want.  We want 8 bit, non-parity, 1 stop bit.  Enabling USBS0, UCSZ00 and UCSZ01 give us these values.![](https://ladvien.com/images/UCSR2.png).
 
 *   **Line 24** is the beginning of the function that'll transmit our data.  **Line 27** checks to see if the ATtiny1634 is finished transmitting before giving it more to transmit.  The UDRE0 is a bit on the UCSR0A register that is only clear when the transmit buffer is clear.  So, the **while ( !(UCSR0A & (1<<UDRE0));** checks the bit, if it is not clear, it checks it again, and again, until it is.  This is a fancy pause, which is dependent on the transmit buffer being clear.  **Line 30** is where the magic happens.  The UDR0 is the transmit register, whatever is placed in the register gets shot out the TX line.  Here, we are passing the data that was given to the USART_Transmit function when it is called.
 
@@ -100,7 +100,7 @@ This was a bit easier than expected.
 
 Here was the output from Code v01.
 
-![](../../images/ATtiny1634_A_0.png)
+![](https://ladvien.com/images/ATtiny1634_A_0.png)
 
 After a little more tweaking and watching Newbie Hack's video on [sending strings to an LCD](http://newbiehack.com/MicrocontrollersABeginnersGuidePassingaStringtotheLCD.aspx), I adapted NH's code to be used by my UART_Transmit() function I ended with a full string of "ALABTU!" on the serial monitor.
 
@@ -115,7 +115,7 @@ Now, whenever the **Serial_Print** function is called it starts the loop contain
 
 The above code provided the following output in the serial monitor. (ALABTU!)
 
-![](../../images/ATtiny1634_ALABTU_NO_CRLF_0.png)
+![](https://ladvien.com/images/ATtiny1634_ALABTU_NO_CRLF_0.png)
 
 At this point my simple mind was quite pleased with its trite accomplishments and I saw building a library out of my code being pretty easy.  But a few problems I had to solve first:
 
@@ -145,7 +145,7 @@ The following code is what I ended with,
 
 The above code provided the following output.  Notice my serial monitor automatically recognized the CR and LF character, which is why "ALABTU!" is one per line, and always left-justified.  **Booyah!**
 
-![](../../images/ATtiny1634_ALABTU_WITH_CRLF.png)
+![](https://ladvien.com/images/ATtiny1634_ALABTU_WITH_CRLF.png)
 
 Ok.  I'm not done yet, here is what I'll be working on in the evening over the next few days,
 
@@ -213,7 +213,7 @@ Of course, I didn't add a character to character array conversion, yet.  I'm not
 
 But Code v04 gave me the following output:
 
-![](../../images/ATtiny1634_ALABTU_WITH_RXI.png)
+![](https://ladvien.com/images/ATtiny1634_ALABTU_WITH_RXI.png)
 
 Each time the letter "A" is sent from the serial terminal a RX interrupt event occurs.  The interrupt transfers the byte to a variable that is then sent right back out by the Serial_Print() function.  Thus, echoing the data you send it.
 
@@ -237,7 +237,7 @@ Ok, code for the second UART.
 
 [UART Code v06](https://github.com/Ladvien/ATtiny1634_AVR_Code/blob/master/Attiny1634_UART_Code_Evolution/ATtiny1634_UART_Code_v06.c)
 
-![](../../images/UART0_TO_UART1_ATTINY1634.png)
+![](https://ladvien.com/images/UART0_TO_UART1_ATTINY1634.png)
 
 I was surprised.  The interrupts didn't seem to trip each other up.  Of course, I only did a simple test of sending data from one terminal into the ATtiny1634 and having it come out on the other terminal.  This would be: Data-->RX0--->TX1 and Data-->RX1-->TX0
 

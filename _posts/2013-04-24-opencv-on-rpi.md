@@ -42,11 +42,11 @@ Many hours later, I ended up with a _very crude _ Raspberry Pi, Ardy, Camera, an
 
 Image of Pi VNC.  The box outline is being written through [i2c](http://letsmakerobots.com/node/36847).
 
-![](../../images/FaceTracking_1355x768.jpg)
+![](https://ladvien.com/images/FaceTracking_1355x768.jpg)
 
 Pulling apart a little $8 eBay camera.
 
-![](../../images/IMG_0634_1024x768.jpg)
+![](https://ladvien.com/images/IMG_0634_1024x768.jpg)
 
 **To Setup the Raspberry Pi:**
 

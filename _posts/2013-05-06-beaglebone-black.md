@@ -59,7 +59,7 @@ Back to the BBB; the Realtek WiFi dongle that drove me mad has been solved by [t
 
 I haven't found an Arch Linux image file, so I thought I'd cook one and post it for anyone who needs it.
 
-![](../../images/arch-linux-logo.png) [Arch Linux for the Beaglebone Black -- 6-20-13](http://www.ubermentis.com/files/Arch-Linux-BBB-%206-20-13.rar)
+![](https://ladvien.com/images/arch-linux-logo.png) [Arch Linux for the Beaglebone Black -- 6-20-13](http://www.ubermentis.com/files/Arch-Linux-BBB-%206-20-13.rar)
 
 If anyone actually downloads the image, will you confirm it works for you?
 
@@ -77,7 +77,7 @@ Well, I think I could best describe this point in economic terms. It's the where
 
 **Figure 1**
 
-![](../../images/Production_Possibilities_Frontier_Curve_svg.jpg)
+![](https://ladvien.com/images/Production_Possibilities_Frontier_Curve_svg.jpg)
 
 In essence, this graph shows that I cannot reach my desired productive efficiency (getting the B^3 to do the tricks I want it).  Really, I'd be happy at point C (even though point D is probably better for me and my family).  The problem is technology limitations are restricting me from getting to point C on the curve.  And it's bugging the hell out of me.  At first, I thought this was completely due to my ineptitude (which is partially true), but there is another barrier, a seemingly hidden one.  
 
@@ -107,7 +107,7 @@ Therefore, my conclusion (though, my insanity is rising), is:
 
 **Figure 2**
 
-![](../../images/Hardware_Driver_limitations.jpg)
+![](https://ladvien.com/images/Hardware_Driver_limitations.jpg)
 
 All this to say, my wife has taken away my Beaglebone Black until that green line moves farther out.
 
@@ -119,7 +119,7 @@ I've finally got the Black Bone near where I've got my Pi.  Here, the old Bone i
 
 (Question, anyone else feel like there's a [Mason's](http://en.wikipedia.org/wiki/Free_mason) conspiracy going on in the embedded world?)
 
-![](../../images/Angstrom_VNC_Style.jpg)
+![](https://ladvien.com/images/Angstrom_VNC_Style.jpg)
 
 I think I got near understanding TinHead's post: Don't treat an embedded device like a PC?  I dunno.
 
@@ -172,7 +172,7 @@ So, I attempted getting my WiFi dongle setup (again) using Angstrom's [package m
 
 I ran them, and guess what? The eMMC does not have enough space to hold the updates.  Mother-of-a-Beagle!
 
-![](../../images/Upgrading_Angstrom_2.jpg)
+![](https://ladvien.com/images/Upgrading_Angstrom_2.jpg)
 
 
 Sadly, I'm using a microSD card from an old phone, which is only 2gb.  My 8gb is on order.
@@ -195,7 +195,7 @@ I'll write it up tomorrow night, after some rest.
 
 Ubuntu on Beaglebone Black:
 
-**![](../../images/IMG_0048.jpg)**
+**![](https://ladvien.com/images/IMG_0048.jpg)**
 
 5/6/13
 
@@ -265,13 +265,13 @@ I found this robotics group that put some walkthroughs together on using the GPI
 
 If anyone else following this, **please double-check me, I'll make corrections if needed.**
 
-![](../../images/B_3PinOut3.png)
+![](https://ladvien.com/images/B_3PinOut3.png)
 
 **Beaglebone Black and Raspberry Pi:**
 
 These are some of the differences I've noticed between the Beaglebone Black and the Raspberry Pi.
 
- ![](../../images/6312263717_932956b10c_o.jpg) | ![](../../images/20121210222414_Raspberry_Pi_Logo.png) |
+ ![](https://ladvien.com/images/6312263717_932956b10c_o.jpg) | ![](https://ladvien.com/images/20121210222414_Raspberry_Pi_Logo.png) |
 | Est. to Upgrade Rpi or BBB | Est. Difficulty to Add |
 | Real Time Clock | **1** | **0** |
  | $[2.30](http://www.fasttech.com/products/0/10000007/1012004-tiny-i2c-rtc-ds1307-at24c32-real-time-clock-shield) | Medium |
@@ -316,19 +316,19 @@ Several things make it stand out:
 
 *   It uses a Micro SD card instead of a SD.  This allows for a smaller overall size without using an [Adafruit Adapter](http://www.adafruit.com/products/966).
 
-![](../../images/MicroSD2.png)
+![](https://ladvien.com/images/MicroSD2.png)
 
 *   It has three tactic switches: (1) power, (2), reset, and (3) a mystery switch.  I'm hoping the third is software accessible.  The built in powerswitch is a real winner.  It means you can tell [this guy](http://www.pi-supply.com/buy-it-now/) to keep his <span style="font-family: Arial, Helvetica, sans-serif; font-size: small; line-height: normal;">£15 and his closed source design.
 
-![](../../images/Reset_Switch_2.png)
+![](https://ladvien.com/images/Reset_Switch_2.png)
 
 *   It has one USB hub. This is my second greatest concern (after less community support) is having to rely on USB HUBs to connect devices.  And, yes, I'm aware an IC, breadboard, and access to hardware IO will allow custom [USB](http://www.atmel.com//doc8445.pdf) deivces. But sometimes don't you want to just plug-and-go? (Yes, I'm aware I'm lazy.)
 
-![](../../images/One_USB_2.png)
+![](https://ladvien.com/images/One_USB_2.png)
 
 *   It has a barrel-jack instead of a Micro USB for power.  I don't know how you feel, but I'd rather have the Micro USB simply because I've got a lot of those lying about, whereas barrel-jacks, I'm not sure.  Maybe under the decaying skull?
 
-![](../../images/5v_Barrel_Jack2.png)
+![](https://ladvien.com/images/5v_Barrel_Jack2.png)
 
 *   It's [open hardware](http://circuitco.com/support/index.php?title=BeagleBoneBlack#Revision_A4).  The RPi claims to be for "educational purposes," although, it seems the education is restricted to the software.  Of course, this is an assumption based on not yet seeing a schematic for the Raspberry Pi silicon bits.
 

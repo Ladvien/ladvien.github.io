@@ -20,7 +20,7 @@ I thought I'd take some time away from coding my [LPC1114 Uploader](http://letsm
 
 This post will be a series of post leading up to the large post I'll make on writing the uploader.  All posts will rely on the GCC compiler.
 
-![](../../images/GCCLogo.png)Setting Up the GCC Compiler
+![](https://ladvien.com/images/GCCLogo.png)Setting Up the GCC Compiler
 
 I setup a C environment as basic I could.  There may be easier ways to go about this, but I wanted to use GCC to compile.  
 
@@ -84,11 +84,11 @@ You begin running your program and everything seems fine.  It is inspecting data
 
 Really, we know the reason, your program came across a random 0x13, which it interpreted as an exit command.  Maybe a different special character?
 
-![](http://www.bibase.com../../images/ascii.gif)
+![](http://www.bibase.comhttps://ladvien.com/images/ascii.gif)
 
 But you realize, if you are dealing with a 8-bit data stream any ASCII character _might_ be found in the incoming stream.  So, how can the communicating devices know when it is getting data, versus, when it is receiving a command?
 
-![](../../images/Super_Style_ASCII_by_buddhascii.png)
+![](https://ladvien.com/images/Super_Style_ASCII_by_buddhascii.png)
 
 This is where UUE comes in.  As I stated earlier, UUE is a way to represent the same 8-bit data using only hex values 0x32 through 0x95 (the two middle columns in the ASCII chart above).  This means characters 0x00 through 0x1F and 0x60 through 0x7F are free to be used for command functions.
 
@@ -149,7 +149,7 @@ Our next step is to add 32 to each of the decimal value of our new four bytes.
 *   New Dec.        48          86            37            84
 *   **UUE char:       0            V             %             T**
 
-![](../../images/schrodingers_cat.jpg)And...that's it.  Your data is now UUEncoded.  When it is sent through whatever transmission medium it wont be bothered with special character protocals.  For our Cat, we have transformed it into: **0V%T**
+![](https://ladvien.com/images/schrodingers_cat.jpg)And...that's it.  Your data is now UUEncoded.  When it is sent through whatever transmission medium it wont be bothered with special character protocals.  For our Cat, we have transformed it into: **0V%T**
 
 Let's hope for the Cat's sake, there is decoding algorithm.
 
@@ -195,7 +195,7 @@ Finally! We have encoded "Cats"
 
 We've turned:
 
-![](../../images/fivekittems1.jpg) into -------------> **  0V%T<P ``      Now, _that's_ science folks!**
+![](https://ladvien.com/images/fivekittems1.jpg) into -------------> **  0V%T<P ``      Now, _that's_ science folks!**
 
 **<span style="font-weight: normal;">Hmm, what else are you going to need to know? **Oh, right, how the UUE data is stored.****
 
@@ -205,7 +205,7 @@ Again, examples are good.  For our Cats, the line would look something like this
 
 *   $ **0V%T<P `` \n**
 
-![](../../images/UUE_dump.png)
+![](https://ladvien.com/images/UUE_dump.png)
 
 Let me take a moment to describe how we get the start character.  Basically, we count how many bytes we are sending, in our case 4, and we add 32\.  This gives us the decimal representation of the ASCII character we will use as our start character.  Therefore,
 
@@ -360,5 +360,5 @@ And there you go.  **UUE!**
 Here are some additional resources I found helpful,
 
 1.  [Wikipedia's article on UUEncoding](http://en.wikipedia.org/wiki/Uuencoding)
-2.  [NXP's Application Note on UUEncoded for their uCs](../../images/UUE__app_note.pdf)
+2.  [NXP's Application Note on UUEncoded for their uCs](https://ladvien.com/images/UUE__app_note.pdf)
 3.  [Bdk6](http://letsmakerobots.com/users/bdk6)

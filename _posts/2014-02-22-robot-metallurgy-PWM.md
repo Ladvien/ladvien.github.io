@@ -74,7 +74,7 @@ There are four COM bits in each TCCR register, two control the output of one pin
 
 Now, switching these bits can create many different types of output.  But I stuck with Arduino standard.
 
-![](../../images/FAST_PWM_8BIT_COM0A1.png)
+![](https://ladvien.com/images/FAST_PWM_8BIT_COM0A1.png)
 
 **3. WGM = Wave Form Generation (for 8-bit)**
 
@@ -88,7 +88,7 @@ There are 3 bits that control the type of PWM we end up with.  There are all sor
 
 The one I'll invoke is Fast PWM,
 
-![](../../images/8_Bit_PWM_WGM.png)
+![](https://ladvien.com/images/8_Bit_PWM_WGM.png)
 
 We select this by setting WGM00 and WGM01 bits.
 

@@ -26,11 +26,11 @@ Long story short, Carduino donated to the cause and I used my robot allowance (y
 
 Mac Mid 2009
 
-![](../../images/Mac_Pro.png)
+![](https://ladvien.com/images/Mac_Pro.png)
 
 Price ended at $469.99\.  I spent a little more than I should, but since Carduino had added to the kitty I was worried about getting something I'd be unable to run Xcode.  Therefore, I spent a little extra in hopes to get a machine that would allow me to write code efficiently.
 
-![](../../images/Amys_Mac.png)
+![](https://ladvien.com/images/Amys_Mac.png)
 
 I have to take a moment and remind people, I wear a white hat.  Dear [Amy2865](http://www.ebay.com/usr/amy2865), before you sell a laptop, be sure to log out of your eBay account. Also, [Jared Kusma](https://www.amherst.edu/athletics/archives/2011-12/golf-m/roster/bios/kusma), I'm liking your laptop, but I _did _clean the keyboard thoroughly before using it.  And the spots on the screen.
 
@@ -64,7 +64,7 @@ So, price for the Mac:**$469.99**
 
 
 
-![](../../images/Dev_Web2.png)
+![](https://ladvien.com/images/Dev_Web2.png)
 
 Well, I had the Mac, now what?
 
@@ -82,7 +82,7 @@ Once you have your Mac and Developer License, time to setup Xcode.
 
 *   [Xcode 5](https://itunes.apple.com/us/app/xcode/id497799835?mt=12#)
 
-![](../../images/Screenshot_2014-07-14_22_41_42.png)
+![](https://ladvien.com/images/Screenshot_2014-07-14_22_41_42.png)
 
 If you try to compile your app and you**get an error regarding a certificate,** and doesn't automatically resolve, you can download a certificate manually.
 
@@ -90,7 +90,7 @@ If you try to compile your app and you**get an error regarding a certificate,** 
 
 1\. Log on to [iOS Dev Center](https://developer.apple.com/devcenter/ios/index.action) and Download you Developer Certificate
 
-![](../../images/Screenshot_2014-07-14_22_59_42.png)
+![](https://ladvien.com/images/Screenshot_2014-07-14_22_59_42.png)
 
 You will need to apply this certificate to the apps you write to publish them--even on an ad hoc basis.
 
@@ -145,7 +145,7 @@ The app we're going to write is pretty simple.  _Really_, it is. It takes the va
 
 Ok, open Xcode and let's start a new projects.  We are going to use a Single View projects.
 
-![](../../images/Screenshot_2014-07-15_19_16_47.png)
+![](https://ladvien.com/images/Screenshot_2014-07-15_19_16_47.png)
 
 The first step in creating our app will be laying out the user interface. This boils down to a few items.
 
@@ -201,7 +201,7 @@ Before we get going, it'll help to be slightly familiar with Bluetooth 4.0's sta
 
 The big take away for us is the differences between Central and Peripheral roles.
 
-![](../../images/Central_Peri_LMR.png)
+![](https://ladvien.com/images/Central_Peri_LMR.png)
 
 This doesn't mean our bot cant receive data or iOS device can't send data, it simply defines the relationship between the devices.  The role decides which device controls the connection and data flow.  For the sake of this app the**bot will be setup as a Peripheral** and the**iOS device will be the Central**.  This is my opinion, but it seems the BLE hardware connected to the uC or CPU with the greatest speed should take the Central role.
 
@@ -240,7 +240,7 @@ The CoreBluetooth Central Manager, the CoreBluetooth Peripheral, User Interface 
 
 Another way to think of delegates is a collection of little scout robots who report when a specific event takes place.
 
-![](../../images/Central_Manager_Delegate_15.png)
+![](https://ladvien.com/images/Central_Manager_Delegate_15.png)
 
 These delegates are a collection of little methods who will be called at specific events.  For example, the CBPeripheralDelegate has the method**-(void)peripheral:(CBPeripheral *)peripheral didDiscoverServices:(NSError *)error**.  This method is called whenever iOS app discovers BLE peripheral.  Again, these methods are**event** driven--this means something usually has to happen before the come report to your code.
 
@@ -303,11 +303,11 @@ An example of a -(IBAction) method would be:
 
 All good, now how do we make IBOutlets and IBActions?  First, click on the "Tuxedo" button
 
-![](../../images/Tux_View.png)
+![](https://ladvien.com/images/Tux_View.png)
 
 Now, hold CONTROL and click on the UI element you want to create an Action or Outlet, then drag to your code between**@interface** and**@end.**
 
-![](../../images/Drag_for_Outlet.png)  
+![](https://ladvien.com/images/Drag_for_Outlet.png)  
 
 
 [Ray Wenderlich's tutorials](http://www.raywenderlich.com/25561/learn-to-code-ios-apps-3-your-first-app) explain this process well.  So, I wont rehash.  A couple hints though, you can type out each of the IBOutlets and IBActions, but unless the dot on the bar next to where it is written is filled in, it is not connected to an element.  Also, if you hover your mouse over the little dot while in tuxedo-view, the element it is connected to will be highlighted.  
@@ -380,9 +380,9 @@ Ok, let's get our Bluetooth going.  Objective-C has a method that runs once if t
 
 We will add more code in this method later, but for now this will work.  Here, we are simply allocating and initializing an instance of the CBCentralManager object.  It has two arguments,**initWithDelegate**, we set this to self and the queue we set to nil.  This allows us to inherit the CBDelegate from the ViewController.h.  The queue being set to nil simply means we are going to allow the CentralManager to manage our data.
 
-![](../../images/Msg_sir_3.jpg)
+![](https://ladvien.com/images/Msg_sir_3.jpg)
 
-![](../../images/bluetoothOniOs.jpg)
+![](https://ladvien.com/images/bluetoothOniOs.jpg)
 
 **centralManagerDidUpdateState**
 
@@ -423,17 +423,17 @@ If you have a minute, Ada has an _excellent_ article on Generic Attribute Profil
 
 *   [GATT](https://learn.adafruit.com/introduction-to-bluetooth-low-energy/gatt)
 
-**![](../../images/TreeOfServicesAndCharacteristics_Remote_2x.png)**
+**![](https://ladvien.com/images/TreeOfServicesAndCharacteristics_Remote_2x.png)**
 
 Keep two things in mind, first, I'm still learning what the hell I'm talking about.  Two, [jnhuamao](http://www.jnhuamao.cn) and I have a history.  I've watched their BLE firmware develop over the years.  When the first procuded the HM-10, it didn't conform to _any_ BLE protocols.  Now, they've got a damn fine product.  Of course, they seem to be trying to get old school Bluetooth thinking to fit BLE.  For instance, they equate the "Master" role of their modules with Central role protocol. Likewise, they equate "Slave" with Peripheral role.  This confuses me a little, since
 
 For the HM-10 it looks something like this,
 
-![](../../images/HM-10_Serv_Tree.png)
+![](https://ladvien.com/images/HM-10_Serv_Tree.png)
 
 When iDevice scans the HM-10 it'll report back the FFE1 characteristic, which is the characteristic address for RX/TX on the HM-10.
 
-**![](../../images/Msg_sir_3.jpg)**
+**![](https://ladvien.com/images/Msg_sir_3.jpg)**
 
 **centralManager didDiscoverPeripheral**
 
@@ -497,7 +497,7 @@ We are going to store the last six peripherals discovered.
 
 The devices method will be called many times throughout our program.  Eventually, we will use the dictionary to populate a table of discovered devices.
 
-**![](../../images/Msg_sir_3.jpg)**
+**![](https://ladvien.com/images/Msg_sir_3.jpg)**
 
 **centralManager didConnect**
 
@@ -521,7 +521,7 @@ The centralManager didConnect method executes whenever your app connects to a sp
 
 **2\. CBPeripheralDelegate**
 
-**![](../../images/Msg_sir_3.jpg)**
+**![](https://ladvien.com/images/Msg_sir_3.jpg)**
 
 **peripheral didDiscoverServices**
 
@@ -543,7 +543,7 @@ Here, we enumerate through all the services on the connected peripheral.  This i
 
 **7:** Here we call**discoverCharacteristics** method on each service on our connected device.  Again, passing the**nil** argument means we want to discover all characteristics, as oppossed to a specific.  Slow, but inclusive.
 
-**![](../../images/Msg_sir_3.jpg)**
+**![](https://ladvien.com/images/Msg_sir_3.jpg)**
 
 **peripheral didDiscoverCharacteristicsForService**
 
@@ -567,13 +567,13 @@ didDiscoverCharacteristicsForService:(CBService *)service
 
 **7:** We call the**discoverDescriptorsForCharacteristic** method on each discovered characteristics.
 
-![](../../images/Msg_sir_3.jpg)
+![](https://ladvien.com/images/Msg_sir_3.jpg)
 
 **peripheral didDiscoverDescriptorsForCharacteristic**
 
 We are accomplishing two things in this method.  First, we are getting the character version of the hex values FFE0
 
-![](../../images/TreeOfServicesAndCharacteristics_Remote_Var4.png)
+![](https://ladvien.com/images/TreeOfServicesAndCharacteristics_Remote_Var4.png)
 
 **6:**The firs thing we do is convert the HM-10's characteristics from FFE1 to character values, 255 and 225\.  
 
@@ -621,7 +621,7 @@ didDiscoverDescriptorsForCharacteristic:(CBCharacteristic *)characteristic
 }
 {% endhighlight %}
 
-**![](../../images/Msg_sir_3.jpg)**
+**![](https://ladvien.com/images/Msg_sir_3.jpg)**
 
 **sendValue**
 

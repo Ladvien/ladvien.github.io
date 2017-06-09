@@ -6,7 +6,7 @@ categories: robots
 excerpt:
 tags: [javascript, bluetooth 4.0, Bluetooth Low Energy]
 image: 
-    feature: ladvien.com_feature_red.png
+    feature: JS_CSS_HTML_BT.png
 comments: true
 custom_css: 
 custom_js: 

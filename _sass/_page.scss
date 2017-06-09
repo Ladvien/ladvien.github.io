@@ -22,6 +22,12 @@ body {
 	}
 }
 
+.entry-title {
+	position: relative;
+	top: 100px;
+	margin-left: 20px;
+}
+
 .entry-content {
 	@include font-size($doc-font-size);
 

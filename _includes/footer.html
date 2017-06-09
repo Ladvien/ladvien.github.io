@@ -1,9 +1,7 @@
 <span>&copy; {{ site.time | date: '%Y' }} {{ site.owner.name }}. Powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> using the <a href="https://mademistakes.com/work/hpstr-jekyll-theme/" rel="nofollow">HPSTR Theme</a>.</span>
-<!--<script src="{{ site.url }}/assets/js/vendor/modernizr-2.6.2.custom.min.js"></script>-->
+<script src="{{ site.url }}/assets/js/vendor/modernizr-2.6.2.custom.min.js"></script>
 {% if page.custom_js %}
   {% for js_file in page.custom_js %}
       <script src='/../../../javascripts/{{ js_file }}.js' type="text/javascript"></script>
   {% endfor %}
 {% endif %}
-<script src="{{ site.url }}/assets/js/vendor/jquery-1.9.1.min.js"></script>
-<script src="{{ site.url }}/assets/js/plugins/jquery.dlmenu.js"></script>

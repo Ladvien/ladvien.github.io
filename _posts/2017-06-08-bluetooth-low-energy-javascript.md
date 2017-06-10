@@ -60,9 +60,9 @@ The first piece we need are service IDs to search for.
 
 {% highlight js %}
 
-	let optionalServices = document.getElementById('optionalServices').value
-		.split(/, ?/).map(s => s.startsWith('0x') ? parseInt(s) : s)
-		.filter(s => s && BluetoothUUID.getService);
+let optionalServices = document.getElementById('optionalServices').value
+	.split(/, ?/).map(s => s.startsWith('0x') ? parseInt(s) : s)
+	.filter(s => s && BluetoothUUID.getService);
 
 {% endhighlight %}
 
@@ -72,10 +72,10 @@ Moving on to the search, when the code below is executed the Chrome browser shou
 
 {% highlight js %}
 				
-			navigator.bluetooth.requestDevice({
-					acceptAllDevices: true,
-					optionalServices: optionalServices
-				})
+navigator.bluetooth.requestDevice({
+		acceptAllDevices: true,
+		optionalServices: optionalServices
+	})
 		
 {% endhighlight %}
 
@@ -95,7 +95,7 @@ The `BluetoothRemoteGATTServer` interface contains many of the methods needed to
 
 {% highlight js %}
 
-	device.gatt.connect()
+device.gatt.connect()
 
 {% endhighlight %}
 
@@ -108,10 +108,10 @@ Back to the code.
 
 {% highlight js %}
 
-			.then(device => {
-				pairedDevices[device.name] = device;
-				return device.gatt.connect();
-			}).then
+.then(device => {
+	pairedDevices[device.name] = device;
+	return device.gatt.connect();
+}).then
 			
 {% endhighlight %}
 
@@ -119,12 +119,12 @@ Once the connection attempt has been made and returned succesful, the [Bluetooth
 
 {% highlight js %}
 
-				....
-					return device.gatt.connect();
-				})
-				.then(server => {
-					return server.getPrimaryServices();
-				})
+....
+	return device.gatt.connect();
+})
+.then(server => {
+	return server.getPrimaryServices();
+})
 			
 {% endhighlight %}
 
@@ -132,11 +132,11 @@ This will fire asynchronously using promises, and if succesful, return a [Blueto
 
 {% highlight js %}
 
-				....
-				return server.getPrimaryServices();
-					})
-					.then(services => {
-					services.forEach(service => {
+....
+return server.getPrimaryServices();
+	})
+	.then(services => {
+	services.forEach(service => {
 			
 {% endhighlight %}
 
@@ -146,18 +146,18 @@ Now, I'm going to add the whole block which is responsible for iterating over ea
 
 {% highlight js %}
 
-					....
-						let queue = Promise.resolve();
-						queue = queue.then(_ => service.getCharacteristics()
-							.then(characteristics => {
-								characteristics.forEach(characteristic => {
-									writeCharacteristic = characteristic;
-									writeCharacteristic.startNotifications();
-									resolve();
-							}); // End enumerating characteristics
-						})); // End queue
-					}) // End enumerating services
-				}) // End Service exploration  
+	....
+		let queue = Promise.resolve();
+		queue = queue.then(_ => service.getCharacteristics()
+			.then(characteristics => {
+				characteristics.forEach(characteristic => {
+					writeCharacteristic = characteristic;
+					writeCharacteristic.startNotifications();
+					resolve();
+			}); // End enumerating characteristics
+		})); // End queue
+	}) // End enumerating services
+}) // End Service exploration  
 				
 {% endhighlight %}
 
@@ -177,32 +177,32 @@ Let's take a look at how to write data to the device after getting a reference t
 
 {% highlight js %}
 
-	var write = function (data, string = true) {
-		p = new Promise(function (resolve, reject) {
-			// See if the device is paired.
-			if (pairedDevices) {
-				// Has a write reference been discovered.
-				if (writeCharacteristic != null) {
-					// Don't double encode.
-					if (string) {
-						let encoder = new TextEncoder('utf-8');
-						writeCharacteristic.writeValue(encoder.encode(data));
-					} else {
-						dataInUint8 = Uint8Array.from(data);
-						writeCharacteristic.writeValue(dataInUint8);
-					}
-					resolve();
-
+var write = function (data, string = true) {
+	p = new Promise(function (resolve, reject) {
+		// See if the device is paired.
+		if (pairedDevices) {
+			// Has a write reference been discovered.
+			if (writeCharacteristic != null) {
+				// Don't double encode.
+				if (string) {
+					let encoder = new TextEncoder('utf-8');
+					writeCharacteristic.writeValue(encoder.encode(data));
 				} else {
-					reject("No write characteristic")
+					dataInUint8 = Uint8Array.from(data);
+					writeCharacteristic.writeValue(dataInUint8);
 				}
+				resolve();
+
 			} else {
-				reject("No devices paired.")
+				reject("No write characteristic")
 			}
-		}).catch(error => {
-		});
-		return p;
-	}
+		} else {
+			reject("No devices paired.")
+		}
+	}).catch(error => {
+	});
+	return p;
+}
 
 {% endhighlight %}
 
@@ -211,9 +211,9 @@ The above method creates a promise and writes to the device asynchoronously.  On
 
 {% highlight js %}
 	
-	write("Buggers", true).then(_ => {
-		// Do something after write has completed.
-	})
+write("Buggers", true).then(_ => {
+	// Do something after write has completed.
+})
 
 {% endhighlight %}
 
@@ -221,19 +221,19 @@ Ok, last bit.  Let's setup capturing incoming data. To begin, I created a method
 
 {% highlight js %}
 	
-	var onReceivedDataCallbacks = [];
-	...
-	// Adds a function called when a BLE characteristic changes value.
-	// Mutiple callbacks may be added.
-	this.addReceivedDataCallback = function (callback) {
-		if (writeCharacteristic) {
-			writeCharacteristic.addEventListener('characteristicvaluechanged', callback);
-			onReceivedDataCallbacks.push({
-				key: callback.name,
-				value: callback
-			})
-		}
+var onReceivedDataCallbacks = [];
+...
+// Adds a function called when a BLE characteristic changes value.
+// Mutiple callbacks may be added.
+this.addReceivedDataCallback = function (callback) {
+	if (writeCharacteristic) {
+		writeCharacteristic.addEventListener('characteristicvaluechanged', callback);
+		onReceivedDataCallbacks.push({
+			key: callback.name,
+			value: callback
+		})
 	}
+}
 	
 {% endhighlight %}
 
@@ -248,15 +248,15 @@ Ok, one last piece.  Let us see what the onRecievedData callback could looks lik
 
 {% highlight js %}
     
-	this.onReceivedData = function (event) {
-		// TODO: Handle received data better.  
-		// NOTE: the TX buffer for the HM-1X is only 20 bytes.  
-		// But other devices differ.
-		var receivedData = new Uint8Array(event.target.value.byteLength);
-		for (var i = 0; i < event.target.value.byteLength; i++) {
-			receivedData[i] = event.target.value.getUint8(i);
-		}
+this.onReceivedData = function (event) {
+	// TODO: Handle received data better.  
+	// NOTE: the TX buffer for the HM-1X is only 20 bytes.  
+	// But other devices differ.
+	var receivedData = new Uint8Array(event.target.value.byteLength);
+	for (var i = 0; i < event.target.value.byteLength; i++) {
+		receivedData[i] = event.target.value.getUint8(i);
 	}
+}
 
 {% endhighlight %}
 

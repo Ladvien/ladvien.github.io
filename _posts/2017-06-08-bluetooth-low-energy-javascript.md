@@ -13,9 +13,6 @@ custom_js:
 - lumi-comm-ble
 ---
 
-
-# BluetoothLE.js #
-
 For a long time now I've put off learning JavaScript.  It really never interested me.  I'd like to say it was the thought, "Oh, JavaScript is for web developers and I'm embedded all the way!"  But that wasn't really it.  I think it hasn't appealed to me because I couldn't connect it to hardware.  Well, at least, that was my assumption.
 
 However, I've recently discovered Google's Web APIs.  Specifically, their Bluetooth Low Energy API. 

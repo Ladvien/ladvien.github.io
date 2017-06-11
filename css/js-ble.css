@@ -131,6 +131,12 @@ input {
 	color: forestgreen;
 }
 
+.tsb-button-read-complete {
+	transition: 0.2s ease;
+	/*  padding: 0px 5px 10px 5px;*/
+	color: firebrick;
+}
+
 .grid-container {
 	width: 100%;
 	max-width: 1200px;

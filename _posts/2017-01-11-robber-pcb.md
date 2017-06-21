@@ -38,17 +38,17 @@ Not sure if I can pull it off; wish me luck.  And feel free to follow the code 
 
 [Lumi3](https://github.com/Ladvien/Lumi3)  
 
-![](/https://ladvien.com/images/Robber_PCB_v1.JPG)
+![](https://ladvien.com/images/Robber_PCB_v1.JPG)
 
 ## Design Info
 
-[Robber_Schematic.pdf](http://ladvien.com/https://ladvien.com/images/Robber_Schematic.pdf)  
+[Robber_Schematic.pdf](http://ladvien.comhttps://ladvien.com/images/Robber_Schematic.pdf)  
 
-![Robber v01 Schematic.PNG](/https://ladvien.com/images/Robber%20v01%20Schematic.PNG)  
+![Robber v01 Schematic.PNG](https://ladvien.com/images/Robber%20v01%20Schematic.PNG)  
 
-![Robber v01 T Solder Guide.PNG](/https://ladvien.com/images/Robber%20v01%20T%20Solder%20Guide.PNG)  
+![Robber v01 T Solder Guide.PNG](https://ladvien.com/images/Robber%20v01%20T%20Solder%20Guide.PNG)  
 
-![Robber v01 B Solder Guide.PNG](/https://ladvien.com/images/Robber%20v01%20B%20Solder%20Guide.PNG)
+![Robber v01 B Solder Guide.PNG](https://ladvien.com/images/Robber%20v01%20B%20Solder%20Guide.PNG)
 
 ## HM-11 Setup
 
@@ -84,9 +84,9 @@ Circuits tested:
 | Vibration Motor | Yes | 100% | It doesn't work too well when powered by USB alone.  Probably need to get a lower powered vibration motor.  Also, I don't like the wire connections.  They get all tangled and pull off.  It'd be better with a PCB mounted vibration motor. |
 
 
-![IMG_1616_0.JPG](/https://ladvien.com/images/IMG_1616_0.JPG)  
+![IMG_1616_0.JPG](https://ladvien.com/images/IMG_1616_0.JPG)  
 
-![IMG_1617_0.JPG](/https://ladvien.com/images/IMG_1617_0.JPG)
+![IMG_1617_0.JPG](https://ladvien.com/images/IMG_1617_0.JPG)
 
 ## Debugging Wireless UART Connection
 
@@ -97,12 +97,12 @@ When the ATtiny84 and HM-11 combination were tested using Lumi the Robber board 
 
 Back to the Robber board issue.  I got wore out trying to do stuff like this:  
 
-![2017-01-22 14.16.09.jpg](/https://ladvien.com/images/2017-01-22%2014.16.09.jpg)
+![2017-01-22 14.16.09.jpg](https://ladvien.com/images/2017-01-22%2014.16.09.jpg)
 
 The wires kept popping off, they'd need to be resoldered, then pop off again.  Finally, I broke down and bought a [SOIC-14 AVR Programmer](http://www.ebay.com/itm/ATtiny24A-SSU-ATtiny24-ATtiny44-ATtiny84-SOIC14-150-mil-AVR-Programmer-Adapter-/250670056425?hash=item3a5d1983e9:g:ijAAAOxyyFhTdw1-).  _Dear lord,_ where has this thing been all of my life?  Instead of taking two hours of setting up a chip, wiring leads, and programming it, I was done in about 10 minutes.  If you like SOIC ATtiny85/84 chips, get one!   
 
 Here's an action shot!  
-![2017-02-01 08.56.38.jpg](/https://ladvien.com/images/2017-02-01%2008.56.38.jpg)
+![2017-02-01 08.56.38.jpg](https://ladvien.com/images/2017-02-01%2008.56.38.jpg)
 
 
 
@@ -111,4 +111,4 @@ Here's an action shot!
 There was trouble testing the SMD RGB LEDs.  During the solder-desoldering process the voltage traces for the green LED came off the board.  However, this shouldn't affect the second LED--but for some reason the green channel on the other LED is the only one working properly.  The red and blue do not seem to be lighting up.    
 
 I thought I'd take a moment and diagram the SMD RGBs I'm using, as I can't ever seem to get directionality correct.  
-![SMD_RGB_Closeup.jpg](/https://ladvien.com/images/SMD_RGB_Closeup.jpg)
+![SMD_RGB_Closeup.jpg](https://ladvien.com/images/SMD_RGB_Closeup.jpg)

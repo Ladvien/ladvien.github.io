@@ -1,0 +1,17 @@
+#!/bin/sh
+ECHO "Syncing files to Ladvien.com Jekyll build directory"
+
+jekyll build --source /Users/user/Documents/GitHub/ladvien.github.io --destination /Users/user/Documents/GitHub/ladvien.github.io/_site
+
+ECHO "Updating Jekyll includes"
+
+rsync -avz /Users/user/Documents/GitHub/ladvien.github.io/_site/* root@ladvien.com:/usr/share/nginx/html
+
+cd /Users/user/Documents/GitHub/ladvien.github.io
+git add .
+echo 'Enter the commit message:'
+read commitMessage
+git commit -m "$commitMessage"
+git push
+
+ECHO "Sending to Ladvien.com"

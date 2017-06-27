@@ -18,7 +18,7 @@ ECHO "****************************"
 echo '* Enter the commit message *'
 ECHO "****************************"
 read commitMessage
-git commit -m "Blogging $(date +%Y%m%d)"
+git commit -m "Blogging $(date +%Y-%m-%d)"
 git push
 ECHO ""
 ECHO "**************************"

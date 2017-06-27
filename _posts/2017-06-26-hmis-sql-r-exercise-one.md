@@ -11,9 +11,9 @@ custom_css:
 custom_js: 
 ---
 
-# Instructions for HMIS, R, SQL Work Challenge One
+# The R and SQL Way
 
-Below are collection of information which should allow working through the first Work Challenge with as little difficulty.
+Below is my attempt to describe the method I use to get at HMIS data.  In short, I'm mixing two powerful data languages to get answers from a data set quickly.
 
 ## What is SQL?
 

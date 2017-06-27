@@ -5,7 +5,7 @@ jekyll build --source /Users/user/Documents/GitHub/ladvien.github.io --destinati
 
 ECHO "Updating Jekyll includes"
 
-rsync -avz /Users/user/Documents/GitHub/ladvien.github.io/_site/* root@ladvien.com:/usr/share/nginx/html
+rsync -avzu /Users/user/Documents/GitHub/ladvien.github.io/_site/* root@ladvien.com:/usr/share/nginx/html
 
 cd /Users/user/Documents/GitHub/ladvien.github.io
 git add .

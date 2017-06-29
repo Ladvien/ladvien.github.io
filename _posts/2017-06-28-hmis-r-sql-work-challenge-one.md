@@ -35,13 +35,13 @@ Both the `Client` and `HealthAndDV` contain the `PersonalID` column.  This often
 
 Now, in the Client.csv the information is readable to us humans.  There will be the `FirstName`, `LastName`, `SSN` columns and many more.  But in the HealthAndDV.csv the information is trickier.  For this challenge we are going to focus on one column `DomesticViolenceVictim`. When you open the data set you may notice that instead of "Yes" or "No" answers in the columns you will see "1" or "0".  That's because computers understand the 1 and 0 much quicker than Yes or No.  
 
-This is an important side note for managing data.  Make the databases easy for computers to understand and report generation will be _much_ faster.  You have to think, if using a 1 instead of Yes could save 0.5 seconds on a calculation, then when you have a dataset which contains 1000 records you just saved 500 seconds 8.3 seconds.  Now, multiple that by 1,700,000 records.  Well, you get the picture.
+This is an important side note for managing data.  Make the databases easy for computers to understand and report generation will be _much_ faster.  You have to think, if using a 1 instead of Yes could save 0.5 seconds on a calculation, then when you have a dataset which contains 1000 records you just saved 500 seconds 8.3 seconds.  Now, multiply by 1,700,000 records.  Well, you get the picture.
 
 Ok.  Back to the problem at hand.  Just know "1" is equal to "Yes" and "0" is equal to "No".  So, for this challenge, we will want to find all the clients who have a "1" in the `DomesticViolenceVictim` column
 
 
 ## The Goal
-We are going to merge the two data sets and find to get the following:
+We are going to merge the two data sets and to discover the following:
 
 1. A list of clients who are victims of domestic violence.
 2. A count of how many clients are fleeing domestic violence.
@@ -53,7 +53,7 @@ To get this information we will need to do the following:
 1. Load the Client.csv and HealthAnd.csv
 2. Filter the HealthAndDV dataset to the most recent according to the column `DateCreated`
 3. Join (merge) the dataframes where their `PersonalID` are the same
-4. Filter the merged dataframe to those who've report `1` in `DomesticViolenceVictim`
+4. Filter the merged dataframe to those who've reported `1` in `DomesticViolenceVictim`
 5. Write this data to a file.
 6. Use a function to count how many participants are in this victim list.
 

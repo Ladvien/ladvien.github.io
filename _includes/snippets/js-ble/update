@@ -1,0 +1,11 @@
+#!/bin/sh
+ECHO "Syncing files to Ladvien.com Jekyll build directory"
+rsync -avz /Users/user/Dropbox/js-practice/js-ble/*.js /Users/user/Documents/GitHub/ladvien.github.io/javascripts/
+rsync -avz /Users/user/Dropbox/js-practice/js-ble/*.css /Users/user/Documents/GitHub/ladvien.github.io/css/
+rsync -avz /Users/user/Dropbox/js-practice/js-ble/*.html /Users/user/Documents/GitHub/ladvien.github.io/_includes/snippets/js-ble
+
+ECHO "Updating Jekyll includes"
+
+rsync -avz /Users/user/Dropbox/js-practice/js-ble/* /Users/user/Documents/GitHub/ladvien.github.io/_includes/snippets/js-ble/
+
+rsync -avz /Users/user/Dropbox/js-practice/js-ble/* root@ladvien.com:/usr/share/nginx/html/projects/lumi5/

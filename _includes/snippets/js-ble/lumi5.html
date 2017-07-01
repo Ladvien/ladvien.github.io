@@ -9,7 +9,6 @@
 </head>
 
 <body>
-
 	<div class="container">
 		<div class="jumbotron">
 			<h1>Lumi5</h1>
@@ -18,55 +17,70 @@
 	</div>
 	<div class="container">
 		<div class="row">
-			<ul class="nav nav-pills">
-				<li id="search-and-connect-btn" class="active"><a data-toggle="pill" href="#connect-pane">
-					<i class="fa fa-plug fa-2x"></i> Connect</a>
-				</li>
-				<li id="terminal-btn"><a data-toggle="pill" href="#terminal-pane">
-					<i class="fa fa-terminal fa-2x"></i> Terminal</a>
-				</li>
-				<li id="handshake-btn"><a data-toggle="pill" href="#handshake-pane">
-					<i class="fa fa-cogs fa-2x"></i> Bootloader</a>
-				</li>
-				<li id="file-btn"><a data-toggle="pill" href="#file-pane">
-					<i class="fa fa-file-text fa-2x"></i> Files</a>
-				</li>
-			</ul>
-		</div>
-		<div class="row">
-			<div class="col-sm-6">
+			<div class="col-sm-3">
 				<div class="tab-content content-pane">
-					<div id="connect-pane" class="tab-pane fade in active">
-						<div class="styled-select blue semi-square">
-							<select>
-							<option selected><i class="fa fa-bluetooth fa-2x"></i> Bluetooth</option>
-						</select>
+					<div class="row">
+						<div class="inner-container">
+							<ul class="nav nav-pills">
+								<li id="search-and-connect-btn" class="active"><a data-toggle="pill" href="#connect-pane">
+									<i class="fa fa-plug fa-2x"></i></a>
+								</li>
+								<li id="handshake-btn"><a data-toggle="pill" href="#handshake-pane">
+									<i class="fa fa-cogs fa-2x"></i></a>
+								</li>
+							</ul>
 						</div>
 					</div>
-					<div id="terminal-pane" class="tab-pane fade">
-
+					<div id="connect-pane" class="tab-pane fade in active">
+						<div class="form-control">
+							<select>
+								<option selected><i class="fa fa-bluetooth fa-2x"></i> Bluetooth</option>
+							</select>
+						</div>
+						<button class="btn btn-primary panel-button" id="search-btn">Search</button>
+						<div class="inner-panel">
+							<div>
+								<label for="optionalServices">Service ID: </label>
+								<input class="form-control" type="text" id="optionalServices" name="service" value="0xFFE0">
+							</div>
+							<div>
+								<label for="pin">Pin #: </label>
+								<input class="form-control" type="text" id="resetPinNumber" name="resetPinNumber" value="">
+								<button class="btn btn-primary panel-button" id="set-reset-pin-btn">Set Reset Button</button>
+							</div>
+						</div>
 					</div>
 					<div id="handshake-pane" class="tab-pane fade">
 						<div>
-							<label for="optionalServices">Service ID: </label>
-							<input type="text" id="optionalServices" name="service" value="0xFFE0">
+							<div>
+								<button class="btn btn-primary panel-button"><i class="fa fa-handshake-o fa-2x"></i> Bootloader</button>
+							</div>
+							<div>
+								<button class="btn btn-primary panel-button" id="read-btn"><i class="fa fa-cloud-download fa-2x"></i> Read Flash</button>
+							</div>
+							<div>
+								<button class="btn btn-primary panel-button" id="upload-btn"><i class="fa fa-cloud-upload fa-2x"></i> Write Flash</button>
+							</div>
+							<div>
+								<button class="btn btn-primary panel-button" id="file-parse-btn"><i class="fa fa-file-text fa-2x"></i> Select File</button>
+							</div>
+							<div>
+								<button class="btn btn-primary panel-button" id="file-upload-btn"><i class="fa fa-microchip fa-2x"></i> Upload File</button>
+							</div>
 						</div>
-						<div>
-							<label for="pin">Pin #: </label>
-							<input type="text" id="resetPinNumber" name="resetPinNumber" value="">
-							<button class="select-reset-pin-btn" id="set-reset-pin-btn">Set Reset Button</button>
-						</div>
-					</div>
-					<div id="file-pane" class="tab-pane fade">
-						<button class="blue semi-square"><i class="fa fa-cloud-download fa-2x"></i> Read Flash</button> This is where the read
-						flash options are.
 					</div>
 				</div>
 			</div>
-			<div class="col-sm-6">
-				<div class="terminal" id="terminal"></div>
-				<button class="btn-primary" id="btn-write-ble">Send</button>
-				<input class="send-text-box" type="text" id="textToWrite" name="text-to-write" value="AT+NAME?">
+			<div class="col-sm-9">
+				<div>
+					<div class="row">
+						<div class="terminal" id="terminal"></div>
+					</div>
+					<div class="row">
+						<button class="btn-primary" id="btn-write-ble">Send</button>
+						<input class="send-text-box" type="text" id="textToWrite" name="text-to-write" value="AT+NAME?">
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>

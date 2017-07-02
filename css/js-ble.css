@@ -7,16 +7,27 @@
 }
 
 .send-text-box {
-	background: black;
+	background: #222222;
 	padding: 8px;
 	margin: 5px;
 	border: solid 1px grey;
 	border-radius: 3px;
-	width: 66%;
+	width: 100%;
+	color:green;
+}
+
+.send-text-btn {
+	width: 100%;
+	padding: 8px;
+	margin: 5px;
+}
+
+.send-text-row{
+	height: 40px;
 }
 
 .terminal {
-	background: #555555;
+	background: #222222;
 	height: 420px;
 	overflow: scroll;
 	margin: 5px 0 0;
@@ -28,7 +39,7 @@
 }
 
 .received-text {
-	color: #D25252;
+	color:green;
 	width: 100%;
 	padding: 1px;
 	/*    border-width: .01em;*/
@@ -37,7 +48,7 @@
 }
 
 .sent-text {
-	color: #9876AA;
+	color: blue;
 	width: 100%;
 	padding: 1px;
 	/*    border-width: .01em;*/
@@ -46,7 +57,7 @@
 }
 
 .system-text {
-	color: #F31431;
+	color:red;
 	width: 100%;
 	padding: 1px;
 	font-family: "Courier New", Courier, monospace;

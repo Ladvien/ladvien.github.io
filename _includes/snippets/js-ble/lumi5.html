@@ -72,13 +72,17 @@
 				</div>
 			</div>
 			<div class="col-sm-9">
-				<div>
+				<div class="send-text-row">
 					<div class="row">
-						<div class="terminal" id="terminal"></div>
+						<div class="col-sm-12 terminal" id="terminal"></div>
 					</div>
 					<div class="row">
-						<button class="btn-primary" id="btn-write-ble">Send</button>
-						<input class="send-text-box" type="text" id="textToWrite" name="text-to-write" value="AT+NAME?">
+						<div class="col-sm-2">
+							<button class="send-text-btn btn btn-primary" id="btn-write-ble">Send</button>
+						</div>
+						<div class="col-sm-10">
+							<input class="send-text-box" type="text" id="textToWrite" name="text-to-write" value="AT+NAME?">
+						</div>
 					</div>
 				</div>
 			</div>

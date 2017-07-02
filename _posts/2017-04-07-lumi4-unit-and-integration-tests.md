@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Lumi4 -- Unit and Integration Tests
-categories: HMIS, R, SQL
+categories: lumi
 excerpt: 
 tags: [robot, C#, TinySafeBoot]
 image: 

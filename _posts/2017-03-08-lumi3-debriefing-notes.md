@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Lumi3 Debriefing Notes
-categories: robot
+categories: robots
 excerpt:
 tags: [robot, C#, TinySafeBoot]
 image: 

@@ -1,8 +1,7 @@
 ---
 layout: post
 title: R Function to Split CSVs
-categories: HMIS, R, SQL
-excerpt:
+categories: HMIS
 tags: [ETO, HMIS, R, SQL]
 image: 
     feature: R_SQL.png

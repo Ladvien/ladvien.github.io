@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Read and Write CSVs in R
-categories: HMIS, R, SQL
+categories: HMIS
 excerpt: 
 tags: [ETO, HMIS, R, SQL]
 image: 
@@ -11,7 +11,7 @@ custom_css:
 custom_js: 
 ---
 
-R let's us work with HMIS data, but there is still the problem of how to load the data into R from a source.  R is actually pretty neat regarding data importing.  One can load data from a website, SQL database, text file, Excel file, or CSV.
+R let's us work with HMIS data, but there is still the problem of how to load the data into R from a source.  R is actually pretty neat regarding data importing.  We can load data from a website, SQL database, text file, Excel file, or CSV.
 
 When working with HMIS data the two most common types of data source are Excel and CSV.  Therefore, it's going to pay to spend a little time on how to bring those files into R.
 
@@ -40,7 +40,7 @@ pathToCsv <- file.choose()
 myCsvAsADataFrame <- read.csv(pathToCsv)
  {% endhighlight %}
 
-These two commands, when executed, will force R to create a file selection box. This will allow one to easily select the CSV to load into R.  Once selected and one presses `Ok` then R will load the selected file's path into the variable `pathToCsv`.
+These two commands, when executed, will force R to create a file selection box. This will allow us to easily select the CSV to load into R.  Once selected and we press`Ok` then R will load the selected file's path into the variable `pathToCsv`.
 
 The next command `read.csv()` takes the path provided and attempts to load the file it points to and converts it into a dataframe.  Once R creates a dataframe from the file selected it saves it in the variable `myCsvAsADataFrame`
 
@@ -56,7 +56,7 @@ For example:
 write.csv(theDataFrameToWrite, "NameOfFile.csv")
 {% endhighlight %}
 
-That's it, pretty simple, eh?  Well, there are a couple of catches.  When R saves a CSV it does a few things which are annoying for using the data in other way.  For example, let's say one has data in R that looks like this:
+That's it, pretty simple, eh?  Well, there are a couple of catches.  When R saves a CSV it does a few things which are annoying for using the data in other way.  For example, let's say we have data in R that looks like this:
 
 PersonalID | Name | SSN
 ---------|----------|---------
@@ -72,7 +72,7 @@ PersonalID | Name | SSN
  B7YIOJIGF9CDP6FV7TANQXLMQRMBTVTB | Bob Purdy | **NA**
  DSK329GJB9234J5JFSDF94056NDUNVDF | Frank | 123-99-9999
 
- Note the added `NA`.  It is a good practice to put an NA in places where there are no data.  Unfortunately, when dealing with HMIS data sets the standard is to leave a blank instead.  To get R to conform to this standard one uses an option in the `write.csv()` function.  
+ Note the added `NA`.  It is a good practice to put an NA in places where there are no data.  Unfortunately, when dealing with HMIS data sets the standard is to leave a blank instead.  To get R to conform to this standard we use an option in the `write.csv()` function.  
 
  For example:
 {% highlight r %}

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Lumi4 -- LumiCommunication
-categories: robot
+categories: robots
 excerpt:
 tags: [robot, C#, TinySafeBoot]
 image: 

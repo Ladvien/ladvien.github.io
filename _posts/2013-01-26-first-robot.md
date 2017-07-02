@@ -2,7 +2,6 @@
 layout: post
 title: First Robot
 categories: robots
-excerpt:
 tags: [robots, PCB, SMD]
 color: "#152a55"
 image:

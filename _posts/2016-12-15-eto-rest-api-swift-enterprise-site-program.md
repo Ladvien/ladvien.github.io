@@ -1,7 +1,7 @@
 ---
 layout: post
 title: ETO REST API in Swift -- Enterprise, Site, and Program Select
-categories: HMIS, iOS
+categories: HMIS
 excerpt:
 tags: [ETO, HMIS, iOS, REST, Swift]
 image: 

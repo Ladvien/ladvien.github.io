@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Attachment II, aka, The Zombie
-categories: HMIS, R, SQL
+categories: robot
 excerpt:
 tags: [ETO, HMIS, R, SQL]
 image: 

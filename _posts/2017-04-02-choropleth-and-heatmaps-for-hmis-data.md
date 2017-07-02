@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Choropleth and Heatmaps for HMIS Data
-categories: HMIS, R, SQL, Choropleth
+categories: HMIS
 excerpt: 
 tags: [ETO, HMIS, R, SQL]
 image: 

@@ -1,9 +1,9 @@
 ---
 layout: post
 title: Veteran's Report 2.0
-categories: HMIS, R, SQL
+categories: HMIS
 excerpt: 
-tags: [ETO, HMIS, R, SQL]
+tags: [ETO, HMIS, R, SQL, choropleth]
 image: 
     feature: R_SQL.png
 comments: true

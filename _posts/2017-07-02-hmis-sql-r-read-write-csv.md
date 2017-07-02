@@ -12,7 +12,7 @@ custom_js:
 ---
 
 # Read and Write CSVs in R
-R let's us work with HMIS data, but there is still the problem of how to load the data into R from a source.  R is actually pretty neat regarding data importing.  One can load data from a website, SQL database, text file, Excel file, or CSV. 
+R let's us work with HMIS data, but there is still the problem of how to load the data into R from a source.  R is actually pretty neat regarding data importing.  One can load data from a website, SQL database, text file, Excel file, or CSV.
 
 When working with HMIS data the two most common types of data source are Excel and CSV.  Therefore, it's going to pay to spend a little time on how to bring those files into R.
 

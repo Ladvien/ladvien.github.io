@@ -20,8 +20,8 @@ CSV stand for Comma Separated Value format.  It is a near ancient file format wh
 
 {% highlight text %}
 PersonalID,FirstName,LastName
-B7YIOJIGF9CDP6FV7TANQXLMQRMBTVTB, Bob, Person
-ASGJ4F95HS85N39DJ12AJB094M59DJ45, Jane, People
+B7YIOJIGF9CDP6FV7TANQXLMQRMBTVTB,Bob,Person
+ASGJ4F95HS85N39DJ12AJB094M59DJ45,Jane,People
 {% endhighlight %}
 
 However, if you open the same CSV in Excel it will look something like this:
@@ -31,7 +31,7 @@ PersonalID | FirstName | LastName
  B7YIOJIGF9CDP6FV7TANQXLMQRMBTVTB | Bob | Person
  ASGJ4F95HS85N39DJ12AJB094M59DJ45 | Jane | People
 
- Let's be honest, the second example is easier for humans to read (well, unless you're an odd human).  And for the most part, we will be looking at CSVs in Excel or in RStudio's dataview which looks similar to Excel.  *_However_*, it is important to note the easier to read version can hide data errors that may only be visible by viewing the raw CSV.  Nothing to worry about now, but keep it in mind.
+ Let's be honest, the second example is easier for humans to read (well, unless you're an odd human).  And for the most part, we will be looking at CSVs in Excel or in RStudio's dataview which looks similar to Excel.  **However**, it is important to note the easier to read version can hide data errors that may only be visible by viewing the raw CSV.  Nothing to worry about now, but keep it in mind.
 
  Alright, let's explore how to load a CSV file into R.  There is many way's to do this, but let's start with a super-easy way:
 

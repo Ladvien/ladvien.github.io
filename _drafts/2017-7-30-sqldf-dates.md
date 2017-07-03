@@ -51,20 +51,20 @@ One of the most important things a human can learn about computers is something 
 
 Most humans (at least in the united states) will know the first number is a ZIP code, the second a phone number, and last bithdate.  Humans know this because our brains have learned how to discern from context.  In the case of the ZIP code, it's exactly 5 numbers, the phone contains dashes at at exact places, and the date of birth has contains slashes in the exact spot we'd expect of a data of birth.
 
-In R you can see what datatype a column of your dataframe is by clicking the blue button next to the dataframe name in the Global Environment variables.
-
-![](https://ladvien.com/images/r-datatypes.png)
-
 Unfortunately, computer's have a little more difficulty with this.  Most computer are smart enough now days to know the phone number and date of birth, but the ZIP code will confuse the heck out of a computer.
 
 A computer's initial reaction in seeing the ZIP code is, "Oh, you mean 76,110.  That's a big number."  When really, this number represents a geographic location.
 
 Ok, let's make this more relevant to HMIS work.  The way we help a computer understand what numbers are representing is by telling the computer what type of data a particular column is.  This is known as a datatype.  For us, we really only deal with a hand few of datatypes, but their are hundreds of thousand of datatypes.
 
+In R you can see what datatype a column of your dataframe is by clicking the blue button next to the dataframe name in the Global Environment variables.
+
+![](https://ladvien.com/images/r-datatypes.png)
+
 We will be dealing with the following:
 
-* Dates
-* Strings
+* Dates (called "POSXct" in R)
+* Strings (called "chr" in R)
 * Numbers
 * Factors
 
@@ -142,7 +142,27 @@ Is an example of factors.  They are categories of data.  The important of factor
 
 *If you don't understand factors, it's cool.  Just think of them as strings.* However, if you don't understand strings, please email and let's chat.  Understanding them is critical to working with SQLdf.
 
-## SQLdf and Datatype
-Anytime you mix two different languages it pays to be careful about meaning.  As I learned once by talking about _pie_ as something I liked--come to find out, it was funny to some Spanish friends who were learning English.  (Apparently pie is Spanish for foot?)
+## SQLdf and Datatypes
+Anytime you mix two different languages it pays to be careful about meaning.  As I learned once by talking about _pie_ as something I liked--come to find out, it was funny to Hispanic friends who were learning English.  (Apparently pie is Spanish for foot?)
 
-When mixing R and SQL we must be careful about how the two languages look at the datatypes.
+When mixing R and SQL we must be careful about how the two languages look at the datatypes.  In R it sees dates as a `POSXct` datatype (this is essentially fancy `date` datatype.  [Would you like to know more](http://biostat.mc.vanderbilt.edu/wiki/pub/Main/ColeBeck/datestimes.pdf)?)
+
+Well, this is all fine and dandy, but when we pass commands from R to SQL it is all passed as a string.
+
+{% highlight r%}
+dataFrame2 <- sqldf("SELECT * FROM dataFrame1")
+{% endhighlight %}
+
+Notice `SELECT * FROM dataFrame1` is all in quotation marks? This turns it into a string passes, then it passes it SQLite which is hidden to us.
+
+If all this is a bit overwhelming, no worries.  Bookmark this page to refer back to later.  Just remember the following:
+
+Date columns must be converted into a `chr` datatype _before_ passing it to SQL.  How to we convert datatypes?  It's pretty darn simple.  We use something called data coercion.
+
+## Coercing Data Types
+Let's go back to that ZIP code and number example.  Let's say the computer reads all your ZIP codes from a file as a number.  This happens a lot, since to the computer that's what it looks like--so it guesses that's what you are going to want.  
+
+But no, we want those ZIP codes to be strings.
+{% highlight r %}
+dataframe <- 
+{% endhighlight %}

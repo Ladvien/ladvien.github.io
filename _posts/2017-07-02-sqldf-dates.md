@@ -140,7 +140,7 @@ Violet
 
 Is an example of factors.  They are categories of data.  The important of factors will become more evident as we work through these tutorials in R.
 
-*If you don't understand factors, it's cool.  Just think of them as strings.* However, if you don't understand strings, please email and let's chat.  Understanding them is critical to working with SQLdf.
+*If you don't understand factors, it's cool.  Just think of them as strings.* However, if you don't understand strings, please ask any questions in comments below.  Understanding them is critical to working with SQLdf.
 
 ## SQLdf and Datatypes
 Anytime you mix two different languages it pays to be careful about meaning.  As I learned once by talking about _pie_ as something I liked--come to find out, it was funny to Hispanic friends who were learning English.  (Apparently pie is Spanish for foot?)
@@ -186,14 +186,14 @@ For example, a Client.csv file should have a `DateCreated` column.  This represe
  ... | 5/22/13 9:23 | 10/15/16 1:29
  ... | 6/3/15 19:22 | 3/17/17 21:09
 
-Let's try to get all of the clients who've been entered after 10/01/2015.
+Let's try to get all of the clients who've been entered after 10/01/2014.
 
 {% highlight r%}
 dataFramContainingDates <- read.csv("/Users/user/Downloads/Client.csv")
-datesEntered <- sqldf("SELECT * FROM dataFramContainingDates WHERE DateCreated > '2015-10-01'")
+datesEntered <- sqldf("SELECT * FROM dataFramContainingDates WHERE DateCreated > '2014-10-01'")
 {% endhighlight %}
 
-The above code should provide every column where DateCreated date is greater than 2015-10-01.  But, instead, it will result in an empty dataframe.  Waaah-waah.
+The above code should provide every column where DateCreated date is greater than 2014-10-01.  But, instead, it will result in an empty dataframe.  Waaah-waah.
 
 Essentially, this is because SQL is comparing a number and a string.  It freaks the computer out.
 
@@ -206,9 +206,14 @@ Ok, so, the take away?  Before passing any dates to SQL convert them to strings.
 {% highlight r %}
 dataFramContainingDates <- read.csv("/Users/user/Downloads/Client.csv")
 dataFrameContaingDates$DateCreated <- as.character(dataFrameContaingDates$DateCreated)
-datesEntered <- sqldf("SELECT * FROM dataFramContainingDates WHERE DateCreated > '2016-10-01'")
+datesEntered <- sqldf("SELECT * FROM dataFramContainingDates WHERE DateCreated > '2014-10-01'")
 {% endhighlight %}
 
-By using the `as.character` function to convert the `DateCreated` column to a string and then assigning it back to the dateframe, it sets SQL up to do the date comparisons correctly. 
+By using the `as.character` function to convert the `DateCreated` column to a string and then assigning it back to the dateframe, it sets SQL up to do the date comparisons correctly.  Using the dateframe from above, this should result in the following table:
+
+... | DateCreated | DateUpdated
+---------|----------|---------
+ ... | 10/23/14 0:01 | 4/23/15 15:27
+ ... | 6/3/15 19:22 | 3/17/17 21:09
 
 Confused as heck? Feel free to ask questions in the comments below!

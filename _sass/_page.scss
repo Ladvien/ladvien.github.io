@@ -146,6 +146,12 @@ body {
 	}
 }
 
+.table > thead > tr > th {
+  vertical-align: bottom;
+  text-align: left;
+  border-bottom: 2px solid #ddd;
+}
+
 .entry-image {
 	position: relative;
 	top: -50%; 

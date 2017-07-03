@@ -67,6 +67,7 @@ Below are the resources which should help you understand each step of the proces
 ### Step 2
 * The Complete SQL Bootcamp -- All Videos in Section 5
 * The Complete SQL Bootcamp -- All Videos in Section 6
+* [Working with Dates in SQLdf](https://ladvien.com/sqldf-dates/)
 
 ### Step 3
 * The Complete SQL Bootcamp -- All Videos in Section 8
@@ -75,7 +76,7 @@ Below are the resources which should help you understand each step of the proces
 * [HMIS, R, SQL -- Queries](https://ladvien.com/hmis/hmis-r-sql-query/)
 
 ### Step 5 -- 
-* Tutorial coming...
+* [Read and Write CSVs](https://ladvien.com/hmis-sql-r-read-write-csv/)
 
 ### Step 6 --
 * The Complete SQL Bootcamp -- All Videos in Section 5

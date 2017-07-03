@@ -19,7 +19,6 @@ If TL;DR, skip to `Coerce Date Types into Strings before Passing to SQLdf` at bo
 The power of SQLdf comes from its ability to convert dataframes into SQLite databases on the fly.  To the user, it doesn't appear like anything special is going on, but under the hood R is working together with a SQLite client to create a table which can be queried and manipulated with ANSI SQL calls.
 
 For example,
-
 {% highlight r %}
 dataFrame1 <- read.csv(pathToData)
 library("sqldf")
@@ -46,18 +45,17 @@ And this is how we will shape our data in the R-SQL way.
 
 ## Datatypes
 One of the most important things a human can learn about computers is something called datatypes.  When computers process information they need a little help from humans in attempt to understand what to do with the information.  For example, what do these numbers mean to you?
-
 {% highlight text %}
 76110, 444-325-7645, 10/24/1980
 {% endhighlight %}
 
 Most humans (at least in the United States) will know the first number is a ZIP code, the second a phone number, and last date.  Humans know this because our brains have learned how to discern from context.  In the case of the ZIP code, it's exactly 5 numbers, the phone contains dashes at at exact places, and the date contains slashes in the exact spot we'd expect of a date.
 
-Unfortunately, computers have a little more difficulty with this.  Most computer are smart enough now days to know the phone number and date of birth, but the ZIP code will confuse the heck out of a computer.
+Unfortunately, computers have a little more difficulty with this.  Most computers are smart enough now days to know the phone number and date of birth, but the ZIP code will confuse the heck out of a computer.
 
 A computer's initial reaction in seeing the ZIP code is, "Oh, you mean 76,110.  That's a big number."  When really, this number represents a geographic location.
 
-Ok, let's make this more relevant to HMIS work.  The way we help a computer understand what numbers are representing is by telling the computer what type of data a particular column is.  This is known as a datatype.  For us, we really only deal with a hand few of datatypes, but their are hundreds of thousand of datatypes.
+Ok, let's make this more relevant to HMIS work.  The way to help a computer understand what numbers are representing is by telling the computer what type of data a particular column is.  This is known as a datatype.  For us, we really only deal with a few datatypes, but their are hundreds of thousand of datatypes.
 
 In R you can see what datatype a column of your dataframe is by clicking the blue button next to the dataframe name in the Global Environment variables.
 
@@ -74,7 +72,6 @@ Of course, every programming language can calls these datatypes by different nam
 
 ### Dates
 Date datatypes usually look like this: 
-
 {% highlight r %}
 10/24/1980
 {% endhighlight %}
@@ -88,29 +85,30 @@ An example of different formats of the same data:
 102480
 {% endhighlight %}
 
-Ok, back to the data datatype.  It is used when dealing with dates.  By declaring a variable as having a date datatype, it is telling the computer whatever we put into that variable to interpret as a date.  Simple enough.
+Ok, back to the date datatype.  It is used when dealing with dates.  By declaring a variable as having a date datatype, it is telling the computer whatever we put into that variable to interpret as a date.  Simple enough.
 
 ### Strings
-When we talk about string we aren't talking about fuzzy things kittens chase.  A string datatype is a series of character (one part of a string) strung together.  _Anything_ can be a string.  They are probably the most important datatype, since they can tell a computer to look at a number and see something else.  Confused?  Let's look at some examples.
+When we talk about string we aren't talking about fuzzy things kittens chase.  A string datatype is a series of characters (one part of a string) strung together.  _Anything_ can be a string.  They are probably the most important datatype, since they can tell a computer to look at a number and see something else.  Confused?  Let's look at some examples.
 
-First, know the way we tell a computer is a string is by putting it either in double quotes `"this is a string"` or single quotes `'this is also a string'`.  
+We tell a computer data is a string is by putting it in double quotes `"this is a string"` or single quotes `'this is also a string'`.  
 
-For example, if we wanted to assign a variable a string in R we could do so by doing the following:
-
+Here's an example of assigning a string in R:
 {% highlight r %}
 myFirstString <- "this is a string"
 {% endhighlight %}
 
-Great! But what can we do with it?  Well, a lot.  For example, let's say we wanted to path a path of a file to a `read.csv()` function.  We could do so by providing the path as a string.
+Great! But what can we do with it?  Well, a lot.
 
+Let's say we wanted to pass a path of a file to a `read.csv()` function.  We could do so by providing the path as a string.
 {% highlight r%}
 dataFrame <- read.csv("/Users/user/Downloads/Client.csv")
 {% endhighlight%}
 
-The above will load the Client.csv file that is located at the `/Users/user/Downloads/` directory--the computer knows how to read the path because it's a string.
+The above will load the Client.csv file located at the `/Users/user/Downloads/` directory--the computer knows how to read the path because it's a string.
 
-But why are string so important?  Well, they allow us to tell a computer to override its basic instinct and view a piece of data as something other than what the computer would guess it as.  Returning to the ZIP code.
+But why are strings so important?  Well, they allow us to tell a computer to override its basic instinct and view a piece of data as something other than what the computer would guess it is.
 
+Returning to the ZIP code.
 {% highlight r%}
 notAZipCode <- 76110
 myZipCode <- "76110"
@@ -119,7 +117,7 @@ myZipCode <- "76110"
 These variable assignments may seem to be exactly the same, however, the first one creates a variable as a number, however, the second tells the computer, "This is a not a number, it is something else--please don't pretend to understand it.  I'll tell you exactly what to do with it later."
 
 ### Numbers
-Number datatypes are pretty easy.  It's pretty much how a computer tries to look at every data you provide it.  One important characteristic about numbers, you can have the computer perform math functions on numbers, which you couldn't on strings. 
+Number datatypes are easy.  It's pretty much how a computer tries to look at all data you provide it.  One important characteristic about numbers, you can have the computer perform math functions on numbers, which you couldn't on strings.
 
 {% highlight r%}
 dataframe1 <- 12 * 12 

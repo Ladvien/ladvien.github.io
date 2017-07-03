@@ -186,14 +186,14 @@ For example, a Client.csv file should have a `DateCreated` column.  This represe
  ... | 5/22/13 9:23 | 10/15/16 1:29
  ... | 6/3/15 19:22 | 3/17/17 21:09
 
-Let's try to get all of the clients who've been entered after 10/01/2016.
+Let's try to get all of the clients who've been entered after 10/01/2015.
 
 {% highlight r%}
 dataFramContainingDates <- read.csv("/Users/user/Downloads/Client.csv")
-datesEntered <- sqldf("SELECT * FROM dataFramContainingDates WHERE DateCreated > '2016-10-01'")
+datesEntered <- sqldf("SELECT * FROM dataFramContainingDates WHERE DateCreated > '2015-10-01'")
 {% endhighlight %}
 
-The above code should provide every column where DateCreated date is greater than 2016-10-01.  But, instead, it will result in an empty dataframe.  Waaah-waah.
+The above code should provide every column where DateCreated date is greater than 2015-10-01.  But, instead, it will result in an empty dataframe.  Waaah-waah.
 
 Essentially, this is because SQL is comparing a number and a string.  It freaks the computer out.
 

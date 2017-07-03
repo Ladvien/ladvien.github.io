@@ -114,7 +114,7 @@ notAZipCode <- 76110
 myZipCode <- "76110"
 {% endhighlight %}
 
-These variable assignments may seem to be exactly the same, however, the first one creates a variable as a number, however, the second tells the computer, "This is a not a number, it is something else--please don't pretend to understand it.  I'll tell you exactly what to do with it later."
+These variable assignments may seem to be exactly the same, however, the first one creates a variable as a number, but the second tells the computer, "This is a not a number, it is something else--please don't pretend to understand it.  I'll tell you exactly what to do with it later."
 
 ### Numbers
 Number datatypes are easy.  It's pretty much how a computer tries to look at all data you provide it.  One important characteristic about numbers, you can have the computer perform math functions on numbers, which you couldn't on strings.
@@ -153,7 +153,7 @@ Well, this is all fine and dandy, but when we pass commands from R to SQL it is 
 dataFrame2 <- sqldf("SELECT * FROM dataFrame1")
 {% endhighlight %}
 
-Notice `SELECT * FROM dataFrame1` is all in quotation marks? This turns it into a string passes, then it passes it SQLite which is hidden to us.
+Notice `SELECT * FROM dataFrame1` is all in quotation marks? This turns it into a string then it passes it SQLite, which is hidden to us.
 
 If all this is a bit overwhelming, no worries.  Bookmark this page to refer back to later.  Just remember the following:
 
@@ -175,7 +175,7 @@ dataframe$zipCodes <- as.character(dataFrame$zipCodes)
 This will convert the zipCode column from a number into a string, then, it assigns it back to the column zipCodes.  Boom! We've told the computer to stop trying to make a ZIP code a number.  Instead, treat it as a string.  And with that, we will tell the computer later how to use ZIP codes.
 
 ## Coerce Date Types into Strings before Passing to SQLdf
-Ok, now for the reason for this entire article.  Before passing any dates to SQLdf we need to first convert them to strings.  Otherwise, SQLdf will try to treat them as numbers--which will cause a lot of heart ache.
+Ok, now for the reason for this entire article.  Before passing any dates to SQLdf we need to first convert them to strings.  Otherwise, SQLdf will try to treat them as numbers--which will cause a lot of heartache.
 
 For example, a Client.csv file should have a `DateCreated` column.  This represents the date a case-manager put the data into HMIS.  The data should look something like this:
 
@@ -185,6 +185,8 @@ For example, a Client.csv file should have a `DateCreated` column.  This represe
  ... | 10/23/14 0:01 | 4/23/15 15:27
  ... | 5/22/13 9:23 | 10/15/16 1:29
  ... | 6/3/15 19:22 | 3/17/17 21:09
+
+Let's try to get all of the clients who've been entered after 10/01/2016.
 
 {% highlight r%}
 dataFramContainingDates <- read.csv("/Users/user/Downloads/Client.csv")

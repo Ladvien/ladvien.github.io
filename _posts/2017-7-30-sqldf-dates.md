@@ -12,6 +12,8 @@ custom_js:
 ---
 Mixing R and SQL is powerful.  One of the easiest ways to implement this combination is with the R library SQLdf.
 
+If TL;DR, skip to `Coerce Date Types into Strings before Passing to SQLdf` at bottom.
+
 
 ## SQLdf
 The power of SQLdf comes from its ability to convert dataframes into SQLite databases on the fly.  To the user, it doesn't appear like anything special is going on, but under the hood R is working together with a SQLite client to create a table which can be queried and manipulated with ANSI SQL calls.
@@ -162,7 +164,51 @@ Date columns must be converted into a `chr` datatype _before_ passing it to SQL.
 ## Coercing Data Types
 Let's go back to that ZIP code and number example.  Let's say the computer reads all your ZIP codes from a file as a number.  This happens a lot, since to the computer that's what it looks like--so it guesses that's what you are going to want.  
 
-But no, we want those ZIP codes to be strings.
+But no, we want those ZIP codes to be strings. To do this, we can get a particular column from a dataframe by writing the name of the dataframe then `$` then the name of the column.  For example, `datafram$zipCodes` will return only the column `zipCodes` from dataframe.
+
+Alright, now we have a way to select one column from our dataframe we can attempt to convert that one column's datatype.  To do this use the `as.character()` command.
+
 {% highlight r %}
-dataframe <- 
+dataframe$zipCodes <- as.character(dataFrame$zipCodes)
 {% endhighlight %}
+
+![](https://ladvien.com/images/zip-codes-number-to-string.png)
+
+This will convert the zipCode column from a number into a string, then, it assigns it back to the column zipCodes.  Boom! We've told the computer to stop trying to make a ZIP code a number.  Instead, treat it as a string.  And with that, we will tell the computer later how to use ZIP codes.
+
+## Coerce Date Types into Strings before Passing to SQLdf
+Ok, now for the reason for this entire article.  Before passing any dates to SQLdf we need to first convert them to strings.  Otherwise, SQLdf will try to treat them as numbers--which will cause a lot of heart ache.
+
+For example, a Client.csv file should have a `DateCreated` column.  This represents the date a case-manager put the data into HMIS.  The data should look something like this:
+
+
+... | DateCreated | DateUpdated
+---------|----------|---------
+ ... | 10/23/14 0:01 | 4/23/15 15:27
+ ... | 5/22/13 9:23 | 10/15/16 1:29
+ ... | 6/3/15 19:22 | 3/17/17 21:09
+
+{% highlight r%}
+dataFramContainingDates <- read.csv("/Users/user/Downloads/Client.csv")
+datesEntered <- sqldf("SELECT * FROM dataFramContainingDates WHERE DateCreated > '2016-10-01'")
+{% endhighlight %}
+
+The above code should provide every column where DateCreated date is greater than 2016-10-01.  But, instead, it will result in an empty dataframe.  Waaah-waah.
+
+Essentially, this is because SQL is comparing a number and a string.  It freaks the computer out.
+
+Instead, we should convert the `DateCreated` column to a string instead of a date.  Then, SQL will actually convert it from a string to a date.
+
+Confused?  Imagine me when I was trying to figure this out on my own.
+
+Ok, so, the take away?  Before passing any dates to SQL convert them to strings.
+
+{% highlight r %}
+dataFramContainingDates <- read.csv("/Users/user/Downloads/Client.csv")
+dataFrameContaingDates$DateCreated <- as.character(dataFrameContaingDates$DateCreated)
+datesEntered <- sqldf("SELECT * FROM dataFramContainingDates WHERE DateCreated > '2016-10-01'")
+{% endhighlight %}
+
+By using the `as.character` function to convert the `DateCreated` column to a string and then assigning it back to the dateframe, it sets SQL up to do the date comparisons correctly. 
+
+Confused as heck? Feel free to ask questions in the comments below!

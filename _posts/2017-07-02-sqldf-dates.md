@@ -23,7 +23,7 @@ For example,
 {% highlight r %}
 dataFrame1 <- read.csv(pathToData)
 library("sqldf")
-dataFrame2 <- sqldf("SELECT FirstName FROM dataFrame)
+dataFrame2 <- sqldf("SELECT FirstName FROM dataFrame")
 {% endhighlight %}
 
 These three lines do a lot.  It loads data from a CSV, loads a library of functions for convert R dataframes into SQLite databases, and then the `sqldf()` function call does two things at once.  It converts the R dataframe into a SQLite database and then queries it for the FirstName column.
@@ -45,7 +45,7 @@ Jane |
 And this is how we will shape our data in the R-SQL way.
 
 ## Datatypes
-One of the most important things a human can learn about computers is something called datatypes.  When computers process information they need a little help from humans in attempt to understand what to do with the information.  For example, what does this number mean to you?
+One of the most important things a human can learn about computers is something called datatypes.  When computers process information they need a little help from humans in attempt to understand what to do with the information.  For example, what do these numbers mean to you?
 
 {% highlight text %}
 76110, 444-325-7645, 10/24/1980

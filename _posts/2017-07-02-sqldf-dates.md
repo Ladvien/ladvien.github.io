@@ -38,7 +38,7 @@ PersonalID | FirstName | LastName
 Then the `dataFrame2 <- sqldf("SELECT FirstName FROM dataFrame)` will create a variable called `dataFrame2` which contains the FirstName column from dataFrame1
 
 FirstName |
-----------|
+-|
 Bob |
 Jane |
 

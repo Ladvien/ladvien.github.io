@@ -53,7 +53,7 @@ One of the most important things a human can learn about computers is something 
 
 Most humans (at least in the United States) will know the first number is a ZIP code, the second a phone number, and last date.  Humans know this because our brains have learned how to discern from context.  In the case of the ZIP code, it's exactly 5 numbers, the phone contains dashes at at exact places, and the date contains slashes in the exact spot we'd expect of a date.
 
-Unfortunately, computer's have a little more difficulty with this.  Most computer are smart enough now days to know the phone number and date of birth, but the ZIP code will confuse the heck out of a computer.
+Unfortunately, computers have a little more difficulty with this.  Most computer are smart enough now days to know the phone number and date of birth, but the ZIP code will confuse the heck out of a computer.
 
 A computer's initial reaction in seeing the ZIP code is, "Oh, you mean 76,110.  That's a big number."  When really, this number represents a geographic location.
 

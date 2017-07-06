@@ -29,6 +29,11 @@ body {
   font-size: 0px + $doc-font-size;
 }
 
+table {
+  overflow-x: scroll;
+  display: block;
+}
+
 /* 
    Colors
    ========================================================================== */

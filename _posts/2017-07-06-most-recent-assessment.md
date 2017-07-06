@@ -12,7 +12,9 @@ custom_js:
 ---
 
 ## Enrolmment.csv
-Many of the CSVs in the HMIS CSV can contain multiple rows per client.  This can make it difficult when working with HMIS data, as it appears to the non-data person there are duplicates within your data.  Let's look at some dataframes:
+Many of the CSVs in the HMIS CSV may contain multiple rows per client.  This can make it difficult when working with HMIS data, as it appears to the non-data person there are duplicates within your data.  
+
+Let's look at some dataframes:
 
 **enrollmentDf**
 
@@ -24,7 +26,7 @@ ProjectEntryID | PersonalID | FirstName | EntryDate
 
  Notice how Bob has two records?  One on 10/17/2016 and 01/01/2013.  This represents two HUD Entry Assessments completed on Bob.  These HUD Entry Assessments could represent two stays in the _same_ program, or one stay in two programs.
 
- Regardless, whenever you go to join this data set with a another dataframe, like the Client.csv for example, it will cause the resulting dataframe to have two rows representing both of Bob's enrollments.
+ Regardless, whenever you go to join this dataframe with a another dataframe, like the Client.csv, it will cause the resulting dataframe to have two rows representing both of Bob's enrollments.
 
  Let me walk us through joining the above dataframe with another dataframe.
 
@@ -66,7 +68,7 @@ clientDf = data.frame(PersonalID=c("ZP1U3EPU2FKAWI6K5US5LDV50KRI1LN7", "IA26X38H
 library(sqldf)
 
 # Join the two dataframes.
-clientAndEnrollmentDf <- sqldf("SELECT  
+clientAndEnrollmentDf <- sqldf("SELECT * 
                                FROM clientDf 
                                LEFT JOIN enrollmentDf 
                                ON clientDf.PersonalID=enrollmentDf.PersonalID")
@@ -99,7 +101,7 @@ After executing the code, you should end up with a table like this.  Not too sha
 
 However, notice there are still rows for Bob?  These aren't _technically_ duplicates.  A duplicate is when there are two rows where items in every column are exactly the same.  But in the case of the dataframe above, notice how the **ProjectEntryID** and **EntryDate** columns for Bob's records are different?  
 
-As stated before, this is carried forth from Bob having two HUD Entry Assessments.  But to the people whom we are going to present these data, it looks like duplicates.  This is a problem because it will be seen as sloppy work (but remember, it's not.  It's merely a technical artefact)
+As stated before, this is carried forth from Bob having two HUD Entry Assessments.  But to the people whom we are going to present these data, it looks like duplicates.  This is a problem because it will be seen as sloppy work (but remember, it's not.  It's merely a technical artefact).
 
 Who cares! How do we get rid of it?
 
@@ -118,7 +120,8 @@ clientAndEnrollmentDf2 <- sqldf("SELECT *, MAX(EntryDate) FROM clientAndEnrollme
 {% endhighlight %}
 
 This should provide you with the following table:
-|PersonalID                       |FirstName |LastName |ProjectEntryID                   |PersonalID.1                     |FirstName.1 |EntryDate  |MAX(EntryDate) |
+
+|PersonalID |FirstName |LastName |ProjectEntryID|PersonalID.1|FirstName.1 |EntryDate  |MAX(EntryDate) |
 |:--------------------------------|:---------|:--------|:--------------------------------|:--------------------------------|:-----------|:----------|:--------------|
 |ZP1U3EPU2FKAWI6K5US5LDV50KRI1LN7 |Bob       |Beber    |L0TDCLTDEARVHNIQ4F9EDDKXJ764Z65Q |ZP1U3EPU2FKAWI6K5US5LDV50KRI1LN7 |Bob         |10/17/2016 |10/17/2016     |
 

@@ -125,13 +125,13 @@ This should provide you with the following table:
 |:--------------------------------|:---------|:--------|:--------------------------------|:--------------------------------|:-----------|:----------|:--------------|
 |ZP1U3EPU2FKAWI6K5US5LDV50KRI1LN7 |Bob       |Beber    |L0TDCLTDEARVHNIQ4F9EDDKXJ764Z65Q |ZP1U3EPU2FKAWI6K5US5LDV50KRI1LN7 |Bob         |10/17/2016 |10/17/2016     |
 
-Wait! What happened to Jane!?  Well, what the MAX() did is took the row with the greatest EntryDate, which is 10/17/2016.  Unfortunately, Jane's record wasn't the most recent, so her record was removed.
+Wait! What happened to Jane!?  Well, the MAX() took the row with the greatest EntryDate, which is 10/17/2016.  Unfortunately, Jane's record wasn't the most recent, so her record was removed.
 
 Well, that's not going to work.  But we're close.  If only we had a way to take the MAX(EntryDate) per client.
 
 We do.  SQL has another command called GROUP BY, which allows us to tell SQL to apply another command by a group of records.
 
-Again, let's take a look at using it and then dissect it.
+Again, let's use it and then dissect it.
 
 Copy this to R and execute it.
 
@@ -148,7 +148,7 @@ You should end up with a table like this:
 
 Aha! That's it!
 
-What the group by did was say, "Ok, SQL, create a group of data where the rows PersonalID are the same.  Now, for each group, take the row with the greatest EntryDate."
+What the GROUP BY did was say, "Ok, SQL, create a group of data where the rows PersonalID are the same.  Now, for each group, take the row with the greatest EntryDate."
 
 This gives exactly what we want.  A single row per participant.
 

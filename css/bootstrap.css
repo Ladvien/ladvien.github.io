@@ -2250,6 +2250,7 @@ pre code {
 }
 table {
   background-color: transparent;
+  overflow-x: scroll;
 }
 caption {
   padding-top: 8px;
@@ -2264,7 +2265,7 @@ th {
   width: 100%;
   max-width: 100%;
   margin-bottom: 20px;
-  overflow: scroll;
+  overflow-x: scroll;
 }
 .table > thead > tr > th,
 .table > tbody > tr > th,

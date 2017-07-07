@@ -11,7 +11,7 @@ custom_css:
 custom_js: 
 ---
 
-## Enrolmment.csv
+## Enrollment.csv
 Many of the CSVs in the HMIS CSV may contain multiple rows per client.  This can make it difficult when working with HMIS data, as it appears to the non-data person there are duplicates within your data.  
 
 Let's look at some dataframes:

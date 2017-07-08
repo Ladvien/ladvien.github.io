@@ -2,6 +2,7 @@
 layout: post
 title: Arduino to RPi -- Galvanically Isolated I2C
 categories: robots
+series: Custom PCBs
 excerpt:
 tags: [robots, I2C, SMD, PCB, ADUM1250]
 color: "#152a55"

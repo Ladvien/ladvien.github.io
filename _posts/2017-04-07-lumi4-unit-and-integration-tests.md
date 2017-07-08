@@ -2,6 +2,7 @@
 layout: post
 title: Lumi4 -- Unit and Integration Tests
 categories: lumi
+series: Lumi
 excerpt: 
 tags: [robot, C#, TinySafeBoot]
 image: 

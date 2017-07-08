@@ -2,6 +2,7 @@
 layout: post
 title: Lumi4 -- LumiCommunication
 categories: robots
+series: Lumi
 excerpt:
 tags: [robot, C#, TinySafeBoot]
 image: 

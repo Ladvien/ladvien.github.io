@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Read and Write CSVs in R
+series: SQL-R
 categories: HMIS
 excerpt: 
 tags: [ETO, HMIS, R, SQL]

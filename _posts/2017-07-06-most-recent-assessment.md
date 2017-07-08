@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Filter to Most Recent HUD Assessment
+series: SQL-R
 categories: HMIS
 excerpt: Finding the most recent HUD Assessment by filtering dataframe by date.
 tags: [ETO, HMIS, R, SQL]

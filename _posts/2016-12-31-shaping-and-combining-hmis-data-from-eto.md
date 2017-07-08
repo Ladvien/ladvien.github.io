@@ -2,6 +2,7 @@
 layout: post
 title: Shaping and Combining HMIS Data from ETO
 categories: HMIS
+series: HMIS SQL-R Script Snippets
 excerpt:
 tags: [ETO, HMIS, R, SQL]
 image: 

@@ -2,6 +2,7 @@
 layout: post
 title: HMIS, R, SQL -- Work Challenge One
 desription: First work challenge in mixing R and SQL to derive information from HMIS data.
+series: SQL-R
 categories: HMIS
 excerpt:
 tags: [HMIS, R, SQL]

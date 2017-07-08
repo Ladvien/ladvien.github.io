@@ -1,6 +1,7 @@
 ---
 layout: post
 title: HMIS, R, and SQL -- Introduction
+series: SQL-R
 categories: HMIS
 excerpt:
 tags: [ETO, HMIS, R, SQL]

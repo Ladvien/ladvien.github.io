@@ -2,6 +2,7 @@
 layout: post
 title: JPS DSRIP Report V2.0  
 categories: HMIS
+series: HMIS SQL-R Script Snippets
 excerpt: 
 tags: [ETO, HMIS, R, SQL]
 image: 

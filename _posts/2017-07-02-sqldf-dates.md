@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Working with Dates in SQLdf
+series: SQL-R
 categories: HMIS
 excerpt: How to coerce date fields into character fields for use in SQLdf calls.
 tags: [ETO, HMIS, R, SQL]

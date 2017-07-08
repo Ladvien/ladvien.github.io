@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Coordinated Entry By-Name-List using HMIS CSV 5.1, R, and SQL
+series: HMIS SQL-R Script Snippets
 categories: HMIS
 excerpt: 
 tags: [ETO, HMIS, R, SQL, Coordinated Entry]

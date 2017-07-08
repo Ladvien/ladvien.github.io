@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Preamble to Mixing R and SQL
+series: SQL-R
 desription: Information why mixing R and SQL is powerful.
 categories: HMIS
 excerpt:

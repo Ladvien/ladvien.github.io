@@ -2,6 +2,7 @@
 layout: post
 title: Veteran's Report 2.0
 categories: HMIS
+series: HMIS SQL-R Script Snippets
 excerpt: 
 tags: [ETO, HMIS, R, SQL, choropleth]
 image: 

@@ -9,3 +9,4 @@ gem "jekyll-paginate"
 gem "jekyll-gist"
 gem "jekyll-seo-tag"
 gem "jekyll-redirect-from"
+gem 'jekyll-series'

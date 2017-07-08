@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Stitching Together HMIS Exports
+series: HMIS SQL-R Script Snippets
 categories: HMIS
 excerpt: 
 tags: [ETO, HMIS, R, SQL]

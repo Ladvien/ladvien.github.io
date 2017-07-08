@@ -1,7 +1,8 @@
 ---
 layout: post
 title: Identifying Chronically Homeless and Veteran Participants throughout a COC
-categories: HMIS,
+categories: HMIS
+series: HMIS SQL-R Script Snippets
 excerpt: 
 tags: [ETO, HMIS, R, SQL]
 image: 

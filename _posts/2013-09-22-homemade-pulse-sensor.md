@@ -2,6 +2,7 @@
 layout: post
 title: Homemade Pulse Sensor
 categories: robots
+series: Custom PCBs
 excerpt:
 tags: [robots, SMD, PCB, Pulse Sensor]
 color: "#152a55"

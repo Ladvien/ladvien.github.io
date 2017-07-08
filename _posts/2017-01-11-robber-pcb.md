@@ -2,6 +2,7 @@
 layout: post
 title: Robber Board
 categories: robot
+series: Custom PCBs
 excerpt:
 tags: [robot, PCB, SMD, ATtiny84, HM-11, BLE]
 image: 

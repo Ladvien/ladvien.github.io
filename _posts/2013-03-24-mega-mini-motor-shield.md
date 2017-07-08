@@ -2,6 +2,7 @@
 layout: post
 title: Mega Mini Motor Shield (M^3)
 categories: robots
+series: Custom PCBs
 excerpt:
 tags: [robots, SN755410]
 color: "#152a55"

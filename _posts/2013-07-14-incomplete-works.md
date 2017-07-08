@@ -2,6 +2,7 @@
 layout: post
 title: Incomplete Works
 categories: robots
+series: Custom PCBs
 excerpt:
 tags: [robots, HM-10, BLE, Pulse Sensor, SMD, PCB, Linux, Hack]
 color: "#152a55"

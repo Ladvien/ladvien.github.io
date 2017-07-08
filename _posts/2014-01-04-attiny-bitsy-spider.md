@@ -2,6 +2,7 @@
 layout: post
 title: ATtiny Bitsy Spider
 categories: robots
+series: Custom PCBs
 excerpt:
 tags: [robots, PCB, SMD, HM-10, ATtiny85]
 color: "#152a55"

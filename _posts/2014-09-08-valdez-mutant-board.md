@@ -2,6 +2,7 @@
 layout: post
 title: The Valdez Mutant -- LPC1114 QFN
 categories: robots
+series: Custom PCBs
 excerpt:
 tags: [robots, LPC1114, HM-11, GCC, PCB, SMD]
 color: "#152a55"

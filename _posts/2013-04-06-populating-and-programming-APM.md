@@ -2,6 +2,7 @@
 layout: post
 title: Populating and Programming and APM
 categories: robots
+series: Custom PCBs
 excerpt:
 tags: [robots, AVR, Atmega328P]
 color: "#152a55"

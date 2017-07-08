@@ -2,6 +2,7 @@
 layout: post
 title: Lab Controller PCB
 categories: robots
+series: Custom PCBs
 excerpt:
 tags: [robots, High Power LED, PCB, Atmega328P]
 color: "#152a55"

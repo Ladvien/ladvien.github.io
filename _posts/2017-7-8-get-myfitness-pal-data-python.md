@@ -26,9 +26,9 @@ Enter hacker skills.  I discovered there is a Python library which allows scrapi
 
 This wonderful little library is written and provided by CoddingtonBear.
 
-I figure, I'd write a Python script to scrap the data, save it to a CSV, create an SQL-R script to join the nutrition and weight information, use ggplot to plot the data, save the plot as a PNG, and then copy this plot to a dedicated spot ony Ladvien.com.  Lastly, I'd write a bash script to run every night and update the graph.  Simples!
+I figure, I'd write a Python script to scrap the data, save it to a CSV, create an SQL-R script to join the nutrition and weight information, use ggplot to plot the data, save the plot as a PNG, and then copy this plot to a dedicated spot on Ladvien.com.  Lastly, I'd write a bash script to run every night and update the graph.  Simples!
 
-And c'mon, open a webpage is _a lot_ easier than clicking twice.
+And c'mon, opening a webpage is _a lot_ easier than tapping twice.
 
 Well, after a few hours of coding, I've got the first step of the project complete.
 

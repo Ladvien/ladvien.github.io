@@ -22,7 +22,7 @@ I signed up for MyFitnessPal.  Counting calories worked once, I figure if it ain
 
 Enter hacker skills.  I discovered there is a Python library which allows scraping of data.  
 
-*[MyFitnessPal Python Library](https://github.com/coddingtonbear/python-myfitnesspal)
+* [MyFitnessPal Python Library](https://github.com/coddingtonbear/python-myfitnesspal)
 
 This wonderful little library is written and provided by CoddingtonBear.
 

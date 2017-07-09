@@ -5,7 +5,7 @@ categories: health
 excerpt: Using the MyFitnessPal Python library to scrap a public account for health data
 tags: [python, health, data, myfitnesspal]
 image: 
-    feature:
+    feature: myfitnesspal-scraper_fet.png
 comments: true
 custom_css:
 custom_js: 

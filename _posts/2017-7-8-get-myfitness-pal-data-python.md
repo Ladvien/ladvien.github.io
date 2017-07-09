@@ -11,7 +11,6 @@ custom_css:
 custom_js: 
 ---
 
-## I want my Data!
 I'm fat.  Fatter than I want to be.  I've not always been fat, I got down to 180 at back in 2008.  It took counting calories and weight religiously.  The key piece for me was having a graph which I looked at daily showing my outcomes.  Over the course of a year I lost 40 pounds.  Well, it's time to do it again.  I've gained that 40 back over 10 years--and now it needs to go.
 
 Back in 2008 I was using Google to give me the calories of every item I ate and recording them in an Excel document.  This food journal was great, but a little more work than it probably should have been.

@@ -12,13 +12,13 @@ custom_js:
 ---
 
 ## I want my Data!
-I'm fat.  Fatter than I want to be.  I've not always been fat, I got down to 180 at back in 2008.  It took counting calories and weight daily.  The key piece for me was having a graph which I looked at daily showing my outcomes.  Over the course of a year I lost 40 pounds.  Well, it's time to do it again.  I've gained that 40 back over 10 years--and now it needs to go.
+I'm fat.  Fatter than I want to be.  I've not always been fat, I got down to 180 at back in 2008.  It took counting calories and weight religiously.  The key piece for me was having a graph which I looked at daily showing my outcomes.  Over the course of a year I lost 40 pounds.  Well, it's time to do it again.  I've gained that 40 back over 10 years--and now it needs to go.
 
 Back in 2008 I was using Google to give me the calories of every item I ate and recording them in an Excel document.  This food journal was great, but a little more work than it probably should have been.
 
 Back then, I wasn't aware of being a hacker.  Now, I plan to throw all my hacker skills at this weight loss plan (hell, I might even go to the gym!)
 
-I signed up for MyFitnessPal.  Counting calories worked once, let's try it again.  But then I got to looking at how much work it would take to look at my improvement.  I mean, I'd have to actually open the app on my phone and click on the weight loss section.  Shesh--who designed that app?  Two actions to get where I needed--ain't no one got time for that.  
+I signed up for MyFitnessPal.  Counting calories worked once, I figure if it aint broke.  But then I got to looking at how much work it would take to look at my improvement.  I mean, I'd have to actually open the app on my phone and click on the weight loss section.  Shesh--who designed that app?  Two actions to get where I needed--ain't no one got time for that.  
 
 Enter hacker skills.  I discovered there is a Python library which allows scraping of data.  
 

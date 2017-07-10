@@ -63,21 +63,21 @@ print("# Getting Weight Information                   #")
 print("################################################")
 print("")
 
-# weight = client.get_measurements('Weight', beginningDate, today)
+weight = client.get_measurements('Weight', beginningDate, today)
 
 # Open CSV and write results.
-# with open('weightData.csv', 'wb') as f:
-#     writer = csv.writer(f)
+with open('weightData.csv', 'wb') as f:
+    writer = csv.writer(f)
 
-#     # Write headers for totals
-#     writer.writerow(["Date", "Weight"])
+    # Write headers for totals
+    writer.writerow(["Date", "Weight"])
 
-#     for x in weight:
-#         thisItem = weight.popitem()
-#         writer.writerow(thisItem)
-#         sys.stdout.write("#")
-#         sys.stdout.flush()
-#     print(" -- Done.")
+    for x in weight:
+        thisItem = weight.popitem()
+        writer.writerow(thisItem)
+        sys.stdout.write("#")
+        sys.stdout.flush()
+    print(" -- Done.")
 
 print("")
 print("################################################")

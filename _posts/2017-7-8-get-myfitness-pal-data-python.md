@@ -33,7 +33,7 @@ Well, after a few hours of coding, I've got the first step of the project comple
 
 {% highlight python %}
 import myfitnesspal
-import csv, sys
+import csv, sys, os
 from datetime import datetime
 
 
@@ -42,29 +42,78 @@ client = myfitnesspal.Client('cthomasbrittain')
 # Set start year
 startYear = "2008"
 # Get limits
-beginningYear = datetime.strptime(startYear, "%Y").date().year
+beginningDate = datetime.strptime(startYear, "%Y").date()
+beginningYear = beginningDate.year
 daysInMonth = {1:31, 2:28, 3:31, 4:30, 5:31, 6:30, 7:31, 8:31, 9:30, 10:31, 11:30, 12:31}
 
 print("")
 print("################################################")
-print("# Scraping MyFitness Pal                       #")
+print("# Scraping MyFitnessPal                        #")
 print("# Make sure your account is set to public      #")
 print("# and your username and pass are in keychain   #")
 print("################################################")
 print("")
 
-# Open CSV and write results.
-with open('healthData.csv', 'wb') as f:
-    writer = csv.writer(f)
+today = datetime.now().date()
+currentYear = today.year
 
-    # Write headers for totals
-    writer.writerow(["Date", "Sodium", "Carbohydrates", "Calories", "Fat", "Sugar", "Protein"])
+print("")
+print("################################################")
+print("# Getting Weight Information                   #")
+print("################################################")
+print("")
+
+# weight = client.get_measurements('Weight', beginningDate, today)
+
+# Open CSV and write results.
+# with open('weightData.csv', 'wb') as f:
+#     writer = csv.writer(f)
+
+#     # Write headers for totals
+#     writer.writerow(["Date", "Weight"])
+
+#     for x in weight:
+#         thisItem = weight.popitem()
+#         writer.writerow(thisItem)
+#         sys.stdout.write("#")
+#         sys.stdout.flush()
+#     print(" -- Done.")
+
+print("")
+print("################################################")
+print("# Get nutrition information                    #")
+print("################################################")
+print("")
+
+# Loop over years from beginingYear.  Make sure last year is inclusive.
+for yearIndex in range(beginningYear, currentYear+1):
     
-    today = datetime.now().date()
-    currentYear = today.year
+    # Create a file name based on this year's data
+    thisFileName = "nutritionData_%s.csv" % yearIndex
+    # thisFilePath = "/%s" % thisFileName
+    # Check if file exists
+    # if not os.path.exists(thisFilePath):
+    # Open CSV as read and write.
+
+    # If file exists, open for read / write
+    #   else, create file, write only.
+    try:
+        f = open(thisFileName, "r+")        # Check to see if file is complete,
+        row_count = sum(1 for row in f)     # else, overwrite the file
+        if(row_count != 366):               # A year of rows plus headers, and an empty line at end.
+            f = open(thisFileName, "w+")
+            row_count = 0
+    except EnvironmentError:
+        f = open(thisFileName, "w+")        # If file does not exist, create it.
+        row_count = 0
     
-    for yearIndex in range(beginningYear, currentYear+1):
-        sys.stdout.write(str(yearIndex)+": ")
+    writer = csv.writer(f)
+    
+    # Check number of lines. If the year wasn't captured, start over.
+    if(row_count < 365):
+        # Write headers for totals
+        writer.writerow(["Date", "Sodium", "Carbohydrates", "Calories", "Fat", "Sugar", "Protein"])
+        sys.stdout.write(str(yearIndex)+": ")   # Print has a linefeed.
         sys.stdout.flush()
         for monthIndex in range(1, 12+1):
             for dayIndex in range(1, daysInMonth[monthIndex]+1):
@@ -84,5 +133,8 @@ with open('healthData.csv', 'wb') as f:
 
             sys.stdout.write("#")
             sys.stdout.flush()
-        print(" -- Done")
+        print(" -- Done.")
+        f.close()
+    else:
+        print((str(yearIndex)+": Exists and is complete."))
 {% endhighlight %}

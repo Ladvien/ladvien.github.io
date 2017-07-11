@@ -39,7 +39,7 @@ In SQL we will use the following boolean logic operators:
 * IS (==)
 * NOT (!=)
 * AND (&&)
-* OR /(/|/|/)
+* OR /|/|
 * /> (greater than)
 * < (less than)
 

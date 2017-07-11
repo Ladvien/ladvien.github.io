@@ -39,8 +39,8 @@ In SQL we will use the following boolean logic operators:
 * IS (==)
 * NOT (!=)
 * AND (&&)
-* OR /||
-* /> (greater than)
+* OR ||
+* > (greater than)
 * < (less than)
 
 For example, let's take the chronically homeless definition and turn it into a sentence using these logic operators:

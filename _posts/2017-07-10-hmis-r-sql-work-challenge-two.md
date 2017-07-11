@@ -52,7 +52,7 @@ For example, this should make sense to most humans.
 
 That paragraph seems a little hard to read, right?  But still, humans should be able to understand it.  Now, let's look at the same paragraph emphasizing the logic operators.
 
->A chronically homeless individual **IS** disabled **AND** been homeless **GREATER THAN** 364 days.  **OR**, **IS** disabled **AND** been homeless **GREATER THAN** three times in three years **AND** the time her or she spent in homelessness adding up to **GREATER THAN** 364 days.
+>A chronically homeless individual **IS** disabled **AND** been homeless **GREATER THAN** 364 days.  **OR**, **IS** disabled **AND** been homeless **GREATER THAN** three times in three years **AND** the time spent in homelessness adding up to **GREATER THAN** 364 days.
 
 This is skill of a Computational-Thinker, taking a definition like HUD provided and re-write it from something a human would understand into something a computer will understand.
 

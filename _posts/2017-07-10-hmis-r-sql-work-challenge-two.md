@@ -19,7 +19,7 @@ The current definition of chronically homeless is found in [HUD's federal regist
 
 >A “chronically homeless” individual is defined to mean a homeless individual with a disability who lives either in a place not meant for human habitation, a safe haven, or in an emergency shelter, or in an institutional care facility if the individual has been living in the facility for fewer than 90 days and had been living in a place not meant for human habitation, a safe haven, or in an emergency shelter immediately before entering the institutional care facility. In order to meet the “chronically homeless” definition, the individual also must have been living as described above continuously for at least 12 months, or on at least four separate occasions in the last 3 years, where the combined occasions total a length of time of at least 12 months. Each period separating the occasions must include at least 7 nights of living in a situation other than a place not meant for human habitation, in an emergency shelter, or in a safe haven.
 
-That stated, there are several data elements which will be needed for us to calculate whether someone is chronically homeless.  Most all of these data elements are reported to case-managers and entered into a HUD Entry Assessment when a client enters a program.
+There are several data elements which will be needed for us to calculate whether someone is chronically homeless. These data elements are reported to case-managers and entered into a HUD Entry Assessment when a client enters a program.
 
 Here's a list of the data elements we will use:
 

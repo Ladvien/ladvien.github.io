@@ -47,12 +47,12 @@ For example, let's take the chronically homeless definition and turn it into som
 
 For example, this should make sense to most humans.
 
->A chronically homeless individual is disabled and been homeless greater than 364 days.  Or, is disabled and been homeless greater than three times in three years and the time she spent in homelessness adding up to greater than 364 days.
+>A chronically homeless individual is disabled and been homeless greater than 364 days.  Or, is disabled and been homeless greater than three times in three years and the time spent in homelessness adding up to greater than 364 days.
 
 
 That paragraph seems a little hard to read, right?  But still, humans should be able to understand it.  Now, let's look at the same paragraph emphasizing the logic operators.
 
->A chronically homeless individual **IS** disabled **AND** been homeless **GREATER THAN** 364 days.  **OR**, **IS** diabled **AND** been homeless **GREATER THAN** three times in three years **AND** the time her or she spent in homelessness adding up to **GREATER THAN** 364 days.
+>A chronically homeless individual **IS** disabled **AND** been homeless **GREATER THAN** 364 days.  **OR**, **IS** disabled **AND** been homeless **GREATER THAN** three times in three years **AND** the time her or she spent in homelessness adding up to **GREATER THAN** 364 days.
 
 This is skill of a Computational-Thinker, taking a definition like HUD provided and re-write it from something a human would understand into something a computer will understand.
 

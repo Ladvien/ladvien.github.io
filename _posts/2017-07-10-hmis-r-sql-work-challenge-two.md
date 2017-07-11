@@ -130,12 +130,12 @@ To get this information we will need to do the following:
 1. Load the Client.csv into the dataframe clientDf.
 2. Load the Enrollment.csv into the dataframe enrollmentDf.
 3. Inner join the clientDf to enrollmentDf.
-4. Calculate whether someone is chronically homeless
-5. Filter to those who are chronically homeless
+4. Calculate whether someone is chronically homeless.
+5. Filter to those who are chronically homeless.
 6. Write the by-name-list of individuals to an Excel document.
 
 ## The Resources
-Below are the resources which should help you understand each step of the process.
+Below are the resources which should help for each step:
 
 ### Step 1 & 2
 * R Programming A-Z -- Video 41 -- Loading and Importing Data in R

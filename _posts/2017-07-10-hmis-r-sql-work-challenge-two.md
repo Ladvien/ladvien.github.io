@@ -80,7 +80,7 @@ Below is the following code to get chronically homeless:
 ##### Get those with Disabling Condition ###
 #############################################
 disablingCondition <- sqldf("SELECT PersonalID 
-                            FROM activeEnrollment 
+                            FROM clientAndEnrollmentDf 
                             WHERE DisablingCondition = 1")
 
 #############################################

@@ -43,11 +43,11 @@ In SQL we will use the following logic operators:
 * **\> (greater than)**
 * **< (less than)**
 
-For example, let's take the chronically homeless definition and turn it into something a computer can understand using these logic operators.  We can do this by re-writing the definition several times, each time, dropping what makes sense to humans and leaving what makes sense to computers.
+For example, let's take the chronically homeless definition and turn it into something a computer can understand using these logic operators.  We can do this by re-writing the definition several times, each time dropping what makes sense to humans and leaving what makes sense to computers.
 
 For example, this should make sense to most humans.
 
->A chronically homeless individual is disabled and been homeless greater than 364 days.  Or, is disabled and been homeless greater than three times in three years and the time her or she spent in homelessness adding up to greater than 364 days.
+>A chronically homeless individual is disabled and been homeless greater than 364 days.  Or, is disabled and been homeless greater than three times in three years and the time she spent in homelessness adding up to greater than 364 days.
 
 
 That paragraph seems a little hard to read, right?  But still, humans should be able to understand it.  Now, let's look at the same paragraph emphasizing the logic operators.

@@ -59,28 +59,7 @@ currentYear = today.year
 
 print("")
 print("################################################")
-print("# Getting Weight Information                   #")
-print("################################################")
-print("")
-
-sys.stdout.write("Getting all Weight measurements")
-sys.stdout.flush()
-weight = client.get_measurements('Weight', beginningDate, today)
-
-# Open CSV and write results.
-with open('weightData.csv', 'wb') as f:
-    writer = csv.writer(f)
-    # Write headers for totals
-    writer.writerow(["Date", "Weight"])
-
-    for x in weight:
-        thisItem = weight.popitem()
-        writer.writerow(thisItem)
-    print(" -- Done.")
-
-print("")
-print("################################################")
-print("# Get nutrition information                    #")
+print("# Get nutrition and weight information         #")
 print("################################################")
 print("")
 
@@ -89,11 +68,8 @@ for yearIndex in range(beginningYear, currentYear+1):
     
     # Create a file name based on this year's data
     thisFileName = "nutritionData_%s.csv" % yearIndex
-    # thisFilePath = "/%s" % thisFileName
-    # Check if file exists
-    # if not os.path.exists(thisFilePath):
-    # Open CSV as read and write.
 
+    # Open CSV as read and write.
     # If file exists, open for read / write
     #   else, create file, write only.
     try:
@@ -111,7 +87,7 @@ for yearIndex in range(beginningYear, currentYear+1):
     # Check number of lines. If the year wasn't captured, start over.
     if(row_count < 365):
         # Write headers for totals
-        writer.writerow(["Date", "Sodium", "Carbohydrates", "Calories", "Fat", "Sugar", "Protein"])
+        writer.writerow(["Date", "Sodium", "Carbohydrates", "Calories", "Fat", "Sugar", "Protein", "Weight"])
         sys.stdout.write(str(yearIndex)+": ")   # Print has a linefeed.
         sys.stdout.flush()
         for monthIndex in range(1, 12+1):
@@ -123,10 +99,17 @@ for yearIndex in range(beginningYear, currentYear+1):
                     break;
 
                 thisDaysNutritionData = client.get_date(yearIndex, monthIndex, dayIndex)
+                thisDaysWeightDict = client.get_measurements('Weight', thisDate, thisDate)
+
+                thisDaysWeight = []
+                if(thisDaysWeightDict):
+                    for x in thisDaysWeightDict:
+                        thisDaysWeight.append(thisDaysWeightDict.popitem()[1])
+                
                 thisDaysNutritionDataDict = thisDaysNutritionData.totals
                 thisDaysNutritionValues = thisDaysNutritionDataDict.values()
                 
-                dataRow = [fullDateIndex] + thisDaysNutritionValues
+                dataRow = [fullDateIndex] + thisDaysNutritionValues  + thisDaysWeight
                 if dataRow:
                     writer.writerow(dataRow)
 

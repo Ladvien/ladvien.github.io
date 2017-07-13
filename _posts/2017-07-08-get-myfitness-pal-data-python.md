@@ -44,6 +44,7 @@ startYear = "2008"
 beginningDate = datetime.strptime(startYear, "%Y").date()
 beginningYear = beginningDate.year
 daysInMonth = {1:31, 2:28, 3:31, 4:30, 5:31, 6:30, 7:31, 8:31, 9:30, 10:31, 11:30, 12:31}
+emptyNutrition = [None, None, None, None, None, None]
 
 print("")
 print("################################################")
@@ -66,7 +67,7 @@ print("")
 for yearIndex in range(beginningYear, currentYear+1):
     
     # Create a file name based on this year's data
-    thisFileName = "nutritionData_%s.csv" % yearIndex
+    thisFileName = "healthData_%s.csv" % yearIndex
 
     # Open CSV as read and write.
     # If file exists, open for read / write
@@ -112,6 +113,9 @@ for yearIndex in range(beginningYear, currentYear+1):
 
                 thisDaysWeight = [(thisMonthsWeights.get(thisDate))]
                 
+                if(len(thisDaysNutritionValues) < 6):
+                    thisDaysNutritionValues = emptyNutrition
+
                 dataRow = [fullDateIndex] + thisDaysNutritionValues  + thisDaysWeight
                 if dataRow:
                     writer.writerow(dataRow)

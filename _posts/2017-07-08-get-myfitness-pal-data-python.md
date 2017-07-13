@@ -36,7 +36,6 @@ import myfitnesspal
 import csv, sys, os
 from datetime import datetime
 
-
 # Get account info
 client = myfitnesspal.Client('cthomasbrittain')
 # Set start year
@@ -91,6 +90,15 @@ for yearIndex in range(beginningYear, currentYear+1):
         sys.stdout.write(str(yearIndex)+": ")   # Print has a linefeed.
         sys.stdout.flush()
         for monthIndex in range(1, 12+1):
+                
+            beginningOfMonthStr = "%s-%s-%s" % (yearIndex, monthIndex, 1)
+            endOfMonthStr = "%s-%s-%s" % (yearIndex, monthIndex, daysInMonth[monthIndex])
+
+            beginningOfMonth = datetime.strptime(beginningOfMonthStr, "%Y-%m-%d").date()
+            endOfMonth = datetime.strptime(endOfMonthStr, "%Y-%m-%d").date()
+            
+            thisMonthsWeights = dict(client.get_measurements('Weight', beginningOfMonth, endOfMonth))
+
             for dayIndex in range(1, daysInMonth[monthIndex]+1):
                 
                 fullDateIndex = "%s-%s-%s" % (yearIndex, monthIndex, dayIndex)
@@ -99,15 +107,10 @@ for yearIndex in range(beginningYear, currentYear+1):
                     break;
 
                 thisDaysNutritionData = client.get_date(yearIndex, monthIndex, dayIndex)
-                thisDaysWeightDict = client.get_measurements('Weight', thisDate, thisDate)
-
-                thisDaysWeight = []
-                if(thisDaysWeightDict):
-                    for x in thisDaysWeightDict:
-                        thisDaysWeight.append(thisDaysWeightDict.popitem()[1])
-                
                 thisDaysNutritionDataDict = thisDaysNutritionData.totals
                 thisDaysNutritionValues = thisDaysNutritionDataDict.values()
+
+                thisDaysWeight = [(thisMonthsWeights.get(thisDate))]
                 
                 dataRow = [fullDateIndex] + thisDaysNutritionValues  + thisDaysWeight
                 if dataRow:

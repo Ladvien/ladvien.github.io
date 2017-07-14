@@ -127,3 +127,91 @@ for yearIndex in range(beginningYear, currentYear+1):
     else:
         print((str(yearIndex)+": Exists and is complete."))
 {% endhighlight %}
+
+And then we add some R to join the data together and automate plotting, and saving the plots as images.
+
+{% highlight r%}
+library(ggplot2)
+library(scales)
+
+cat("*******************************************************\n")
+cat("* Starting R                                          *\n")
+cat("*******************************************************\n")
+cat("\n")
+cat("*******************************************************\n")
+cat("* Combining Health Data                               *\n")
+cat("*******************************************************\n")
+cat("\n")
+# Thanks Rich Scriven
+# https://stackoverflow.com/questions/25509879/how-can-i-make-a-list-of-all-dataframes-that-are-in-my-global-environment
+healthDataRaw <- do.call(rbind, lapply(list.files(pattern = ".csv"), read.csv))
+
+cat("*******************************************************\n")
+cat("* Creating Weight Graph                               *\n")
+cat("*******************************************************\n")
+healthData <- healthDataRaw[!(is.na(healthDataRaw$Weight)),]
+healthData$Date <- as.Date(healthData$Date)
+healthData <- with(healthData, healthData[(Date >= "2016-01-01"), ])
+p <- ggplot(healthData, aes(x = Date, y = Weight))+
+  geom_line(color="firebrick")
+p
+
+png(filename="ladviens_weight.png")
+plot(p)
+dev.off()
+
+cat("\n")
+
+cat("*******************************************************\n")
+cat("* Creating Calories Graph                             *\n")
+cat("*******************************************************\n")
+cat("\n")
+healthData <- healthDataRaw[!(is.na(healthDataRaw$Calories)),]
+healthData$Date <- as.Date(healthData$Date)
+healthData <- with(healthData, healthData[(Date >= "2016-01-01"), ])
+p2 <- ggplot(healthData, aes(x = Date, y = Calories))+
+  geom_line(color="firebrick")
+p2
+
+png(filename="ladviens_calories.png")
+plot(p2)
+dev.off()
+
+cat("*******************************************************\n")
+cat("* Finished R Script                                   *\n")
+cat("*******************************************************\n")
+cat("\n")
+{% endhighlight %}
+
+Lastly, let's write a bash script to run the Python and R code, then copy the images to Ladvien.com
+
+{% highlight bash %}
+#!/bin/sh
+PASSWORD=("$(keyring get system ladvien.com)")
+
+Python myfitnesspall_scraper.py
+
+Rscript myfitnesspal_data_sort.R
+
+ECHO ""
+ECHO "*******************************************************"
+ECHO "* Syncing files to Ladvien.com                        *"
+ECHO "*******************************************************"
+ECHO ""
+
+# Used SSHPass
+# https://gist.github.com/arunoda/7790979
+
+sshpass -p "$PASSWORD" scp ladviens_weight.png ladviens_calories.png root@ladvien.com:/usr/share/nginx/html/images
+
+{% endhighlight %}
+
+And here's the result:
+
+My weight:
+![](https://ladvien.com/images/ladviens_weight.png)
+
+And my calories:
+![](https://ladvien.com/images/ladviens_calories.png)
+
+Next, I'll probably tweak ggplot2 to make the graphs a little prettier.  Also, I'll setup a Raspberry Pi or something to run the bash script once a night. Why? Lolz.

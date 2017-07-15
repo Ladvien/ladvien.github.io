@@ -209,9 +209,11 @@ sshpass -p "$PASSWORD" scp ladviens_weight.png ladviens_calories.png root@ladvie
 And here's the result:
 
 My weight:
+
 ![](https://ladvien.com/images/ladviens_weight.png)
 
 And my calories:
+
 ![](https://ladvien.com/images/ladviens_calories.png)
 
 Next, I'll probably tweak ggplot2 to make the graphs a little prettier.  Also, I'll setup a Raspberry Pi or something to run the bash script once a night. Why? Lolz.

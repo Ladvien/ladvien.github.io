@@ -135,7 +135,7 @@ In SQL-R it looks like this:
 nowDf <- sqldf("SELECT *, DATE('NOW') As 'TodaysDate' FROM peopleDf")
 {% endhighlight %}
 
-This should provide a table like this:
+This should provide:
 
 |PersonalID                       |FirstName |LastName |DOB        |TodaysDate |
 |:--------------------------------|:---------|:--------|:----------|:----------|

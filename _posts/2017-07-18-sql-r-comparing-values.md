@@ -123,7 +123,7 @@ This should result in a table with only Fela:
 |:--------------------------------|:---------|:--------|:--------|
 |IA26X38HOTOIBHYIRV8CKR5RDS8KNGHV |Fela      |Falla    |1999-1-1 |
 
-It is important to understand, the first comparison removed Sarah, as `1992-04-01` is greater than `1998-01-01`.  Then, the second comparison got rid of Timmy as `2010-01-01`.
+It is important to understand, the first comparison removed Sarah, as `1992-04-01` is less than `1998-01-01`.  Then, the second comparison got rid of Timmy as `2010-01-01` is greater than `2005-01-01`.
 
 ## Now()
 There is one more critical command in writing robust date comparisons.  The `NOW()` function.  This function is different in R and SQL, but pretty much every programming language has a version of the function.

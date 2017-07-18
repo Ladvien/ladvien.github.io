@@ -44,7 +44,7 @@ In short, it states,
 
 > Is x less than y
 
-If it is the computer is going to say the statement is true (or 1 in binary).  If it is not, then the computer will say it's false (or 0 in binary).  Believe it or not, this simple operation is why you have a device in your pocket which could calculate the internal mass of the sun.
+If `x is less than y` the computer is going to say the statement is true (or 1 in binary).  If it is not, then the computer will say it's false (or 0 in binary).  Believe it or not, this simple operation is why you have a device in your pocket which could calculate the internal mass of the sun.
 
 For us, things are a little simpler.  We just want to know who was born before 2000.  Let's re-write the statement above with our problem:
 

@@ -48,7 +48,7 @@ If `x is less than y` the computer is going to say the statement is true (or 1 i
 
 For us, things are a little simpler.  We just want to know who was born before 2000.  Let's re-write the statement above with our problem:
 
-> Is Sarah's DOB is less than 2000-01-01
+> Is Sarah's DOB less than 2000-01-01
 
 Well, what is Sarah's DOB? 1992-04-01.  Let's rewrite and assess (gah, this feels like high-school algebra again).
 
@@ -56,11 +56,11 @@ Well, what is Sarah's DOB? 1992-04-01.  Let's rewrite and assess (gah, this feel
 
 Hmm.  This can get confusing for humans, but more importantly, confusing to computers.
 
-In English, we'd probably express this as, 
+In English, we'd probably state this as, 
 
 > Did 1992-04-01 come before 2001-01-01?
 
-Essentially, that's what we are doing.  Just know, the computer will translate all dates into a number.  This number is how many seconds transpired since 1970-01-01. 
+Essentially, that's what we are doing.  Just know, the computer will translate all dates into a number.  This number is how many seconds transpired since 1970-01-01.
 
 Why? On Thursday, January 1st 1970 the [Universal Coordinated Time](https://en.wikipedia.org/wiki/Coordinated_Universal_Time) (UTC) was established.  Think of it is when the world came together to standardize time.  Computer people figured, "Well, if we have to convert dates into a raw number for computers to understand it, it might as well be the number of seconds since UTC was established."
 
@@ -73,18 +73,18 @@ Taking our statement again, let's re-write it with the number of seconds since `
 
 > Is number of seconds between 1970-01-01 and 1992-04-01 less than number of seconds between 1970-01-01 and 2000-01-01
 
-Which becomes
+Which becomes:
 
 > Is 702,086,400 less than 46,684,800 seconds
 
-Aha, now this makes sense.  And the result is `true`.  We can now say, in computer speak, that Sarah was born before `2000-01-01`
+Aha, now this makes sense.  And the result is `true`.  We can now say, in computer speak: Sarah was born before `2000-01-01`.
 
 ### Why?  Really, dude.
 In my world there is a saying: [RFTM](https://en.wikipedia.org/wiki/RTFM).  
 
-It's hard to follow now days.  Everything moves quick and we don't have time to dig into the "Why".  But, like most things, if you want to be good, you must take the time to do so.
+It's hard to follow now days.  Everything moves quick and we don't have time to dig into the "Why."  But, like most things, if you want to be good, you must take the time to do so.
 
-The reason we talk about how computers understand dates is because it directly impacts how we re-write reports.  Do you remember the [date conversion trick](https://ladvien.com/sqldf-dates/) to get dates to work in SQL from R? This is because R holds dates as the number of seconds since 1970 and passes it as a string to SQL.  But, then SQL tries to convert the date from a date into seconds again, screwing everything up.
+The reason we review how computers understand dates is it directly impacts how we write reports.  Do you remember the [date conversion trick](https://ladvien.com/sqldf-dates/) to get dates to work in SQL from R? This is because R holds dates as the number of seconds since 1970 and passes it as a string to SQL.  But, then SQL tries to convert the date from a date into seconds again, screwing everything up.
 
 It pays to RFTM.
 

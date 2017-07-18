@@ -147,7 +147,7 @@ And it doesn't matter when this script is run, it will always insert today's dat
 
 Well, we can't talk about the `NOW()` function without discussing the `DATE()` function I slipped in there.  What does it do?  
 
-As we discussed earlier, the computer looks at dates as the number of seconds since `1970-01-01`.  When you use the `NOW()` function by itself then it will return the number of seconds--um, not something humans like to read.  The `DATE()` function says, "Take whatever is inside the parenthesis and try to convert it into a human readable date."  _Voila!_ A human readable date.
+As we discussed earlier, the computer looks at dates as the number of seconds since `1970-01-01`.  When you use the `NOW()` function by itself then it will return the number of seconds--um, not something humans like to read.  The `DATE()` function says, "Take whatever is inside the parentheses and try to convert it into a human readable date."  _Voila!_ A human readable date.
 
 ## Age
 Let's get fancy.  We can use the `NOW()` function and our `peopleDf` to calculate everyone's age.
@@ -168,7 +168,7 @@ Cool, right?  Now, it does not matter when this above code of line is run, it wi
 
 **One important note,** if the date and time are wrong on your computer this calculation will be incorrect.
 
-The nerd-judo which can be done with dates in SQL-R is endless.  But that covers a lot of the basics.
+The nerd-judo which can be done with dates in SQL-R is endless.  But this covers a lot of the basics.
 
 If you've missed the code bits throughout this article, here it is all at once:
 

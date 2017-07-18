@@ -164,9 +164,10 @@ This should provide:
 |IA26X38HOTOIBHYIRV8CKR5RDS8KNGHV |Fela      |Falla    |1999-1-1   |  18|
 |LASDU89NRABVJWW779W4JGGAN90IQ5B2 |Sarah     |Kerrigan |1992-04-01 |  25|
 
+
 Cool, right?  Now, it does not matter when this above code of line is run, it will calculate everyone's age correctly.
 
-One important note, if the date and time are wrong on your computer this calculation will be incorrect.
+**One important note,** if the date and time are wrong on your computer this calculation will be incorrect.
 
 The nerd-judo which can be done with dates in SQL-R is endless.  But this covers a lot of the basics.
 

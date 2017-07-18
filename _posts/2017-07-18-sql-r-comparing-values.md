@@ -48,13 +48,13 @@ If `x is less than y` the computer is going to say the statement is true (or 1 i
 
 For us, things are a little simpler.  We just want to know who was born before 2000.  Let's re-write the statement above with our problem:
 
-> Is Sarah's DOB less than 2000-01-01
+> Is Sarah's DOB is less than 2000-01-01
 
 Well, what is Sarah's DOB? 1992-04-01.  Let's rewrite and assess (gah, this feels like high-school algebra again).
 
 > Is 1992-04-01 less than 2000-01-01
 
-Hmm.  This can get to be a bit confusing for humans, but more importantly, confusing to computers.  
+Hmm.  This can get confusing for humans, but more importantly, confusing to computers.
 
 In English, we'd probably express this as, 
 

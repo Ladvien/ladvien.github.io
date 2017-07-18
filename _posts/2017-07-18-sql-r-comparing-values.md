@@ -98,7 +98,7 @@ library(sqldf)
 nonMillennialsDf <- sqldf("SELECT * FROM peopleDf WHERE DOB < '2000-01-01'")
 {% endhighlight %}
 
-This should prove a `nonMillennialsDf` dataframe, which contains:
+This should provide a `nonMillennialsDf` dataframe, which contains:
 
 |PersonalID                       |FirstName |LastName |DOB        |
 |:--------------------------------|:---------|:--------|:----------|
@@ -107,11 +107,11 @@ This should prove a `nonMillennialsDf` dataframe, which contains:
 
 And there we go, for all my nerdsplaining the code's pretty simple, right?  
 
-Well, there are a few gotchas.  Notice the date we've written in.  It has the following format `YYYY-MM-DD` and is surrounded by single quotes.  Any time you use dates in SQL they must be written in this format.
+Well, there are a few gotchas.  Notice the date we've written.  It has the following format `YYYY-MM-DD` and is surrounded by single quotes.  Any time you use dates in SQL they must be written in this format.
 
 Another tricky part is trying to find if a date falls between two dates.  Let's take the `peopleDf` and write a query which provides everyone who was born between `1998-01-01` and `2005-01-01`
 
-Here's the likely query.
+Here's the query.
 
 {% highlight r %}
 bornBetweenDf <- sqldf("SELECT * FROM peopleDf WHERE DOB > '1998-01-01' AND DOB < '2005-01-01'") 
@@ -126,9 +126,9 @@ This should result in a table with only Fela:
 It is important to understand, the first comparison removed Sarah, as `1992-04-01` is greater than `1998-01-01`.  Then, the second comparison got rid of Timmy as `2010-01-01`.
 
 ## Now()
-There is one more critical command in writing robust date comparisons.  The `now()` function.  This function is different in R and SQL, but pretty much every programming language has a version of the function.
+There is one more critical command in writing robust date comparisons.  The `NOW()` function.  This function is different in R and SQL, but pretty much every programming language has a version of the function.
 
-Essentially, the `now()` asks the computer what today's date is when the script runs.
+Essentially, the `NOW()` asks the computer what today's date is when the script runs.
 
 In SQL-R it looks like this:
 {% highlight r %}

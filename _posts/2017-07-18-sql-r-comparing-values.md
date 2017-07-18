@@ -38,7 +38,7 @@ If you run the above in R you should get a dataframe called `peopleDf` which loo
 
 It's a simple table.  But let's say we wanted to get a list of everyone born before 2000-01-01.  Of course, we can easily see Timmy is the only person born after 2000. But if our table was thousands of records it wouldn't be possible to quickly assess.
 
-Luckily, this is pretty straight forward in SQL-R.  We will use a `less than operator` (**<**).  You probably remember this sign from high-school while solving inequalities.  However, we will be using it as what's known as a `[relational operator](https://en.wikipedia.org/wiki/Relational_operator)`.  
+Luckily, this is pretty straight forward in SQL-R.  We will use a `less than operator` (**<**).  You probably remember this sign from high-school while solving inequalities.  However, we will be using it as what's known as a [relational operator](https://en.wikipedia.org/wiki/Relational_operator).  
 
 In short, it states, 
 

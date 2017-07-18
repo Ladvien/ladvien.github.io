@@ -145,7 +145,7 @@ This should provide:
 
 And it doesn't matter when this script is run, it will always insert today's date in the `TodaysDate` column.  Nifty, right?  Trust me, if you don't see the possibilities yet, give it time.  It'll grow into one of your favorite functions.
 
-Well, we can't talk about the `NOW()` function without discussing the `DATE()` function I slipped in there.  What does it doe?  
+Well, we can't talk about the `NOW()` function without discussing the `DATE()` function I slipped in there.  What does it do?  
 
 As we discussed earlier, the computer looks at dates as the number of seconds since `1970-01-01`.  When you use the `NOW()` function by itself then it will return the number of seconds--um, not something humans like to read.  The `DATE()` function says, "Take whatever is inside the parenthesis and try to convert it into a human readable date."  _Voila!_ A human readable date.
 

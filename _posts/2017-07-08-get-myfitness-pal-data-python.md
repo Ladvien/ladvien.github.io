@@ -145,20 +145,24 @@ cat("\n")
 # Thanks Rich Scriven
 # https://stackoverflow.com/questions/25509879/how-can-i-make-a-list-of-all-dataframes-that-are-in-my-global-environment
 healthDataRaw <- do.call(rbind, lapply(list.files(pattern = ".csv"), read.csv))
+# Fill in missing values for calories
+healthDataRaw$Calories[is.na(healthDataRaw$Calories)] <- mean(healthDataRaw$Calories, na.rm = TRUE)
+
+date30DaysAgo <- Sys.Date() - 30
+date90DaysAgo <- Sys.Date() - 90
+date180DaysAgo <- Sys.Date() - 180
 
 cat("*******************************************************\n")
 cat("* Creating Weight Graph                               *\n")
 cat("*******************************************************\n")
 healthData <- healthDataRaw[!(is.na(healthDataRaw$Weight)),]
 healthData$Date <- as.Date(healthData$Date)
-healthData <- with(healthData, healthData[(Date >= "2016-01-01"), ])
+healthData <- with(healthData, healthData[(Date >= date30DaysAgo), ])
 p <- ggplot(healthData, aes(x = Date, y = Weight))+
-  geom_line(color="firebrick")
+  geom_line(color="firebrick", size = 1) +
+  labs(title ="Ladvien's Weight", x = "Date", y = "Weight")
 p
-
-png(filename="ladviens_weight.png")
-plot(p)
-dev.off()
+ggsave("ladviens_weight.png", width = 5, height = 5)
 
 cat("\n")
 
@@ -166,11 +170,11 @@ cat("*******************************************************\n")
 cat("* Creating Calories Graph                             *\n")
 cat("*******************************************************\n")
 cat("\n")
-healthData <- healthDataRaw[!(is.na(healthDataRaw$Calories)),]
+#healthData <- healthDataRaw[!(is.na(healthDataRaw$Calories)),]
 healthData$Date <- as.Date(healthData$Date)
-healthData <- with(healthData, healthData[(Date >= "2016-01-01"), ])
+healthData <- with(healthData, healthData[(Date >= date30DaysAgo), ])
 p2 <- ggplot(healthData, aes(x = Date, y = Calories))+
-  geom_line(color="firebrick")
+  geom_line(color="firebrick") 
 p2
 
 png(filename="ladviens_calories.png")
@@ -181,6 +185,8 @@ cat("*******************************************************\n")
 cat("* Finished R Script                                   *\n")
 cat("*******************************************************\n")
 cat("\n")
+
+
 {% endhighlight %}
 
 Lastly, let's write a bash script to run the Python and R code, then copy the images to Ladvien.com

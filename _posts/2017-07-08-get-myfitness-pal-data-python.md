@@ -185,8 +185,6 @@ cat("*******************************************************\n")
 cat("* Finished R Script                                   *\n")
 cat("*******************************************************\n")
 cat("\n")
-
-
 {% endhighlight %}
 
 Lastly, let's write a bash script to run the Python and R code, then copy the images to Ladvien.com

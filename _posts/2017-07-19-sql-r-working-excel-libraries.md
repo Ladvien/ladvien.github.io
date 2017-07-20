@@ -79,8 +79,34 @@ peopleDf <- data.frame(PersonalID=c("ZP1U3EPU2FKAWI6K5US5LDV50KRI1LN7", "IA26X38
                        DOB=c("2010-01-01", "1999-1-1", "1992-04-01"))
 ##################################################################
 ##################################################################
-excelDf <- readWorksheetFromFile("/Users/user/Data/VI-SPDAT v2.0.xlsx", sheet = 1, startRow = 1)
 peopleWorkbook <- loadWorkbook("People.xlsx",  create = TRUE)
 myPeopleWorksheet <- createSheet(peopleWorkbook, "My People")
 writeWorksheetToFile("People.xlsx", data = peopleDf, sheet = "My People")
 {% endhighlight %}
+
+After running this code you should have a file called `People.xlsx` in your working directory (remember, `getwd()` will tell provide the working directory).  If you open this file, it should look something like this:
+
+![](https://ladvien.com/images/xlconnect_written_workbook.png)
+
+This looks a little complex, but it's just because XLConnect makes it look complex.  Here's what it is is doing:
+
+1. A workbook is created, which is a place where worksheets can be stored.
+2. myPeopleWorksheet is created inside the workbook created above. The sheet is called "My People"
+3. The worksheet has the our peopleDf added to it, then it is saved as a file "People.xlsx" in our working directory.
+
+Like I said, it's a lot of unneeded complexity, in my opinion.
+
+## Why use Excel Documents
+After the added complexity of reading and saving Excel documents you be wondering what the benefit is?  Great question.
+
+As stated at the beginning, Excel documents can contain other information besides just data.  It contain formatting, images, graphs, and a lot of other stuff.  And one of the reasons for writing report scripts is to automate all redundant tasks.
+
+Imagine, you've got a data set of 12,000 participant enrollments. You want to create a spreadsheet which puts the enrollment in descending order.  And you want to create this report daily.
+
+If you used the `write.csv()` you would need to open the CSV after creating it, then manually add the sort to the document, save it, then send it out.  I guarantee, after doing that for several weeks you are going to want to find a way to automate.  Especially, if you decide the headers need to have font size 18 as well. 
+
+Well, Excel documents allow us to store the formating tweaks and XLConnect allows us to insert them automatically.
+
+Adding formatting can get a little more complex and will be the focus of another article.  Also, we will use `openxlsx` as it is _much_ easier to output formatting.
+
+

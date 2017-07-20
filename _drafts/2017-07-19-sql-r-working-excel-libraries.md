@@ -26,7 +26,7 @@ There are several R libraries which will allow us to work with Excel documents i
 Installing either of these libraries should be as simple as running the following code:
 
 {% highlight r %}
-install.packages("XLConnect")
+install.packages("XLConnect", dependencies=TRUE)
 install.packages("openxlsx")
 {% endhighlight %}
 
@@ -51,5 +51,36 @@ XLConnect doesn't make any assumptions, it wants you to tell it which sheet you'
 Here's how to load an Excel document, the first sheet, in XLConnect:
 
 {% highlight r %}
-
+library(XLConnect)
+excelDf <- readWorksheetFromFile("/Users/user/Data/VI-SPDAT v2.0.xlsx", sheet = 1, startRow = 1)
 {% end highlight %}
+
+It is similar to the `read.csv()` function, but notice the file in the path refers to `VI-SPDAT v2.0.xlsx`? You want to make sure your file format is either `.xlsx` or `.xls` as the `readWorkSheetFromFile()` function only works with Excel documents.
+
+Also, there are two other parameters.  The first, `sheet = 1` is telling XLConnect to read in only the first sheet.  Just know, you could set it to whatever sheet number you'd like.  And for reference, the sheets are 1, 2, 3, 5...etc., left to read when open Excel document.  So, even if your sheets have different names XLConnect will still load the data correctly.
+
+The second parameter is `startRow = 1`.  This allows you to tell R where to start the dataframe.  For example, if you had a header in your Excel document which didn't contain data.
+
+![](https://ladvien.com/images/excel_robot_budget.png)
+
+We could skip down to row three, where the column headers, by telling XLConnect `startRow = 3`.
+
+### Writing a Dataframe to Excel Document
+Writing Excel documents are a little more complex--and one reason I'm not a huge fan of XLConnect. 
+
+Here's how you'd write an Excel file:
+
+{% highlight r %}
+######################### Data ###################################
+###################### DO NOT CHANGE #############################
+peopleDf <- data.frame(PersonalID=c("ZP1U3EPU2FKAWI6K5US5LDV50KRI1LN7", "IA26X38HOTOIBHYIRV8CKR5RDS8KNGHV", "LASDU89NRABVJWW779W4JGGAN90IQ5B2"), 
+                       FirstName=c("Timmy", "Fela", "Sarah"),
+                       LastName=c("Tesa", "Falla", "Kerrigan"),
+                       DOB=c("2010-01-01", "1999-1-1", "1992-04-01"))
+##################################################################
+##################################################################
+excelDf <- readWorksheetFromFile("/Users/user/Data/VI-SPDAT v2.0.xlsx", sheet = 1, startRow = 1)
+peopleWorkbook <- loadWorkbook("People.xlsx",  create = TRUE)
+myPeopleWorksheet <- createSheet(peopleWorkbook, "My People")
+writeWorksheetToFile("People.xlsx", data = peopleDf, sheet = "My People")
+{% endhighlight %}

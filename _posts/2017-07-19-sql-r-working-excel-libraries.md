@@ -53,7 +53,7 @@ Here's how to load an Excel document, the first sheet, in XLConnect:
 {% highlight r %}
 library(XLConnect)
 excelDf <- readWorksheetFromFile("/Users/user/Data/VI-SPDAT v2.0.xlsx", sheet = 1, startRow = 1)
-{% end highlight %}
+{% endhighlight %}
 
 It is similar to the `read.csv()` function, but notice the file in the path refers to `VI-SPDAT v2.0.xlsx`? You want to make sure your file format is either `.xlsx` or `.xls` as the `readWorkSheetFromFile()` function only works with Excel documents.
 

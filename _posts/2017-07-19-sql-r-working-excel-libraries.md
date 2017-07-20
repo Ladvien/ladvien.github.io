@@ -37,7 +37,7 @@ Just know, RStudio has a way to set the version of R you are using by going to `
 Past this, I'd be more than happy to help you troubleshoot.  Just leave a comment below or shoot me an email.  However, it can get pretty hairy--especially on a Mac.
 
 ## Working with XLConnect
-Now days, I really only use XLConnect for loading data from Excel sheets.  I've just been too lazy to re-write all my code to use one library.  It's my opinion the reason to use XLConnect is it's a little easier to get going.  Its weakness is it doesn't have as much flexibility in formatting Excel documents to be saved on your computer.
+Now days, I only use XLConnect to load data from Excel sheets.  I've just been too lazy to re-write all my code to use one library (which would be `openxlsx`).  It's my opinion the reason to use XLConnect is it's a little easier to understand how it loads data.  Its weakness is it doesn't have as much flexibility in formatting Excel documents to be saved on your computer.  And it can be confusing to save Excel sheets.
 
 ### Loading Data from Xlsx Documents
 Loading data using XLConnect is a little different than using the `read.csv` function.  Like I stated earlier, Xlsx documents contain other information besides data.  One critical piece of information is the sheet number.
@@ -57,7 +57,7 @@ excelDf <- readWorksheetFromFile("/Users/user/Data/VI-SPDAT v2.0.xlsx", sheet = 
 
 It is similar to the `read.csv()` function, but notice the file in the path refers to `VI-SPDAT v2.0.xlsx`? You want to make sure your file format is either `.xlsx` or `.xls` as the `readWorkSheetFromFile()` function only works with Excel documents.
 
-Also, there are two other parameters.  The first, `sheet = 1` is telling XLConnect to read in only the first sheet.  Just know, you could set it to whatever sheet number you'd like.  And for reference, the sheets are 1, 2, 3, 5...etc., left to read when open Excel document.  So, even if your sheets have different names XLConnect will still load the data correctly.
+Also, there are two other parameters.  The first, `sheet = 1` is telling XLConnect to read in only the first sheet.  Just know, you could set it to whatever sheet number you'd like.  And for reference, the sheets are 1, 2, 3, 5...etc., left to right when opened in Excel.  So, even if your sheets have different names XLConnect will still load the data respective to their numerical order.
 
 The second parameter is `startRow = 1`.  This allows you to tell R where to start the dataframe.  For example, if you had a header in your Excel document which didn't contain data.
 

@@ -63,7 +63,7 @@ The second parameter is `startRow = 1`.  This allows you to tell R where to star
 
 ![](https://ladvien.com/images/excel_robot_budget.png)
 
-We could skip down to row three, where the column headers, by telling XLConnect `startRow = 3`.
+We could skip down to row three, where the column headers are, by telling XLConnect `startRow = 3`.
 
 ### Writing a Dataframe to Excel Document
 Writing Excel documents are a little more complex--and one reason I'm not a huge fan of XLConnect. 
@@ -79,8 +79,12 @@ peopleDf <- data.frame(PersonalID=c("ZP1U3EPU2FKAWI6K5US5LDV50KRI1LN7", "IA26X38
                        DOB=c("2010-01-01", "1999-1-1", "1992-04-01"))
 ##################################################################
 ##################################################################
+
+# Create a workbook to contain the worksheet(s).
 peopleWorkbook <- loadWorkbook("People.xlsx",  create = TRUE)
+# Create and name the worksheet.
 myPeopleWorksheet <- createSheet(peopleWorkbook, "My People")
+# Add the data to the worksheet, put it in the workbook, save it to the computer.
 writeWorksheetToFile("People.xlsx", data = peopleDf, sheet = "My People")
 {% endhighlight %}
 

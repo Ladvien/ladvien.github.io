@@ -96,21 +96,21 @@ This looks a little complex, but it's just because XLConnect makes it look compl
 
 1. A workbook is created, which is a place where worksheets can be stored.
 2. myPeopleWorksheet is created inside the workbook created above. The sheet is called "My People"
-3. The worksheet has the our peopleDf added to it, then it is saved as a file "People.xlsx" in our working directory.
+3. The worksheet has our peopleDf added to it, then it is saved as a file called "People.xlsx" in our working directory.
 
 Like I said, it's a lot of unneeded complexity, in my opinion.
 
 ## Why use Excel Documents
-After the added complexity of reading and saving Excel documents you be wondering what the benefit is?  Great question.
+After the added complexity of reading and saving Excel documents you might wonder what the benefit is?  Great question.
 
 As stated at the beginning, Excel documents can contain other information besides just data.  It contain formatting, images, graphs, and a lot of other stuff.  And one of the reasons for writing report scripts is to automate all redundant tasks.
 
 Imagine, you've got a data set of 12,000 participant enrollments. You want to create a spreadsheet which puts the enrollment in descending order.  And you want to create this report daily.
 
-If you used the `write.csv()` you would need to open the CSV after creating it, then manually add the sort to the document, save it, then send it out.  I guarantee, after doing that for several weeks you are going to want to find a way to automate.  Especially, if you decide the headers need to have font size 18 as well. 
+If you used the `write.csv()` you would need to open the CSV after creating it, then manually add the sort to the document, save it as an Excel file, then send it out.  I guarantee, after doing that for several weeks you are going to want to find a way to automate it.  Especially, if you decide the headers need to have font size 18 as well. 
 
-Well, Excel documents allow us to store the formating tweaks and XLConnect allows us to insert them automatically.
+Excel documents allow us to store the formating tweaks and XLConnect allows us to insert them automatically.
 
-Adding formatting can get a little more complex and will be the focus of another article.  Also, we will use `openxlsx` as it is _much_ easier to output formatting.
+Adding formatting can get a little more complex and will be the focus of another article.  Also, we will use `openxlsx` as it is _much_ easier to output formatting, again, just my opinion.
 
 

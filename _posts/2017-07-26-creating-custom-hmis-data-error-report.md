@@ -1,8 +1,8 @@
 ---
 layout: post
-title: Wo
+title: HMIS, R, SQL -- Work Challenge Three
 categories: HMIS
-excerpt: Using R Excel libraries to load and write Excel documents.
+excerpt: Third work challenge in mixing R and SQL to derive information from HMIS data. Creating a custom data error report.
 series: SQL-R
 tags: [HMIS, R, SQL]
 image: 

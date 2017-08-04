@@ -22,7 +22,7 @@ I also discovered the Sticky Fingers Kali Pi kernel and distros put together by 
 
 It has worked well so far.  However, I've not fully tested the Bluetooth LE hardware on the custom kernel.
 
-One of the issues I've had is being able to connect to new wifi hotspots headlessly.  Usually, you'd boot the rp0w connected to a monitor, keyboard, mouse, and edit wpa_supplicant.conf directly.  But what if you want to go into a new location with only your laptop and the rp0w.  How would you add the wifi credentials to the rp0w without a monitor, etc.
+One of the issues I've had is not being able to connect to new hotspots headlessly.  Usually, you'd boot the rp0w connected to a monitor, keyboard, mouse, and edit wpa_supplicant.conf directly.  But what if you want to go into a new location with only your laptop and the rp0w.  How would you add the wifi credentials to the rp0w without a monitor, etc.
 
 For awhile, I tried to get the ethernet gadget setup to work on the rp0w without any luck.  I think the problems relates to trying to use the gadget hardware on a Mac rather than a Windows machine.
 
@@ -30,9 +30,11 @@ In the end, I decided I would add a script which would do the following:
 
 1. Mount the /boot partition (which is editable through PC's SD card reader).
 2. Look for a file on the /boot called "wpa_supplicant.txt" and copy it to the /etc/wpa_supplicant.conf 
-2. Look for a file on the /boot called "interfaces.txt" and copy it to the /etc/networks/interfaces
+3. Look for a file on the /boot called "interfaces.txt" and copy it to the /etc/networks/interfaces
+4. Unmount /boot
+5. Remove the /boot directory
 
-This script is named `wifi_setup.sh`.  I then added a call to this script in `/etc/rc.local`
+I saved this script in `/root` as `wifi_setup.sh`.  I then added a call to it in `/etc/rc.local`
 
 {% highlight bash %}
 #!/bin/sh -e

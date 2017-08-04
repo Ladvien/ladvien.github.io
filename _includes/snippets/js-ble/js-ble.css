@@ -81,11 +81,11 @@
 	float: left;
 }
 
-.tsb-button-upload {
+.tsb-btn-hidden {
 	visibility: hidden;
 }
 
-.tsb-button-upload-visible {
+.tsb-btn-visible {
 	transition: 0.2s ease;
 	visibility: visible;
 }

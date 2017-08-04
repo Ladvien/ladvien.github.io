@@ -25,7 +25,7 @@
 								<li id="search-and-connect-btn" class="active"><a data-toggle="pill" href="#connect-pane">
 									<i class="fa fa-plug fa-2x"></i></a>
 								</li>
-								<li id="handshake-btn"><a data-toggle="pill" href="#handshake-pane">
+								<li><a data-toggle="pill" href="#handshake-pane">
 									<i class="fa fa-cogs fa-2x"></i></a>
 								</li>
 							</ul>
@@ -53,19 +53,19 @@
 					<div id="handshake-pane" class="tab-pane fade">
 						<div>
 							<div>
-								<button class="btn btn-primary panel-button"><i class="fa fa-handshake-o fa-2x"></i> Bootloader</button>
+								<button class="btn btn-primary panel-button" id="handshake-btn"><i class="fa fa-handshake-o fa-2x"></i> Bootloader</button>
 							</div>
 							<div>
-								<button class="btn btn-primary panel-button" id="read-btn"><i class="fa fa-cloud-download fa-2x"></i> Read Flash</button>
+								<button class="btn btn-primary panel-button tsb-btn-hidden" id="read-btn"><i class="fa fa-cloud-download fa-2x"></i> Read Flash</button>
+							</div>
+							<!-- <div>
+								<button class="btn btn-primary panel-button tsb-btn-hidden" id="upload-btn"><i class="fa fa-cloud-upload fa-2x"></i> Write Flash</button>
+							</div> -->
+							<div>
+								<button class="btn btn-primary panel-button tsb-btn-hidden" id="file-parse-btn"><i class="fa fa-file-text fa-2x"></i> Select File</button>
 							</div>
 							<div>
-								<button class="btn btn-primary panel-button" id="upload-btn"><i class="fa fa-cloud-upload fa-2x"></i> Write Flash</button>
-							</div>
-							<div>
-								<button class="btn btn-primary panel-button" id="file-parse-btn"><i class="fa fa-file-text fa-2x"></i> Select File</button>
-							</div>
-							<div>
-								<button class="btn btn-primary panel-button" id="file-upload-btn"><i class="fa fa-microchip fa-2x"></i> Upload File</button>
+								<button class="btn btn-primary panel-button tsb-btn-hidden" id="upload-btn"><i class="fa fa-microchip fa-2x"></i> Upload File</button>
 							</div>
 						</div>
 					</div>

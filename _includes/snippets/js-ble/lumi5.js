@@ -4,7 +4,7 @@ var log = console.log;
 var descriptor;
 var receivedString = "";
 var displayDOM = 'terminal';
-var handshakeButton = 'file-upload-btn';
+var handshakeButton = 'handshake-btn';
 var file;
 var rawHexArrayBuffer;
 var hexArrayBuffer;
@@ -46,18 +46,16 @@ function onWriteButtonClick() {
 var fileFinishedLoading = function (event) {
 	file = event.target;
 	rawHexArrayBuffer = file.result;
-	document.getElementById("file-parse-btn").classList.remove('tsb-button-file-parse');
-	document.getElementById("file-parse-btn").classList.add('tsb-button-file-parse-complete');
 
-	document.getElementById("upload-btn").classList.remove('tsb-button-upload');
-	document.getElementById("upload-btn").classList.add('tsb-button-upload-visible');
+	document.getElementById("upload-btn").classList.remove('tsb-btn-hidden');
+	document.getElementById("upload-btn").classList.add('tsb-btn-visible');
 	hexDataHandler.setData(rawHexArrayBuffer);
 }
 
 var onConnectedToTSB = function () {
-	document.getElementById("handshake-btn").classList.remove('tsb-button-handshake');
-	document.getElementById("handshake-btn").classList.add('tsb-button-handshake-complete');
-
+	document.getElementById("read-btn").classList.remove('tsb-btn-hidden');
+	document.getElementById("handshake-btn").classList.remove('tsb-btn-hidden');
+	document.getElementById("file-parse-btn").classList.remove('tsb-btn-hidden');
 }
 
 var onCompletedParsingFile = function () {
@@ -148,8 +146,6 @@ function changeResetPin() {
 	tsb.setResetPin(parseInt(resetPinNumber));
 	document.getElementById('resetPinNumber').value = tsb.getResetPinNumber();
 }
-
-
 
 // Setup the display terminal
 var terminal = Terminal;

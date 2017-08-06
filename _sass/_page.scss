@@ -510,6 +510,14 @@ header .entry-meta {
 //			padding: 50px 80px; // Original
 		}
 	}
+    img {
+        @media #{$medium} {
+            position: sticky;
+        }
+        @media #{$large} {
+            position: absolute;
+        }
+    }
 }
 
 .entry-image-index {
@@ -536,7 +544,8 @@ header .entry-meta {
 		border-radius: 3px 3px 0 0; // round image corners
         display: block;
         margin-left: auto;
-        margin-right: auto
+		margin-right: auto
+		
 	}
 }
 

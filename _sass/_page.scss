@@ -460,11 +460,12 @@ header .entry-meta {
             @media #{$x-small-device} {
 				margin-left: 200px;
             }
-            @media #{$small-device} {
+			@media #{$small-device}
+			 {
 				margin-left: 340px;
             }
             @media #{$medium-device} {
-				margin-left: 600px;
+
             }
             @media #{$large-device} {
 

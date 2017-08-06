@@ -453,6 +453,7 @@ header .entry-meta {
     }
     .entry-image {
         img {
+			margin-left: 50px;
             @media #{$xx-small-device} {
 				margin-left: 120px;
             }
@@ -474,7 +475,7 @@ header .entry-meta {
 
 .entry-image-index {
     margin-top: -25px;
-    margin-left: -120px;
+    margin-left: -15px;
     margin-right: -15px;
     margin-bottom: 10px;
     @media #{$medium} {

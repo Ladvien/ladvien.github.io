@@ -453,33 +453,33 @@ header .entry-meta {
     }
     .entry-image {
         img {
-            @media #{$xx-small-device} {
-                margin-top: 0px;
-                margin-left: 0px;
-                margin-right: 0px;
-                margin-bottom: 0px;
-            }
-            @media #{$x-small-device} {
-                margin-top: 0px;
-                margin-left: 0px;
-                margin-right: 0px;
-                margin-bottom: 0px;
-            }
-            @media #{$small-device} {
-                margin-top: 0px;
-                margin-left: 0px;
-                margin-right: 0px;
-                margin-bottom: 0px;
-            }
-            @media #{medium-device} {
-                margin-top: 0px;
-                margin-left: 0px;
-                margin-right: 0px;
-                margin-bottom: 0px;
-            }
-            @media #{$large-device} {
-                position: absolute;
-            }
+            // @media #{$xx-small-device} {
+            //     margin-top: 0px;
+            //     margin-left: 0px;
+            //     margin-right: 0px;
+            //     margin-bottom: 0px;
+            // }
+            // @media #{$x-small-device} {
+            //     margin-top: 0px;
+            //     margin-left: 0px;
+            //     margin-right: 0px;
+            //     margin-bottom: 0px;
+            // }
+            // @media #{$small-device} {
+            //     margin-top: 0px;
+            //     margin-left: 0px;
+            //     margin-right: 0px;
+            //     margin-bottom: 0px;
+            // }
+            // @media #{medium-device} {
+            //     margin-top: 0px;
+            //     margin-left: 0px;
+            //     margin-right: 0px;
+            //     margin-bottom: 0px;
+            // }
+            // @media #{$large-device} {
+            //     position: absolute;
+            // }
         }
     }
 }

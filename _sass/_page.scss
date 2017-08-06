@@ -454,7 +454,8 @@ header .entry-meta {
     .entry-image {
         img {
             @media #{$medium} {
-                position: sticky;
+				position: sticky;
+				color: #000;
             }
             @media #{$large} {
                 position: absolute;

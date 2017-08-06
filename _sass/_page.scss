@@ -185,12 +185,6 @@ th {
         min-height: $front-page-feature-image-height;
         img {
             min-height: $front-page-feature-image-height;
-            @media #{$medium} {
-                position: sticky;
-            }
-            @media #{$large} {
-                position: absolute;
-            }
         }
     }
 }
@@ -455,6 +449,14 @@ header .entry-meta {
         @media #{$large} {
             margin-bottom: 30px;
             padding: 50px 40px; //			padding: 50px 80px; // Original
+        }
+    }
+    img {
+        @media #{$medium} {
+            position: sticky;
+        }
+        @media #{$large} {
+            position: absolute;
         }
     }
 }

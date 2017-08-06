@@ -454,28 +454,28 @@ header .entry-meta {
     .entry-image {
         img {
             @media #{$xx-small-device} {
-                margin-top: -25px;
-                margin-left: 900px;
-                margin-right: -15px;
-                margin-bottom: 10px;
+                margin-top: 0px;
+                margin-left: 0px;
+                margin-right: 0px;
+                margin-bottom: 0px;
             }
             @media #{$x-small-device} {
-                margin-top: -25px;
-                margin-left: 700px;
-                margin-right: -15px;
-                margin-bottom: 10px;
+                margin-top: 0px;
+                margin-left: 0px;
+                margin-right: 0px;
+                margin-bottom: 0px;
             }
             @media #{$small-device} {
-                margin-top: -25px;
-                margin-left: 300px;
-                margin-right: -15px;
-                margin-bottom: 10px;
+                margin-top: 0px;
+                margin-left: 0px;
+                margin-right: 0px;
+                margin-bottom: 0px;
             }
             @media #{medium-device} {
-                margin-top: -25px;
-                margin-left: -15px;
-                margin-right: -15px;
-                margin-bottom: 10px;
+                margin-top: 0px;
+                margin-left: 0px;
+                margin-right: 0px;
+                margin-bottom: 0px;
             }
             @media #{$large-device} {
                 position: absolute;

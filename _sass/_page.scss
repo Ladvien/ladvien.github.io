@@ -456,13 +456,13 @@ header .entry-meta {
     }
     .entry-image {
         img {
-            @media #{$medium} {
-				align: left;
+            @media #{$small-device} {
+				text-align: left;
             }
-            @media #{$medium} {
-                align: left;
+            @media #{medium-device} {
+                text-align: left;
             }
-            @media #{$large} {
+            @media #{$large-device} {
                 position: absolute;
             }
         }

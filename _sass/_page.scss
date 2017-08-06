@@ -510,14 +510,17 @@ header .entry-meta {
 //			padding: 50px 80px; // Original
 		}
 	}
-    img {
-        @media #{$medium} {
-            position: sticky;
-        }
-        @media #{$large} {
-            position: absolute;
-        }
-    }
+
+	.entry-image{
+		img {
+			@media #{$medium} {
+				position: sticky;
+			}
+			@media #{$large} {
+				position: absolute;
+			}
+		}
+	}
 }
 
 .entry-image-index {

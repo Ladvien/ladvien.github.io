@@ -464,10 +464,10 @@ header .entry-meta {
 				margin-left: 300px;
             }
             @media #{medium-device} {
-
+				margin-left: 400px;
             }
             @media #{$large-device} {
-                position: absolute;
+               margin: auto;
             }
         }
     }

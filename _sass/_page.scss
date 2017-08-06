@@ -460,16 +460,10 @@ header .entry-meta {
 				margin-left: 200px;
             }
             @media #{$small-device} {
-                margin-top: 0px;
-                margin-left: 0px;
-                margin-right: 0px;
-                margin-bottom: 0px;
+
             }
             @media #{medium-device} {
-                margin-top: 0px;
-                margin-left: 0px;
-                margin-right: 0px;
-                margin-bottom: 0px;
+
             }
             @media #{$large-device} {
                 position: absolute;
@@ -480,7 +474,7 @@ header .entry-meta {
 
 .entry-image-index {
     margin-top: -25px;
-    margin-left: -15px;
+    margin-left: -120px;
     margin-right: -15px;
     margin-bottom: 10px;
     @media #{$medium} {

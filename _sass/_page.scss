@@ -461,13 +461,13 @@ header .entry-meta {
 				margin-left: 200px;
             }
             @media #{$small-device} {
-				margin-left: 300px;
+				margin-left: 340px;
             }
             @media #{medium-device} {
 				margin-left: 400px;
             }
             @media #{$large-device} {
-               margin: 612px;
+               margin-left: 612px;
             }
         }
     }

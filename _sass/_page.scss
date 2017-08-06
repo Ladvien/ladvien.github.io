@@ -463,11 +463,11 @@ header .entry-meta {
             @media #{$small-device} {
 				margin-left: 340px;
             }
-            @media #{medium-device} {
+            @media #{$medium-device} {
 				margin-left: 600px;
             }
             @media #{$large-device} {
-               margin-left: auto;
+
             }
         }
     }

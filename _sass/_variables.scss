@@ -61,14 +61,13 @@ $info                            : #308cbc;
 /* Custom, iPhone Retina */ 
 $xx-small-device: "only screen and (min-width : 320px)";
 /* Extra Small Devices, Phones */ 
-$x-small-device: "only screen and (min-width : 480px)";
+$x-small-device: "only screen and (min-width : 480px) and (max-width: 767)";
 /* Small Devices, Tablets */
-$small-device: "only screen and (min-width : 768px)";
+$small-device: "only screen and (min-width : 768px) and (max-width: 991)";
 /* Medium Devices, Desktops */
-$medium-device: "only screen and (min-width : 992px)";
+$medium-device: "only screen and (min-width : 992px) and (max-width: 1199)";
 /* Large Devices, Wide Screens */
 $large-device: "only screen and (min-width : 1200px)";
-
 
 $small                           : "only screen and (min-width: 30em)";
 $medium                          : "only screen and (min-width: 48em)";

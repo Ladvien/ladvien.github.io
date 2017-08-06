@@ -453,9 +453,21 @@ header .entry-meta {
     }
     .entry-image {
         img {
+            @media #{$xx-small-device} {
+                margin-top: -25px;
+                margin-left: 900px;
+                margin-right: -15px;
+                margin-bottom: 10px;
+            }
+            @media #{$x-small-device} {
+                margin-top: -25px;
+                margin-left: 700px;
+                margin-right: -15px;
+                margin-bottom: 10px;
+            }
             @media #{$small-device} {
                 margin-top: -25px;
-                margin-left: -15px;
+                margin-left: 300px;
                 margin-right: -15px;
                 margin-bottom: 10px;
             }

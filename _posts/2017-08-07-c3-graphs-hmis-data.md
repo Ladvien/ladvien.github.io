@@ -51,7 +51,7 @@ This graph relates to the `Trends of Homelessness, Rapid Rehousing, and Permanen
 
 It is important to understand these barriers are not mutually exclusive.  For example, `Jane` could report both a `Mental Health Problem` and `Substance Abuse Disorder` and she would therefore be counted in both sub-populations. 
 
-The three categories defined as follows:
+The three are categories defined as follows:
 
 * `Eligible for Rapid Rehousing` are individuals who are actively in a homeless situation and are not met the `chronically homeless` threshold.
 * `Eligible for Permanent Supportive Housing` are individuals who are actively in a homeless situation are ***have*** met the threshold of `chronically homeless`

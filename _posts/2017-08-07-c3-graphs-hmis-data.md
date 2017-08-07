@@ -1,6 +1,6 @@
 ---
 layout: post
-title: C3 HMIS' Graph Gallery
+title: C3 HMIS Graph Gallery
 categories: Graphing
 series: C3
 excerpt: Using C3 JavaScript library to quickly create interactive graphs.

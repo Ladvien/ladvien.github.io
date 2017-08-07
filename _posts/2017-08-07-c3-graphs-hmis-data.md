@@ -12,7 +12,8 @@ custom_css:
 custom_js: 
 ---
 
-### Trends of Homelessness, Active in Rapid Rehousing, and Active in Permanent Supportive Housing
+## Trends of Homelessness, Active in Rapid Rehousing, and Active in Permanent Supportive Housing
+
 
 <link href="https://ladvien.com/projects/d3/practice/c3-0.4.15/c3.css" rel="stylesheet">  
 <script src="https://d3js.org/d3.v3.min.js"></script>
@@ -21,3 +22,21 @@ custom_js:
 
 <div id="chartOne"></div>
 
+### Individuals Experiencing Homelessness
+This graph shows the trend of those homeless in Tarrant County, week-to-week who meet the following conditions:
+
+1. The person counted has stayed at least one night in a Night-by-nNight shelter within 90-days of the week counted.
+2. Or the person counted has been contacted by Street Outreach within 90-days of the week counted.
+3. Or the person was active in an Entry / Exit shelter program within the week of the count.
+
+Most likely the count is inflated approximately 33%, given there is a large known number of duplicates in the count.  The software used to generate the data has no administrator option to merge duplicates.  A request has been made for mass merger.
+
+### Active in Rapid Rehousing
+Another trend found in the graph is a week-to-week count of those homeless who are active in a Rapid Rehousing (RRH) project.
+
+The duplicate issue should not be as pronounced here, as even if a duplicate where created during the sheltered phase of a participant's stay in homelessness, then only one of the pair would be enrolled into the housing project.  Therefore, enrollment into housing is a natural filter.
+
+### Active in Permanent Supportive Housing
+This trend is similar to the RRH trend.  
+
+Notice the line is flat.  This is to be expected, as entry and exits are rare in Permanent Supportive Housing projects.

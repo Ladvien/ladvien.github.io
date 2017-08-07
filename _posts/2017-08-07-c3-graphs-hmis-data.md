@@ -12,7 +12,7 @@ custom_css:
 custom_js: 
 ---
 
-## Trends of Homelessness, Active in Rapid Rehousing, and Active in Permanent Supportive Housing
+## Trends of Homelessness, Rapid Rehousing, and Permanent Supportive Housing
 
 
 <link href="https://ladvien.com/projects/d3/practice/c3-0.4.15/c3.css" rel="stylesheet">  
@@ -40,3 +40,9 @@ The duplicate issue should not be as pronounced here, as even if a duplicate whe
 This trend is similar to the RRH trend.  
 
 Notice the line is flat.  This is to be expected, as entry and exits are rare in Permanent Supportive Housing projects.
+
+## Subpopulations
+
+<script src="https://ladvien.com/projects/d3/actively-homeless-subpopulations.js"></script>
+
+<div id="chartTwo"></div>

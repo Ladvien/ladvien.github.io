@@ -53,7 +53,7 @@ It is important to understand these barriers are not mutually exclusive.  For ex
 
 The three are categories defined as follows:
 
-* **Eligible for Rapid Rehousing** are individuals who are actively in a homeless situation and are not met the **chronically homeless** threshold.
-* **Eligible for Permanent Supportive Housing** are individuals who are actively in a homeless situation are ***have*** met the threshold of **chronically homeless**
-* **All Eligible for Housing** is the sum of both **Eligible for Rapid Rehousing** and **Eligible for Permanent Supportive Housing**
+* ***Eligible for Rapid Rehousing*** are individuals who are actively in a homeless situation and are not met the **chronically homeless** threshold.
+* ***Eligible for Permanent Supportive Housing*** are individuals who are actively in a homeless situation are ***have*** met the threshold of **chronically homeless**
+* ***All Eligible for Housing*** is the sum of both **Eligible for Rapid Rehousing** and **Eligible for Permanent Supportive Housing**
 * It should be noted, **Eligible for Rapid Rehousing** and **Eligible for Permanent Supportive Housing** are mutually exclusive.  Therefore, the **All Eligible for Housing** is an accurate count save the duplicates described above.

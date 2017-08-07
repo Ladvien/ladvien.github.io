@@ -46,3 +46,14 @@ Notice the line is flat.  This is to be expected, as entry and exits are rare in
 <script src="https://ladvien.com/projects/d3/tx-601/actively-homeless-subpopulations.js"></script>
 
 <div id="chartTwo"></div>
+
+This graph relates to the `Trends of Homelessness, Rapid Rehousing, and Permanent Supportive Housing` graph.  It looks at the last week of the same data.  Of those participants who are still actively homeless (and therefore eligible for housing), what sorts of barriers do these individuals face.  HUD refers to these groups of individuals with particular difficulties as "subpopulations."
+
+It is important to understand these barriers are not mutually exclusive.  For example, `Jane` could report both a `Mental Health Problem` and `Substance Abuse Disorder` and she would therefore be counted in both sub-populations. 
+
+The three categories defined as follows:
+
+* `Eligible for Rapid Rehousing` are individuals who are actively in a homeless situation and are not met the `chronically homeless` threshold.
+* `Eligible for Permanent Supportive Housing` are individuals who are actively in a homeless situation are ***have*** met the threshold of `chronically homeless`
+* `All Eligible for Housing` is the sum of both `Eligible for Rapid Rehousing` and `Eligible for Permanent Supportive Housing`
+* It should be noted, `Eligible for Rapid Rehousing` and `Eligible for Permanent Supportive Housing` are mutually exclusive.  Therefore, the `All Eligible for Housing` is an accurate count save the duplicates described above.

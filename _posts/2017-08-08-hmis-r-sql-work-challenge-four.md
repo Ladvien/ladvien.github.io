@@ -67,6 +67,8 @@ Let `read.csv`.  That's because `read.csv` is a function written by the makers o
 
 This is exactly how R has become such a powerful tool.  Many smart people have written sets of functions, which are called libraries.  Feel the power of open-source.
 
+Time to write some of our own functions and give back to that generous community.
+
 ## Data Needed
 
 For this work challenge you will need:

@@ -65,9 +65,9 @@ You may notice, this is similar to a lot of code we have been using. Like `read.
 clientDf <- read.csv(clientCsvPath)
 {% endhighlight %}
 
-This is exactly how R has become such a powerful tool.  Many smart people have written sets of functions, which are called libraries.  Feel the power of open-source.
+This is how R has become powerful tool.  Many smart people have written sets of functions, which are called libraries.  Feel the power of open-source.
 
-Time to write some of our own functions and give back to that generous community.
+Time to give back to community and write some of our own functions
 
 ## Data Needed
 

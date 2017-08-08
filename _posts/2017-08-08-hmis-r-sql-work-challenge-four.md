@@ -45,9 +45,9 @@ clientDf <- read.csv(clientCsvPath)
 myNewFunction(clientDf)
 {% endhighlight %}
 
-And the coolest thing about functions is being able to `return` data.  This can be a tricky concept, but at its root it is simple.
+And the coolest thing about functions is being able to `return` data.  Functions return whatever data is on the last line of the function. This can be a tricky concept, but at its root it is simple.
 
-If you want to pass the function something to use:
+Here, the `clientDf` will be returned.
 {% highlight r %}
 myNewFunction <- function(clientDf){
   clientDf$VeteranStatus[clientDf$VeteranStatus == "1"]

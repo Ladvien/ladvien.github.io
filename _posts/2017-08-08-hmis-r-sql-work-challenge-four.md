@@ -57,13 +57,13 @@ clientDf <- read.csv(clientCsvPath)
 veteranList <- myNewFunction(clientDf)
 {% endhighlight %}
 
-The key is to understand whatever is the last line in a function it becomes the result of the functions work. The result is then passed back out of the function, where it can be assigned to a new variable.  
+The result is then passed back out of the function, where it can be assigned to a new variable.
 
-You may notice, this is similar to a lot of code we have been using.  
+You may notice, this is similar to a lot of code we have been using. Like `read.csv`.  That's because `read.csv` is a function written by the makers of R, and included for our use.
+
 {% highlight r %}
 clientDf <- read.csv(clientCsvPath)
 {% endhighlight %}
-Let `read.csv`.  That's because `read.csv` is a function written by the makers of R, and included for our use.
 
 This is exactly how R has become such a powerful tool.  Many smart people have written sets of functions, which are called libraries.  Feel the power of open-source.
 

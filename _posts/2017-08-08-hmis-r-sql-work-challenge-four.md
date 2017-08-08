@@ -13,11 +13,49 @@ custom_js:
 ---
 # Creating Reusable Code
 
-Writing report code which can be reused is critical to being an effective report specialist.  By now, hopefully, you see the power of SQL-R, especially around HMIS data.  But you may still feel slow.  Or have thoughts like, "If I pulled these data into Excel I could manually filter them in 1/10th the time." That's probably true.  But, after manually filtering dataset after dataset it becomes apparent finding a way to automate some tasks would save many hours in the long-run. Thus, writing an R scripts for routine work would save countless hours of monotony
+Writing report code which can be reused is critical to being an effective report specialist.  By now, hopefully, you see the power of SQL-R, especially around HMIS data.  But you may still feel slow.  Or have thoughts like, "If I pulled these data into Excel I could manually filter them in 1/10th the time." That's probably true.  But, after manually filtering dataset after dataset it becomes apparent finding a way to automate some tasks would save many hours in the long-run. Thus, writing an R scripts for routine work would save countless hours of monotony.
 
-However, one problem remains, each task has will usually have a _slight_ variation from the one before it.  This causes you to write 95% of the same code with a slight tweak for the current project.  And that doesn't save time at all.  In the programming world, the 95% code which is the same is known as [bolierplate code](https://en.wikipedia.org/wiki/Boilerplate_code).
+However, one problem remains, each task will usually have a _slight_ variation from the one before it.  This causes you to write 95% of the same code with a slight tweak for the current project.  And that doesn't save time at all.  In the programming world, the 95% code which is the same is known as [bolierplate code](https://en.wikipedia.org/wiki/Boilerplate_code).
 
 Ok, that's the problem.  The solution? Functions.
+
+A function is nothing more than a section of code you save into a variable for easy reuse.  Defining a function looks like this:
+
+{% highlight r %}
+myNewFunction <- function(){
+  # Code you want to run goes here.
+}
+{% endhighlight %}
+
+Then, whenever you want to use this code it can be called like this:
+
+{% highlight r %}
+myNewFunction()
+{% endhighlight %}
+
+If you want to pass the function something to use:
+{% highlight r %}
+
+myNewFunction <- function(clientDf){
+  clientDf$VeteranStatus
+}
+clientDf <- read.csv(clientCsvPath)
+myNewFunction(clientDf)
+{% endhighlight %}
+
+And the coolest thing about functions is being able to `return` data.  This can be a tricky concept, but at its root it is simple.
+
+If you want to pass the function something to use:
+{% highlight r %}
+myNewFunction <- function(clientDf){
+  clientDf$VeteranStatus[clientDf$VeteranStatus == "1"]
+  clientDf
+}
+clientDf <- read.csv(clientCsvPath)
+veteranList <- myNewFunction(clientDf)
+{% endhighlight %}
+
+The key is to understand whatever is the last line in a function it becomes the result of the functions work. The result is then passed back out of the function, where it can be assigned to a new variable.  Mind blown.
 
 ## Data Needed
 

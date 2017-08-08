@@ -13,7 +13,7 @@ custom_js:
 ---
 # Creating Reusable Code
 
-Writing report code which can be reused is critical to writing effective reports.  By now, hopefully, you see the power of SQL-R, especially around HMIS data.  But you may still feel slow.  Or have thoughts like, "If I pulled these data into Excel I could manually filter them in 1/10th the time." That's probably true.  But, after manually filtering dataset after dataset it becomes apparent finding a way to automate the task would save many hours in the long-run. Thus, writing an R script for routine tasks would save countless hours of monotony
+Writing report code which can be reused is critical to being effective.  By now, hopefully, you see the power of SQL-R, especially around HMIS data.  But you may still feel slow.  Or have thoughts like, "If I pulled these data into Excel I could manually filter them in 1/10th the time." That's probably true.  But, after manually filtering dataset after dataset it becomes apparent finding a way to automate some tasks would save many hours in the long-run. Thus, writing an R scripts for routine work would save countless hours of monotony
 
 However, one problem remains, each task has will usually have a _slight_ variation from the one before it.  This causes you to write 95% of the same code with a slight tweak for the current project.  And that doesn't save time at all.  In the programming world, the 95% code which is the same is known as [bolierplate code](https://en.wikipedia.org/wiki/Boilerplate_code).
 

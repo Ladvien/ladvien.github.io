@@ -435,6 +435,8 @@ header .entry-meta {
             margin-top: 50px;
             margin-left: auto;
             margin-right: auto;
+        img {
+            text-align: center;
         }
     }
     article {
@@ -453,7 +455,7 @@ header .entry-meta {
     }
     .entry-image {
         img {
-			margin-left: 50px;
+            margin-left: 50px;
             @media #{$xx-small-device} {
 				margin-left: 120px;
             }

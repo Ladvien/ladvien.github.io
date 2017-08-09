@@ -84,8 +84,14 @@ peopleDf <- sqldf("SELECT *,
 
 {% endhighlight %}
 
+Here is the output:
+
 |PersonalID                       |FirstName |LastName |DOB        |Millennial |
 |:--------------------------------|:---------|:--------|:----------|:----------|
 |ZP1U3EPU2FKAWI6K5US5LDV50KRI1LN7 |Timmy     |Tesa     |2010-01-01 |Yes        |
 |IA26X38HOTOIBHYIRV8CKR5RDS8KNGHV |Fela      |Falla    |1999-1-1   |No         |
 |LASDU89NRABVJWW779W4JGGAN90IQ5B2 |Sarah     |Kerrigan |1992-04-01 |No         |
+
+The SQL query, specifically the `CASE WHEN` statement created a column called `Millennial`, it then went through every person's date of birth, comparing it. When the query found a person who was born after 2000-01-01 it inserted a 'Yes' in the Millennial column.  If they were not born after 2000-01-01 then it set the `Millennial` column to 'No.'  Nifty, right?
+
+Notice, the `ELSE` is required to get the 'No'.  Otherwise, if the query found someone born after 2000 it would say 'Yes', but it would leave everyone else blank.

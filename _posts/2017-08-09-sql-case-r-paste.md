@@ -94,4 +94,33 @@ Here is the output:
 
 The SQL query, specifically the `CASE WHEN` statement created a column called `Millennial`, it then went through every person's date of birth, comparing it. When the query found a person who was born after 2000-01-01 it inserted a 'Yes' in the Millennial column.  If they were not born after 2000-01-01 then it set the `Millennial` column to 'No.'  Nifty, right?
 
-Notice, the `ELSE` is required to get the 'No'.  Otherwise, if the query found someone born after 2000 it would say 'Yes', but it would leave everyone else blank.
+Notice, the `ELSE` is required to get the 'No'.  Otherwise, the query would leave everyone else blank.
+
+Here's a few more examples of using CASE WHEN for powerful results.
+
+#### Using OR with CASE WHEN
+{% highlight r %}
+peopleDf2 <- sqldf("SELECT *, 
+                  CASE WHEN DOB > '2000-1-1' OR FirstName = 'Sarah' THEN 'PersonIsCool' ELSE 'NotHip' END As 'Cool?' 
+                  FROM peopleDf")
+{% endhighlight %}
+
+|PersonalID                       |FirstName |LastName |DOB        |Cool?        |
+|:--------------------------------|:---------|:--------|:----------|:------------|
+|ZP1U3EPU2FKAWI6K5US5LDV50KRI1LN7 |Timmy     |Tesa     |2010-01-01 |PersonIsCool |
+|IA26X38HOTOIBHYIRV8CKR5RDS8KNGHV |Fela      |Falla    |1999-1-1   |NotHip       |
+|LASDU89NRABVJWW779W4JGGAN90IQ5B2 |Sarah     |Kerrigan |1992-04-01 |PersonIsCool |
+
+#### Using AND with CASE WHEN
+{% highlight r %}
+peopleDf3 <- sqldf("SELECT *, 
+                  CASE WHEN FirstName = 'Sarah' AND LastName = 'Kerrigan' THEN 'Yes' ELSE '' 
+                  END As 'Queen of Blades' 
+                  FROM peopleDf")
+{% endhighlight %}
+
+|PersonalID                       |FirstName |LastName |DOB        |Queen of Blades |
+|:--------------------------------|:---------|:--------|:----------|:---------------|
+|ZP1U3EPU2FKAWI6K5US5LDV50KRI1LN7 |Timmy     |Tesa     |2010-01-01 |                |
+|IA26X38HOTOIBHYIRV8CKR5RDS8KNGHV |Fela      |Falla    |1999-1-1   |                |
+|LASDU89NRABVJWW779W4JGGAN90IQ5B2 |Sarah     |Kerrigan |1992-04-01 |Yes             |

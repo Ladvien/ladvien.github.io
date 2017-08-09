@@ -283,6 +283,10 @@ header .entry-meta {
                 @include font-size(20);
             }
         }
+        img {
+            display: block;
+            margin: auto;
+        }
     }
     #disqus_thread {
         margin: 40px 2px 20px 2px;

@@ -51,3 +51,41 @@ Let's take a look:
     If (Computer Likes Toothpaste #2 Best) then buy Toothpaste #2
     else Go Ask a Computer Dentist what to buy
 {% endhighlight %}
+
+Ok, that's it.  Now let's apply it to SQL.
+
+### SQL CASE WHEN
+SQL applies if-then logic in several ways.  We've already looked at the `WHERE` statement, which basicaly works like an `if-then`.
+
+{% highlight SQL %}
+    SELECT * FROM data WHERE Name = 'Bob'
+{% endhighlight %}
+
+See how this could be written as
+{% highlight SQL %}
+    SELECT * FROM data IF Name = 'Bob'
+{% endhighlight %}
+
+But the most likely SQL statement used for `if-then-else` logic is the `CASE WHEN` statement.
+
+Here's an example to be run in R.
+
+{% highlight r %}
+################### Data DO NOT CHANGE ###########################
+peopleDf <- data.frame(PersonalID=c("ZP1U3EPU2FKAWI6K5US5LDV50KRI1LN7", "IA26X38HOTOIBHYIRV8CKR5RDS8KNGHV", "LASDU89NRABVJWW779W4JGGAN90IQ5B2"), 
+                       FirstName=c("Timmy", "Fela", "Sarah"),
+                       LastName=c("Tesa", "Falla", "Kerrigan"),
+                       DOB=c("2010-01-01", "1999-1-1", "1992-04-01"))
+##################################################################
+
+peopleDf <- sqldf("SELECT *, 
+                  CASE WHEN DOB > '2000-1-1' THEN 'Yes' ELSE 'No' END As 'Millennial' 
+                  FROM peopleDf")
+
+{% endhighlight %}
+
+|PersonalID                       |FirstName |LastName |DOB        |Millennial |
+|:--------------------------------|:---------|:--------|:----------|:----------|
+|ZP1U3EPU2FKAWI6K5US5LDV50KRI1LN7 |Timmy     |Tesa     |2010-01-01 |Yes        |
+|IA26X38HOTOIBHYIRV8CKR5RDS8KNGHV |Fela      |Falla    |1999-1-1   |No         |
+|LASDU89NRABVJWW779W4JGGAN90IQ5B2 |Sarah     |Kerrigan |1992-04-01 |No         |

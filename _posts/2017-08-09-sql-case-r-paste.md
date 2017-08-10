@@ -38,9 +38,9 @@ Well, this sentence makes sense if a computer is trying to decide to buy toothpa
 
 Because the computer makes decisions in order it read them, then if it buys Toothpaste 1 then it will not buy Toothpaste 2.  However, if he doesn't like Toothpaste 1 the best, then if he thinks Toothpaste 2 is the best he'll buy it.  Otherwise, he will not buy any toothpaste--which makes sense, computers don't have teeth.
 
-This almost everything we need to know about `if-then`, two more little catches.
+This is almost everything we need to know about `if-then`, two more little catches.
 
-First, what do we do if the computer doesn't like any of the Toothpaste and don't want him to just give up?  We need a way to say, "Look computer, if decided you don't like any, then go ask for help."
+First, what do we do if the computer doesn't like any of the Toothpaste and don't want him to just give up?  We need a way to say, "Look computer, if you don't like any toothpaste the best then go ask for help."
 
 In programming language this is known as `if-then-else` statements.  They are similar to `if-then` but with a contingency clause if something goes wrong.  
 

@@ -140,6 +140,6 @@ count1 <- sqldf("SELECT
                    FROM peopleDf")
 {% endhighlight %}
 
-| NumberOfFemales|
-|---------------:|
-|               2|
+| NumberOfFemales| NumberOfMales|
+|---------------:|-------------:|
+|               2|             1|

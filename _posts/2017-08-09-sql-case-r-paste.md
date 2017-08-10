@@ -161,3 +161,7 @@ peopleDf4 <- sqldf("SELECT *, CASE WHEN DOB >= '1980-01-01' AND DOB < '1990-01-0
 |ZP1U3EPU2FKAWI6K5US5LDV50KRI1LN7 |Timmy     |Tesa     |2010-01-01 |Male   |NotYetDefined |
 |IA26X38HOTOIBHYIRV8CKR5RDS8KNGHV |Fela      |Falla    |1999-1-1   |Female |Y             |
 |LASDU89NRABVJWW779W4JGGAN90IQ5B2 |Sarah     |Kerrigan |1992-04-01 |Female |Y             |
+
+
+## Paste
+To be written

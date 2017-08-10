@@ -126,7 +126,6 @@ peopleDf3 <- sqldf("SELECT *,
 |LASDU89NRABVJWW779W4JGGAN90IQ5B2 |Sarah     |Kerrigan |1992-04-01 |Female |Yes             |
 
 #### Using SUM with CASE WHEN
-
 Using `CASE WHEN` in combination with `SUM` is a great way to get counts of different discrete data.  Below is an example of getting total counts of males and females within the peopleDf
 
 {% highlight r %}
@@ -143,3 +142,22 @@ count1 <- sqldf("SELECT
 | NumberOfFemales| NumberOfMales|
 |---------------:|-------------:|
 |               2|             1|
+
+#### Using Multiple CASES
+So far, we've only covered one `if-then` statement, but in our example with the toothpaste we could string them together.  The same can be done with `CASE WHEN`.
+
+
+{% highlight r %}
+peopleDf4 <- sqldf("SELECT *, CASE WHEN DOB >= '1980-01-01' AND DOB < '1990-01-01' THEN 'X'
+                           WHEN DOB >= '1990-01-01' AND DOB < '2000-01-01' THEN 'Y'
+                           WHEN DOB >= '2000-01-01' AND DOB < '2010-01-01' THEN 'Millennial'
+                           WHEN DOB >= '2010-01-01' AND DOB < '2020-01-01' THEN 'NotYetDefined'
+                           END As 'Generation'
+                   FROM peopleDf")
+{% endhighlight %}
+
+|PersonalID                       |FirstName |LastName |DOB        |Gender |Generation    |
+|:--------------------------------|:---------|:--------|:----------|:------|:-------------|
+|ZP1U3EPU2FKAWI6K5US5LDV50KRI1LN7 |Timmy     |Tesa     |2010-01-01 |Male   |NotYetDefined |
+|IA26X38HOTOIBHYIRV8CKR5RDS8KNGHV |Fela      |Falla    |1999-1-1   |Female |Y             |
+|LASDU89NRABVJWW779W4JGGAN90IQ5B2 |Sarah     |Kerrigan |1992-04-01 |Female |Y             |

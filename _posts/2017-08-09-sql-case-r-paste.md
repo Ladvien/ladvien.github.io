@@ -124,3 +124,22 @@ peopleDf3 <- sqldf("SELECT *,
 |ZP1U3EPU2FKAWI6K5US5LDV50KRI1LN7 |Timmy     |Tesa     |2010-01-01 |Male   |                |
 |IA26X38HOTOIBHYIRV8CKR5RDS8KNGHV |Fela      |Falla    |1999-1-1   |Female |                |
 |LASDU89NRABVJWW779W4JGGAN90IQ5B2 |Sarah     |Kerrigan |1992-04-01 |Female |Yes             |
+
+#### Using SUM with CASE WHEN
+
+Using `CASE WHEN` in combination with `SUM` is a great way to get counts of different discrete data.  Below is an example of getting total counts of males and females within the peopleDf
+
+{% highlight r %}
+count1 <- sqldf("SELECT 
+                  SUM(
+                      CASE WHEN Gender = 'Female' THEN 1 ELSE 0 END
+                    ) As 'NumberOfFemales',
+                  SUM(
+                      CASE WHEN Gender = 'Male' THEN 1 ELSE 0 END
+                    ) As 'NumberOfMales'
+                   FROM peopleDf")
+{% endhighlight %}
+
+| NumberOfFemales|
+|---------------:|
+|               2|

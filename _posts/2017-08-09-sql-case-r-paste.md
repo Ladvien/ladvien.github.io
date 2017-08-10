@@ -42,13 +42,13 @@ This is almost everything we need to know about `if-then`, two more little catch
 
 First, what do we do if the computer doesn't like any of the Toothpaste and don't want him to just give up?  We need a way to say, "Look computer, if you don't like any toothpaste the best then go ask for help."
 
-In programming language this is known as `if-then-else` statements.  They are similar to `if-then` but with a contingency clause if something goes wrong.  
+In programming this is known as `if-then-else` statements.  They are similar to `if-then` but with a contingency clause if something goes wrong.  
 
 Let's take a look:
 
 {% highlight bash %}
     if (Computer Likes Toothpaste 1 Best) then buy Toothpaste 1
-    If (Computer Likes Toothpaste 2 Best) then buy Toothpaste 2
+    if (Computer Likes Toothpaste 2 Best) then buy Toothpaste 2
     else Go Ask a Computer Dentist what to buy
 {% endhighlight %}
 

@@ -71,6 +71,7 @@ But the most likely SQL statement used for `if-then-else` logic is the `CASE WHE
 Here's an example to be run in R.
 
 {% highlight r %}
+library(sqldf)
 ################### Data DO NOT CHANGE ###########################
 peopleDf <- data.frame(PersonalID=c("ZP1U3EPU2FKAWI6K5US5LDV50KRI1LN7", "IA26X38HOTOIBHYIRV8CKR5RDS8KNGHV", "LASDU89NRABVJWW779W4JGGAN90IQ5B2"), 
                        FirstName=c("Timmy", "Fela", "Sarah"),
@@ -78,19 +79,18 @@ peopleDf <- data.frame(PersonalID=c("ZP1U3EPU2FKAWI6K5US5LDV50KRI1LN7", "IA26X38
                        DOB=c("2010-01-01", "1999-1-1", "1992-04-01"))
 ##################################################################
 
-peopleDf <- sqldf("SELECT *, 
+peopleDf1 <- sqldf("SELECT *, 
                   CASE WHEN DOB > '2000-1-1' THEN 'Yes' ELSE 'No' END As 'Millennial' 
                   FROM peopleDf")
-
 {% endhighlight %}
 
 Here is the output:
 
-|PersonalID                       |FirstName |LastName |DOB        |Millennial |
-|:--------------------------------|:---------|:--------|:----------|:----------|
-|ZP1U3EPU2FKAWI6K5US5LDV50KRI1LN7 |Timmy     |Tesa     |2010-01-01 |Yes        |
-|IA26X38HOTOIBHYIRV8CKR5RDS8KNGHV |Fela      |Falla    |1999-1-1   |No         |
-|LASDU89NRABVJWW779W4JGGAN90IQ5B2 |Sarah     |Kerrigan |1992-04-01 |No         |
+|PersonalID                       |FirstName |LastName |DOB        |Gender |Millennial |
+|:--------------------------------|:---------|:--------|:----------|:------|:----------|
+|ZP1U3EPU2FKAWI6K5US5LDV50KRI1LN7 |Timmy     |Tesa     |2010-01-01 |Male   |Yes        |
+|IA26X38HOTOIBHYIRV8CKR5RDS8KNGHV |Fela      |Falla    |1999-1-1   |Female |No         |
+|LASDU89NRABVJWW779W4JGGAN90IQ5B2 |Sarah     |Kerrigan |1992-04-01 |Female |No         |
 
 The SQL query, specifically the `CASE WHEN` statement created a column called `Millennial`, it then went through every person's date of birth, comparing it. When the query found a person who was born after 2000-01-01 it inserted a 'Yes' in the Millennial column.  If they were not born after 2000-01-01 then it set the `Millennial` column to 'No.'  Nifty, right?
 
@@ -105,11 +105,11 @@ peopleDf2 <- sqldf("SELECT *,
                   FROM peopleDf")
 {% endhighlight %}
 
-|PersonalID                       |FirstName |LastName |DOB        |Cool?        |
-|:--------------------------------|:---------|:--------|:----------|:------------|
-|ZP1U3EPU2FKAWI6K5US5LDV50KRI1LN7 |Timmy     |Tesa     |2010-01-01 |PersonIsCool |
-|IA26X38HOTOIBHYIRV8CKR5RDS8KNGHV |Fela      |Falla    |1999-1-1   |NotHip       |
-|LASDU89NRABVJWW779W4JGGAN90IQ5B2 |Sarah     |Kerrigan |1992-04-01 |PersonIsCool |
+|PersonalID                       |FirstName |LastName |DOB        |Gender |Cool         |
+|:--------------------------------|:---------|:--------|:----------|:------|:------------|
+|ZP1U3EPU2FKAWI6K5US5LDV50KRI1LN7 |Timmy     |Tesa     |2010-01-01 |Male   |PersonIsCool |
+|IA26X38HOTOIBHYIRV8CKR5RDS8KNGHV |Fela      |Falla    |1999-1-1   |Female |NotHip       |
+|LASDU89NRABVJWW779W4JGGAN90IQ5B2 |Sarah     |Kerrigan |1992-04-01 |Female |PersonIsCool |
 
 #### Using AND with CASE WHEN
 {% highlight r %}
@@ -119,8 +119,8 @@ peopleDf3 <- sqldf("SELECT *,
                   FROM peopleDf")
 {% endhighlight %}
 
-|PersonalID                       |FirstName |LastName |DOB        |Queen of Blades |
-|:--------------------------------|:---------|:--------|:----------|:---------------|
-|ZP1U3EPU2FKAWI6K5US5LDV50KRI1LN7 |Timmy     |Tesa     |2010-01-01 |                |
-|IA26X38HOTOIBHYIRV8CKR5RDS8KNGHV |Fela      |Falla    |1999-1-1   |                |
-|LASDU89NRABVJWW779W4JGGAN90IQ5B2 |Sarah     |Kerrigan |1992-04-01 |Yes             |
+|PersonalID                       |FirstName |LastName |DOB        |Gender |Queen of Blades |
+|:--------------------------------|:---------|:--------|:----------|:------|:---------------|
+|ZP1U3EPU2FKAWI6K5US5LDV50KRI1LN7 |Timmy     |Tesa     |2010-01-01 |Male   |                |
+|IA26X38HOTOIBHYIRV8CKR5RDS8KNGHV |Fela      |Falla    |1999-1-1   |Female |                |
+|LASDU89NRABVJWW779W4JGGAN90IQ5B2 |Sarah     |Kerrigan |1992-04-01 |Female |Yes             |

@@ -27,7 +27,7 @@ In computer programming we call this computer decision making process [control f
     If (Computer Likes Toothpaste 1) then buy Toothpaste 1
 {% endhighlight %}
 
-Pretty simple, right?  The only thing a computer can't is decide if it likes Toothpaste #1 on its own.  We have to program it to do that.  
+Pretty simple, right?  The only thing a computer can't do is decide if it likes Toothpaste 1 on its own.  We have to program it to do that.  
 
 Well, this sentence makes sense if a computer is trying to decide to buy toothpaste or no toothpaste, but what if there are more than two toothpaste options?  We just create another if-then statement.
 
@@ -36,7 +36,7 @@ Well, this sentence makes sense if a computer is trying to decide to buy toothpa
     If (Computer Likes Toothpaste 2 Best) then buy Toothpaste 2
 {% endhighlight %}
 
-Because the computer makes decisions in order it read them, then if it buys Toothpaste #1 then it will not buy Toothpaste #2.  However, if he doesn't like Toothpaste #1 the best, then if he thinks Toothpaste #2 is the best he'll buy it.  Otherwise, he will not buy any toothpaste--which makes sense, computers don't have teeth.
+Because the computer makes decisions in order it read them, then if it buys Toothpaste 1 then it will not buy Toothpaste 2.  However, if he doesn't like Toothpaste 1 the best, then if he thinks Toothpaste 2 is the best he'll buy it.  Otherwise, he will not buy any toothpaste--which makes sense, computers don't have teeth.
 
 This almost everything we need to know about `if-then`, two more little catches.
 
@@ -47,8 +47,8 @@ In programming language this is known as `if-then-else` statements.  They are si
 Let's take a look:
 
 {% highlight bash %}
-    if (Computer Likes Toothpaste #1 Best) then buy Toothpaste #1
-    If (Computer Likes Toothpaste #2 Best) then buy Toothpaste #2
+    if (Computer Likes Toothpaste 1 Best) then buy Toothpaste 1
+    If (Computer Likes Toothpaste 2 Best) then buy Toothpaste 2
     else Go Ask a Computer Dentist what to buy
 {% endhighlight %}
 

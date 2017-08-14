@@ -13,4 +13,5 @@ modified: 2016-02-01
 <script src="https://ladvien.com/projects/d3/practice/c3-0.4.15/c3.min.js"></script>
 <script src="https://ladvien.com/projects/d3/ladviens-health/master-health-graph.js"></script>
 <script src="https://ladvien.com/projects/d3/ladviens-health/master-health-calories.js"></script>
+<div id="chartOne"></div>
 <div id="chartTwo"></div>

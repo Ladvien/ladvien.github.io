@@ -107,12 +107,14 @@ var LumiBluetooth = (function () {
 						writeBuffer.push.apply(writeBuffer, writeData); // test
 						// writeBuffer = appendUint8Buffer(writeBuffer, writeData);
 						writeLoop(writeData);
-					} else {
+					} else if (data != null){
 						writeData = Array.from(data);
 						// dataInUint8 = Uint8Array.from(data);
 						writeBuffer.push.apply(writeBuffer, writeData);
 						// writeBuffer = appendUint8Buffer(writeBuffer, dataInUint8);
 						writeLoop(writeData);
+					} else {
+						resolve();
 					}
 					resolve();
 				} else {

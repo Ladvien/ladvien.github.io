@@ -63,22 +63,22 @@ var HexDataHandler = (function () {
 			var recordType = ascii2Hex(thisHexLine.substring(pos, pos + 2));
 			pos += 2;
 
-			var data = [];
+			var thisLinesData = [];
 			for (var i = 0; i < byteCount * 2; i += 2) {
-				data[i / 2] = ascii2Hex(thisHexLine.substring(pos, pos + 2));
+				thisLinesData[i / 2] = ascii2Hex(thisHexLine.substring(pos, pos + 2));
 				pos += 2;
 			}
 
 			// Put data in an array based on 
-			for (var i = 0; i < data.length; i++) {
-				parsedHexData[address + i] = data[i];
+			for (var i = 0; i < thisLinesData.length; i++) {
+				parsedHexData[address + i] = thisLinesData[i];
 			}
 
 			var checkSum = getCheckSum(byteCount,
 				addressOne,
 				addressTwo,
 				recordType,
-				data);
+				thisLinesData);
 
 			if (recordType === 0) {
 				if (checkSum != ascii2Hex(thisHexLine.substring(pos, pos + 2))) {
@@ -91,7 +91,7 @@ var HexDataHandler = (function () {
 			lineOfHexData = new LineOfHexData(byteCount,
 				address,
 				recordType,
-				data,
+				thisLinesData,
 				checkSum
 			);
 			parsedHexDataLines.push(lineOfHexData);
@@ -157,7 +157,9 @@ var HexDataHandler = (function () {
 	var formatUint8AsString = function (data) {
 		var stringBuilder = [];
 		for (var i = 0; i < data.length; i++) {
+			// if(typeof data[i] === 'undefined'){ return stringBuilder; }
 			var char = "0x";
+			console.log(data[i]);
 			char += data[i].toString(16).toUpperCase();
 			if (char.length < 4) {
 				char += "0";

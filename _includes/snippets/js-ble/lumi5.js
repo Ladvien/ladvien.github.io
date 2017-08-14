@@ -172,7 +172,10 @@ hexDataHandler.setOnCompletedParsingFile(onCompletedParsingFile);
 
 document.getElementById('search-btn').onclick = onScanButtonClick;
 document.getElementById('btn-write-ble').onclick = onWriteButtonClick;
-document.getElementById('file-parse-btn').addEventListener('change', fileHandler.loadFile, false);
+document.getElementById('upload-file').addEventListener('change', fileHandler.loadFile, false);
+document.getElementById('file-parse-btn').onclick = function(){
+	 document.getElementById('upload-file').click();
+}
 document.getElementById(handshakeButton).addEventListener('change', null, false);
 document.getElementById('terminal').addEventListener('scroll', onTerminalScroll, false);
 document.getElementById('read-btn').onclick = readFlash;

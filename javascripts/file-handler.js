@@ -14,7 +14,7 @@ var FileHandler = (function () {
 
 	var loadFile = function (event) {
 		var files = event.target.files; // FileList object
-		
+
 		// TODO Switch to only handling one file at a time.
 		var reader = new FileReader();
 		if(onFinishedLoadingFile){

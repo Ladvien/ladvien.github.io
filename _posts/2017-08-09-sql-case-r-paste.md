@@ -220,7 +220,13 @@ peopleDf1 <- sqldf("SELECT * FROM peopleDf WHERE DOB > '2001-01-01'")
 
 {% endhighlight %}
 
-This will return a dataframe of everyone who was born after January 1st, 2001.  Which works for a static date.  But let's say you wanted to easily change out the `2001-01-01` with other dates.  You _could_ replace the date with a different date, but when that date is in multiple SQL calls it can be easy to miss one.  A better way to do it is using the `paste()`.  And remember, everything inside the `sqldf()` parentheses is a string.
+This creates the table
+
+|PersonalID                       |FirstName |LastName |DOB        |
+|:--------------------------------|:---------|:--------|:----------|
+|ZP1U3EPU2FKAWI6K5US5LDV50KRI1LN7 |Timmy     |Tesa     |2010-01-01 |
+
+This is a dataframe of everyone who was born after January 1st, 2001.  This method of filtering data works for a static date.  But let's say you wanted to easily change out the `2001-01-01` with other dates.  You _could_ replace the date with a different date, but when that date is in multiple SQL calls it can be easy to miss one.  A better way to do it is using the `paste()`.  And remember, everything inside the `sqldf()` parentheses is a string.
 
 {% highlight r %}
 targetDate <- "2001-01-01"
@@ -228,7 +234,7 @@ sqlString <- paste("SELECT * FROM peopleDf WHERE DOB > '", targetDate, "'", sep 
 peopleDf5 <- sqldf(sqlString)
 {% endhighlight %}
 
-Ok, let's take this slow, there's a lot going on here.  First, we create a variable called `targetDate` and assign it the string `2001-01-01`.  Next, we create a complex string using the `paste()` which looks a lot like a SQLdf string, but instead of hardcoding the date, we insert the targetDate variable.  This creates the following string:
+Ok, let's take this slow, there's a lot going on.  First, we create a variable called `targetDate` and assign it the string `2001-01-01`.  Next, we create a complex string using the `paste()` which looks a lot like a SQLdf string, but instead of hardcoding the date, we insert the `targetDate` variable.  This creates the following string:
 
 {% highlight r %}
 "SELECT * FROM peopleDf WHERE DOB > '2001-01-01'"
@@ -239,6 +245,12 @@ Which is then inserted into the variable `sqlString`, which is a string.
 Lastly, we pass the `sqlString` variable into the `sqldf()` which executes the fancy SQL query.  Awesome, right?
 
 Now, if we want to look at those born after a different date, we simply change the `targetDate` variable and re-run the script.
+
+{% highlight r %}
+targetDate <- "1980-01-01"
+sqlString <- paste("SELECT * FROM peopleDf WHERE DOB > '", targetDate, "'", sep = "")
+peopleDf5 <- sqldf(sqlString)
+{% endhighlight %}
 
 ### Sys.Date()
 

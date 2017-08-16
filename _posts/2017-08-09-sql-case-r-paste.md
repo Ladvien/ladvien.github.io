@@ -164,4 +164,44 @@ peopleDf4 <- sqldf("SELECT *, CASE WHEN DOB >= '1980-01-01' AND DOB < '1990-01-0
 
 
 ## Paste
-To be written
+The `paste()` in R is meant for manipulating strings of text. You pass it strings as a parameter and it returns one string containing all the strings passed into it.  Let's take a look.
+
+{% highlight r %}
+greeting <- paste("Hello how are you,", "Bob?")
+{% endhighlight %}
+
+After running this line the `greeting` variable contains the following string `Hello how are you, Bob?`.  This can be used by printing the contents of the variable using the `print()`
+
+{% highlight r %}
+print(greeting)
+{% endhighlight %}
+
+Side note, `print()` will actually print out anything you pass it to the console.  This can be useful when trying to debug code.
+
+Back to our combined strings, notice whenever the greeting prints out there is a space inserted between 'you,' and 'Bob?', this is done automatically by paste.  It will insert a space between every string you pass it, unless you pass the additional parameter `sep`.  This parameter will take whatever you set it as and insert it between the two strings.
+
+{% highlight r %}
+greeting <- paste("Hello how are you,", "Bob?", sep = "!!")
+print(greeting)
+{% endhighlight %}
+
+This time `print()` will display "Hello how are you,!!Bob?" in the console.  But, inserting exclamation marks is probably not what we want.  99% of the time we will not want paste to insert anything. We can tell it to insert nothing.
+
+{% highlight r %}
+greeting <- paste("Hello how are you,", "Bob?", sep = "")
+print(greeting)
+{% endhighlight %}
+
+Print will spit out "Hello how are you,Bob?".  Notice, there is no longer any character between "you," and "Bob?".
+
+Paste is a pretty straightforward function, the one last trick is knowing you can pass in multiple strings.
+
+{% highlight r %}
+greeting <- paste("Hello", " how are you,", " Bob?", sep = "")
+print(greeting)
+{% endhighlight %}
+
+
+### Print
+
+### GSUB

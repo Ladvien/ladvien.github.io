@@ -1,7 +1,7 @@
 ---
 layout: post
 title: SQL CASE and R Paste
-desription: Fourth work challenge in mixing R and SQL to derive information from HMIS data.
+desription: Using the SQL CASE WHEN statement, the R Paste function, and the R GSUB command on HMIS data.
 series: SQL-R
 categories: HMIS
 excerpt:
@@ -164,7 +164,7 @@ peopleDf4 <- sqldf("SELECT *, CASE WHEN DOB >= '1980-01-01' AND DOB < '1990-01-0
 
 
 ## Paste
-The `paste()` in R is meant for manipulating strings of text. You pass it strings as a parameter and it returns one string containing all the strings passed into it.  Let's take a look.
+The `paste()` in R is meant for manipulating strings of text. You pass it strings as parameters and it returns one string containing all the strings passed into it.  Let's take a look.
 
 {% highlight r %}
 greeting <- paste("Hello how are you,", "Bob?")
@@ -185,7 +185,7 @@ greeting <- paste("Hello how are you,", "Bob?", sep = "!!")
 print(greeting)
 {% endhighlight %}
 
-This time `print()` will display "Hello how are you,!!Bob?" in the console.  But, inserting exclamation marks is probably not what we want.  99% of the time we will not want paste to insert anything. We can tell it to insert nothing.
+This time `print()` will display "Hello how are you,!!Bob?" in the console.  But, inserting exclamation marks is probably not what we want.  Most of the time we will not want paste to insert anything and we can tell it to insert nothing.
 
 {% highlight r %}
 greeting <- paste("Hello how are you,", "Bob?", sep = "")
@@ -201,7 +201,46 @@ greeting <- paste("Hello", " how are you,", " Bob?", sep = "")
 print(greeting)
 {% endhighlight %}
 
+This will produce the string "Hello how are you, Bob?".  Notice the spaces were inserted manually so the end string is readable to humans.
 
-### Print
+## Dynamic SQL with Paste()
+
+Prepare to have your mind blown.  One of the powers of the `paste()` is building a `sqldf` string.  Remember using SQLdf like this?
+
+{% highlight r %}
+library(sqldf)
+################### Data DO NOT CHANGE ###########################
+peopleDf <- data.frame(PersonalID=c("ZP1U3EPU2FKAWI6K5US5LDV50KRI1LN7", "IA26X38HOTOIBHYIRV8CKR5RDS8KNGHV", "LASDU89NRABVJWW779W4JGGAN90IQ5B2"), 
+                       FirstName=c("Timmy", "Fela", "Sarah"),
+                       LastName=c("Tesa", "Falla", "Kerrigan"),
+                       DOB=c("2010-01-01", "1999-1-1", "1992-04-01"))
+##################################################################
+
+peopleDf1 <- sqldf("SELECT * FROM peopleDf WHERE DOB > '2001-01-01'")
+
+{% endhighlight %}
+
+This will return a dataframe of everyone who was born after January 1st, 2001.  Which works for a static date.  But let's say you wanted to easily change out the `2001-01-01` with other dates.  You _could_ replace the date with a different date, but when that date is in multiple SQL calls it can be easy to miss one.  A better way to do it is using the `paste()`.  And remember, everything inside the `sqldf()` parentheses is a string.
+
+{% highlight r %}
+targetDate <- "2001-01-01"
+sqlString <- paste("SELECT * FROM peopleDf WHERE DOB > '", targetDate, "'", sep = "")
+peopleDf5 <- sqldf(sqlString)
+{% endhighlight %}
+
+Ok, let's take this slow, there's a lot going on here.  First, we create a variable called `targetDate` and assign it the string `2001-01-01`.  Next, we create a complex string using the `paste()` which looks a lot like a SQLdf string, but instead of hardcoding the date, we insert the targetDate variable.  This creates the following string:
+
+{% highlight r %}
+"SELECT * FROM peopleDf WHERE DOB > '2001-01-01'"
+{% endhighlight %}
+
+Which is then inserted into the variable `sqlString`, which is a string.  
+
+Lastly, we pass the `sqlString` variable into the `sqldf()` which executes the fancy SQL query.  Awesome, right?
+
+Now, if we want to look at those born after a different date, we simply change the `targetDate` variable and re-run the script.
+
+### Sys.Date()
+
 
 ### GSUB

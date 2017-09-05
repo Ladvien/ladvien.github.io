@@ -12,4 +12,4 @@ custom_css:
 custom_js: 
 ---
 
-![](https://ladvien/images/TFQP_32_Programmer_Pin_Map.PNG)
+![](https://ladvien.com/images/TFQP_32_Programmer_Pin_Map.png)

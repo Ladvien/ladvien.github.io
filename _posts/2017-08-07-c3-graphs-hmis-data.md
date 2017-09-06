@@ -59,8 +59,9 @@ The three are categories defined as follows:
 * It should be noted, **Eligible for Rapid Rehousing** and **Eligible for Permanent Supportive Housing** are mutually exclusive.  Therefore, the **All Eligible for Housing** is an accurate count save the duplicates described above.
 
 ### Trend of Subpopulations
+<script src="https://ladvien.com/projects/d3/tx-601/trend-actively-homeless-subpopulations.html"></script>
 
 <div id="trendOfSubpops"></div>
 
-<script src="https://ladvien.com/projects/d3/tx-601/trend-actively-homeless-subpopulations.html"></script>
+
 

@@ -61,7 +61,7 @@ The three are categories defined as follows:
 ### Trend of Subpopulations
 <script src="https://ladvien.com/projects/d3/tx-601/trend-actively-homeless-subpopulations.html"></script>
 
-<div id="trendOfSubpops"></div>
+<div id="trend-of-subpops"></div>
 
 
 

@@ -57,3 +57,8 @@ The three are categories defined as follows:
 * ***Eligible for Permanent Supportive Housing*** are individuals who are actively in a homeless situation are ***have*** met the threshold of **chronically homeless**
 * ***All Eligible for Housing*** is the sum of both **Eligible for Rapid Rehousing** and **Eligible for Permanent Supportive Housing**
 * It should be noted, **Eligible for Rapid Rehousing** and **Eligible for Permanent Supportive Housing** are mutually exclusive.  Therefore, the **All Eligible for Housing** is an accurate count save the duplicates described above.
+
+### Trend of Subpopulations
+<script src="https://ladvien.com/projects/d3/tx-601/trend-actively-homeless-subpopulations.html"></script>
+
+<div id="trendOfSubpops"></div>

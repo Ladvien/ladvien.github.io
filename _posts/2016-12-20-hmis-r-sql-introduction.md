@@ -4,7 +4,7 @@ title: HMIS, R, and SQL -- Introduction
 series: SQL-R
 categories: HMIS
 excerpt:
-tags: [ETO, HMIS, R, SQL]
+tags: [HMIS, R, SQL]
 image: 
     feature: R_SQL.png
 comments: true
@@ -12,9 +12,9 @@ custom_css:
 custom_js: 
 ---
 
-## "I love ETO, I love ETO."
+## "I love our software, I love our software."
 
-I'm a HMIS Database Manager for a living.  It's a dream job--all the nerdy stuff, plus, there is a possibility I'm helping people.  Currently, we are using Efforts to Outcomes software as our HMIS solutions.  One of there areas the software really lacks is its ability to quick generate complex reports. It has the ability, but the servers are laggy, it crashes constantly, and a project which should take 20 minutes will take 50 minutes to 40 hours depending on the "report weather."  These issues are probably caused by the reporting platform being webbased and calculations done server-side.  Regardless, given the amount of time the staff are wasting on "simple" report projects I've decided to explore alternative systems for generating some of our needed reports.   
+I'm a HMIS Database Manager for a living.  It's a dream job--all the nerdy stuff, plus, there is a possibility I'm helping people.  Currently, one areas our software really lacks is its ability to quickly generate complex reports. It has the ability, but the servers are laggy, it crashes often, and a project which should take 20 minutes will take 50 minutes to 40 hours depending on the "report weather."  These issues are probably caused by the reporting platform being webbased and calculations done server-side.  Regardless, given the amount of time the staff are eating on report projects I've decided to explore alternative systems for generating some of our needed reports.
 
 Luckily, HUD has dictated a HMIS data format.  This is often known as the "CSV version."  The specification of these data sets are outlined in HUD's document:
 
@@ -25,7 +25,7 @@ These data standards are currently on version 5.1, however, HUD issues tweaks to
 Here are a few pros to explore local reporting tools:
 
 *   Software vendor ambivalent
-*   No bottleneck due to routing issues (ETO servers are on the easy coast)
+*   No bottleneck due to routing issues
 *   Greater flexibility of reporting
 *   No outage concerns
 *   More control on optimization of queries

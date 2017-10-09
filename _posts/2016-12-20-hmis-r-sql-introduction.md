@@ -14,7 +14,7 @@ custom_js:
 
 ## "I love our software, I love our software."
 
-I'm a HMIS Database Manager for a living.  It's a dream job--all the nerdy stuff, plus, there is a possibility I'm helping people.  Currently, one areas our software really lacks is its ability to quickly generate complex reports. It has the ability, but the servers are laggy, it crashes often, and a project which should take 20 minutes will take 50 minutes to 40 hours depending on the "report weather."  These issues are probably caused by the reporting platform being webbased and calculations done server-side.  Regardless, given the amount of time the staff are eating on report projects I've decided to explore alternative systems for generating some of our needed reports.
+I'm a HMIS Database Manager for a living.  It's a dream job--all the nerdy stuff, plus, there is a possibility I'm helping people.  Currently, one area our software really lacks is quickly generating complex reports. It has the ability, but the servers are laggy, it crashes often, and a project which should take 20 minutes will take 50 minutes to 40 hours depending on the "report weather."  These issues are probably caused by the reporting platform being web-based and calculations done server-side.  Regardless, given the amount of time the staff are eating on report projects I've decided to explore alternative systems for generating some of our needed reports.
 
 Luckily, HUD has dictated a HMIS data format.  This is often known as the "CSV version."  The specification of these data sets are outlined in HUD's document:
 

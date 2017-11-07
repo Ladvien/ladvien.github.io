@@ -25,8 +25,8 @@ custom_js:
 ### Individuals Experiencing Homelessness
 This graph shows the trend of those homeless in Tarrant County, week-to-week who meet the following conditions:
 
-1. The person counted has stayed at least one night in a Night-by-nNight shelter within 90-days of the week counted.
-2. Or the person counted has been contacted by Street Outreach within 90-days of the week counted.
+1. The person counted has stayed at least one night in a Night-by-Night shelter of the week counted.
+2. Or the person counted has been contacted by Street Outreach of the week counted.
 3. Or the person was active in an Entry / Exit shelter program within the week of the count.
 
 Most likely the count is inflated approximately 33%, given there is a large known number of duplicates in the count.  The software used to generate the data has no administrator option to merge duplicates.  A request has been made for mass merger.

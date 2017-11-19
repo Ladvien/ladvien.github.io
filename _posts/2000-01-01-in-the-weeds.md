@@ -95,3 +95,5 @@ Pulling reports for you = your cook chewing your food
 HUD funds you -- they are your boss, kinda', but your other boss if who provides match for those funds.
 
 ## 14 -- Always Be Honest
+
+## 15 -- Eminence Based vs. Data Based Decision Making

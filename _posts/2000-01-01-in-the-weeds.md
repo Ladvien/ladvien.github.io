@@ -11,6 +11,11 @@ image:
 comments: true
 ---
 
+<link href="https://ladvien.com/projects/d3/practice/c3-0.4.15/c3.css" rel="stylesheet">  
+<script src="https://d3js.org/d3.v3.min.js"></script>
+<script src="https://ladvien.com/projects/d3/practice/c3-0.4.15/c3.min.js"></script>
+<script src="https://ladvien.com/projects/d3/tx-601/trends-tx-601.js"></script>
+
 ## Ignorance is Bliss
 
 In June of 2015 I became a [Homeless Management Information System](https://www.hudexchange.info/programs/hmis/) Administrator.  Going into the job I had no idea what was to be done.  I'd been working as a homeless street-outreach specialist for MHMR of Tarrant County for several years before.  The reason I landed the job, I think, is I was tech savvy, something rare in the social service world, but more on that later.

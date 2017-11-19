@@ -26,7 +26,7 @@ Anyway, I when I started as an HMIS System Administrator I was clueless.  Lookin
 
 Brand new HMIS System Administrator, this is for you, as you start your new job.  The best job in the world.
 
-### #1 -- Get In the Weeds
+## Get In the Weeds
 Hey, by now, you've been to a few meetings and you know a few things about the data.  A word of warning, don't let others tell you, "Hey, that's 'too in the weeds' for this conversation."  Bull.
 
 Often, your boss or peer will be saying it with good intent.  They want to make sure the content of what your agency is providing to a partner agency or funder is digestable in one meeting, and often, the critique is fair.  But don't let it become the only rule you live by. The weeds are necessary for several reasons.
@@ -41,7 +41,7 @@ One thing I'll encourage you do shortly after you start.  Cold-call all the HMIS
 
 This job is great.  But you'll have no friends.  No one will understand you.  And no one will want to talk about how HUD has changed the chronically homeless definition _yet_ again--except, other HMIS system admins.  When you first make contact with another HMIS Admin, after being in the job a year, it will be as if you've discovered a neighboring isle next to the one you've been on--and that isle has another human to talk to!
 
-## 2 -- Data Quality is Key
+## Data Quality is Key
 
 Three months into my job I realized we had to do something about our data quality.  We had two major cities and the county both complaining about how reports coming from our HMIS were not reliable.  One month they'd produce an "accurate" account of who was in a program the municipalities were funding, then, the next month they would be completely off.  (Of course, the municipalities knew they were off because the agencies funded were keeping a separate set of books--more on that later)
 
@@ -56,44 +56,45 @@ Luckily, our software vendor had an HMIS data error report which would list out 
 No one will trust reports without good data
 Show Tree Graph
 
+## DTR 
 
-## 3 -- Find your Tools
+## Find _Your_ Tools
 
 R, SQL, Tablaeu
 
-## 4 -- Power of the Purse
+## Power of the Purse
 
 ESG Funders
 COC Funder
 
-## 5 -- Discourage Separate Sets of Book
+## Discourage Separate Sets of Book
 
 Data Quality Goes Down
 
-## 6 -- Try to be HMIS Software Independent
+## Try to be HMIS Software Independent
 You can only love something if you don't need it
 
-## 7 -- Departmental Checks and Balances
+## Departmental Checks and Balances
 
-## 8 -- Don't scrub data, ever, not even once -- don't do it... seriously
+## Don't scrub data, ever, not even once -- don't do it... seriously
 
 If you give a mouse a cookie
 
-## 9 -- Advocate for everyone to Create Reports
+## Advocate for everyone to Create Reports
 
 Taking care of the date = cook
 Pulling reports for you = your cook chewing your food
 
-## 10 -- Get a Help Desk
+## Get a Help Desk
 
-## 11 -- Automate Everything
+## Automate Everything
 
-## 12 -- Give them What they Need Always, and What they Want, when Possible
+## Give them What they Need Always, and What they Want, when Possible
 
-## 13 -- Understand How You're Funded
+## Understand How You're Funded
 
 HUD funds you -- they are your boss, kinda', but your other boss if who provides match for those funds.
 
-## 14 -- Always Be Honest
+## Always Be Honest
 
-## 15 -- Eminence Based vs. Data Based Decision Making
+## Eminence Based vs. Data Based Decision Making

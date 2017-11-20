@@ -118,7 +118,7 @@ d3.csv("https://ladvien.com/projects/d3/data/data-errors-tree-map.csv", function
       // Coerce data values to be numeric
   data.forEach(function(d) {
     d3.values(d).forEach(function(k){
-      if(k != "DataErrors"){
+      if(k != "Agency"){
         d[k] = +d[k]
       }
     })

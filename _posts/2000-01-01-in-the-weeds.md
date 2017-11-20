@@ -108,7 +108,7 @@ HUD funds you -- they are your boss, kinda', but your other boss if who provides
 <script src="//d3plus.org/js/d3plus.js"></script>
 
 <!-- create container element for visualization -->
-<div id="viz"></div>
+<div id="viz" height="300px"></div>
 
 <script>
   // sample data array

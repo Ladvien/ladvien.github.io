@@ -52,22 +52,19 @@ Luckily, our software vendor had an HMIS data error report which would list out 
 <div id="data-errors-2016"></div>
 <script src="https://ladvien.com/projects/d3/tx-601/data-errors-2016.js"></script>
 
+Often, you are caught in this political position where you must confront agencies about their poor data quality, who also pay your bills.  It's tough.
 
+One of the best things you could do is get the CoC Governing Board involved in the Data Quality Assurance process.
 
-<!-- load D3js -->
+Before we had the HUD Data Quality report we would provide our CoC Board the above trend and this tree graph.  
+
 <script src="//d3plus.org/js/d3.js"></script>
-
-<!-- load D3plus after D3js -->
 <script src="//d3plus.org/js/d3plus.js"></script>
-
-<!-- create container element for visualization -->
 <div id="viz"></div>
 
 <script>
-
 d3.csv("https://ladvien.com/projects/d3/data/data-errors-tree-map.csv", function(data) {
 
-  // Coerce data values to be numeric
   data.forEach(function(d) {
     d3.keys(d).forEach(function(k){
       if(k != "Agency"){
@@ -87,12 +84,16 @@ d3.csv("https://ladvien.com/projects/d3/data/data-errors-tree-map.csv", function
       "range": ["#69d2e7","#a7dbd8","#e0e4cc","#f38630","#fa6900" , "#fe4365","#fc9d9a","#f9cdad","#c8c8a9","#83af9b" , "#ecd078","#d95b43","#c02942","#542437","#53777a","#556270","#4ecdc4","#c7f464","#ff6b6b","#c44d58"],
       "value": "DataErrors"
     })
-    .draw()             // finally, draw the visualization!
+    .draw()
 });
 </script>
 
 
+Tree graphs are _great_ to show how certain agencies are causing a disproportionate amount of data errors.  We presented the graph much as shown here, without Agency names, at first.  But eventually, the Board asked we provide names along with the graph.
 
+This was great.  It allowed us to approach the partner agencies on the behalf of the board, which is much safer than enduring the resentment engendered.
+
+When approaching the offending agency, it helps to have a plan.  In TX-601 we called these "Data Quality Action Plans" and consisted a list of all the errors needing to be repaired, and [SMART goals](https://en.wikipedia.org/wiki/SMART_criteria).
 
 No one will trust reports without good data
 Show Tree Graph

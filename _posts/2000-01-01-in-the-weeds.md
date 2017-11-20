@@ -54,6 +54,42 @@ Luckily, our software vendor had an HMIS data error report which would list out 
 
 
 
+<!-- load D3js -->
+<script src="//d3plus.org/js/d3.js"></script>
+
+<!-- load D3plus after D3js -->
+<script src="//d3plus.org/js/d3plus.js"></script>
+
+<!-- create container element for visualization -->
+<div id="viz"></div>
+
+<script>
+
+d3.csv("https://ladvien.com/projects/d3/data/data-errors-tree-map.csv", function(data) {
+
+  // Coerce data values to be numeric
+  data.forEach(function(d) {
+    d3.keys(d).forEach(function(k){
+      if(k != "Agency"){
+        d[k] = +d[k]
+      }
+    })
+  });
+  // instantiate d3plus
+  var visualization = d3plus.viz()
+    .container("#viz")  // container DIV to hold the visualization
+    .data(data)  // data to use with the visualization
+    .type("tree_map")   // visualization type
+    .id("Agency")         // key for which our data is unique on
+    .size("DataErrors")      // sizing of blocks
+    .height(500)
+    .draw()             // finally, draw the visualization!
+});
+</script>
+
+
+
+
 No one will trust reports without good data
 Show Tree Graph
 
@@ -99,43 +135,4 @@ HUD funds you -- they are your boss, kinda', but your other boss if who provides
 ## Always Be Honest
 
 ## Eminence Based vs. Data Based Decision Making
-
-
-<!-- load D3js -->
-<script src="//d3plus.org/js/d3.js"></script>
-
-<!-- load D3plus after D3js -->
-<script src="//d3plus.org/js/d3plus.js"></script>
-
-<!-- create container element for visualization -->
-<div id="viz"></div>
-
-<script>
-
-d3.csv("https://ladvien.com/projects/d3/data/data-errors-tree-map.csv", function(data) {
-    // console.log(data);
-
-      // Coerce data values to be numeric
-  data.forEach(function(d) {
-    d3.keys(d).forEach(function(k){
-      if(k != "Agency"){
-        d[k] = +d[k]
-      }
-    })
-  });
-
-  console.log(data)
-
-  // instantiate d3plus
-  var visualization = d3plus.viz()
-    .container("#viz")  // container DIV to hold the visualization
-    .data(data)  // data to use with the visualization
-    .type("tree_map")   // visualization type
-    .id("Agency")         // key for which our data is unique on
-    .size("DataErrors")      // sizing of blocks
-    .height(400)
-    .draw()             // finally, draw the visualization!
-
-});
-</script>
 

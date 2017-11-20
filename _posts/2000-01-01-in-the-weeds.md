@@ -108,7 +108,7 @@ HUD funds you -- they are your boss, kinda', but your other boss if who provides
 <script src="//d3plus.org/js/d3plus.js"></script>
 
 <!-- create container element for visualization -->
-<div id="viz" height="300px"></div>
+<div id="viz"></div>
 
 <script>
   // sample data array
@@ -127,5 +127,6 @@ HUD funds you -- they are your boss, kinda', but your other boss if who provides
     .type("tree_map")   // visualization type
     .id("name")         // key for which our data is unique on
     .size("value")      // sizing of blocks
+    .height(300)
     .draw()             // finally, draw the visualization!
 </script>

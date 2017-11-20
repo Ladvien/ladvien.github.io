@@ -114,6 +114,8 @@ HUD funds you -- they are your boss, kinda', but your other boss if who provides
 
 d3.csv("https://ladvien.com/projects/d3/data/data-errors-tree-map.csv", function(data) {
     console.log(data);
+
+
   // instantiate d3plus
   var visualization = d3plus.viz()
     .container("#viz")  // container DIV to hold the visualization

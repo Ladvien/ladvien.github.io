@@ -113,7 +113,7 @@ HUD funds you -- they are your boss, kinda', but your other boss if who provides
 <script>
 
 d3.csv("https://ladvien.com/projects/d3/data/data-errors-tree-map.csv", function(data) {
-    console.log(data);
+    // console.log(data);
 
       // Coerce data values to be numeric
   data.forEach(function(d) {

@@ -49,9 +49,10 @@ We had to do something.  To be honest--oh yah, and always be honest--we didn't h
 
 Luckily, our software vendor had an HMIS data error report which would list out HUD data errors of clients active in any program.  Without a better solution, I pulled this report for every program and aggregated the data errors.
 
+<div id="data-errors-2016"></div>
 <script src="https://ladvien.com/projects/d3/tx-601/data-errors-2016.js"></script>
 
-<div id="data-errors-2016"></div>
+
 
 No one will trust reports without good data
 Show Tree Graph

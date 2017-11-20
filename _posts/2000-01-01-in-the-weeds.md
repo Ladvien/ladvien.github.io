@@ -129,8 +129,8 @@ d3.csv("https://ladvien.com/projects/d3/data/data-errors-tree-map.csv", function
     .container("#viz")  // container DIV to hold the visualization
     .data(sample_data)  // data to use with the visualization
     .type("tree_map")   // visualization type
-    .id("name")         // key for which our data is unique on
-    .size("value")      // sizing of blocks
+    .id("Agency")         // key for which our data is unique on
+    .size("DataErrors")      // sizing of blocks
     .height(400)
     .draw()             // finally, draw the visualization!
 

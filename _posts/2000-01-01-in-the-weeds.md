@@ -111,15 +111,19 @@ HUD funds you -- they are your boss, kinda', but your other boss if who provides
 <div id="viz"></div>
 
 <script>
+
+d3.csv("https://ladvien.com/projects/projects/d3/data/data-errors-tree-map.csv", function(data) {
+    console.log(data);
+
   // sample data array
-  var sample_data = [
-    {"value": 100, "name": "alpha"},
-    {"value": 70, "name": "beta"},
-    {"value": 40, "name": "gamma"},
-    {"value": 15, "name": "delta"},
-    {"value": 5, "name": "epsilon"},
-    {"value": 1, "name": "zeta"}
-  ]
+  // var sample_data = [
+  //   {"value": 100, "name": "alpha"},
+  //   {"value": 70, "name": "beta"},
+  //   {"value": 40, "name": "gamma"},
+  //   {"value": 15, "name": "delta"},
+  //   {"value": 5, "name": "epsilon"},
+  //   {"value": 1, "name": "zeta"}
+  // ]
   // instantiate d3plus
   var visualization = d3plus.viz()
     .container("#viz")  // container DIV to hold the visualization
@@ -129,4 +133,7 @@ HUD funds you -- they are your boss, kinda', but your other boss if who provides
     .size("value")      // sizing of blocks
     .height(400)
     .draw()             // finally, draw the visualization!
+
+});
 </script>
+

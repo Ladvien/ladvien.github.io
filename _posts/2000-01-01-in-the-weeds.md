@@ -127,6 +127,6 @@ HUD funds you -- they are your boss, kinda', but your other boss if who provides
     .type("tree_map")   // visualization type
     .id("name")         // key for which our data is unique on
     .size("value")      // sizing of blocks
-    .height(500)
+    .height(400)
     .draw()             // finally, draw the visualization!
 </script>

@@ -93,14 +93,55 @@ Tree graphs are _great_ to show how certain agencies are causing a disproportion
 
 These graphs provided the political insurance needed to to approach the partner agencies on the behalf of the board, which is much safer than enduring the resentment engendered otherwise.
 
-When approaching the offending agency, it helps to have a plan.  In TX-601 we called these "Data Quality Action Plans" and consisted a list of all the errors needing to be repaired, and [SMART goals](https://en.wikipedia.org/wiki/SMART_criteria).  
+When approaching the troubled agency, it helps to have a plan.  In TX-601 we called these "Data Quality Action Plans" and consisted a list of all the errors needing to be repaired, and a [SMART goal](https://en.wikipedia.org/wiki/SMART_criteria).
 
-![](https://ladvien.com/images/boat-with-holes.png)
-
-No one will trust reports without good data
-Show Tree Graph
+By focusing on the agency which has the most data errors it is like you are on a ship with many holes, possibly sinking.  Before bailing water, or patching small holes, you patch the biggest, as it'll have the greatest impact on the entire ship
+![](https://ladvien.com/images/boat-with-holes.PNG)
 
 ## DTR 
+
+Define the relationship.  This may have already be done for you, but if it hasn't, please don't underestimate how powerful an agency's perception of your responsibilities.
+
+For example, within three months of starting I received a call from shelter intake staff.  He was upset because he wasn't able to scan-in clients.  He "didn't have time to troubleshoot" and suggested I drive down, which I did.  Shortly after I arrived I realized the problem was his computer was shorting--sparks were clear.  I let him know he would need to contact his IT department to get it addressed, to which he stated, "I thought you were the IT department?" After explaining I wasn't, he still insisted I fixed it since it kept him from recording HMIS data and "that was my job."
+
+Take time, and do it early, to explain to what your role is.  For me I listed bullets of what were my responsibilities and what were not:
+
+HMIS System Administrator Responsibilities
+
+* Data Quality
+* Timely enabling / disabling user permissions
+* Assessing software defects
+* Providing technical assistance
+* Conducting trainings on how to use the software
+* Facilitating oversight and guidance committees
+* Communicating with end-users when system issues impact their work
+* Technical assistance on producing CAPER
+* Technical assistance on producing APR
+* Technical assistance on running standard reports
+* Federal system reports:
+  * 1. System Performance Measures
+  * 2. Annual Homelessness Assessment Report
+  * 3. Point-in-Time (PIT)
+  * 4. Housing Inventory Count (HIC)
+  * 5. HUD Data Quality Report (HDQ)
+  * 6. Coordinated Entry Reports
+* Supporting ESG Participating Jurisdictions
+* Supporting COC Lead
+
+These responsibilities I would continually message.  It is important they are understood for both sides.  End-users need to know your are there to support their efforts.  _But_, it is also important they understand _how_ you can and may help.
+
+Along side this list of how we could help, I had a list of how we could not help (at least, not guaranteed assistance).
+
+_*NOT*_ HMIS System Administrator Responsibilities
+* Fixing equipment
+* Generating CAPER or APR on an agency's behalf
+* Fixing data errors created by an end-user(s)
+* Generating standard reports for an agency
+* Meeting (all) customization requests
+* Generating data or reports for domestic violence providers (as they are prohibited from participating in the HMIS)
+* Fulfilling custom report requests in an unrealistic time frame (we would advertise a five business day notice).
+* Providing routine trainings for less than four end-users.  Or, short notice ad hoc trainings.
+* Adjusting system reports to bolster performance (these request as insidious)
 
 ## Find _Your_ Tools
 
@@ -130,6 +171,26 @@ Taking care of the date = cook
 Pulling reports for you = your cook chewing your food
 
 ## Get a Help Desk
+
+If you are not already, you will become overcome with requests.  Everyone will be emailing you their wants like you're Santa Clause in November.  This is dangerous.  Your end-users only see their one request and they don't understand why it is taking you more than an hour to fulfill it.
+
+Please tell me you have staff?  HUD recommends having one FTE for every 75 end-users.  For us, this meant we should have had 3.73 FTEs, but we operated with 3.  However, your staff will do little good if everyone is sending their requests directly to you.
+
+Sure, you'll try forwarding the email to Joe, but then Joe gets sick and the request sits in his inbox for several days.
+
+Get a Help Desk.
+
+For us, we had next to no-budget for a help desk, so I spun up a server and used Drupal's ticket module to create a help desk.  This allowed us to implement a help desk for about $12.50.  Not too shabby.  
+
+Getting the end-users to use the help desk was painful.  Trying to convince them it was in their best interest was not easy.  But, eventually, messaging our ability to collaborate on ticket responses won through.  They start using ticket system.
+
+There were many other advantages of using a help desk.  As a manager, I was able to review my staff's responses to request.  If I were a better manager (or if I had more time, hard to tell which it was) I could have used this information to coach my staff on being customer service focused.  Making sure we are providing friendly and relevant responses to all requests.
+
+Another advantage is having a log of all requests made to our department in a searchable fashion.  This would allow us to review statements we were being unresponsive with ticket links containing time stamps.  I'd like to tell you being prepared to defend your department is unnecessary, but sadly, that's not true.
+
+## Get Used to Bus Trends
+
+
 
 ## Automate Everything
 

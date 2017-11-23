@@ -98,7 +98,11 @@ When approaching the troubled agency, it helps to have a plan.  In TX-601 we cal
 By focusing on the agency which has the most data errors it is like you are on a ship with many holes, possibly sinking.  Before bailing water, or patching small holes, you patch the biggest, as it'll have the greatest impact on the entire ship
 ![](https://ladvien.com/images/boat-with-holes.png)
 
-## DTR 
+## Eminence Based vs. Data Based Decision Making
+
+## Always Be Honest
+
+## DTR
 
 Define the relationship.  This may have already be done for you, but if it hasn't, please don't underestimate how powerful an agency's perception of your responsibilities.
 
@@ -157,7 +161,20 @@ COC Funder
 Data Quality Goes Down
 
 ## Try to be HMIS Software Independent
-You can only love something if you don't need it
+
+My wife is fond of saying, "I love you, but I don't need you."  It took me awhile to get over being butt-hurt by this statement.  But at it's root is a profound nuance of a good relationship. In good relationships, you are aren't needed--but you are liked.
+
+This is how it should be with software.  It's hard.  But where possible, don't depend on your HMIS software solution to do your job.  Instead, use the software because your continuum-of-care likes using them.
+
+This feat is harder than it appears.  It means you need to be able to create your own System Performance Report, CAPER, or APR.  That sounds hard, and it is, but not impossible.  And I'm not suggesting you need to write all these reports, but you need to be _able_ to write these reports.
+
+For example, if you're attempting to pull the Annual Homelessness Assessment Report and several days before you submit you notice shelter bed counts are extremely off.  Then, it will be beneficial for you to be able to write a report which can double check the software vendor's number--and if needed, provide the correct numbers.  In this way, you are not dependent on the software company to provide you a fix before submission.
+
+There are countless benefits to being in this kind of relationship.  If you have the skill to dig into the HMIS data sets to find the problem, then you probably have some valuable debugging information to provide back to the software vendor.  This information will allow them to roll out a fix even faster.  It's just good all the way around.
+
+_Also_, and I'd argue most importantly, you aren't trapped in an abuse relationship with your software.  Fearing your current software vendor will never extract the data from your HMIS in such a way it could be migrated to another vendor.  Of course not! If necessary, you have the skill to build your own data warehouse and migrate the data, possibly without and degradation.
+
+A relationship where you need the other person is not one built on love.
 
 ## Departmental Checks and Balances
 
@@ -190,8 +207,6 @@ Another advantage is having a log of all requests made to our department in a se
 
 ## Get Used to Bus Trends
 
-
-
 ## Automate Everything
 
 ## Give them What they Need Always, and What they Want, when Possible
@@ -200,7 +215,7 @@ Another advantage is having a log of all requests made to our department in a se
 
 HUD funds you -- they are your boss, kinda', but your other boss if who provides match for those funds.
 
-## Always Be Honest
 
-## Eminence Based vs. Data Based Decision Making
+
+
 

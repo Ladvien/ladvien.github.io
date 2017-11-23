@@ -93,7 +93,9 @@ Tree graphs are _great_ to show how certain agencies are causing a disproportion
 
 These graphs provided the political insurance needed to to approach the partner agencies on the behalf of the board, which is much safer than enduring the resentment engendered otherwise.
 
-When approaching the offending agency, it helps to have a plan.  In TX-601 we called these "Data Quality Action Plans" and consisted a list of all the errors needing to be repaired, and [SMART goals](https://en.wikipedia.org/wiki/SMART_criteria).
+When approaching the offending agency, it helps to have a plan.  In TX-601 we called these "Data Quality Action Plans" and consisted a list of all the errors needing to be repaired, and [SMART goals](https://en.wikipedia.org/wiki/SMART_criteria).  
+
+![](https://ladvien.com/images/boat-with-holes.png)
 
 No one will trust reports without good data
 Show Tree Graph

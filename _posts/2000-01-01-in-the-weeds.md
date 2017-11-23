@@ -91,7 +91,7 @@ d3.csv("https://ladvien.com/projects/d3/data/data-errors-tree-map.csv", function
 
 Tree graphs are _great_ to show how certain agencies are causing a disproportionate amount of data errors.  We presented the graph much as shown here, without Agency names, at first.  But eventually, the Board asked we provide names along with the graph.
 
-This was great.  It allowed us to approach the partner agencies on the behalf of the board, which is much safer than enduring the resentment engendered.
+These graphs provided the political insurance needed to to approach the partner agencies on the behalf of the board, which is much safer than enduring the resentment engendered otherwise.
 
 When approaching the offending agency, it helps to have a plan.  In TX-601 we called these "Data Quality Action Plans" and consisted a list of all the errors needing to be repaired, and [SMART goals](https://en.wikipedia.org/wiki/SMART_criteria).
 

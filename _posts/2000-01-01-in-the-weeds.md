@@ -27,7 +27,7 @@ Anyway, I when I started as an HMIS System Administrator I was clueless.  Lookin
 Brand new HMIS System Administrator, this is for you, as you start your new job.  The best job in the world.
 
 ## Get In the Weeds
-Hey, by now, you've been to a few meetings and you know a few things about the data.  A word of warning, don't let others tell you, "Hey, that's 'too in the weeds' for this conversation."  Bull.
+Hey, by now, you've been to a few meetings and you know a few things about the data.  A word of warning, don't let others tell you, "Hey, that's too in the weeds for this conversation."  Bull.
 
 Often, your boss or peer will be saying it with good intent.  They want to make sure the content of what your agency is providing to a partner agency or funder is digestable in one meeting, and often, the critique is fair.  But don't let it become the only rule you live by. The weeds are necessary for several reasons.
 
@@ -145,7 +145,7 @@ _*NOT*_ HMIS System Administrator Responsibilities
 * Generating data or reports for domestic violence providers (as they are prohibited from participating in the HMIS)
 * Fulfilling custom report requests in an unrealistic time frame (we would advertise a five business day notice).
 * Providing routine trainings for less than four end-users.  Or, short notice ad hoc trainings.
-* Adjusting system reports to bolster performance (these request as insidious)
+* Adjusting system reports to bolster performance (these request are insidious)
 
 ## Find _Your_ Tools
 

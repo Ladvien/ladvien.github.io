@@ -123,12 +123,12 @@ HMIS System Administrator Responsibilities
 * Technical assistance on producing APR
 * Technical assistance on running standard reports
 * Federal system reports:
-  * 1. System Performance Measures
-  * 2. Annual Homelessness Assessment Report
-  * 3. Point-in-Time (PIT)
-  * 4. Housing Inventory Count (HIC)
-  * 5. HUD Data Quality Report (HDQ)
-  * 6. Coordinated Entry Reports
+  * System Performance Measures
+  * Annual Homelessness Assessment Report
+  * Point-in-Time (PIT)
+  * Housing Inventory Count (HIC)
+  * HUD Data Quality Report (HDQ)
+  * Coordinated Entry Reports
 * Supporting ESG Participating Jurisdictions
 * Supporting COC Lead
 
@@ -172,7 +172,7 @@ For example, if you're attempting to pull the Annual Homelessness Assessment Rep
 
 There are countless benefits to being in this kind of relationship.  If you have the skill to dig into the HMIS data sets to find the problem, then you probably have some valuable debugging information to provide back to the software vendor.  This information will allow them to roll out a fix even faster.  It's just good all the way around.
 
-_Also_, and I'd argue most importantly, you aren't trapped in an abuse relationship with your software.  Fearing your current software vendor will never extract the data from your HMIS in such a way it could be migrated to another vendor.  Of course not! If necessary, you have the skill to build your own data warehouse and migrate the data, possibly without and degradation.
+_Also_, and I'd argue most importantly, you aren't trapped in an abusive relationship with your software.  Fearing your current software vendor will never extract the data from your HMIS in such a way it could be migrated to another vendor.  Of course not! If necessary, you have the skill to build your own data warehouse and migrate the data, possibly without any degradation.
 
 A relationship where you need the other person is not one built on love.
 

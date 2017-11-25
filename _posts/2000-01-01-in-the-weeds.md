@@ -215,9 +215,7 @@ Unfortunately, this conversation between the funder and funded you usually are n
 
 I've found there are two key strategies to avoid this problem.
 
-#### Be Proactive
-
-When you know CAPER, RHY, SSVF, PATH, or APR is due for an agency, send the program manager _one_ simple email.
+First, be proactive.  When you know a CAPER, RHY, SSVF, PATH, or APR is due for an agency, send the program manager _one_ simple email.
 
 >"Good afternoon Ms. Program Manager,
 >
@@ -229,17 +227,17 @@ When you know CAPER, RHY, SSVF, PATH, or APR is due for an agency, send the prog
 
 Keep it short, you'll be writing a lot of them.
 
-This let's the program manager know your are there to assist them.  And you are aware the report is due.
+This let's the program manager know you're there to assist.  And you are aware the report is due.
 
-_Do not_ CC the funder. That's silly.  I've honestly found the aggressive nature of CC'ing everyone and their dog a huge detractor of good working relationships.  There's a better way--show them.
+**_Do not_** CC the funder. That's silly.  I've honestly found the aggressive nature of CC'ing everyone and their dog a huge detractor of good working relationships.  There's a better way--show them.
 
-However, do archive your sent emails so you can easily access offer to assist.
+However, do archive your sent emails so you can easily access offers to assist.
 
-#### Record Everything
+Secondly, record Everything. Find a way to record every interaction with your partners.  If you're following the advice about a Help Desk, then great.  But make sure every email thread which is a request for help gets moved into the Help Desk.
 
-Find a way to record every interaction with your partners.  If you're following the advice about a Help Desk, then great.  But make sure every email thread which is a request for help gets moved into the Help Desk.
+Also, if you are meeting with partners about issues, make sure to recommend they write the request down using the Help Desk, that way your staff could start working on it right away.  (Or if you're like me and your auditory memory is non-existent, you'll actually get it done.)
 
-Also, if you are meeting with partners about issues, make sure to recommend they write the request down using the Help Desk, that way your staff could start working on it right away.
+
 
 ## Automate Everything
 

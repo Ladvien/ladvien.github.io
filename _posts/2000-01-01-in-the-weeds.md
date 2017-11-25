@@ -219,19 +219,27 @@ I've found there are two key strategies to avoid this problem.
 
 When you know CAPER, RHY, SSVF, PATH, or APR is due for an agency, send the program manager _one_ simple email.
 
-  "Good afternoon Ms. Program Manager,
-
-  I know your Report is due pretty soon, I just wanted to check in and see how our team might assist your team in being successful.
-
-  Sincerely,
-
-  --HMIS System Administrator"
+>"Good afternoon Ms. Program Manager,
+>
+>I know your Report is due pretty soon, I just wanted to check in and see how our team might assist your team in being successful.
+>
+>Sincerely,
+>
+>--HMIS System Administrator"
 
 Keep it short, you'll be writing a lot of them.
 
-This let's the program manager know your are there to assist them.  And you are aware the report is due.  
+This let's the program manager know your are there to assist them.  And you are aware the report is due.
+
+_Do not_ CC the funder. That's silly.  I've honestly found the aggressive nature of CC'ing everyone and their dog a huge detractor of good working relationships.  There's a better way--show them.
+
+However, do archive your sent emails so you can easily access offer to assist.
 
 #### Record Everything
+
+Find a way to record every interaction with your partners.  If you're following the advice about a Help Desk, then great.  But make sure every email thread which is a request for help gets moved into the Help Desk.
+
+Also, if you are meeting with partners about issues, make sure to recommend they write the request down using the Help Desk, that way your staff could start working on it right away.
 
 ## Automate Everything
 

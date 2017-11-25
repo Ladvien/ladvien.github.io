@@ -98,9 +98,18 @@ When approaching the troubled agency, it helps to have a plan.  In TX-601 we cal
 By focusing on the agency which has the most data errors it is like you are on a ship with many holes, possibly sinking.  Before bailing water, or patching small holes, you patch the biggest, as it'll have the greatest impact on the entire ship
 ![](https://ladvien.com/images/boat-with-holes.png)
 
-## Eminence Based vs. Data Based Decision Making
+## Eminence vs. Data Based Decision Making
 
 ## Always Be Honest
+
+## Understand How You're Funded
+
+HUD funds you -- they are your boss, kinda', but your other boss if who provides match for those funds.
+
+## Power of the Purse
+
+ESG Funders
+COC Funder
 
 ## DTR
 
@@ -147,14 +156,12 @@ _*NOT*_ HMIS System Administrator Responsibilities
 * Providing routine trainings for less than four end-users.  Or, short notice ad hoc trainings.
 * Adjusting system reports to bolster performance (these request are insidious)
 
-## Find _Your_ Tools
+## Find **_Your_** Tools
 
 R, SQL, Tablaeu
 
-## Power of the Purse
+## Automate Everything
 
-ESG Funders
-COC Funder
 
 ## Discourage Separate Sets of Book
 
@@ -237,15 +244,13 @@ Secondly, record Everything. Find a way to record every interaction with your pa
 
 Also, if you are meeting with partners about issues, make sure to recommend they write the request down using the Help Desk, that way your staff could start working on it right away.  (Or if you're like me and your auditory memory is non-existent, you'll actually get it done.)
 
+Between these two things, when a funder comes asking you, "Do you know why Shelter of Hope hasn't been able to generate the CAPER?" You may quickly say, "I'm not sure.  I've sent an offer to assist September 1st and I've looked through our Help Desk, there are no requests for help from Shelter of Hope."  This usually helps show software or support were not the determining reason the report wasn't submitted in time.
+
+One word of warning.  It took me two years to figure out not to blame my end-users for this behavior.  They are dealing cramped work spaces, angry individuals, emergency responses, suicidal clients, bed-bugs, oh! And pay on par with a McDonald's employee!  Don't be upset with the end-users--they are good souls, just not data souls.
+
+## Need Always; Want, When Possible
 
 
-## Automate Everything
-
-## Give them What they Need Always, and What they Want, when Possible
-
-## Understand How You're Funded
-
-HUD funds you -- they are your boss, kinda', but your other boss if who provides match for those funds.
 
 
 

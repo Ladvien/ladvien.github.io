@@ -221,7 +221,7 @@ When you know CAPER, RHY, SSVF, PATH, or APR is due for an agency, send the prog
 
 >"Good afternoon Ms. Program Manager,
 >
->I know your Report is due pretty soon, I just wanted to check in and see how our team might assist your team in being successful.
+>I know your Report is due pretty soon, I just wanted to check in and see how our team might assist you in being successful.
 >
 >Sincerely,
 >

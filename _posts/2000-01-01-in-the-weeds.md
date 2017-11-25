@@ -162,7 +162,6 @@ R, SQL, Tablaeu
 
 ## Automate Everything
 
-
 ## Discourage Separate Sets of Book
 
 Data Quality Goes Down
@@ -229,7 +228,6 @@ First, be proactive.  When you know a CAPER, RHY, SSVF, PATH, or APR is due for 
 >I know your Report is due pretty soon, I just wanted to check in and see how our team might assist you in being successful.
 >
 >Sincerely,
->
 >--HMIS System Administrator"
 
 Keep it short, you'll be writing a lot of them.
@@ -246,7 +244,7 @@ Also, if you are meeting with partners about issues, make sure to recommend they
 
 Between these two things, when a funder comes asking you, "Do you know why Shelter of Hope hasn't been able to generate the CAPER?" You may quickly say, "I'm not sure.  I've sent an offer to assist September 1st and I've looked through our Help Desk, there are no requests for help from Shelter of Hope."  This usually helps show software or support were not the determining reason the report wasn't submitted in time.
 
-One word of warning.  It took me two years to figure out not to blame my end-users for this behavior.  They are dealing cramped work spaces, angry individuals, emergency responses, suicidal clients, bed-bugs, oh! And pay on par with a McDonald's employee!  Don't be upset with the end-users--they are good souls, just not data souls.
+One word of warning.  It took me two years to figure out not to blame my end-users for this behavior.  They are dealing with cramped work spaces, angry individuals, emergency responses, suicidal clients, bed-bugs, oh! And pay on par with a McDonald's employee!  Don't be upset with the end-users--they are good souls, just not data souls.
 
 ## Need Always; Want, When Possible
 

@@ -205,7 +205,33 @@ There were many other advantages of using a help desk.  As a manager, I was able
 
 Another advantage is having a log of all requests made to our department in a searchable fashion.  This would allow us to review statements we were being unresponsive with ticket links containing time stamps.  I'd like to tell you being prepared to defend your department is unnecessary, but sadly, that's not true.
 
-## Get Used to Bus Trends
+## Get Used to Bus Treads
+
+Software is organized crime, and those who support it, wild villains.  At least, this is the perception of everyone of your users.  Any time something goes wrong the software and support are to blame.  This will often put you in a tough position with funders.
+
+For example, when an agency is fails to submit their CAPER in a timely manner and the funder is attempting to hold the agency accountable, one of the natural shirking strategies is to blame software and support.
+
+Unfortunately, this conversation between the funder and funded you usually are not privy to.  You have no opportunity to cry "bull."  It's not until the funder contacts you stating the agency's CAPER is late because of problems with software and support.  At this point, no amount of empty excuses will defend you and the team.  You've failed.  I know this to be true, because I've failed many times.
+
+I've found there are two key strategies to avoid this problem.
+
+#### Be Proactive
+
+When you know CAPER, RHY, SSVF, PATH, or APR is due for an agency, send the program manager _one_ simple email.
+
+  "Good afternoon Ms. Program Manager,
+
+  I know your Report is due pretty soon, I just wanted to check in and see how our team might assist your team in being successful.
+
+  Sincerely,
+
+  --HMIS System Administrator"
+
+Keep it short, you'll be writing a lot of them.
+
+This let's the program manager know your are there to assist them.  And you are aware the report is due.  
+
+#### Record Everything
 
 ## Automate Everything
 

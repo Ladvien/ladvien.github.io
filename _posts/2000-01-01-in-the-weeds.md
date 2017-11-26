@@ -41,7 +41,7 @@ Secondly, others will not be primed for a conversation about something they have
 
 Regarding building your ability to communicate complex HMIS activities concisely, I'd encourage you to cold-call some HMIS system administrators in your state.  Introduce yourself, ask if they would be willing to chat with you when needing to discuss HMIS stuff no one else will listen to.  I've found this to be the absolutely critical to explaining HMIS problems to a COC who doesn't care or understand.
 
-Also, this job is great.  But you'll have no friends (no one told you?).  No one will understand you.  And no one will want to talk about how HUD has changed the chronically homeless definition _yet_ again--except, other HMIS system admins.  When I first made contact with another HMIS Admin, after being in the job a year, it was like I'd discovered a neighboring isle next to the one I was stranded--and that isle had other humans who understood my language!
+Also, this job is great.  But you'll have no friends (no one told you?).  No one will understand you.  And no one will want to talk about how HUD has changed the chronically homeless definition yet again--_except_, other HMIS system admins.  When I first made contact with another HMIS Admin, after being in the job a year, it was like I'd discovered a neighboring isle next to the one I was stranded--and that isle had other humans who understood my language!
 
 ## Data Quality is Key
 

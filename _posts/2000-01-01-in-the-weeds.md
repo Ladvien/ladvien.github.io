@@ -22,24 +22,28 @@ In June of 2015 I became a [Homeless Management Information System](https://www.
 
 I'd become tech savvy because working a street outreach specialist one sees a lot of bad.  _A lot_  It will leave scares in your psyche if you are not vigilant to guard against those bad scenes replaying in your head.  I found if I filled my head with something complex there was no room for the dissonance created by being helpless to aid the 17-year-old heroine addict and future mother under the unfinished bridge off of I-30.  So, I took up [robotics](https://ladvien.com/tags/#robots).  It worked well.
 
-Anyway, I when I started as an HMIS System Administrator I was clueless.  Looking back, I'd wished there was someone who was around to teach me.  Most of the skills needed are esoteric, and few on-line resources exist.  Well, as I step away from the desk, I'm going to do my best to write down everything I learned for my replacement--of course, it'll be laden with opinion--but hopefully, it'll provide a spring-board into your new job.
+When I started as an HMIS System Administrator I was clueless.  Looking back, I'd wished there was someone who was around to teach me.  Most of the skills needed are esoteric and few on-line resources exist.
+
+Well, as I step away from the desk, I'm going to do my best to write down everything I learned--of course, it'll be laden with opinion--but hopefully, it'll provide the missing manual I sought.
 
 Brand new HMIS System Administrator, this is for you, as you start your new job.  The best job in the world.
 
 ## Get In the Weeds
-Hey, by now, you've been to a few meetings and you know a few things about the data.  A word of warning, don't let others tell you, "Hey, that's too in the weeds for this conversation."  Bull.
+Hey, by now, you've been to a few meetings and you know a few things about the data.  A word of warning, don't let others tell you, "Hey, that's too in the weeds for this conversation."
 
-Often, your boss or peer will be saying it with good intent.  They want to make sure the content of what your agency is providing to a partner agency or funder is digestable in one meeting, and often, the critique is fair.  But don't let it become the only rule you live by. The weeds are necessary for several reasons.
+Bull.
 
-First, if you are never allowed to talk about the mechanics of your job then then you will not have the vocabulary, analogies, and metaphors worked out to talk about critical system issues when it is necessary to vet HMIS decisions with those outside your office.
+Often, your boss or peer will be saying it with good intent.  They want to make sure your content is digestable, and often, the critique is fair.  But don't let it become the only rule you live by. The weeds are necessary for several reasons.  And if metaphors aren't your thing, we are talking about the details of data.
+
+First, if you are never allowed to talk about the mechanics of the job, then you will not have the vocabulary, analogies, and metaphors ready to talk about critical system issues when it is necessary.  Why would it be necessarty?  Let's say you needed to vet a critical HMIS decision with the goverening board.
 
 Secondly, others will not be primed for a conversation about something they have _never_ heard about until it matters.
 
 In short, getting into the weeds of how an HMIS works is needed for more reasons than there are to prevent going into them.
 
-One thing I'll encourage you do shortly after you start.  Cold-call all the HMIS system administrators in your state.  Introduce yourself, ask if they would be willing to chat with you when needing to discuss HMIS stuff no one else will listen to.  I've found this to be the absolutely most critical piece of advice I can give.
+Regarding building your ability to communicate complex HMIS activities concisely, I'd encourage to cold-call some HMIS system administrators in your state.  Introduce yourself, ask if they would be willing to chat with you when needing to discuss HMIS stuff no one else will listen to.  I've found this to be the absolutely critical to explaining HMIS problems to a COC who doesn't care or understand.
 
-This job is great.  But you'll have no friends.  No one will understand you.  And no one will want to talk about how HUD has changed the chronically homeless definition _yet_ again--except, other HMIS system admins.  When you first make contact with another HMIS Admin, after being in the job a year, it will be as if you've discovered a neighboring isle next to the one you've been on--and that isle has another human to talk to!
+Also, this job is great.  But you'll have no friends (no one told you?).  No one will understand you.  And no one will want to talk about how HUD has changed the chronically homeless definition _yet_ again--except, other HMIS system admins.  When I first made contact with another HMIS Admin, after being in the job a year, it was like I'd discovered a neighboring isle next to the one I was stranded--and that isle had other humans who understood my language!
 
 ## Data Quality is Key
 
@@ -246,7 +250,7 @@ Between these two things, when a funder comes asking you, "Do you know why Shelt
 
 One word of warning.  It took me two years to figure out not to blame my end-users for this behavior.  They are dealing with cramped work spaces, angry individuals, emergency responses, suicidal clients, bed-bugs, oh! And pay on par with a McDonald's employee!  Don't be upset with the end-users--they are good souls, just not data souls.
 
-## Need Always; Want, When Possible
+## Need Always; Wants, When Possible
 
 
 

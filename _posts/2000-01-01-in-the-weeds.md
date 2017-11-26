@@ -45,20 +45,20 @@ Also, this job is great.  But you'll have no friends (no one told you?).  No one
 
 ## Data Quality is Key
 
-Three months into my job I realized we had to do something about our data quality.  We had two major cities and the county both complaining about how reports coming from our HMIS were not reliable.  One month they'd produce an "accurate" account of who was in a program the municipalities were funding, then, the next month they would be completely off.  (Of course, the municipalities knew they were off because the agencies funded were keeping a separate set of books--more on that later)
+Three months into my job I realized we had to do something about data quality.  We had two cities and a county both complaining the reports coming from HMIS were not reliable.  One month they'd produce an "accurate" account of who was in a program, then, the next month they would be completely off.  (Of course, the municipalities knew they were off because the agencies funded were keeping a separate set of books--more on that later)
 
-We had to do something.  To be honest--oh yah, and always be honest--we didn't have a clue what our system data quality was like.  There was data quality detection system in place to determine if it was good or bad.  
-
-Luckily, our software vendor had an HMIS data error report which would list out HUD data errors of clients active in any program.  Without a better solution, I pulled this report for every program and aggregated the data errors.
+We had to do something.  To be honest--oh yah, and always be honest--we didn't have a clue what our data quality was like.  There was no data quality detection system in place to determine if it was good or bad. Luckily, our software vendor had an HMIS data error report which would list out HUD data errors of participants active in any program.  Without a better solution, I pulled this report for every program and aggregated the data errors.
 
 <div id="data-errors-2016"></div>
 <script src="https://ladvien.com/projects/d3/tx-601/data-errors-2016.js"></script>
 
-Often, you are caught in this political position where you must confront agencies about their poor data quality, who also pay your bills.  It's tough.
+Well, crap.  They had right to complain.
 
-One of the best things you could do is get the CoC Governing Board involved in the Data Quality Assurance process.
+Above is a graph of 2016's data errors, in 2015 it started at approximately 100,000 errors.  Without the wisdom I've now, I used the raw numbers to present to our COC Governing board to show we were addressing the municipalities concerns.
 
-Before we had the HUD Data Quality report we would provide our CoC Board the above trend and this tree graph.  
+But this is only half the story.  What if only one agency was causing all these data errors?
+
+To address this problem, we used a tree graph.
 
 <script src="//d3plus.org/js/d3.js"></script>
 <script src="//d3plus.org/js/d3plus.js"></script>
@@ -89,7 +89,6 @@ d3.csv("https://ladvien.com/projects/d3/data/data-errors-tree-map.csv", function
     .draw()
 });
 </script>
-
 
 Tree graphs are _great_ to show how certain agencies are causing a disproportionate amount of data errors.  We presented the graph much as shown here, without Agency names, at first.  But eventually, the Board asked we provide names along with the graph.
 

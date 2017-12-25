@@ -124,4 +124,5 @@ I've added a special ISP header to the board.  It works with [Tiny AVR-ISP pogo-
 
 It's a bit of a pain to solder, but it's pretty darn sweet once it's in place.  Of course, the header is backwards.  More on that later.
 
-![](https://ladvien.com/image/isp-key.png)
+![](https://ladvien.com/images/isp-key.png)
+

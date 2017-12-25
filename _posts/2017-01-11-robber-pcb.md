@@ -113,3 +113,15 @@ There was trouble testing the SMD RGB LEDs.  During the solder-desoldering proc
 
 I thought I'd take a moment and diagram the SMD RGBs I'm using, as I can't ever seem to get directionality correct.  
 ![SMD_RGB_Closeup.jpg](https://ladvien.com/images/SMD_RGB_Closeup.jpg)
+
+# 2017-12-24 -- v3
+
+I've almost finished testing the Robber board v3.  A few changes:
+
+### ISP Key
+
+I've added a special ISP header to the board.  It works with [Tiny AVR-ISP pogo-pin programming adapter](https://www.tindie.com/products/madworm/tiny-avr-isp-pogo-pin-programming-adapter/)
+
+It's a bit of a pain to solder, but it's pretty darn sweet once it's in place.  Of course, the header is backwards.  More on that later.
+
+![](https://ladvien.com/image/isp-key.png)

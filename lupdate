@@ -1,0 +1,28 @@
+#!/bin/sh
+
+PASSWORD="$(keyring get system ladvien.com)"
+
+echo ""
+echo "*******************************************************"
+echo "* Syncing files to Ladvien.com Jekyll build directory *"
+echo "*******************************************************"
+bundle exec jekyll build --source /home/ladvien/Desktop/Desktop/ladvien.github.io --destination /home/ladvien/Desktop/Desktop/ladvien.github.io/_site
+echo ""
+echo "****************************"
+echo "* Updating Jekyll includes *"
+echo "****************************"
+
+rsync -avzu /home/ladvien/Desktop/Desktop/ladvien.github.io/_site/* root@ladvien.com:/usr/share/nginx/html
+
+cd /home/ladvien/Desktop/Desktop/ladvien.github.io
+git add .
+echo ""
+echo "****************************"
+echo '* Enter the commit message *'
+echo "****************************"
+git commit -m "Blogging $(date +%Y-%m-%d)"
+git push
+echo ""
+echo "**************************"
+echo "* Sending to Ladvien.com *"
+echo "**************************"

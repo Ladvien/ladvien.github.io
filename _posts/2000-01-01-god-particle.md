@@ -11,7 +11,7 @@ image:
 comments: true
 ---
 
-Test
+Test2
 
 ### God created the world perfect, we fucked it up
 Why does bad shit happen in the world?  

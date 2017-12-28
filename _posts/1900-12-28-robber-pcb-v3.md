@@ -32,3 +32,11 @@ Besides that, the rest of the board works.
 
 ![](https://ladvien.com/images/isp-key.png)
 
+
+
+## Footprint
+
+![](https://ladvien.com/images/robber-board-v3-top.png)
+
+
+![](https://ladvien.com/images/robber-board-v3-bottom.png)

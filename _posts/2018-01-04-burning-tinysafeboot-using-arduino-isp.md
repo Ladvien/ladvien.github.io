@@ -68,7 +68,7 @@ Now, we will need to install AVRDude
 * [Linux Instructions](http://www.ladyada.net/learn/avr/setup-unix.html)
 * [Mac Instructions](http://www.ladyada.net/learn/avr/setup-mac.html)
 
-## Step 4: Burn TinySafeBootloader on ATtiny85
+## Step 4: Burn the AVR Fuses
 Once AVRDUDE has successfully install, open it by going to the Start Menu and typing
 
 * cmd
@@ -106,28 +106,76 @@ However, I've provided the two commands you will need for the to program the ATt
 
 AVRDUDE command to upload:
 
-ATtiny**85** at **1mhz**
+### ATtiny**85** at **1mhz**
 
-avrdude -P COM# -b 19200 -c avrisp -p t85 -v -e -U lfuse:w:0x62:m -U hfuse:w:0xdd:m -U efuse:w:0xfe:m
-avrdude -P COM# -b 19200 -c avrisp -p t85 -v -e -U flash:w:tsb_tn85_b3b4_20150826.hex
-ATtiny85 at 8mhz
+* avrdude -P **COM#** -b 19200 -c avrisp -p **t85** -v -e -U lfuse:w:0x62:m -U hfuse:w:0xdd:m -U efuse:w:0xfe:m
 
-avrdude -P COM# -b 19200 -c avrisp -p t85 -v -e -U lfuse:w:0xe2:m -U hfuse:w:0xdd:m -U efuse:w:0xfe:m
-avrdude -P COM# -b 19200 -c avrisp -p t85 -v -e -U flash:w:tsb_tn85_b3b4_20150826.hex
-ATtiny84 at 1mhz
+### ATtiny**85** at **8mhz**
 
-avrdude -P COM# -b 19200 -c avrisp -p t84 -v -e -U lfuse:w:0x62:m -U hfuse:w:0xdf:m -U efuse:w:0xfe:m
-avrdude -P COM# -b 19200 -c avrisp -p t84 -v -e -U flash:w:tsb_tn84_a0a1_20150826.hex
-ATtiny84 at 8mhz
+* avrdude -P **COM#** -b 19200 -c avrisp -p **t85** -v -e -U lfuse:w:0xe2:m -U hfuse:w:0xdd:m -U efuse:w:0xfe:m
 
-avrdude -P COM# -b 19200 -c avrisp -p t84 -v -e -U lfuse:w:0xe2:m -U hfuse:w:0xdf:m -U efuse:w:0xfe:m
-avrdude -P COM# -b 19200 -c avrisp -p t84 -v -e -U flash:w:tsb_tn84_a0a1_20150826.hex
-ATtmega328P at 8mhz
+### ATtiny**84** at **1mhz**
 
-avrdude -P COM# -b 19200 -c avrisp -p m328p -v -e -U lfuse:w:0xFF:m -U hfuse:w:0xDA:m -U efuse:w:0x05:m
-avrdude -P COM# -b 19200 -c avrisp -p m328p -v -e -U flash:w:tsb_m328p_d0d1_20150826.hex
-ATmega328P at 16mhz
+* avrdude -P **COM#** -b 19200 -c avrisp -p **t84** -v -e -U lfuse:w:0x62:m -U hfuse:w:0xdf:m -U efuse:w:0xfe:m
 
-avrdude -P COM# -b 19200 -c avrisp -p m328p -v -e -U efuse:w:0x05:m -U hfuse:w:0xD6:m -U lfuse:w:0xFF:m
-avrdude -P COM# -b 19200 -c avrisp -p m328p -v -e -U flash:w:tsb_m328p_d0d1_20150826.hex
+### ATtiny**84** at **8mhz**
+
+* avrdude -P **COM#** -b 19200 -c avrisp -p **t84** -v -e -U lfuse:w:0xe2:m -U hfuse:w:0xdf:m -U efuse:w:0xfe:m
+
+### ATtmega328P at **8mhz**
+
+* avrdude -P **COM#** -b 19200 -c avrisp -p m328p -v -e -U lfuse:w:0xFF:m -U hfuse:w:0xDA:m -U efuse:w:0x05:m
+
+### ATmega328P at **16mhz**
+
+* avrdude -P **COM#** -b 19200 -c avrisp -p m328p -v -e -U efuse:w:0x05:m -U hfuse:w:0xD6:m -U lfuse:w:0xFF:m
+
 If you have any issues, please leave any questions in the comments below.
+
+Oh! And don't disconnect the wires, leave everything as it is.  We are going to need to burn the flash memory next.
+
+### Step 5: Installing the Bootloader
+
+After the fuses have been set the TinySafeBootloader (TSB) is ready to be install on the respective AVR.  Now, TSB uses software serial and autobaud, so you have the option to use any pin set on the chip as TX / RX.  However, to do this, you will need to compile the firmware yourself using the TSB compiler:
+
+* [TinySafeBootloader Firmware Compiler](http://jtxp.org/tech/tsb.zip) and Uploader (Windows)
+
+Sadly, if you want to roll your own it must be from Windows.
+
+That said, if you're brave and you don't mind using predefined pins, I've recompiled the bootloader for the ATtiny84, ATtiny85, and ATMega328.
+
+* [TinySafeBootloader Firmware](https://github.com/Ladvien/TSB_and_Lumi)
+
+**Beware** I'm not liable if these don't work.  However, if they don't, let me know in a comment below and I'll update them.
+
+Ok! Last thing to do is to burn the firmware. Keeping the wiring the same from when we burned the fuses, now let's burn the actual firmware.
+
+If you are using the precompiled firmware the AVRDude commands should look like this:
+
+AVRDUDE command to upload:
+
+### ATtiny**85**
+* avrdude -P **COM#** -b 19200 -c avrisp -p t85 -v -e -U flash:w:tsb_tn85_b3b4_20150826.hex
+
+### ATtiny**84**
+* avrdude -P **COM#** -b 19200 -c avrisp -p t84 -v -e -U flash:w:tsb_tn84_a0a1_20150826.hex
+
+### ATtmega328P
+* avrdude -P **COM#** -b 19200 -c avrisp -p m328p -v -e -U flash:w:tsb_m328p_d0d1_20150826.hex
+
+The "a0a1" portion of the firmware are the RX / TX pins.  For the precompiled firmware here are the pins:
+
+### ATtiny**85**
+* RX = 3
+* TX = 4 
+
+### ATtiny**84**
+* RX = 0 / A0
+* TX = 1 / A1
+
+### ATtmega328P
+* RX = 0 (RX)
+* TX = 1 (TX)
+
+
+Ok, that's it.  Let me know if you have questions!

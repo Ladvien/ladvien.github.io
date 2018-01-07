@@ -178,4 +178,4 @@ The "a0a1" portion of the firmware are the RX / TX pins.  For the precompiled fi
 * TX = 1 (TX)
 
 
-Ok, that's it.  Let me know if you have questions!
+Ok, that's it.  Let me know if you have questions.

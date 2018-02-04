@@ -20,7 +20,7 @@ Prerequisites:
 
 This article builds off:
 
-Upload Arduino Sketches to ATtiny85 with UART
+[Upload Arduino Sketches to ATtiny85 with UART](https://ladvien.com/burning-tinysafeboot-using-arduino-isp/)
 
 The above article will need to be followed to prepare your ATtiny85 and Windows computer.
 
@@ -117,7 +117,49 @@ The following connections will need to be made:
 
 VCC should be 5V
 
+### Compile a Sketch to Upload
+
+In the Arduino IDE, write a program you want to upload to your wireless TSB setup. *However*, instead of using the Arduino to upload the file, we are going to use it only to compile.  To do this, go to *Sketch -> Export Compiled Binary*  Then, select *Sketch -> Show Sketch Folder*.  In this folder there will be two .HEX files.  You want the one which does not have "..._with_bootloader.ino".  (Since, we already have a bootloader installed on our ATtiny.)
+
 ### Connect to the HM-10 Module from Lumi5
 
 I've provided a web based uploader for TinySafeBoot.  A couple of notes, it only works in Chrome on Linux and Mac.
 
+Before attempting to use the uploader, please open Chrome and type:
+
+{% highlight bash %}
+chrome://flags/#enable-experimental-web-platform-features
+{% end highlight %}
+
+To get Chrome's "experimental" Bluetooth LE web API to work we have to turn it on.  Go ahead and select *Enable*.
+
+
+### Lumi5
+Go ahead and navigate to:
+
+* [Lumi5](https://ladvien.com/projects/lumi5/lumi5.html)
+
+This is the work-in-progress web based TinySafeBoot loader I've been working on.  The HM-10 uploader is functional, though.  
+
+Turn on your HM-10.  Select *Bluetooth* from the dropdown box and hit *Search*.  If all has gone well, then you will see the name of your HM-10 module listed.  Go ahead and connect to it.
+
+Now, in the *Pin #* box, type the pin number corresponding with the pin on your HM-10 which you are using to reset the TinySafeBootloader.
+
+![](https://ladvien.com/images/attiny-hm-10-prep-tsb-9.png)
+
+Select the multi-gear button.  This should give you a bootloader handshake button.  Try it.  It may take a couple of tries, but you should see the bootloader respond with the device signature and memory information.
+
+If all went well, go ahead and click the Upload File button.  Select the compiled HEX file from the *Compile a Sketch* step and hit upload.
+
+Cross your fingers.  It should respond with tell you it has written the file.  
+
+
+**Important**: Go ahead and refresh the webpage and reconnect.  Once you've reconnected, the program you uploaded should be running.
+
+We setup the HM-10 to hold the reset line low when the module is not connected, this is to save power.  But it can be frustrating if your unaware of the setup, as it's difficult to troubleshoot.  "Why the heck isn't the program running!?"
+
+
+
+Please, *please* be kind and provide feedback.  This is a work-in-progress, using a lot of custom hardware and experimental code.
+
+List any questions below and I'll try to troubleshoot ASAP.

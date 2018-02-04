@@ -75,7 +75,7 @@ Tweezers allow you to work angles.
 [Tacky-putty](https://jet.com/product/detail/bfbbcfea4f2b450abb35083231522c2f?jcmp=pla:ggl:gen_jd_office_supplies_a3:general_office_supplies_mounting_putty_a3_other:na:PLA_344948460_23657809380_pla-154643897340:na:na:na:2&code=PLA15&ds_c=gen_jd_office_supplies_a3&ds_cid&ds_ag=general_office_supplies_mounting_putty_a3_other&product_id=bfbbcfea4f2b450abb35083231522c2f&product_partition_id=154643897340&gclid=Cj0KEQjw4pO7BRDl9ePazKzr1LYBEiQAHLJdR-oUE22XqS7e9hLmUcQZfVej2JZ1BSIbo7coDJ3onLcaAtHF8P8HAQ&gclsrc=aw.ds) helps hold the board in place, leaving both hands free to hold components.
 
 <div class="flex-video">
-<iframe width="560" height="315" src="https://youtu.be/BqkU3-iWdIU" frameborder="0" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/BqkU3-iWdIU" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 </div>
 
 ![](https://ladvien.com/images/attiny-hm-10-prep-tsb-4.jpg)

@@ -3,6 +3,7 @@ layout: post
 title: Upload Arduino or AVR Programs to ATtiny84/85 Over UART
 desription: A tutorial showing how to setup an ATtiny85 or ATtiny84 to upload programs directly over UART.  No need for ISP.
 categories: robots
+series: lumi5
 excerpt:
 tags: [Arduino, ATtiny84, ATtiny85, tutorial, UART]
 image: 

@@ -26,15 +26,14 @@ This article builds off:
 The above article will need to be followed to prepare your ATtiny85 and Windows computer.
 
 1. ATtiny85 (or any ATtiny or ATmega chip)
-2. Windows 10
-3. Arduino Uno (or compatible, this will be used once to burn the bootloader to the ATtiny85).
-4. [FTDI](http://www.ebay.com/itm/NF-FTDI-FT232RL-USB-to-TTL-Serial-Converter-Adapter-Module-5V-3-3V-For-Arduino-/221847346354) (or compatible UART).
-6. Lumi (a browser based uploader for TinySafeBoot).
-7. [Arduino IDE](https://www.arduino.cc/en/Main/Software)
-8. [AVRDUDE](https://sourceforge.net/projects/winavr/)
-9. [HM-10 or HM-11 Breakout](http://www.ebay.com/itm/Tinysine-Serial-Bluetooth-4-0-BLE-Module-iBeacon-IOS-Iphone-Andorid-/221390932333?hash=item338bed896d:g:abcAAMXQ1d1THXrR)*
-10. 1k Resistor
-11. Soldering iron
+2. Arduino Uno (or compatible, this will be used once to burn the bootloader to the ATtiny85).
+3. [FTDI](http://www.ebay.com/itm/NF-FTDI-FT232RL-USB-to-TTL-Serial-Converter-Adapter-Module-5V-3-3V-For-Arduino-/221847346354) (or compatible UART).
+4. Lumi (a browser based uploader for TinySafeBoot).
+5. [Arduino IDE](https://www.arduino.cc/en/Main/Software)
+6. [AVRDUDE](https://sourceforge.net/projects/winavr/)
+7. [HM-10 or HM-11 Breakout](http://www.ebay.com/itm/Tinysine-Serial-Bluetooth-4-0-BLE-Module-iBeacon-IOS-Iphone-Andorid-/221390932333?hash=item338bed896d:g:abcAAMXQ1d1THXrR)*
+8. 1k Resistor
+9. Soldering iron
 
 *Note: There are much cheaper versions of the [breakout listed on eBay](http://www.ebay.com/sch/i.html?_odkw=hm-10&_sop=15&_osacat=12576&_from=R40&_trksid=p2045573.m570.l1313.TR0.TRC0.H0.Xhm-10+breakout.TRS0&_nkw=hm-10+breakout&_sacat=12576), but beware, there are many clones which will not work with this project. The one I've listed I've verified as working. Of course, I always recommend you [roll your own breakout](https://www.instructables.com/id/How-to-Create-an-Arduino-Compatible-Bluetooth-40-M/) :)
 

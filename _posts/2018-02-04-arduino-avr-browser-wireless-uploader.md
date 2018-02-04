@@ -129,7 +129,7 @@ Before attempting to use the uploader, please open Chrome and type:
 
 {% highlight bash %}
 chrome://flags/#enable-experimental-web-platform-features
-{% end highlight %}
+{% endhighlight %}
 
 To get Chrome's "experimental" Bluetooth LE web API to work we have to turn it on.  Go ahead and select *Enable*.
 

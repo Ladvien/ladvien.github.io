@@ -4,6 +4,7 @@ title: Setup Headless WiFi on Re4son's Kali Pi
 categories: Kali
 excerpt: Setup wifi on Re4son's Kali Pi by editing the SD card.
 tags: [kali, pi, linux]
+series: Raspberry Pi
 image: 
     feature: kali-pi-splash.png
 comments: true

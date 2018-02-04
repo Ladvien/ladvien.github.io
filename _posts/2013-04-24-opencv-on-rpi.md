@@ -5,6 +5,7 @@ categories: robots
 excerpt:
 tags: [robots, OpenCV, Python]
 color: "#152a55"
+series: Raspberry Pi
 image:
   feature: USBPi.JPG
   teaser: USBPi.JPG

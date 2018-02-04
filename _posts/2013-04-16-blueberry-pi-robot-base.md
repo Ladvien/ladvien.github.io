@@ -5,6 +5,7 @@ categories: robots
 excerpt:
 tags: [robots, Raspberry Pi, SN754410]
 color: "#152a55"
+series: Raspberry Pi
 image:
   feature: ArdyPi.jpg
   teaser: ArdyPi.jpg

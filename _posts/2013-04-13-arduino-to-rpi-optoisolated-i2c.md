@@ -6,6 +6,7 @@ series: Custom PCBs
 excerpt:
 tags: [robots, I2C, SMD, PCB, ADUM1250]
 color: "#152a55"
+series: Raspberry Pi
 image:
   feature: IMG_0602.JPG
   teaser: IMG_0602.JPG

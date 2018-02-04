@@ -64,5 +64,60 @@ You will need to select a IO pin on the HM-10 to connect the 1k resistor. Any of
 ![](https://ladvien.com/images/attiny-hm-10-prep-tsb-3.jpg)
 
 ### Solder the 1k Resistor
+
+After you have selected the IO pin you would like to use, solder a 1k resistor to the castellated (the half-via leads) on the HM-10.
+
+A few notes:
+
+This is not as hard as it looks; believe in yourself
+Flux and a fine-tip iron are helpful, but required
+Tweezers allow you to work angles.
+[Tacky-putty](https://jet.com/product/detail/bfbbcfea4f2b450abb35083231522c2f?jcmp=pla:ggl:gen_jd_office_supplies_a3:general_office_supplies_mounting_putty_a3_other:na:PLA_344948460_23657809380_pla-154643897340:na:na:na:2&code=PLA15&ds_c=gen_jd_office_supplies_a3&ds_cid&ds_ag=general_office_supplies_mounting_putty_a3_other&product_id=bfbbcfea4f2b450abb35083231522c2f&product_partition_id=154643897340&gclid=Cj0KEQjw4pO7BRDl9ePazKzr1LYBEiQAHLJdR-oUE22XqS7e9hLmUcQZfVej2JZ1BSIbo7coDJ3onLcaAtHF8P8HAQ&gclsrc=aw.ds) helps hold the board in place, leaving both hands free to hold components.
+
+<div class="flex-video">
+<iframe width="560" height="315" src="https://youtu.be/BqkU3-iWdIU" frameborder="0" allowfullscreen></iframe>
+</div>
+
 ![](https://ladvien.com/images/attiny-hm-10-prep-tsb-4.jpg)
 ![](https://ladvien.com/images/attiny-hm-10-prep-tsb-9.jpg)
+
+
+### Configure the HM-10 Firmware for Remote Uploading
+![](https://ladvien.com/images/attiny-hm-10-prep-tsb-6.jpg)
+
+Before the uploader will work, the HM-10 must be set as a peripheral device and remote transmission mode.
+
+1. Connect the FTDI chip to the HM-10 breakout, as shown.
+2. Open the Arduino IDE.
+3. Select the COM port connected to your FTDI chip
+4. Open the Serial terminal
+5. Make sure the terminal is set to, "No line ending"
+6. Type AT+ROLE0 and hit "Send". The response "OK+Set:0" come up.
+7. Now, type AT+MODE2 and hit "Send. The response should be "OK+Set:2".
+
+
+![](https://ladvien.com/images/attiny-hm-10-prep-tsb-7.jpg)
+
+Optional:
+
+1. You can set the HM-10's baud rate up to 57,600 (it gets iffy above this rate). This allows the bootloader to run more quickly. Here are the commands:
+* AT+BAUD0 = 9600
+* AT+BAUD1 = 19200
+* AT+BAUD2 = 38400
+* AT+BAUD3 = 57600
+
+2. You can change the name of your device using "AT+NAMExxxxxxxx".
+
+
+### Wire It Up
+
+![](https://ladvien.com/images/attiny-hm-10-prep-tsb-8.jpg)
+
+The following connections will need to be made:
+
+VCC should be 5V
+
+### Connect to the HM-10 Module from Lumi5
+
+I've provided a web based uploader for TinySafeBoot.  A couple of notes, it only works in Chrome on Linux and Mac.
+

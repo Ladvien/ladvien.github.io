@@ -31,6 +31,9 @@ Device         Start       End   Sectors   Size Type
 /dev/sda5  586743808 976842751 390098944   186G Linux
 /dev/sda6  976842880 977105023    262144   128M Apple
 
+Mounting
+Unmounting
+Cleaning up
 
 Disk /dev/sdb: 7.5 GiB, 8053063680 bytes, 15728640 sectors
 Units: sectors of 1 * 512 = 512 bytes
@@ -141,9 +144,31 @@ sudo rm -R boot root
 Now, let's execute it, passing `/dev/sdX`, `your_wifi_name`, and `your_wifi_password`.  Like so.
 
 ```
-./al-wpa-setup.sh sdb
+./al-wpa-setup.sh /dev/sdb wifi_name wifi_password
 ```
 
+If all goes well, you should see.
+
+```
+Mounting
+Unmounting
+Cleaning up
+```
+
+Anything else, leave me a comment and I'll help troubleshoot.
+
+
+Ok! That's it.  Now, put the SD card into the rp0w and fire it up.  The green light should begin flashing.  
+
+The last tricky part is knowing what IP address has been assigned to the rp0w on boot.  After waiting a few minutes for it to connect to the wifi, visit your router's admin page.  It's usually [192.168.1.1](192.168.1.1).  You'll need the router login information.  But once in there should ba a section like "Attached Devices".  In there you should see an entry for "alarm" (which stands for Arch Linux ARM).  This your rp0w.  
+
+Now, at the command line type:
+```
+ssh alarm@192.168.1.xxx
+```
+Where the xxx is the address assigned to the Pi.  You should be prompted with an EDSCA warning (say yes).  Then, you will need to enter the password which is `alarm`.
+
+Happy Arching.
 
 # Setup i2c on Raspberry Pi Zero W using Arch Linux
 
@@ -197,3 +222,4 @@ device_tree=bcm2708-rpi-b.dtb
 device_tree_param=i2c1=on
 device_tree_param=spi=on
 ```
+

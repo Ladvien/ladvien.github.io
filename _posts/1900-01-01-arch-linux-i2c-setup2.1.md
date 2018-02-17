@@ -37,6 +37,8 @@ cd raspi-config
 makepkg -i
 ```
 ![](https://ladvien.com/images/rasp-config.png)
+
+
 Use the Raspi-Config tool to enable I2C
 ```
 sudo raspi-config

@@ -14,6 +14,19 @@ custom_js:
  * M502 Resets to factory settings.  While using EEPROM this must be done every time the firmware is changed and uploaded.
  * G33 is auto-calibration.  It assumes the probe is in the right place and calculates offsets for everything else.  It is the opposite from g29, which assumes everything is in the right place and the calculates where the probe is, which is used with an offset to find the nozzel head.
  * [It doesn't look like G33 currently has support for probe offset](https://github.com/LVD-AC/Marlin-AC/issues/18).
+
+Not sure if this issue, but I had the Allen Key probe setting enabled.  However, this is probably better labeled "Allen Key Method"
+``` c
+/**
+ * A Fix-Mounted Probe either doesn't deploy or needs manual deployment.
+ *   (e.g., an inductive probe or a nozzle-based probe-switch.)
+ */
+#define FIX_MOUNTED_PROBE
+
+```
+
+Instead, if you are manually deploying the Allen Key, then use.
+
 ``` c
 /**
  * A Fix-Mounted Probe either doesn't deploy or needs manual deployment.

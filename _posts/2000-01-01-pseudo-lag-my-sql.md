@@ -11,7 +11,7 @@ image:
 comments: true
 ---
 
-{% highlight mysql %}
+{% highlight sql %}
 CREATE TABLE attendance(
    id   INTEGER  NOT NULL
   ,date DATE  NOT NULL

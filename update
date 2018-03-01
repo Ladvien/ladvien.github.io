@@ -6,7 +6,7 @@ ECHO ""
 ECHO "*******************************************************"
 ECHO "* Syncing files to Ladvien.com Jekyll build directory *"
 ECHO "*******************************************************"
-bundle exec jekyll build --source /Users/caseybrittain/Documents/ladvien.github.io --destination /Users/user/Documents/GitHub/ladvien.github.io/_site
+bundle exec jekyll build --source /Users/caseybrittain/Documents/ladvien.github.io --destination /Users/caseybrittain/Documents/ladvien.github.io/_site
 ECHO ""
 ECHO "****************************"
 ECHO "* Updating Jekyll includes *"

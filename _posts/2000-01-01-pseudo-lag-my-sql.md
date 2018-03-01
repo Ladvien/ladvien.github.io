@@ -63,7 +63,7 @@ INSERT INTO attendance(id,date) VALUES (5,'2013-02-07');
 After inserting these data you should have a table like this:
 
 | id | date     | 
-|----|----------| 
+|-|-|
 | 1  | 09/10/12 | 
 | 1  | 09/11/12 | 
 | 1  | 09/12/12 | 

@@ -11,7 +11,23 @@ image:
 comments: true
 ---
 
+I've recently found myself in the situation where I was required to work with MySQL 10.0.  I was surprised to find MySQL 10.2 and less does not support some common [Windowing Functions](https://drill.apache.org/docs/sql-window-functions-introduction/), specifically, [Value Functions](https://drill.apache.org/docs/value-window-functions/) and [Rank Functions](https://drill.apache.org/docs/ranking-window-functions/).
+
+Well, bummer.  I really needed them.
+
+On top of it, I only had read access to the database without the ability to create a stored procedure.  
+
+Poop.
+
+Somewhat out of desperation, I found myself researching the possibility of creating my own functions using MySQL [User Variables](https://dev.mysql.com/doc/refman/5.7/en/user-variables.html).
+
+Slightly tweaking Dante, "Abandon all common-sense, ye who enter here."  User Variables are weird.
+
+About the best article I've found on the subject is:
+
 [Advanced MySQL User Variable Techniques](https://www.xaprb.com/blog/2006/12/15/advanced-mysql-user-variable-techniques/)
+
+Which focuses on getting the desired behavior out them, rather than understanding, or god forbid, predict their outcomes.
 
 {% highlight sql %}
 CREATE TABLE attendance(
@@ -63,7 +79,7 @@ INSERT INTO attendance(id,date) VALUES (5,'2013-02-07');
 After inserting these data you should have a table like this:
 
 | id | date     | 
-|-|-|
+|----|----------| 
 | 1  | 09/10/12 | 
 | 1  | 09/11/12 | 
 | 1  | 09/12/12 | 
@@ -104,3 +120,19 @@ After inserting these data you should have a table like this:
 | 5  | 02/05/13 | 
 | 5  | 02/06/13 | 
 | 5  | 02/07/13 | 
+
+
+The goal is to convert these data into a `start_date` and `stop_date` which would _greatly_ reduce the storage needs for these data.
+
+The first thing to do is detect the breaks. For `id` 1 the `start_date` and `stop_date` equivalent.  
+
+| id | date     | 
+|----|----------| 
+| 1  | 09/10/12 | 
+| 1  | 09/11/12 | 
+| 1  | 09/12/12 | 
+| 1  | 09/13/12 | 
+| 1  | 09/14/12 | 
+| 1  | 10/11/12 | 
+| 1  | 10/12/12 | 
+| 1  | 10/13/12 | 

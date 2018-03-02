@@ -151,3 +151,92 @@ This should give us the following output:
 | 5 | 2013-02-07 | 3 | 0 | 5 | 
 | 5 | 2013-02-07 | 1 | 1 | 5 | 
 | ... | ... | ... | ... | ... | 
+
+Notice, the `calc1` and `calc2` are not values you need.  They are merely calculations used to reset the row_number whenever the id changes.  Hmm, this is interesting--and, hopefully, you can see this has many possibilities.
+
+Now, let's go back and think about our problem a little.
+
+| id | date     | 
+|----|----------| 
+| 1  | **09/10/12** | 
+| 1  | 09/11/12 | 
+| 1  | 09/12/12 | 
+| 1  | 09/13/12 | 
+| 1  | **09/14/12** | 
+| 1  | **10/11/12** | 
+| 1  | 10/12/12 | 
+| 1  | **10/13/12** | 
+
+We can save a value from one row to the next.  Therefore, detecting the breaks in a range of attendance dates can be obtained by comparing the current row's `date` value to the previous row's `date` value.  If the previous row is greater than the current row minus one, then we know there was a break in the range.
+
+{% highlight sql %}
+SELECT 
+    id, date, range_selector
+FROM
+    (SELECT DISTINCT
+        id,
+            date,
+            IF(@previous_id = id, @range_selector, @range_selector:=0) calc1,
+            @previous_date,
+            IF(DATEDIFF(@previous_date, date) = 1, @range_selector, @range_selector:=@range_selector + 1) range_selector,
+            @previous_id:=id calc2,
+            @previous_date:=DATE(date) calc3
+    FROM
+        (SELECT DISTINCT
+        *
+    FROM
+        attendance
+    ORDER BY id DESC , date DESC) order_sub
+    CROSS JOIN (SELECT 
+        @id_selector:=0,
+            @previous_date:=0,
+            @range_selector:=0,
+            @previous_id:=0
+    ) variable_initialization
+    ORDER BY id , date DESC) date_ranges;
+{% endhighlight %}
+
+This _should_ give the following table:
+
+| id  | date | range_index | 
+|---|------------|---| 
+| 1 | 2012-10-13 | 1 | 
+| 1 | 2012-10-12 | 1 | 
+| 1 | 2012-10-11 | 1 | 
+| 1 | 2012-09-14 | 2 | 
+| 1 | 2012-09-13 | 2 | 
+| 1 | 2012-09-12 | 2 | 
+| 1 | 2012-09-11 | 2 | 
+| 1 | 2012-09-10 | 2 | 
+| 2 | 2012-09-23 | 1 | 
+| 2 | 2012-08-22 | 2 | 
+| 2 | 2012-08-17 | 3 | 
+| 2 | 2012-08-12 | 4 | 
+| 2 | 2012-08-11 | 4 | 
+| 2 | 2012-08-10 | 4 | 
+| 2 | 2012-08-09 | 4 | 
+| 4 | 2012-11-22 | 1 | 
+| 4 | 2012-11-03 | 2 | 
+| 4 | 2012-11-02 | 2 | 
+| 4 | 2012-11-01 | 2 | 
+| 4 | 2012-10-04 | 3 | 
+| 4 | 2012-10-03 | 3 | 
+| 4 | 2012-10-02 | 3 | 
+| 4 | 2012-10-01 | 3 | 
+| 5 | 2013-02-07 | 1 | 
+| 5 | 2013-02-06 | 1 | 
+| 5 | 2013-02-05 | 1 | 
+| 5 | 2013-02-04 | 1 | 
+| 5 | 2013-02-03 | 1 | 
+| 5 | 2013-02-02 | 1 | 
+| 5 | 2013-01-28 | 2 | 
+| 5 | 2013-01-24 | 3 | 
+| 5 | 2013-01-23 | 3 | 
+| 5 | 2012-12-07 | 4 | 
+| 5 | 2012-12-06 | 4 | 
+| 5 | 2012-12-05 | 4 | 
+| 5 | 2012-12-04 | 4 | 
+| 5 | 2012-12-03 | 4 | 
+| 5 | 2012-12-02 | 4 | 
+| 5 | 2012-12-01 | 4 | 
+| 5 | 2012-11-01 | 5 | 

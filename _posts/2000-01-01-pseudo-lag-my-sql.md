@@ -92,10 +92,10 @@ The first thing to do is detect the breaks. For `id` 1 the `start_date` and `sto
 | 1  | **10/13/12** | 
 
 {% highlight sql %}
-
-select id, date, @row_number := @row_number + 1
-from attendance
-cross join 
-(select @row_number := 0) r
-
+SELECT
+    id, date, @row_number:=@row_number + 1
+FROM
+    attendance
+        CROSS JOIN
+    (SELECT @row_number:=0) r;
 {% endhighlight %}

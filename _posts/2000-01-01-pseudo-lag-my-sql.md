@@ -130,13 +130,22 @@ Pretty cool, right?  Now, if only we could get the row_number to reset whenever 
 SELECT 
     id,
     date,
-    @row_number:=@row_number + 1,
+    @row_number:=@row_number + 1 row_number,
     IF(@previous_id = id,
         @row_number,
-        @row_number:=0),
-    @previous_id:=id
+        @row_number:=0) calc1,
+    @previous_id:=id cacl2
 FROM
     attendance
         CROSS JOIN
     (SELECT @row_number:=0, @previous_id:=0) r;
 {% endhighlight %}
+
+| id  |  date          |row_number|calc1|cacl2| 
+|---|------------|---|---|---| 
+| 1 | 2012-09-10 | 1 | 0 | 1 | 
+| 1 | 2012-09-10 | 1 | 1 | 1 | 
+| 1 | 2012-09-11 | 2 | 2 | 1 | 
+| 5 | 2013-02-07 | 3 | 0 | 5 | 
+| 5 | 2013-02-07 | 1 | 1 | 5 | 
+| 5 | 2013-02-07 | 2 | 2 | 5 | 

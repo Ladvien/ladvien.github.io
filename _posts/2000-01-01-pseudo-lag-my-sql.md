@@ -123,3 +123,20 @@ This should produce the following table:
 | 5 | 2013-02-07 | 8  | 
 | 5 | 2013-02-07 | 9  | 
 | ... | ... | ... |
+
+Pretty cool, right?  Now, if only we could get the row_number to reset whenever the `id` changes.  No worries, let's use another variable to store the `id` from the previous row so we can compare it to the current.
+
+{% highlight sql %}
+SELECT 
+    id,
+    date,
+    @row_number:=@row_number + 1,
+    IF(@previous_id = id,
+        @row_number,
+        @row_number:=0),
+    @previous_id:=id
+FROM
+    attendance
+        CROSS JOIN
+    (SELECT @row_number:=0, @previous_id:=0) r;
+{% endhighlight %}

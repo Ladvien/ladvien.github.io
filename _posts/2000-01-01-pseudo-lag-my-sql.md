@@ -141,11 +141,13 @@ FROM
     (SELECT @row_number:=0, @previous_id:=0) r;
 {% endhighlight %}
 
-| id  |  date          |row_number|calc1|cacl2| 
+This should give us the following output:
+
+| id|date|row_number|calc1|cacl2| 
 |---|------------|---|---|---| 
 | 1 | 2012-09-10 | 1 | 0 | 1 | 
 | 1 | 2012-09-10 | 1 | 1 | 1 | 
 | 1 | 2012-09-11 | 2 | 2 | 1 | 
 | 5 | 2013-02-07 | 3 | 0 | 5 | 
 | 5 | 2013-02-07 | 1 | 1 | 5 | 
-| 5 | 2013-02-07 | 2 | 2 | 5 | 
+| ... | ... | ... | ... | ... | 

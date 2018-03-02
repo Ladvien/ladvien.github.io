@@ -91,6 +91,15 @@ The first thing to do is detect the breaks. For `id` 1 the `start_date` and `sto
 | 1  | 10/12/12 | 
 | 1  | **10/13/12** | 
 
+We want to end up with a table like below, which we will call occurrences.
+
+|id | start_occurrence | end_occurrence |
+|---|------------------|----------------|
+| 1 |  09/20/12        | 09/14/2012     |
+| 1 |  10/11/22        | 10/13/2012     |
+
+To transform the data into this table it's important to know user variables can hold a value from row to the next.
+
 {% highlight sql %}
 SELECT
     id, date, @row_number:=@row_number + 1

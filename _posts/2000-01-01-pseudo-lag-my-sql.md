@@ -4,7 +4,7 @@ title: Lag and Lead before MySQL 10.2
 categories: MySQL
 tags: [mysql, lag, lead, dates]
 color: "#152a55"
-image:
+image: pseudo-lag-mysql.png
   feature: 
   teaser: 
   thumb:

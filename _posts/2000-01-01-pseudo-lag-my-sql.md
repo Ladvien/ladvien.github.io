@@ -240,3 +240,5 @@ This _should_ give the following table:
 | 5 | 2012-12-02 | 4 | 
 | 5 | 2012-12-01 | 4 | 
 | 5 | 2012-11-01 | 5 | 
+
+The reason I state "should", if you modify the order of the user variables, it'll break.  If you change the `order by`, it'll break.  If you add a `where` or `having` clause, it'll break.  Pretty much, it's as fragile a query as they come.

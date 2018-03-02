@@ -102,9 +102,24 @@ To transform the data into this table it's important to know user variables can 
 
 {% highlight sql %}
 SELECT
-    id, date, @row_number:=@row_number + 1
+    id, date, @row_number:=@row_number + 1 row_num
 FROM
     attendance
         CROSS JOIN
     (SELECT @row_number:=0) r;
 {% endhighlight %}
+
+This should produce the following table:
+
+| id  | date     | row_num   | 
+|---|------------|----| 
+| 1 | 2012-09-10 | 1  | 
+| 1 | 2012-09-10 | 2  | 
+| 1 | 2012-09-11 | 3  | 
+| 5 | 2013-02-07 | 4  | 
+| 5 | 2013-02-07 | 5  | 
+| 5 | 2013-02-07 | 6  | 
+| 5 | 2013-02-07 | 7  | 
+| 5 | 2013-02-07 | 8  | 
+| 5 | 2013-02-07 | 9  | 
+| ... | ... | ... |

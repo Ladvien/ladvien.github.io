@@ -177,7 +177,6 @@ FROM
         id,
             date,
             IF(@previous_id = id, @range_selector, @range_selector:=0) calc1,
-            @previous_date,
             IF(DATEDIFF(@previous_date, date) = 1, @range_selector, @range_selector:=@range_selector + 1) range_selector,
             @previous_id:=id calc2,
             @previous_date:=DATE(date) calc3
@@ -242,3 +241,5 @@ This _should_ give the following table:
 | 5 | 2012-11-01 | 5 | 
 
 The reason I state "should", if you modify the order of the user variables, it'll break.  If you change the `order by`, it'll break.  If you add a `where` or `having` clause, it'll break.  Pretty much, it's as fragile a query as they come.
+
+However, the clever bunch probably see where we are going with this.  Now, it's simply a matter of taking the min

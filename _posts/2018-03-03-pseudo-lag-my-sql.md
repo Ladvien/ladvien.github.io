@@ -33,16 +33,16 @@ At this bottom of the article I've included the data used in this article.  You 
 
 For `id` 1 the `start_date` and `stop_date` equivalents would look like:
 
-| id | date     | 
-|----|----------| 
-| 1  | ***09/10/12*** | 
-| 1  | 09/11/12 | 
-| 1  | 09/12/12 | 
-| 1  | 09/13/12 | 
-| 1  | ***09/14/12*** | 
-| 1  | ***10/11/12*** | 
-| 1  | 10/12/12 | 
-| 1  | ***10/13/12*** | 
+| id | date     | |
+|----|----------| -|
+| 1  | ***09/10/12*** | start_1 |
+| 1  | 09/11/12 | |
+| 1  | 09/12/12 | |
+| 1  | 09/13/12 | |
+| 1  | ***09/14/12*** | stop_1 |
+| 1  | ***10/11/12*** | start_2 |
+| 1  | 10/12/12 | |
+| 1  | ***10/13/12*** | stop_2|
 
 We want to end up with a table like below.
 

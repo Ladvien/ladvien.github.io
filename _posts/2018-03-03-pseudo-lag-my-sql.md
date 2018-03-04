@@ -193,7 +193,7 @@ This _should_ give the following table:
 | 5 | 2012-12-01 | 4 | 
 | 5 | 2012-11-01 | 5 | 
 
-The reason I state "should", if you modify the order of the user variables, it'll break.  If you change the `order by`, it'll break.  If you add a `where` or `having` clause, it'll break.  Pretty much, it's as fragile a query as they come.
+The reason I state "should", if you modify the order of the user variables, it'll break.  If you change the `ORDER BY`, it'll break.  If you add a `WHERE` or `HAVING` clause, it'll break.  Pretty much, it's as fragile a query as they come.
 
 However, the clever bunch probably see where we are going with this.  Now, it's simply a matter of taking the `MIN()` and `MAX()` of of `date` and `group by` the `id` and `range_index`.
 

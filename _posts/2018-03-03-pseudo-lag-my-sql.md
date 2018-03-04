@@ -25,9 +25,13 @@ I've spent some time researching on the interweb and about the best article I've
 
 Which focuses on getting the desired behavior from user variables rather than understanding them.  This article is going to stick with the same philosophy--I don't need to necessarily understand them, however, I want to be able to predict their behavior.
 
+One word of warning, the above article is not really a suggessted reading before this article--it's more of required reading.  If you don't know how to force the user variables to be evaluated when you need them, then the results are unpredictable.
+
+The TL;DR version: Order of operations matter _a lot_ in user variables and wrap the user variable in a subquery or function to force evaluation.
+
 At this bottom of the article I've included the data used in this article.  You can insert it into a MySQL or MariaDB database and follow along. The goal is to convert these data into a `start_date` and `stop_date` which would _greatly_ reduce the storage needs.
 
-The first thing to do is detect the breaks. For `id` 1 the `start_date` and `stop_date` equivalents would look like:
+For `id` 1 the `start_date` and `stop_date` equivalents would look like:
 
 | id | date     | 
 |----|----------| 
@@ -40,11 +44,11 @@ The first thing to do is detect the breaks. For `id` 1 the `start_date` and `sto
 | 1  | 10/12/12 | 
 | 1  | ***10/13/12*** | 
 
-We want to end up with a table like below, which we will call occurrences.
+We want to end up with a table like below.
 
-|id | start_occurrence | end_occurrence |
+|id | start_date | end_date |
 |---|------------------|----------------|
-| 1 |  09/20/12        | 09/14/2012     |
+| 1 |  09/10/12        | 09/14/2012     |
 | 1 |  10/11/22        | 10/13/2012     |
 
 To transform the data into this table it's important to know user variables can hold a value from row to the next.

@@ -191,9 +191,56 @@ This _should_ give the following table:
 
 The reason I state "should", if you modify the order of the user variables, it'll break.  If you change the `order by`, it'll break.  If you add a `where` or `having` clause, it'll break.  Pretty much, it's as fragile a query as they come.
 
-However, the clever bunch probably see where we are going with this.  Now, it's simply a matter of taking the min
+However, the clever bunch probably see where we are going with this.  Now, it's simply a matter of taking the `MIN()` and `MAX()` of of `date` and `group by` the `id` and `range_index`.
 
 
+{% highlight sql %}
+SELECT 
+    id, min(date) start_date, max(date) end_date
+FROM
+    (SELECT DISTINCT
+        id,
+            date,
+            IF(@previous_id = id, @range_selector, @range_selector:=0) calc1,
+            IF(DATEDIFF(@previous_date, date) = 1, @range_selector, @range_selector:=@range_selector + 1) range_selector,
+            @previous_id:=id calc2,
+            @previous_date:=DATE(date) calc3
+    FROM
+        (SELECT DISTINCT
+        *
+    FROM
+        attendance
+    ORDER BY id DESC , date DESC) order_sub
+    CROSS JOIN (SELECT 
+        @id_selector:=0,
+            @previous_date:=0,
+            @range_selector:=0,
+            @previous_id:=0
+    ) r
+    ORDER BY id , date DESC) date_ranges
+    GROUP BY id, range_selector;
+{% endhighlight %}
+
+Which should provide us with output like:
+
+|id | start_date |   end_date | 
+|---|------------|------------| 
+| 1 | 2012-10-11 | 2012-10-13 | 
+| 1 | 2012-09-10 | 2012-09-14 | 
+| 2 | 2012-09-23 | 2012-09-23 | 
+| 2 | 2012-08-22 | 2012-08-22 | 
+| 2 | 2012-08-17 | 2012-08-17 | 
+| 2 | 2012-08-09 | 2012-08-12 | 
+| 4 | 2012-11-22 | 2012-11-22 | 
+| 4 | 2012-11-01 | 2012-11-03 | 
+| 4 | 2012-10-01 | 2012-10-04 | 
+| 5 | 2013-02-02 | 2013-02-07 | 
+| 5 | 2013-01-28 | 2013-01-28 | 
+| 5 | 2013-01-23 | 2013-01-24 | 
+| 5 | 2012-12-01 | 2012-12-07 | 
+| 5 | 2012-11-01 | 2012-11-01 | 
+
+And there we go.  Not too amazing, but I couldn't find this answer by Googling, so I figure I'd add it to the great Wiki in the Sky.
 
 {% highlight sql %}
 CREATE TABLE attendance(

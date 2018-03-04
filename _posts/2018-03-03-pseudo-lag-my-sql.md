@@ -1,8 +1,8 @@
 ---
 layout: post
-title: Lag and Lead before MySQL 10.2
+title: Lag() before MySQL 10.2
 categories: MySQL
-tags: [mysql, lag, lead, dates]
+tags: [mysql, lag, dates, sql]
 color: "#152a55"
 image: 
   feature: pseudo-lag-mysql.png

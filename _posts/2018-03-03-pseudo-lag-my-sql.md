@@ -11,7 +11,7 @@ image:
 comments: true
 ---
 
-I've recently was required to work with MySQL 10.0.  I was surprised to find MySQL 10.2 and less does not support some common [Windowing Functions](https://drill.apache.org/docs/sql-window-functions-introduction/), specifically, [Value Functions](https://drill.apache.org/docs/value-window-functions/) and [Rank Functions](https://drill.apache.org/docs/ranking-window-functions/).
+Recently I was required to work with MySQL 10.0.  I was surprised to find MySQL 10.2 and less does not support some common [Windowing Functions](https://drill.apache.org/docs/sql-window-functions-introduction/), specifically, [Value Functions](https://drill.apache.org/docs/value-window-functions/) and [Rank Functions](https://drill.apache.org/docs/ranking-window-functions/).
 
 Well, bummer.  I really needed them.
 

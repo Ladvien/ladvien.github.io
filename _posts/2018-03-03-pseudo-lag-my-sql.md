@@ -105,9 +105,9 @@ This should give us the following output:
 | 5 | 2013-02-07 | 1 | 1 | 5 | 
 | ... | ... | ... | ... | ... | 
 
-Notice, the `calc1` and `calc2` are not values you need.  They are merely calculations used to reset the row_number whenever the id changes.  Hmm, this is interesting--and, hopefully, you can see this has many possibilities.
+Notice, the `calc1` and `calc2` are not values you need.  They are merely calculations used to reset the `row_number` whenever the `id` changes.  Hmm, this is interesting--and, hopefully, you can see this has many possibilities.
 
-Now, let's go back and think about our problem a little.
+Now, let's go back and think about our problem a bit more.
 
 | id | date     | 
 |----|----------| 

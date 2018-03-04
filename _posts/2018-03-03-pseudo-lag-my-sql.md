@@ -23,7 +23,7 @@ I've spent some time researching on the interweb and about the best article I've
 
 [Advanced MySQL User Variable Techniques](https://www.xaprb.com/blog/2006/12/15/advanced-mysql-user-variable-techniques/)
 
-Which focuses on getting the desired behavior rather than understanding, or god forbid, predict their outcomes.  This article is going to stick with the same philosophy--I don't need to necessarily understand them, however, I want to be able to predict their behavior.
+Which focuses on getting the desired behavior from user variables rather than understanding them.  This article is going to stick with the same philosophy--I don't need to necessarily understand them, however, I want to be able to predict their behavior.
 
 At this bottom of the article I've included the data used in this article.  You can insert it into a MySQL or MariaDB database and follow along. The goal is to convert these data into a `start_date` and `stop_date` which would _greatly_ reduce the storage needs.
 

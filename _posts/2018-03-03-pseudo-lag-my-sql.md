@@ -51,7 +51,7 @@ We want to end up with a table like below.
 | 1 |  09/10/12        | 09/14/2012     |
 | 1 |  10/11/22        | 10/13/2012     |
 
-To transform the data into this table it's important to know user variables can hold a value from row to the next.
+To transform the data into this table it's important to know user variables can hold a value from one row to the next.
 
 {% highlight sql %}
 SELECT
@@ -77,7 +77,7 @@ This should produce the following table:
 | 5 | 2013-02-07 | 9  | 
 | ... | ... | ... |
 
-Pretty cool, right?  Now, if only we could get the row_number to reset whenever the `id` changes.  No worries, let's use another variable to store the `id` from the previous row so we can compare it to the current.
+Pretty cool, right?  Now, if only we could get the `row_number` to reset whenever the `id` changes.  No worries, let's use another variable to store the `id` from the previous row so we can compare it to the current.
 
 {% highlight sql %}
 SELECT 

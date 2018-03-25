@@ -15,7 +15,7 @@ custom_js:
 Fixing Wemos I2C motor driver.
 
 1. [Deshipu Motor Driver](https://hackaday.io/project/18439-motor-shield-reprogramming)
-2. [STM32Link](https://sourceforge.net/projects/stm32flash/files/latest/download)
+2. [stm32flash](https://aur.archlinux.org/stm32flash.git)
 
 Pinout for Use
 
@@ -43,4 +43,10 @@ sudo pacman -S arm-none-eabi-gdb
 #git clone https://github.com/szczys/stm32f0-discovery-basic-template.git
 # For building just the Wemos Motor Driver Firmware (this is the untested firmware for using solder jumpers to choose address)
 git clone https://github.com/NathanJPhillips/wemos_motor_shield.git
+```
+
+```
+stm32flash -k /dev/ttyUSB0
+stm32flash /dev/ttyUSB0 -u
+stm32flash /dev/ttyUSB0 -v -w motor_shield.bin
 ```

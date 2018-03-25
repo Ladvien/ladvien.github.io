@@ -50,3 +50,6 @@ stm32flash -k /dev/ttyUSB0
 stm32flash /dev/ttyUSB0 -u
 stm32flash /dev/ttyUSB0 -v -w motor_shield.bin
 ```
+
+Firmware for different addresses
+https://github.com/pbugalski/wemos_motor_shield/issues/3

@@ -53,3 +53,8 @@ stm32flash /dev/ttyUSB0 -v -w motor_shield.bin
 
 Firmware for different addresses
 https://github.com/pbugalski/wemos_motor_shield/issues/3
+
+* [Address 0x2D](http://ladvien.com/images/files/motor_shield_2D.bin)
+* [Address 0x2E](http://ladvien.com/images/files/motor_shield_2E.bin)
+* [Address 0x2F](http://ladvien.com/images/files/motor_shield_2F.bin)
+* [Address 30](http://ladvien.com/images/files/motor_shield_30.bin)

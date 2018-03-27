@@ -23,7 +23,7 @@ The hardest part of setting up Arch Linux for the rp0w is getting the WiFi worki
 
 Really, the only piece of information not provided by Arch Linux community is which ARM architecture you need for the rp0w.  It's armv6.  
 
-* [Raspberry Pi 1 / Zero / Zero W](https://archlinuxarm.org/platforms/armv7/broadcom/raspberry-pi-2)
+* [Raspberry Pi 1 / Zero / Zero W](https://archlinuxarm.org/platforms/armv6/raspberry-pi)
 * [Raspberry Pi 2](https://archlinuxarm.org/platforms/armv7/broadcom/raspberry-pi-2)
 * [Raspberry Pi 3](https://archlinuxarm.org/platforms/armv8/broadcom/raspberry-pi-3)
 

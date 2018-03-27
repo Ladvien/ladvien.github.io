@@ -36,15 +36,26 @@ git clone https://aur.archlinux.org/raspi-config.git
 cd raspi-config
 makepkg -i
 ```
-![](https://ladvien.com/images/rasp-config.png)
-
 
 Use the Raspi-Config tool to enable I2C
 ```
 sudo raspi-config
 ```
 
+![](https://ladvien.com/images/rasp-config.png)
+
+
 Select "Interfacing Options" and enable I2C.
+
+Note: Going back through these instructions I did notice when I started `raspi-config` I received this warning:
+
+`/usr/bin/raspi-config: line 997: warning: command substitution: ignored null byte in input`
+
+And when I attempted to enable I2C it gave this error.
+
+`* Failed to read active DTB`
+
+But it still seemed to do the job. I'll investigate more when I've time.
 
 
 ## 3. Test the I2C Setup

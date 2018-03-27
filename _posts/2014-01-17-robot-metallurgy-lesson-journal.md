@@ -78,7 +78,7 @@ Newbie Hack's [MCU First Program](http://www.newbiehack.com/MicrocontrollerWriti
 
 I started Newbie Hack's AVR Series after he had his programmer setup, his "First Program."  The uC's version of the "hello world," the LED blink.  In Arduino I'd accomplish this like so,
 
-{% highlight c linenos %}
+{% highlight c %}
 int led = 13;
 
 void setup() {
@@ -264,7 +264,7 @@ We use the XOR operation to turn the LED off and on.  Since a XOR operation on a
 
 So, our simplified code for Blinkin LED is,
 
-{% highlight c linenos %}
+{% highlight c %}
 #define F_CPU 8000000    // AVR clock frequency in Hz, used by util/delay.h
 #include <avr/io.h>
 #include <util/delay.h>
@@ -303,7 +303,7 @@ I began thinking code.  I know the basics of the SN754410 and I wanted to be abl
 
 So, I figured all I needed to do was get two of my IO pins to go HIGH and LOW to turn one direction, then switch them to go opposite.  This reminded me of the XOR (^) operator, since it did exactly that, turn a bit to its opposite.  This is the same operator we used to blink the LED.  I ended up with the following code:
 
-{% highlight c linenos %}
+{% highlight c %}
 #define F_CPU 8000000    // AVR clock frequency in Hz, used by util/delay.h
 #include <avr/io.h>
 #include <util/delay.h>
@@ -336,7 +336,7 @@ Well, that wouldn't do.  But I realized another problem.  The XOR operator would
 
 I know I could accomplish this in long-hand, like so:
 
-{% highlight c linenos %}
+{% highlight c %}
 #define F_CPU 8000000    // AVR clock frequency in Hz, used by util/delay.h
 #include <avr/io.h>
 #include <util/delay.h>
@@ -404,7 +404,7 @@ Instead of immediately modifying the PORT state we actually modify our bitmask w
 
 Ok.  I _could_ wrap my head around this.  I developed the following code which did what I wanted:
 
-{% highlight c linenos %}
+{% highlight c %}
 #define F_CPU 8000000    // AVR clock frequency in Hz, used by util/delay.h
 #include <avr/io.h>
 #include <util/delay.h>
@@ -453,7 +453,7 @@ But this is good.  We now can dynamically change the state of one PIN without de
 
 Alright, let's go for broke; now that I understand how to set pins HIGH or LOW, I wanted an easy way to control a motor with AVR.  I wrote five functions.  Four control the states of the motor (HH, LL, LH, HL) and one is a delay function that will accept a variable.  The functions can be called from the main loop.  Each one expects three parameters, two pin numbers and the number of milliseconds you wish the function to run.  
 
-{% highlight c linenos %}
+{% highlight c %}
 #define F_CPU 8000000    // AVR clock frequency in Hz, used by util/delay.h
 #include <avr/io.h>
 #include <util/delay.h>
@@ -534,7 +534,7 @@ Well, that didn't not work as I wanted.  I'm tired and didn't think through how 
 
 Yes, this could be rewritten a hundred ways to salvage it.  But! Right now I'm tired, so here's our working code.
 
-{% highlight c linenos %}
+{% highlight c %}
 #define F_CPU 8000000    // AVR clock frequency in Hz, used by util/delay.h
 #include <avr/io.h>
 #include <util/delay.h>

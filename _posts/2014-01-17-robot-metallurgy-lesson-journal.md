@@ -5,6 +5,7 @@ categories: robots
 excerpt:
 tags: [robots, AVR, ATtiny1634]
 color: "#152a55"
+series: Robot Metallurgy
 image:
   feature: Simply-AVR-Infographic-1200x11022_0.jpg
   teaser: Simply-AVR-Infographic-1200x11022_0.jpg

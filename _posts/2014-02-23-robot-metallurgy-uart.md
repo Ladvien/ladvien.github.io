@@ -4,6 +4,7 @@ title: Metallurgy 101 - AVR UART
 categories: robots
 excerpt:
 tags: [robots, AVR, ATtiny1634, UART]
+series: Robot Metallurgy
 color: "#152a55"
 image:
   feature: Simply-AVR-Infographic-1200x11022_0.jpg

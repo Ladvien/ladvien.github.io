@@ -15,7 +15,7 @@ comments: true
 
 This is a continuation of my [Robot Metallurgy 101 -- AVR Lesson Journal](http://letsmakerobots.com/node/39996)
 
-*   [USART_1634 Code Github](https://github.com/Ladvien/ATtiny1634_AVR_Code)
+* [USART_1634 Code Github](https://github.com/Ladvien/ATtiny1634_AVR_Code)
 
 I started looking through Newbie Hack's tutorials on AVR trying to work up the energy to tackle [First LCD Program](http://www.newbiehack.com/MicrocontrollersABeginnersGuideOurFirstLCDProgram.aspx).  Many don't know this, but I _despise_ workings with LCDs.  I think it is two parts, one, I live in a world with high-resolution screens embedded in everything from [coffee-machines](http://www.goodfood.com.au/photogallery/good-food/home-coffee-machine-road-test-20130304-2ffma.html?aggregate=&selectedImage=2) to [toilets](https://www.google.com/search?q=high+resolution+screen+on+toilet&sa=X&rlz=2C2OPRA_enUS0538US0538&tbm=isch&tbo=u&source=univ&ei=SVMSU_r3N8nlyAHXqYCAAQ&ved=0CGsQsAQ&biw=1342&bih=556#q=toliet+with+screen&tbm=isch&facrc=_&imgdii=_&imgrc=-CVkeG8NeiqIeM%253A%3BJjCd_KvddwpmGM%3Bhttp%253A%252F%252F25.media.tumblr.com%252Ftumblr_mb84no1XCV1ruylkdo1_1280.jpg%3Bhttp%253A%252F%252Feveryinteraction.tumblr.com%252Fpost%252F32674222735%252Frate-my-toilet-touch-screen-on-exit-to-singapore%3B1280%3B960).  Trying to settle with an old school LCD doesn't cut it for me.  Furthermore, wiring a non-serial interface LCD is a ever loving pain.
 
@@ -37,7 +37,7 @@ The following code sets the baud rate on the ATtiny 1634 using the UBBR chart fr
 
 **UART Code v01**
 
-{% highlight c linenos %}
+{% highlight c %}
 //
 // UART Example on the ATtiny1634 using UART0.
 // C. Thomas Brittain
@@ -285,7 +285,7 @@ Functions numbered 0 relate to serial lines 0, which are pins PA7 (Rx0) and PB0 
 
 This is the library code: **[1634_UART.h](https://github.com/Ladvien/ATtiny1634_AVR_Code/blob/master/1634analogWrite.h)**
 
-{% highlight c linenos %}
+{% highlight c %}
 #ifndef	UART_1634
 #define UART_1634
 
@@ -539,7 +539,7 @@ Ok, here is a program that utilizes the library.
 
 **[Code v07](https://github.com/Ladvien/ATtiny1634_AVR_Code/blob/master/UART_Example.c)**
 
-{% highlight c linenos %}
+{% highlight c %}
 // UART Example on the ATtiny1634 using UART0.
 // C. Thomas Brittain
 // letsmakerobots.com

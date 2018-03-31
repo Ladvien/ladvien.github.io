@@ -97,7 +97,7 @@ We select this by setting WGM00 and WGM01 bits.
 
 So, setting things up, the code will look something like this,
 
-{% highlight c linenos %}
+{% highlight c %}
 // Demonstration of PWM on an ATtiny1634.
 // C. Thomas Brittain
 
@@ -243,7 +243,7 @@ had a lot of appeal to me.
 
 I played with it a bit and ended up with the following,
 
-{% highlight c linenos %}
+{% highlight c %}
 #ifndef analogWrite1634
 #define analogWrite1634
 
@@ -346,7 +346,7 @@ A synopsis of the library,
 
 I saved this as **1634analogWrite.h** and then wrote a sketch to use
 
-{% highlight c linenos %}
+{% highlight c %}
 // program to change brightness of an LED
 // demonstration of PWM
 //void Tiny1634_PWM(int PWM_PinSelect, int duty);

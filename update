@@ -7,6 +7,11 @@ ECHO "*******************************************************"
 ECHO "* Syncing files to Ladvien.com Jekyll build directory *"
 ECHO "*******************************************************"
 bundle exec jekyll build --source /Users/caseybrittain/Documents/ladvien.github.io --destination /Users/caseybrittain/Documents/ladvien.github.io/_site
+ECHO ""
+ECHO "*******************************************************"
+ECHO "* Optimizing images                                   *"
+ECHO "*******************************************************"
+rsync -au /Users/caseybrittain/Documents/ladvien.github.io/raw_images/* /Users/caseybrittain/Documents/ladvien.github.io/images
 sips -Z 1080 /Users/caseybrittain/Documents/ladvien.github.io/images/*.jpg
 sips -Z 1080 /Users/caseybrittain/Documents/ladvien.github.io/images/*.png
 sips -Z 1080 /Users/caseybrittain/Documents/ladvien.github.io/images/*.PNG

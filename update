@@ -7,12 +7,18 @@ ECHO "*******************************************************"
 ECHO "* Syncing files to Ladvien.com Jekyll build directory *"
 ECHO "*******************************************************"
 bundle exec jekyll build --source /Users/caseybrittain/Documents/ladvien.github.io --destination /Users/caseybrittain/Documents/ladvien.github.io/_site
+sips -Z 1080 /Users/caseybrittain/Documents/ladvien.github.io/images/*.jpg
+sips -Z 1080 /Users/caseybrittain/Documents/ladvien.github.io/images/*.png
+sips -Z 1080 /Users/caseybrittain/Documents/ladvien.github.io/images/*.PNG
+sips -Z 1080 /Users/caseybrittain/Documents/ladvien.github.io/images/*.JPG
+
 ECHO ""
 ECHO "****************************"
 ECHO "* Updating Jekyll includes *"
 ECHO "****************************"
 
 sshpass -p "$PASSWORD" rsync -avzu /Users/caseybrittain/Documents/ladvien.github.io/_site/* root@ladvien.com:/usr/share/nginx/html
+
 
 cd /Users/caseybrittain/Documents/ladvien.github.io
 git add .

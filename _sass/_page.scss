@@ -192,23 +192,19 @@ th {
 }
 
 .float-left {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    @include media($medium) {
-      float: left;
-      margin-left: $gutter;
-    }
+    float: left;
+    width: 50%;
+    height: 50%;
+    border-radius: 8px;
+    margin: 8px 8px 8px 0px
 }
 
 .float-right{
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    @include media($medium) {
-      float: left;
-      margin-left: $gutter;
-    }
+    float: right;
+    width: 50%;
+    height: 50%;
+    border-radius: 8px;
+    margin: 8px 0px 8px 8px;
 }
 
 // Feature Image Caption
@@ -468,6 +464,7 @@ header .entry-meta {
         }
     }
     article {
+        overflow: hidden;
         background-color: #fff;
         box-shadow: 0 0 0 0, 0 6px 12px rgba($base-color, 0.1);
         border-radius: 3px;

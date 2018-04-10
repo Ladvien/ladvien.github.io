@@ -200,12 +200,14 @@ th {
 }
 
 .float-right{
-    display: inline-block;
     float: right;
-    width: 50%;
-    height: 50%;
-    border-radius: 8px;
-    margin: 8px 0px 8px 8px;
+    background-color: #555555;
+    width: 300px;
+    height: 80px;
+    text-align:center;
+    color: #FFFFFF;
+    padding-top: 60px;
+    margin: 5px 20px 10px 0;
 }
 
 // Feature Image Caption

@@ -207,8 +207,11 @@ th {
     margin: 8px 0px 8px 8px;
 }
 
+.thumbnail-collection {
+    display: inline;
+}
+
 .thumbnail {
-    float: left;
     width: 25%;
     height: 25%;
     border-radius: 8px;

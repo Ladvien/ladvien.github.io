@@ -196,7 +196,8 @@ th {
     width: 50%;
     height: 50%;
     border-radius: 8px;
-    margin: 8px 8px 8px 0px
+    margin: 8px 8px 8px 0px;
+    @include clearfix();
 }
 
 .float-right{
@@ -205,6 +206,7 @@ th {
     height: 50%;
     border-radius: 8px;
     margin: 8px 0px 8px 8px;
+    @include clearfix();
 }
 
 // Feature Image Caption

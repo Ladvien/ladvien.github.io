@@ -195,7 +195,7 @@ th {
     float: left;
     width: 50%;
     height: 50%;
-    text-align:center;
+    border-radius: 8px;
     margin: 8px 8px 8px 0px
 }
 
@@ -203,8 +203,8 @@ th {
     float: right;
     width: 50%;
     height: 50%;
-    text-align:center;
-    margin: 8px 8px 8px 0px
+    border-radius: 8px;
+    margin: 8px 0px 8px 8px;
 }
 
 // Feature Image Caption

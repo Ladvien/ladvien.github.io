@@ -12,10 +12,10 @@ ECHO "*******************************************************"
 ECHO "* Optimizing images                                   *"
 ECHO "*******************************************************"
 rsync -au /Users/caseybrittain/Documents/ladvien.github.io/raw_images/* /Users/caseybrittain/Documents/ladvien.github.io/images
-sips -Z 1080 /Users/caseybrittain/Documents/ladvien.github.io/images/*.jpg
-sips -Z 1080 /Users/caseybrittain/Documents/ladvien.github.io/images/*.png
-sips -Z 1080 /Users/caseybrittain/Documents/ladvien.github.io/images/*.PNG
-sips -Z 1080 /Users/caseybrittain/Documents/ladvien.github.io/images/*.JPG
+# sips -Z 1080 /Users/caseybrittain/Documents/ladvien.github.io/images/*.jpg
+# sips -Z 1080 /Users/caseybrittain/Documents/ladvien.github.io/images/*.png
+# sips -Z 1080 /Users/caseybrittain/Documents/ladvien.github.io/images/*.PNG
+# sips -Z 1080 /Users/caseybrittain/Documents/ladvien.github.io/images/*.JPG
 
 ECHO ""
 ECHO "****************************"

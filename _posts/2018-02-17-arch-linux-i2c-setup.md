@@ -16,6 +16,47 @@ This article builds on the previous, where I ran us through setting up Arch Linu
 
 Let's not stop, let's get I2C going so we can interact with some cool hardware.
 
+## 0. Installing sudo
+If you've followed my previous guide on installing Arch Linux on a Raspberry Pi then you'll have ended up with a bare bones system, which is good.  No unneeded fat.  But sometimes fat is needed, it's what gives us curves, and curves are beautiful.  I feel this metaphor is breaking.  In short, we need extra packages to get work done.
+
+The first package we need is `sudo`
+
+* [Install Sudo on Arch Linux*](https://wiki.archlinux.org/index.php/sudo#Installation)
+
+It will allow us to more easily manage file permissions.
+
+First, make sure your system is up to date.  To do this we are going to need to login as the root user.  You can do this be typing `su` followed by the root user's password, which for a barebone Arch Linux installation is `root`.
+```
+$ su
+Password: root
+```
+
+Next we need to update the package libraries and system.
+```
+pacman -Syu
+
+root@alarmpi alarm]# pacman -Syu
+:: Synchronizing package databases...
+ core                                                        179.0 KiB   448K/s 00:00 [#################################################] 100%
+ extra                                                      1982.8 KiB  1279K/s 00:02 [#################################################] 100%
+ community                                                     4.0 MiB  1689K/s 00:02 [#################################################] 100%
+ alarm                                                        35.0 KiB   583K/s 00:00 [#################################################] 100%
+ aur                                                           6.0 KiB  0.00B/s 00:00 [#################################################] 100%
+:: Starting full system upgrade...
+resolving dependencies...
+looking for conflicting packages...
+```
+It should give you a list of packages with update and upgrade candidates and prompting you to confirm the updates.  Go ahead and say yes.
+
+Now we should be good to install `sudo`
+
+```
+$ pacman -S sudo
+```
+
+Even after sudo is installed, we still need to add the main user, which is `alarm` to the sudo'er group.  This in effect gives the `alarm` user root user super-powers.
+
+Oh, and if you haven't figured out yet, `alarm` stands for _A_rch _Linux_ _ARM_
 
 ## 1. Install needed packages
 

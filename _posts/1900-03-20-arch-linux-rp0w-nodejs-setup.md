@@ -23,24 +23,6 @@ Now you've setup the Arch Linux card and SSH'ed lets go through setting up a Nod
 ### SSH'ing into Pi
 Alright, from a Linux or Mac command prompt type
 
-[![](https://ladvien.com/images/arch_pi_address.png)](https://ladvien.com/raw_images/arch_pi_address.png)
-[![](https://ladvien.com/images/router_admin.png)](https://ladvien.com/raw_images/router_admin.png)
-
-
-```
-ssh alarm@192.168.x.x
-```
-Replacing the `x`s with the address of your Raspberry Pi.  If you don't know the address of the Raspberry Pi you can log into router and look for 
-
-```
-Welcome to Arch Linux ARM
-
-     Website: http://archlinuxarm.org
-       Forum: http://archlinuxarm.org/forum
-         IRC: #archlinux-arm on irc.Freenode.net
-Last login: Thu Apr 12 12:18:05 2018 from 192.168.1.5
-[alarm@alarmpi ~]$
-```
 
 ### Running a NodeJS Install Script
 

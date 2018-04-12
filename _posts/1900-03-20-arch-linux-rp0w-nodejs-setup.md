@@ -24,6 +24,8 @@ Now you've setup the Arch Linux card and SSH'ed lets go through setting up a Nod
 Alright, from a Linux or Mac command prompt type
 
 ![](https://ladvien.com/images/arch_pi_address.PNG)
+![](https://ladvien.com/images/router_admin.PNG)
+
 
 ```
 ssh alarm@192.168.x.x

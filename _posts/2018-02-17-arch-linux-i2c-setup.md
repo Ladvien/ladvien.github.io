@@ -66,7 +66,9 @@ Now, the way sudo works is by adding a user to a special Linux group.  Anyone ad
 ```
 sudo -ll
 ```
+
 You should get something like
+
 ```
 User root may run the following commands on alarmpi:
 
@@ -74,6 +76,67 @@ Sudoers entry:
     RunAsUsers: ALL
     Commands:
 ```
+Ok, let's get the alarm user added to the sudoer group.
+
+Type
+```
+EDITOR=nano visudo
+```
+This should allow you to edit the visudo file and add alarmpi to sudoers.  Oh, the write permissions for the visudo file are limited to root, so if you have switched back from the root user to alarmpi you will need to run `su` again and log back in as root before editing this file.
+
+Let's find the entry for adding users to the sudo'er group.
+
+Find the part which looks like this:
+```
+##
+## User privilege specification
+##
+root ALL=(ALL) ALL
+```
+And add `alarm ALL=(ALL) ALL` right below the root entry.  It should look like this after editing.
+
+```
+##
+## User privilege specification
+##
+root ALL=(ALL) ALL
+alarm ALL=(ALL) ALL
+```
+
+Then hit CTRL+O to write the changes and CTRL+X to exit.
+
+Before we can check the changes took, we will need to exit our root session.
+
+```
+exit
+```
+This should land you back at your alarm session.  To see you the alarm user is now added to the sudoer group type
+
+```
+sudo -ll
+```
+
+Notice, we now have access to ALL commands.  _Booyah!_
+
+We can do a hard test by typing:
+
+```
+sudo ls
+```
+We should get
+```
+We trust you have received the usual lecture from the local System
+Administrator. It usually boils down to these three things:
+
+    #1) Respect the privacy of others.
+    #2) Think before you type.
+    #3) With great power comes great responsibility.
+
+[sudo] password for alarm:
+```
+Type the alarm user password (which is alarm, if you haven't changed it).
+
+
 ## 1. Install needed packages
 
 ```

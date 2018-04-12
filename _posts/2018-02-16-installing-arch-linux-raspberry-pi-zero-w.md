@@ -174,12 +174,30 @@ Anything else, leave me a comment and I'll help troubleshoot.
 ### 3. Connecting
 Ok! That's it.  Now, put the SD card into the rp0w and fire it up.  The green light should begin flashing.  
 
-The last tricky part is knowing what IP address has been assigned to the rp0w on boot.  After waiting a few minutes for it to connect to the wifi, visit your router's admin page.  It's usually [192.168.1.1](192.168.1.1).  You'll need the router login information.  But once in there should ba a section like "Attached Devices".  In there you should see an entry for "alarm" (which stands for Arch Linux ARM).  This your rp0w.  
+The last tricky part is knowing what IP address has been assigned to the rp0w on boot.  After waiting a few minutes for it to connect to the wifi, visit your router's admin page.  It's usually [192.168.1.1](192.168.1.1).  
+[![](https://ladvien.com/images/router_admin.png)](https://ladvien.com/raw_images/router_admin.png)
+
+You'll need the router login information.  But once in there should ba a section like "Attached Devices".  In there you should see an entry for "alarm" (which stands for Arch Linux ARM).  This your rp0w.
+
+[![](https://ladvien.com/images/arch_pi_address.png)](https://ladvien.com/raw_images/arch_pi_address.png)
 
 Now, at the command line type:
 ```
 ssh alarm@192.168.1.xxx
 ```
+
+Replacing the `x`s with the address of your Raspberry Pi.  If you don't know the address of the Raspberry Pi you can log into router and look for `ALARMPI`.
+
 Where the xxx is the address assigned to the Pi.  You should be prompted with an EDSCA warning (say yes).  Then, you will need to enter the password which is `alarm`.
+
+```
+Welcome to Arch Linux ARM
+
+     Website: http://archlinuxarm.org
+       Forum: http://archlinuxarm.org/forum
+         IRC: #archlinux-arm on irc.Freenode.net
+Last login: Thu Apr 12 12:18:05 2018 from 192.168.1.5
+[alarm@alarmpi ~]$
+```
 
 Happy Arching.

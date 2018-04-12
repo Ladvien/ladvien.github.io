@@ -115,7 +115,15 @@ This should land you back at your alarm session.  To see you the alarm user is n
 ```
 sudo -ll
 ```
+And if all went well, you'll get this output
+```
+User alarm may run the following commands on alarmpi:
 
+Sudoers entry:
+    RunAsUsers: ALL
+    Commands:
+        ALL
+```
 Notice, we now have access to ALL commands.  _Booyah!_
 
 We can do a hard test by typing:

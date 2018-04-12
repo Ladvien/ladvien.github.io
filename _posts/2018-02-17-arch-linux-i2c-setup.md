@@ -23,15 +23,15 @@ The first package we need is `sudo`
 
 * [Install Sudo on Arch Linux](https://wiki.archlinux.org/index.php/sudo#Installation)
 
-It will allow us to more easily manage file permissions.
+It will allow us to easily manage file permissions.
 
-First, make sure your system is up to date.  To do this we are going to need to login as the root user.  You can do this be typing `su` followed by the root user's password, which for a barebone Arch Linux installation is `root`.
+First, make sure your system is up to date.  To do this we are going to login as the root user.  You can do this by typing `su` followed by the root user's password, which for a barebone Arch Linux installation is `root`.
 ```
 $ su
 Password: root
 ```
 
-Oh, and if you haven't figured out yet, `alarm` stands for _A_rch _Linux_ _ARM_.
+Oh, and if you haven't figured out yet, `alarm` stands for Arch Linux ARM.
 
 Next we need to update the package libraries and system.
 ```

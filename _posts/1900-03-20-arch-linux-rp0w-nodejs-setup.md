@@ -23,6 +23,8 @@ Now you've setup the Arch Linux card and SSH'ed lets go through setting up a Nod
 ### SSH'ing into Pi
 Alright, from a Linux or Mac command prompt type
 
+![](https://ladvien.com/images/arch_pi_address.PNG)
+
 ```
 ssh alarm@192.168.x.x
 ```
@@ -37,7 +39,6 @@ Welcome to Arch Linux ARM
 Last login: Thu Apr 12 12:18:05 2018 from 192.168.1.5
 [alarm@alarmpi ~]$
 ```
-
 
 ### Running a NodeJS Install Script
 

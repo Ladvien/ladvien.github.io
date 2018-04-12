@@ -21,7 +21,7 @@ If you've followed my previous guide on installing Arch Linux on a Raspberry Pi 
 
 The first package we need is `sudo`
 
-* [Install Sudo on Arch Linux*](https://wiki.archlinux.org/index.php/sudo#Installation)
+* [Install Sudo on Arch Linux](https://wiki.archlinux.org/index.php/sudo#Installation)
 
 It will allow us to more easily manage file permissions.
 
@@ -31,10 +31,14 @@ $ su
 Password: root
 ```
 
+Oh, and if you haven't figured out yet, `alarm` stands for _A_rch _Linux_ _ARM_.
+
 Next we need to update the package libraries and system.
 ```
 pacman -Syu
-
+```
+After hitting enter, it should look like this:
+```
 root@alarmpi alarm]# pacman -Syu
 :: Synchronizing package databases...
  core                                                        179.0 KiB   448K/s 00:00 [#################################################] 100%
@@ -54,10 +58,22 @@ Now we should be good to install `sudo`
 $ pacman -S sudo
 ```
 
-Even after sudo is installed, we still need to add the main user, which is `alarm` to the sudo'er group.  This in effect gives the `alarm` user root user super-powers.
+Even after sudo is installed, we still need to add the main user, which is `alarm` to the sudo'er group.  This in effect gives the `alarm` user the superpowers of the root user.
 
-Oh, and if you haven't figured out yet, `alarm` stands for _A_rch _Linux_ _ARM_
+* [Arch Linux Sudo Configuration](https://wiki.archlinux.org/index.php/sudo#Configuration)
 
+Now, the way sudo works is by adding a user to a special Linux group.  Anyone added to this group will be given root superpowers.  To get a list of those currently in the sudo group:
+```
+sudo -ll
+```
+You should get something like
+```
+User root may run the following commands on alarmpi:
+
+Sudoers entry:
+    RunAsUsers: ALL
+    Commands:
+```
 ## 1. Install needed packages
 
 ```

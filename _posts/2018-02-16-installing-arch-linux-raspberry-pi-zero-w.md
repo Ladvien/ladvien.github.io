@@ -4,9 +4,9 @@ title: Installing Arch Linux on Raspberry Pi with Immediate WiFi Access
 categories: Kali
 excerpt: Guide to creating to installing Arch Linux on Raspberry Pi with immediate WiFi access
 tags: [Arch Linux, pi, linux]
-series: The Raspberry Pi Zero W, NodeJS, and Arch Linux Stack for Robots
+series: RAN
 image: 
-    feature: arch-pi-splash.png
+    feature: RAN_Robot.png
 comments: true
 custom_css:
 custom_js: 

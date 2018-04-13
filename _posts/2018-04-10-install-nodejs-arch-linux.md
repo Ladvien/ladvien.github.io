@@ -63,5 +63,5 @@ If you want to learn more about NodeJS, I recommend the Udemy course:
 
 * [The Complete NodeJS Developer Course](https://www.udemy.com/the-complete-nodejs-developer-course-2/)
 
-I'm not getting kick backs, it's just the course I used to get up to speed and liked it.  I actually used the Raspberry Pi for the code he walks through building and didn't have a problem.
+I'm not getting kick backs; it's the course I used to get and liked it.  I actually used the Raspberry Pi for the code he walks through building and didn't have a problem.
 

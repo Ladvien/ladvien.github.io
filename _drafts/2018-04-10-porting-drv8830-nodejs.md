@@ -6,7 +6,7 @@ excerpt: How to setup NodeJS on Raspberry Pi Zero W
 tags: [Arch Linux, Raspberry Pi Zero W, linux, nodejs]
 series: RAN
 image: 
-    feature: RAN_Robot.png
+    feature: RAN Robot.png
 comments: true
 custom_css:
 custom_js: 

@@ -40,17 +40,17 @@ After it's downloaded and installed open it up.
 
 
 [![](https://ladvien.com/images/vsc-ext-btn.png){: .float-left}](https://ladvien.com/images/vsc-ext-btn.png)
-</br>
-</br>
-</br>
-</br>
-</br>
-</br>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
 Once open, click here
-</br>
-</br>
-</br>
-</br>
-</br>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
 
 <div style="clear: both;"></div>

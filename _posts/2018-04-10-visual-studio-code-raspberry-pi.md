@@ -76,6 +76,6 @@ Find the section labeled
 remote.onStartup: false
 ```
 
-We need to change it to true.  This sets the listening server to start every time you open Visual Studio Code.
+We need to change it to `true` by clicking on the pencil next to its name.  This sets the listening server to start every time you open Visual Studio Code.
 
 [![](https://ladvien.com/images/vsc_start_server.png)](https://ladvien.com/images/vsc_start_server.png)

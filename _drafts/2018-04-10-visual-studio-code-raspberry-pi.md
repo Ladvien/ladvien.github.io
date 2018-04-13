@@ -82,7 +82,33 @@ We need to change it to `true` by clicking on the pencil next to its name.  This
 
 Almost there.  Now to setup the Raspberry Pi.  We need to install a program on the Pi which will send a file of our choosing to Visual Studio Code to be edited.  [RMate](https://github.com/textmate/rmate) was my choice.
 
-Start by SSH'ing into your Raspberry Pi.  Then type
+Start by SSH'ing into your Raspberry Pi.
+
+Then type
 ```
-sudo pacman -S rmate
+sudo pacman -S ruby
+cd ~
+gem install rmate
+PATH="$PATH:$(ruby -e 'print Gem.user_dir')/bin"
 ```
+The above commands install [Ruby](https://www.ruby-lang.org/en/), moves to to the user's directory, uses the Ruby package manager to install rmate, then adds Ruby and it's Gems (packages) executables to the environment variables.  All of this is necessary to get Rmate working on Arch Linux.
+
+Ok, let's test it.  Stop SSH'ing into your Pi by typing `exit` until it brings you back to your PC's prompt.  Now we are going to SSH into the Pi while listening for incoming files to be displayed in Visual Studio Code.
+
+Open Visual Studio Code and open the integrated terminal (if it's now already showing find it by hitting CTRL + `).
+
+At the terminal type
+```
+ssh -R 52698:localhost:52698 alarm@192.168.1.x
+```
+Replace the `x` with your Pi's ip address.
+
+This should SSH into the Pi while listening for files.
+
+At the pi command prompt, type
+```
+rmate test.js
+```
+This should open a new file called `test.js` in your Visual Studio Code.
+
+[![](https://ladvien.com/images/rmate_new_file.png)](https://ladvien.com/images/rmate_new_file.png)

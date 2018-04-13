@@ -138,8 +138,6 @@ vs
 ```
 And added the following to the file.
 ```
-
-```
 echo $1
 ssh -R 52698:localhost:52698 "$1"
 ```

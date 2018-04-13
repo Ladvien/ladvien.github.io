@@ -6,7 +6,7 @@ excerpt: Guide to creating to installing Arch Linux on Raspberry Pi with immedia
 tags: [Arch Linux, pi, linux]
 series: RAN
 image: 
-    feature: RAN_Robot.png
+    feature: asRAN_Robot.png
 comments: true
 custom_css:
 custom_js: 

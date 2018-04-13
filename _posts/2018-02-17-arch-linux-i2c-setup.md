@@ -4,7 +4,7 @@ title: Setup i2c on Raspberry Pi Zero W using Arch Linux
 categories: Arch Linux
 excerpt: A guide to setting up the I2C bus or the Raspberry Pi Zero W on Arch Linux
 tags: [Arch Linux, pi, linux, i2c]
-series: The Raspberry Pi Zero W, NodeJS, and Arch Linux Stack for Robots
+series: RAN
 image: 
     feature: arch-pi-splash.png
 comments: true

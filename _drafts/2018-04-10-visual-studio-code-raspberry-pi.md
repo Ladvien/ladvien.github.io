@@ -14,6 +14,14 @@ custom_js:
 
 I'm spoiled.  I love the pretty colors of modern text IDEs.  My favorite among them being Visual Studio Code.
 
+* [Visual Studio Code](https://code.visualstudio.com/download)
+
 I know it'll engender a lot of bad rep with the old-timers, but I prefer the one on the right.
 
 [![](https://ladvien.com/images/nano_vs_vsc.png)](https://ladvien.com/images/nano_vs_vsc.png)
+
+However, when working on a headless (no monitor) Raspberry Pi it felt like I was pretty much stuck with the `nano`.  
+
+Until! I discovered Visual Studio Code's `remote` extension.
+
+* Visual Studio Code Remote Extension

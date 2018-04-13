@@ -6,7 +6,7 @@ excerpt: A guide to setting up the I2C bus or the Raspberry Pi Zero W on Arch Li
 tags: [Arch Linux, pi, linux, i2c]
 series: RAN
 image: 
-    feature: arch-pi-splash.png
+    feature: RAN_Robot.png
 comments: true
 custom_css:
 custom_js: 

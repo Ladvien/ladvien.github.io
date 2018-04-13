@@ -39,5 +39,5 @@ Download the version of VSC for your PC.  Note, you aren't running this from the
 After it's downloaded and installed open it up.
 
 Once open, click here
-[![https://ladvien.com/images/vsc-ext-btn.png]{.float-left}](https://ladvien.com/images/vsc-ext-btn.png])
+[![](https://ladvien.com/images/vsc-ext-btn.png)]{: .float-left}](https://ladvien.com/images/vsc-ext-btn.png])
 <div style="clear: both;"></div>

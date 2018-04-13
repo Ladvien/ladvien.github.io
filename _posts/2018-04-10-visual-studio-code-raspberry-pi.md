@@ -111,6 +111,7 @@ At the pi command prompt, type
 ```
 rmate test.js
 ```
+[![](https://ladvien.com/images/rmate_new_file.png){: .float-right}](https://ladvien.com/images/rmate_new_file.png)
 This should open a new file called `test.js` in your Visual Studio Code.
 
 Now you get all the goodness of the VSC IDE, such as syntax highlighting, linting, etc!
@@ -118,6 +119,5 @@ Now you get all the goodness of the VSC IDE, such as syntax highlighting, lintin
 A few notes.  File permissions still apply, so if you want to be able to save a file the user you logged into on the Raspberry Pi and `rmated` the file must have write permission on the file.
 
 However, if you do have write permissions, then the "File Save" function in the VSC editor will update the Raspberry Pi file with your modifications.  _Booyah!_
-[![](https://ladvien.com/images/rmate_new_file.png){: .float-right}](https://ladvien.com/images/rmate_new_file.png)
 
 <div style="clear: both;"></div>

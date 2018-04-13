@@ -4,7 +4,7 @@ title: Setup NodeJS Project Space on Raspberry Pi Zero W
 categories: Arch Linux
 excerpt: How to setup NodeJS on Raspberry Pi Zero W
 tags: [Arch Linux, Raspberry Pi Zero W, linux, nodejs]
-series: Raspberry Pi
+series: The Raspberry Pi Zero W, NodeJS, and Arch Linux Stack for Robots
 image: 
     feature: arch-pi-splash.png
 comments: true
@@ -50,3 +50,18 @@ node -v
 ```
 
 That's it!
+
+We can now create a new node project by typing
+
+```
+mkdir my_node_project
+cd my_node_project
+npm init
+```
+
+If you want to learn more about NodeJS, I recommend the Udemy course:
+
+* [The Complete NodeJS Developer Course](https://www.udemy.com/the-complete-nodejs-developer-course-2/)
+
+I'm not getting kick backs, it's just the course I used to get up to speed and liked it.  I actually used the Raspberry Pi for the code he walks through building and didn't have a problem.
+

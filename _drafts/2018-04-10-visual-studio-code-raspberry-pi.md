@@ -14,7 +14,7 @@ custom_js:
 
 I'm spoiled.  I love the pretty colors of modern text IDEs.  My favorite among them being Visual Studio Code.
 
-* [Visual Studio Code](https://code.visualstudio.com/download)
+* [Visual Studio Code](https://code.visualstudio.com)
 
 I know it'll engender a lot of bad rep with the old-timers, but I prefer the one on the right.
 
@@ -24,4 +24,19 @@ However, when working on a headless (no monitor) Raspberry Pi it felt like I was
 
 Until! I discovered Visual Studio Code's `remote` extension.
 
-* Visual Studio Code Remote Extension
+* [Visual Studio Code Remote Extension](https://github.com/rafaelmaiolla/remote-vscode)
+
+This allowed me to edit my Raspberry Pi files from within Visual Studio Code.  So, I get all the joys of writing code directly on my Raspberry Pi, but with all the bells-and-whistles of Visual Studio Code (VSC).
+
+For the most part, setup is pretty straightforward.  But the Pi side can get tricky, so I'm going to walk us through the process.
+
+### 1. Get Visual Studio Code
+
+Download the version of VSC for your PC.  Note, you aren't running this from the Raspberry Pi--instead, you'll be running it from the PC and connecting it to the Raspberry Pi. 
+
+* [Visual Studio Code Download](https://code.visualstudio.com/download)
+
+After it's downloaded and installed open it up.
+
+Once open, click here
+![https://ladvien.com/images/vsc-ext-btn.png]

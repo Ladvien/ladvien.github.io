@@ -4,7 +4,7 @@ title: Setup i2c on Raspberry Pi Zero W using Arch Linux
 categories: Arch Linux
 excerpt: A guide to setting up the I2C bus or the Raspberry Pi Zero W on Arch Linux
 tags: [Arch Linux, pi, linux, i2c]
-series: Raspberry Pi
+series: The Raspberry Pi Zero W, NodeJS, and Arch Linux Stack for Robots
 image: 
     feature: arch-pi-splash.png
 comments: true
@@ -16,7 +16,7 @@ This article builds on the previous, where I ran us through setting up Arch Linu
 
 Let's not stop, let's get I2C going so we can interact with some cool hardware.
 
-## 0. Installing sudo
+## 1. Installing sudo
 If you've followed my previous guide on installing Arch Linux on a Raspberry Pi then you'll have ended up with a bare bones system, which is good.  No unneeded fat.  But sometimes fat is needed, it's what gives us curves, and curves are beautiful....I feel this metaphor is breaking down.  In short, we need extra packages to get work done.
 
 The first package we need is `sudo`
@@ -145,7 +145,7 @@ Administrator. It usually boils down to these three things:
 Type the alarm user password (which is alarm, if you haven't changed it).
 
 
-## 1. Install needed packages
+## 2. Install needed packages
 
 ```
 pacman -S git python2 i2c-tools base-devel python2-distribute python2-pip
@@ -157,7 +157,7 @@ Use Python's Package Index (pip) to install Raspberry Pi GPIO support
 pip2 install RPi.GPIO
 ```
 
-## 2. Install raspi-config
+## 3. Install raspi-config
 ```
 sudo pacman -S xorg-xrandr libnewt
 git clone https://aur.archlinux.org/raspi-config.git
@@ -186,7 +186,7 @@ And when I attempted to enable I2C it gave this error.
 But it still seemed to do the job. I'll investigate more when I've time.
 
 
-## 3. Test the I2C Setup
+## 4. Test the I2C Setup
 We _should_ be all setup.  Try running
 ```
 sudo i2cdetect -y 1

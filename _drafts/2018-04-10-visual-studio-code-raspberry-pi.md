@@ -63,7 +63,7 @@ Remote VSCode
 
 And hit the `Install` button.  Once it finishes hit the reload button.
 
-The extension works by creating a server which listens for incoming calls from the Raspberry Pi's equivalent.  Once we finished setting up the Raspberry Pi we will use a special command which sends the file on the Raspberry Pi to Visual Studio Code.  However, when it's all done, it'll look pretty seamless.
+The extension works by creating a server which listens for incoming calls from the Raspberry Pi.  Once we finished setting up the Raspberry Pi we will use a special command which sends the file on the Raspberry Pi to Visual Studio Code.  However, when it's all done, it'll look pretty seamless.
 
 Back to setup.
 
@@ -71,7 +71,7 @@ In Visual Studio Code type `F1` and type `Preferences: Open Workspace Settings`
 
 [![](https://ladvien.com/images/vsc_preferences.png)](https://ladvien.com/images/vsc_preferences.png)
 
-Find the section labeled 
+Find the section labeled
 ```
 remote.onStartup: false
 ```

@@ -1,8 +1,8 @@
 ---
 layout: post
-title: Porting DRV8830 I2C Motor Driver Code to NodeJS
+title: Editing Raspberry Pi Code Remotely from Visual Studio Code 
 categories: Arch Linux
-excerpt: How to setup NodeJS on Raspberry Pi Zero W
+excerpt: Enable Visual Studio Code to remote edit files on the Raspberry Pi
 tags: [i2c, Arch Linux, Raspberry Pi Zero W, linux, nodejs]
 series: RAN
 image: 
@@ -90,6 +90,8 @@ sudo pacman -S ruby
 cd ~
 gem install rmate
 PATH="$PATH:$(ruby -e 'print Gem.user_dir')/bin"
+echo 'PATH="$PATH:$(ruby -e 'print Gem.user_dir')/bin"' >> /etc/profile
+echo 'export GEM_HOME=$HOME/.gem' >> /etc/profile
 ```
 The above commands install [Ruby](https://www.ruby-lang.org/en/), moves to to the user's directory, uses the Ruby package manager to install rmate, then adds Ruby and it's Gems (packages) executables to the environment variables.  All of this is necessary to get Rmate working on Arch Linux.
 

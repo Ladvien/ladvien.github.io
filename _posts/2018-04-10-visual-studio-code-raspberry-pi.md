@@ -110,5 +110,4 @@ At the pi command prompt, type
 rmate test.js
 ```
 This should open a new file called `test.js` in your Visual Studio Code.
-
 [![](https://ladvien.com/images/rmate_new_file.png)](https://ladvien.com/images/rmate_new_file.png)

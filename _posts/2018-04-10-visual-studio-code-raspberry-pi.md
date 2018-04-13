@@ -136,10 +136,10 @@ On my PC (for Mac and Linux, Windows, you're on your own) I created in my home u
 ```
 vs
 ```
-And added the following content.
+And added the following to the file.
 ```
 
-```bash
+```
 echo $1
 ssh -R 52698:localhost:52698 "$1"
 ```

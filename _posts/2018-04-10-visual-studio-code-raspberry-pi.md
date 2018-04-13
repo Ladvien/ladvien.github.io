@@ -41,4 +41,12 @@ After it's downloaded and installed open it up.
 
 [![](https://ladvien.com/images/vsc-ext-btn.png){: .float-left}](https://ladvien.com/images/vsc-ext-btn.png)
 Once open, click here
+
+
+
+
+
+
+
+
 <div style="clear: both;"></div>

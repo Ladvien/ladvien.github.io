@@ -119,5 +119,42 @@ Now you get all the goodness of the VSC IDE, such as syntax highlighting, lintin
 A few notes.  File permissions still apply, so if you want to be able to save a file the user you logged into on the Raspberry Pi and `rmated` the file must have write permission on the file.
 
 However, if you do have write permissions, then the "File Save" function in the VSC editor will update the Raspberry Pi file with your modifications.  _Booyah!_
-
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
 <div style="clear: both;"></div>
+
+One last annoyance to address.  Whenever you want to use VSC to edit your file you have to log into the Pi using
+```
+ssh -R 52698:localhost:52698 alarm@192.168.1.x
+```
+This annoyed me a bit.  I could never remember all that.  Instead, I created a small bash script to help.
+
+On my PC (for Mac and Linux, Windows, you're on your own) I created in my home user directory called
+```
+vs
+```
+And added the following content.
+```
+
+``` bash
+echo $1
+ssh -R 52698:localhost:52698 "$1"
+```
+
+Essentially, this script takes your Pi's login information and logs in to your Pi using the VSC Remote Extension listening.
+
+To get it to work you've got to make the file executable
+```
+sudo +x chmod vs
+```
+
+Then login in your Pi like this
+```
+./vs alarm@192.168.1.x
+```
+
+Hope you enjoy.
+

@@ -79,3 +79,10 @@ remote.onStartup: false
 We need to change it to `true` by clicking on the pencil next to its name.  This sets the listening server to start every time you open Visual Studio Code.
 
 [![](https://ladvien.com/images/vsc_start_server.png)](https://ladvien.com/images/vsc_start_server.png)
+
+Almost there.  Now to setup the Raspberry Pi.  We need to install a program on the Pi which will send a file of our choosing to Visual Studio Code to be edited.  [RMate](https://github.com/textmate/rmate) was my choice.
+
+Start by SSH'ing into your Raspberry Pi.  Then type
+```
+sudo pacman -S rmate
+```

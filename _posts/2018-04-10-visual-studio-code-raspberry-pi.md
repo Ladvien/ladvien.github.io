@@ -68,4 +68,14 @@ The extension works by creating a server which listens for incoming calls from t
 Back to setup.
 
 In Visual Studio Code type `F1` and type `Preferences: Open Workspace Settings`
+
 [![](https://ladvien.com/images/vsc_preferences.png)](https://ladvien.com/images/vsc_preferences.png)
+
+Find the section labeled 
+```
+remote.onStartup: false
+```
+
+We need to change it to true.  This sets the listening server to start every time you open Visual Studio Code.
+
+[![](https://ladvien.com/images/vsc_start_server.png)](https://ladvien.com/images/vsc_start_server.png)

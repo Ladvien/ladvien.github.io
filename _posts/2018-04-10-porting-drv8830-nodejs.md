@@ -12,13 +12,13 @@ custom_css:
 custom_js: 
 ---
 
-Earlier in this article series I showed how to install NodeJS -- it was pretty simple with an install scripts.  However, I thought I better how I actually worked with NodeJS to create my little 1b1 driver code.
+Earlier in this article series I showed how to install NodeJS -- it was pretty simple with an install script.  However, I thought I better how I actually worked with NodeJS to create my little 1b1 driver code.
 
 Again, simple, I used others hard work.  Specifically, Michael Hord with Sparkfun's MiniMoto library.
 
 * [MiniMoto Arduino Library](https://github.com/sparkfun/SparkFun_MiniMoto_Arduino_Library/tree/V_1.1.0)
 
-Really, all I did was tweak the code a little bit to fit JavaScript syntax.  
+Really, all I did was tweak the code a little bit to fit JavaScript syntax.
 
 The result
 {% highlight js %}
@@ -154,3 +154,30 @@ module.exports = class Motor {
     }
 }
 {% endhighlight %}
+
+There's a lot left to do, but it works.
+
+Todo List:
+1. Have the constructor accept an `options` object
+2. Add `read()` to get the current speed which a motor is set.
+3. Refactor option to clear faults on write to be determined during construction
+4. Add acceleration and deceleration algorithms add functions.
+5. Create an async polling of fault codes.
+
+But! For now it works.
+
+Also, or those who are like, "You stole code, dewd! Not cool."  Mhord's code has a [beerware](https://en.wikipedia.org/wiki/Beerware) license.  I sent this email to Sparkfun in regards to the license and how I might pay Sparkfun back for their work.
+
+```
+Hey Mr. Hord,
+
+I'm in the process of porting your DRV8830 library to Node--I wanted to make sure I give appropriate credit. 
+
+https://github.com/Ladvien/drv8830 
+
+Also, was going to ship some beer to Sparkfun--in respect of the beerware license.  Just let me know what kind.
+
+Lastly, I wanted to make sure Sparkfun benefits.  It looks like the DRV8830 TinyMoto board has been discontinued.  Should I recommend people roll their own...or _gasp_ get something off a slow ship from China?
+---Thomas
+aka, Ladvien
+```

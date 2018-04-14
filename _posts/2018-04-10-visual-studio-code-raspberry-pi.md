@@ -153,6 +153,6 @@ Then login in your Pi like this
 ```
 ./vs alarm@192.168.1.x
 ```
-
 Hope you enjoy.
 
+Oh, and for you web-devs, this also works for remote servers.  Just replace the Pi with the server.

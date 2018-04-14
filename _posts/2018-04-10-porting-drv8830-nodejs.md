@@ -169,14 +169,14 @@ But! For now it works.
 Also, or those who are like, "You stole code, dewd! Not cool."  Mhord's code has a [beerware](https://en.wikipedia.org/wiki/Beerware) license.  I sent this email to Sparkfun in regards to the license and how I might pay Sparkfun back for their work.
 
 
-    Hey Mr. Hord,
+>Hey Mr. Hord,
 
-    I'm in the process of porting your DRV8830 library to Node--I wanted to make sure I give appropriate credit. 
+>I'm in the process of porting your DRV8830 library to Node--I wanted to make sure I give appropriate credit. 
 
-    https://github.com/Ladvien/drv8830 
+>>https://github.com/Ladvien/drv8830 
 
-    Also, was going to ship some beer to Sparkfun--in respect of the beerware license.  Just let me know what kind.
+>Also, was going to ship some beer to Sparkfun--in respect of the beerware license.  Just let me know what kind.
 
-    Lastly, I wanted to make sure Sparkfun benefits.  It looks like the DRV8830 TinyMoto board has been discontinued.  Should I recommend people roll their own...or _gasp_ get something off a slow ship from China?
-    ---Thomas
-    aka, Ladvien
+>Lastly, I wanted to make sure Sparkfun benefits.  It looks like the DRV8830 TinyMoto board has been discontinued. > Should I recommend people roll their own...or _gasp_ get something off a slow ship from China?
+>---Thomas
+>aka, Ladvien

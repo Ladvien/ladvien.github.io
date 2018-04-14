@@ -12,7 +12,7 @@ custom_css:
 custom_js: 
 ---
 
-Earlier in this article series I showed how to install NodeJS -- it was pretty simple with an install script.  However, I thought I better how I actually worked with NodeJS to create my little 1b1 driver code.
+Earlier in this article series I showed how to install NodeJS -- it was pretty simple with an install script.  However, I thought I better show how I actually worked with NodeJS to create my little 1b1 driver code.
 
 Again, simple, I used others hard work.  Specifically, Michael Hord with Sparkfun's MiniMoto library.
 
@@ -180,3 +180,5 @@ Also, or those who are like, "You stole code, dewd! Not cool."  Mhord's code has
 >Lastly, I wanted to make sure Sparkfun benefits.  It looks like the DRV8830 TinyMoto board has been discontinued. > Should I recommend people roll their own...or _gasp_ get something off a slow ship from China?
 >---Thomas
 >aka, Ladvien
+
+But I didn't hear back.  _C'est la vie_

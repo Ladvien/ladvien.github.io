@@ -97,7 +97,7 @@ The above commands install [Ruby](https://www.ruby-lang.org/en/), moves to to th
 
 Ok, let's test it.  Stop SSH'ing into your Pi by typing `exit` until it brings you back to your PC's prompt.  Now we are going to SSH into the Pi while listening for incoming files to be displayed in Visual Studio Code.
 
-Open Visual Studio Code and open the integrated terminal (if it's now already showing find it by hitting CTRL + `).
+Open Visual Studio Code and open the integrated terminal (if it's not showing hit CTRL + `).
 
 At the terminal type
 ```

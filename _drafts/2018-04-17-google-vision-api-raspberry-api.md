@@ -27,4 +27,12 @@ And sign-in with an existing Google account or create one.
 
 ### 2. Enter Billing Information
 Now, here's the scary part, you've must enter your billing information before getting going.  **Remember, you will be charged if you go over 1000 calls.**
+
 ![](https://ladvien.com/images/google-vision-billing.png)
+
+Again, if you exceed your 1,000 free calls you will be charged. 
+
+### 2. Enable Cloud Vision API
+After setting up billing information we still need to enable the Cloud Vision API.  This is a security feature, essentially, all Google APIs are disabled by default so if someone accidently gets access they don't unleash hell everywhere.
+
+![](https://ladvien.com/images/enable-cloud-vision.png)

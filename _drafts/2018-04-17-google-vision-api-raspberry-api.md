@@ -36,3 +36,7 @@ Again, if you exceed your 1,000 free calls you will be charged.
 After setting up billing information we still need to enable the Cloud Vision API.  This is a security feature, essentially, all Google APIs are disabled by default so if someone accidently gets access they don't unleash hell everywhere.
 
 ![](https://ladvien.com/images/enable-cloud-vision.png)
+
+Now search for `Vision` and click the button.  Here there should be a glaring `Enable` button.  Press it.
+
+![](https://ladvien.com/images/cloud-vision-enable-button.png)

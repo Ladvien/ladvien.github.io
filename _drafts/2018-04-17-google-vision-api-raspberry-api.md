@@ -48,3 +48,7 @@ The last thing we need to do is get the API key.  This needs to be included in t
 Let this article scare you a bit.
 
 * [Dev Puts AWS Keys on Github](https://www.theregister.co.uk/2015/01/06/dev_blunder_shows_github_crawling_with_keyslurping_bots/)
+
+Let's go get your API Key.  Find the `Credentials` section
+
+![](http:/ladvien.com/images/google-cloud-vision-credentials.png)

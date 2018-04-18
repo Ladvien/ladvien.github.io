@@ -61,3 +61,23 @@ Let's create a new API Key.
 I'd name the key something meaningful and limit it to only the Google Cloud API.
 
 ![](https://ladvien.com/images/cloud-vision-create-api-key.png)
+
+Go ahead and copy your API key, as we will need it in the next step.
+
+### 3. Raspberry Pi Side
+The articles listed at the top of this one will help you setup the Raspberry Pi for this step.  But if you are doing things different, just know this step has the following prerequisites.
+
+* Raspberry Pi
+* Arch Linux
+* NodeJS
+
+Start by SSH'ing into your Pi.  Once there, let's create a project directory.
+
+```
+mkdir google-vis
+cd google-vis
+```
+
+Once in the 
+
+![](https://ladvien.com/images/hepburn.png)

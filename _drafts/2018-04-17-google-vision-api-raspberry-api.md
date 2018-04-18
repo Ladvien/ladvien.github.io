@@ -52,3 +52,8 @@ Let this article scare you a bit.
 Let's go get your API Key.  Find the `Credentials` section
 
 ![](http:/ladvien.com/images/google-cloud-vision-credentials.png)
+
+You probably wont see any credentials created, as you've probably have not created any yet.
+
+Let's create a new API Key.
+![](https://ladvien.com/images/google-vision-create-credentials.png)

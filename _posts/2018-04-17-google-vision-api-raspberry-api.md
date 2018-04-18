@@ -33,10 +33,18 @@ Now, here's the scary part, you've must enter your billing information before ge
 Again, if you exceed your 1,000 free calls you will be charged. 
 
 ### 2. Enable Cloud Vision API
-After setting up billing information we still need to enable the Cloud Vision API.  This is a security feature, essentially, all Google APIs are disabled by default so if someone accidently gets access they don't unleash hell everywhere.
+After setting up billing information we still need to enable the Cloud Vision API.  This is a security feature, essentially, all Google APIs are disabled by default so if someone accidentally gets access they don't unleash hell everywhere.
 
 ![](https://ladvien.com/images/enable-cloud-vision.png)
 
 Now search for `Vision` and click the button.  Here there should be a glaring `Enable` button.  Press it.
 
 ![](https://ladvien.com/images/cloud-vision-enable-button.png)
+
+The last thing we need to do is get the API key.  This needs to be included in the API call headers for authentication. 
+
+**Do not let anyone get your API key. And do not hardcode it in your code.  Trust me, this will bite you.**  If this accidentally gets pushed onto the web, a web crawler will find it quickly and you will be paying bajillions of dollars.
+
+Let this article scare you a bit.
+
+* [Dev Puts AWS Keys on Github](https://www.theregister.co.uk/2015/01/06/dev_blunder_shows_github_crawling_with_keyslurping_bots/)

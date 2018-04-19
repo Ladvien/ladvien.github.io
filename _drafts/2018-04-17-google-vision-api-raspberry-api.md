@@ -71,13 +71,53 @@ The articles listed at the top of this one will help you setup the Raspberry Pi 
 * Arch Linux
 * NodeJS
 
-Start by SSH'ing into your Pi.  Once there, let's create a project directory.
+Start by SSH'ing into your Pi.
+
+And update all packages
+```
+sudo pacman -Syu
+```
+
+Ok, the hardest part of this whole article is setting up a keychain manager for securely manage the Google Vision API key.  This is all to avoid hardcoding your API key into the code further down.  _That will work_, but I highly recommend you stick with my and setup a keychain manager to handle the API.
+
+If I've convinced you, then let's download and build the Arch Linux keychain manager.
+
+```
+sudo pacman -S archlinux-keyring
+```
+
+If you haven't followed all my RAN series, you may need to install Python and make here as well.
+```
+sudo pacman -S python2
+sudo pacman -S make
+```
+Otherwise, you should be good to install `xkeychain`
+
+
+Let's create a project directory.
 
 ```
 mkdir google-vis
 cd google-vis
 ```
 
-Once in the 
+Now let's initialize a new Node project.
+```
+npm init
+```
+Feel free to custom the package details if you like.  If you're lazy like me, hit enter until you are back to the command prompt.
+
+Let's add the needed Node libraries.  It's one.  The [axios](https://www.npmjs.com/package/axios) library, which enables async web requests.
+
+```
+npm axios
+```
+
+Also, let's download our lovely test image.  Ah, miss Hepburn!
+
+Make sure you are in the `google-vis` project directory when downloading the image.
+```
+wget https://ladvien.com/images/hepburn.png
+```
 
 ![](https://ladvien.com/images/hepburn.png)

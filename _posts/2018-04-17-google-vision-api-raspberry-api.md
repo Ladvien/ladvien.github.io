@@ -165,7 +165,6 @@ function base64_encode(file) {
 var base64str = base64_encode('./resources/audrey.jpg');
 
 const apiCall = `https://vision.googleapis.com/v1/images:annotate?key=${API_KEY}`;
-console.log(apiCall);
 
 const reqObj = {
     requests:[
@@ -179,7 +178,7 @@ const reqObj = {
                     "maxResults":5
                 },
                 {
-                    "type":"LABEL_DETECTION",
+                    "type":"FACE_DETECTION",
                     "maxResults":5            
                 },
                 {
@@ -255,3 +254,17 @@ data: { responses: [ [Object] ] } }
   ....
 ]
 {% endhighlight %}
+
+### 6. And so much more...
+This article is short--a jump start.  However, there is lots of potential here.  For example, sending your own images using the Raspberry Pi Camera
+
+* [raspicam](https://www.npmjs.com/package/raspicam)
+* [pi-camera](https://www.npmjs.com/package/pi-camera)
+
+Please feel free to ask any questions regarding how to use the output.
+
+There are other feature detection requests.
+
+* [Google Vision API -- Other Features](https://cloud.google.com/vision/docs/other-features)
+
+However, I'm going to end the article and move on to rolling my on vision detection systems.  As soon as I figure out stochastic gradient descent.

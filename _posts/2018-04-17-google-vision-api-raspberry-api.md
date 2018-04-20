@@ -14,7 +14,7 @@ custom_js:
 
 This is a jumpstart guide to connecting a Raspberry Pi Zero W to the Google Vision API.
 
-### 1. Get an Account
+## 1. Get an Account
 Sadly, Google Vision API is not a completely free service.  At the time of writing an API account provides 1000 free Google Vision API calls a month.  Then, it's a $1.00 for each 1000 calls.
 
 I know, I know, not too bad.  But this isn't a commercial project.  I'm wanting to use it for a puttering little house bot.  If my wife gets a bill for $40 because I decided to stream images to the API, well, it'll be a dead bot. Anyway, I thought I'd still explore the service for poo-and-giggles.
@@ -25,14 +25,14 @@ To get an account visit
 
 And sign-in with an existing Google account or create one.
 
-### 2. Enter Billing Information
+## 2. Enter Billing Information
 Now, here's the scary part, you've must enter your billing information before getting going.  **Remember, you will be charged if you go over 1000 calls.**
 
 ![](https://ladvien.com/images/google-vision-billing.png)
 
 Again, if you exceed your 1,000 free calls you will be charged. (What? I said that already? Oh.)
 
-### 2. Enable Cloud Vision API
+## 2. Enable Cloud Vision API
 After setting up billing information we still need to enable the Cloud Vision API.  This is a security feature, essentially, all Google APIs are disabled by default so if someone accidentally gets access they don't unleash hell everywhere.
 
 ![](https://ladvien.com/images/enable-cloud-vision.png)
@@ -66,7 +66,7 @@ I'd name the key something meaningful and limit it to only the Google Cloud API.
 
 Go ahead and copy your API key, as we will need it in the next step.
 
-### 3. Raspberry Pi Side Setup
+## 3. Raspberry Pi Side Setup
 The articles listed at the top of this one will help you setup the Raspberry Pi for this step.  But if you are doing things different, most of this should still work for you.  However, when we get to the part of about environment variables, that'll be different for other Linux flavors.
 
 Start by SSH'ing into your Pi.
@@ -103,7 +103,7 @@ echo $GOOGLE_CLOUD_VISION_API_KEY
 ```
 If your API key is echoed back, you should be good to go.
 
-### 4. Project Setup
+## 4. Project Setup
 
 Let's create a project directory.
 
@@ -135,7 +135,7 @@ wget https://ladvien.com/images/hepburn.png
 ```
 
 
-### 5. NodeJS Code
+## 5. NodeJS Code
 
 Create a file in the `go-vis` directory called `app.js`
 
@@ -206,7 +206,7 @@ const API_KEY = process.env.GOOGLE_CLOUD_VISION_API_KEY
 
 This is how we avoid hardcoding the API key.
 
-### 6. Run
+## 6. Run
 Let's run the program.
 
 ```
@@ -255,7 +255,7 @@ data: { responses: [ [Object] ] } }
 ]
 {% endhighlight %}
 
-### 6. And so much more...
+## 6. And so much more...
 This article is short--a jump start.  However, there is lots of potential here.  For example, sending your own images using the Raspberry Pi Camera
 
 * [raspicam](https://www.npmjs.com/package/raspicam)

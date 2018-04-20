@@ -127,8 +127,8 @@ npm axios
 
 ![](https://ladvien.com/images/hepburn.png){: .float-left}
 Also, let's create a resource directory and download our lovely test image.  Ah, miss Hepburn!
-
-Make sure you are in the `google-vis` project directory when downloading the image.
+<div style="clear: both;"></div>
+Make sure you are in the `google-vis/resources` project directory when downloading the image.
 ```
 mkdir resources
 cd resources

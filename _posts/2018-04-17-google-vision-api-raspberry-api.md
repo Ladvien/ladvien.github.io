@@ -67,11 +67,7 @@ I'd name the key something meaningful and limit it to only the Google Cloud API.
 Go ahead and copy your API key, as we will need it in the next step.
 
 ### 3. Raspberry Pi Side Setup
-The articles listed at the top of this one will help you setup the Raspberry Pi for this step.  But if you are doing things different, just know this step has the following prerequisites.
-
-* Raspberry Pi
-* Arch Linux
-* NodeJS
+The articles listed at the top of this one will help you setup the Raspberry Pi for this step.  But if you are doing things different, most of this should still work for you.  However, when we get to the part of about environment variables, that'll be different for other Linux flavors.
 
 Start by SSH'ing into your Pi.
 

@@ -86,6 +86,7 @@ Enter your password.
 
 The next thing we do is add your Google Vision API Key as an environment variable to the `/etc/profile` file, this should cause it to be intialized at boot.
 
+Type, replacing `YOUR_API_KEY` with your actual API Key.
 ```
 echo 'export GOOGLE_CLOUD_VISION_API_KEY=YOUR_API_KEY' >> /etc/profile
 ```
@@ -96,7 +97,7 @@ Now reboot the Pi so that takes effect.
 sudo reboot
 ```
 
-Login back in.  Let's check to make sure it's loading the API key.
+Log back in.  Let's check to make sure it's loading the API key.
 ```
 echo $GOOGLE_CLOUD_VISION_API_KEY
 ```

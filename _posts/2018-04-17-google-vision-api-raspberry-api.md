@@ -124,7 +124,7 @@ Let's add the needed Node libraries.  It's one.  The [axios](https://www.npmjs.c
 npm axios
 ```
 
-![](https://ladvien.com/images/hepburn.png){: .float-right}
+![](https://ladvien.com/images/hepburn.png){: .float-left}
 Also, let's create a resource directory and download our lovely test image.  Ah, miss Hepburn!
 <div style="clear: both;"></div>
 Make sure you are in the `google-vis/resources` project directory when downloading the image.

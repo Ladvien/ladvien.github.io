@@ -37,7 +37,9 @@ After setting up billing information we still need to enable the Cloud Vision AP
 
 ![](https://ladvien.com/images/enable-cloud-vision.png)
 
+
 Now search for `Vision` and click the button.  Here there should be a glaring `Enable` button.  Press it.
+
 
 ![](https://ladvien.com/images/cloud-vision-enable-button.png)
 

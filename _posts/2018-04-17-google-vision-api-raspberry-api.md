@@ -198,7 +198,7 @@ axios.post(apiCall, reqObj).then((response) => {
 });
 {% endhighlight %}
 
-This code grabs the API key environment variable and creats a program constant from it.
+This code grabs the API key environment variable and creates a program constant from it.
 
 ```
 const API_KEY = process.env.GOOGLE_CLOUD_VISION_API_KEY

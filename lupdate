@@ -1,6 +1,6 @@
 #!/bin/sh
 
-PASSWORD="$(keyring get system ladvien.com)"
+#PASSWORD="$(keyring get system ladvien.com)"
 
 echo ""
 echo "*******************************************************"

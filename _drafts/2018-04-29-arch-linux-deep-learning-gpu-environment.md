@@ -67,3 +67,36 @@ I use Etcher as it makes painless to create boot media.
 Insert the jumpdrive, open Etcher, and then select the Antergos iso file.  *Here's the usual warning, if you have anything on your jumpdrive it's about to get deleted forever.*
 
 ![](https://ladvien.com/images/etcher_antergos.png)
+
+Insert the media into the machine you want to install Arch on and boot from the jumpdrive.
+
+#### Windows
+You will need to hit a special key during the boot sequence to enter the BIOS' boot menu
+
+#### Mac
+While booting hold down the `Option` key.
+
+If all goes well you should see a menu which says
+
+```
+Welcome to GRUB!
+```
+
+And then shows an Antergos boot menu.  Select boot Antergos Live.
+
+Once the boot sequence is finished you should see the Antergos desktop environment start and shortly after `cnchi`, which is Antergos' GUI installer
+
+![](https://ladvien.com/images/cnchi.png)
+
+
+### Manual Setup for Dual-Boot
+I had to buy a graphics card for this project.  Sigh.  Not a great time to do it.  Between [cryptocurrency craze](https://www.gamesindustry.biz/articles/2018-01-25-gpu-prices-more-than-double-as-cryptocurrency-craze-accelerates), [shortage of DRAM](https://www.kitguru.net/components/matthew-wilson/dram-and-nand-supply-shortage-expected-to-last-until-2018/), and [NVIDIA's monopoly](https://www.reddit.com/r/pcmasterrace/comments/435sbf/can_someone_educate_me_in_the_supposed_nvidia/), well, it was painful.
+
+However, I talked my wife into it by saying, "But hey! We could also use it to play games with."  (Seems backwards somehow...)  But this meant I needed to leave our family's installation of Windows on the computer--dual booting.
+
+If you want to dual boot as well, you will need to turn on your computer and create a separate partition for Arch Linux.
+
+* [Create a Linux Partition for Windows: Make Room for Linux](https://www.howtogeek.com/214571/how-to-dual-boot-linux-on-your-pc)
+* [Create a Linux Partition on Mac](https://www.imore.com/how-to-partition-your-mac)
+
+And if you are already using Linux, I'm going to guess you know how to create a second partition.

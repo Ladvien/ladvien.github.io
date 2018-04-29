@@ -6,15 +6,15 @@ echo ""
 echo "*******************************************************"
 echo "* Syncing files to Ladvien.com Jekyll build directory *"
 echo "*******************************************************"
-bundle exec jekyll build --source /home/ladvien/Desktop/Personal/ladvien.github.io --destination /home/ladvien/Desktop/Personal/ladvien.github.io/_site
+bundle exec jekyll build --source /home/ladvien/ladvien.github.io --destination /home/ladvien/ladvien.github.io/_site
 echo ""
 echo "****************************"
 echo "* Updating Jekyll includes *"
 echo "****************************"
 
-rsync -avzu /home/ladvien/Desktop/Personal/ladvien.github.io/_site/* root@ladvien.com:/usr/share/nginx/html
+rsync -avzu /home/ladvien/ladvien.github.io/_site/* root@ladvien.com:/usr/share/nginx/html
 
-cd /home/ladvien/Desktop/Personal/ladvien.github.io
+cd /home/ladvien/ladvien.github.io
 git add .
 echo ""
 echo "****************************"

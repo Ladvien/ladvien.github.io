@@ -65,3 +65,5 @@ I use Etcher as it makes painless to create boot media.
 * [Etcher](https://etcher.io/)
 
 Insert the jumpdrive, open Etcher, and then select the Antergos iso file.  *Here's the usual warning, if you have anything on your jumpdrive it's about to get deleted forever.*
+
+![](https://ladvien.com/images/etcher_antergos.png)

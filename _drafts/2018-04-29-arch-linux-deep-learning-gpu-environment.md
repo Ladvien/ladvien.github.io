@@ -131,7 +131,7 @@ We will be using it to prepare our system to support deep-learning projects.
 * [Download Anaconda](https://www.anaconda.com/what-is-anaconda/)
 
 Download the Linux version suited for your computer.
-
+![](https://ladvien.com/images/anaconda_download.png)
 
 ### Manual Setup for Dual-Boot
 I had to buy a graphics card for this project.  Sigh.  Not a great time to do it.  Between [cryptocurrency craze](https://www.gamesindustry.biz/articles/2018-01-25-gpu-prices-more-than-double-as-cryptocurrency-craze-accelerates), [shortage of DRAM](https://www.kitguru.net/components/matthew-wilson/dram-and-nand-supply-shortage-expected-to-last-until-2018/), and [NVIDIA's monopoly](https://www.reddit.com/r/pcmasterrace/comments/435sbf/can_someone_educate_me_in_the_supposed_nvidia/), well, it was painful.

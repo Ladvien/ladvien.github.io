@@ -22,7 +22,7 @@ This article logs a weekend of efforts to create a deep-learning environment whi
 It was a tough one.
 
 ## TL;DR
-There was error I had a hell of a time debugging.  Installing the toolchain is fairly straightforward, _except_ CUDA.  At the time of writing this article (2018-04-29), there is a version mismatch between CUDA and CUDNN in the Arch Linux repositories.  Of course, this is tricky to see, since CUDA is part of the Arch `nvidia` package.
+There was error I had a hell of a time debugging.  Installing the toolchain is fairly straightforward, _except_ CUDA.  At the time of writing this article (2018-04-29), there is a version mismatch between CUDA and CUDNN in the Arch Linux repositories.
 
 This results in an the following error every time I tried to import tensorflow in Python.
 ```
@@ -31,22 +31,22 @@ ImportError: libcublas.so.9.0: cannot open shared object file: No such file or d
 The Arch Linux package CUDA was pulling the latest version 9.1.1 (at writing) and the Arch Linux package CUDNN was looking for version 9.0.  That little mismatch cost me 10 hours.s
 
 ### 0. Other Arch Linux Deep-Learning Articles
-There are a couple other Arch Linux deep-learning setup walkthroughs.  Definitely need to give these guys credit, they are smarter than me.   Sadly, neither walkthrough had everything I was looking for.
+There are a couple other Arch Linux deep-learning setup walkthroughs.  Definitely need to give these guys credit, they are smarter than me.   However, neither walkthrough had everything I was looking for.
 
 1. [Deep Learning Setup in Arch Linux: From Start To Finish with PyTorch + TensorFlow + Nvidia CUDA + Anaconda](https://medium.com/@k_efth/deep-learning-in-arch-linux-from-start-to-finish-with-pytorch-tensorflow-nvidia-cuda-9a873c2252ed)
 
-This article was alright.  But it focused a lot on setting up Arch Linux from the bare metal, which is usually the right idea with Arch, _if_ you don't have the resources.  For example, running on a server or Raspberry Pi.  But the extra few bytes of RAM used by desktop doesn't really justify the time spent on meticulous tunning.  And let my immolation begin.
+This article was alright.  But it focused a lot on preparing Arch Linux from the bare metal, which is usually the right idea with Arch, _if_ you are on a resource budget.  For example, running on a server or Raspberry Pi.  But the extra few bytes of RAM saved doesn't really justify the time spent on meticulous tunning when we will be talking in megabytes and not bytes.  And let my immolation begin.
 
 Also, this article doesn't include information on GPU support.  _Whaawhaa._
 
 2. [Getting Started With NVIDIA GPU, Anaconda, TensorFlow and Keras on Arch Linux](https://medium.com/@mimoralea/getting-started-with-nvidia-gpu-anaconda-tensorflow-and-keras-on-arch-linux-8f5f2868a455)
 
-This one was a bit closer to what I need.  In fact, I did use the middle part.  However, the mismatch I mentioned was not mentioned here--so I spent a lot of time mad at this article.  Of course, it's not the author's fault at the time he wrote it I'm guessing there was no mismatch.
+This one was a bit closer to what I need.  In fact, I did use the middle part.  However, the mismatch was not mentioned.  Of course, it's not the author's fault.   At the time he wrote it I'm guessing the repositories matched.
 
 Alright, on to my take on the setup.
 
 ### 1. Install Antergos (Arch Linux)
-I love me some Arch Linux.  It's lightweight and avoids the long-term issues of other flavors.  Plus, it is meant to be headless, so it's great for embedded projects.  Given how many embedded projects I take on it made me accustomed to using it, and eventually, I made it my main desktop flavor. Specifically, I dual-boot it on my Mac Book Pro.  The one issue with Arch Linux is it can be a little unfriendly to new users--or those with limited time and cannot be bothered with the nuances of setup. Enter Antergos.  
+I love me some Arch Linux.  It's lightweight and avoids the long-term issues of other flavors.  Plus, it is meant to be headless, so it's great for embedded projects.  Given how many embedded projects I take on it made me accustomed to using it, and eventually, I made it my main desktop flavor. Specifically, I dual-boot it on my Mac Book Pro.  The one issue with Arch Linux is it can be a little unfriendly to new users--or those with limited time and cannot be bothered with the nuances of setup. Enter Antergos.
 
 Antergos is essentially Arch Linux with a desktop environment and a GUI installer.  A perfect choice for my deep-learning endeavors.  Really, you should check it out.  Go now.
 
@@ -58,7 +58,7 @@ Download the `iso` file
 
 * [Antergos (direct download)](https://antergos.com/download/antergos-live-iso/)
 
-You'll need a little jumpdrive, 4gb should work.s
+You'll need a little jumpdrive, 4gb should work.
 
 I use Etcher as it makes painless to create boot media.
 
@@ -87,20 +87,24 @@ Once the boot sequence is finished you should see the Antergos desktop environme
 
 ![](https://ladvien.com/images/cnchi.png)
 
-Select the `Install It`.  The installer is fairly self explantory.  However, if you run in to any issues, please feel free to ask me questions in the comments.  I'm glad to help.
+Select the `Install It`.  The installer is fairly self explantory.  But, if you run in to any issues, please feel free to ask me questions in the comments.  I'm glad to help.
 
 Once the installer is complete you will be prompted to restart the computer. It's go time.
 
 ### 2. Install NVIDIA
-When you boot up the installed Antergos go ahead and open the terminal.
+When you boot up the installed Antergos open the terminal.
 
-We are going to start out with installing NVIDIA and tools.  As part of it, we are going to get the wrong version of CUDA.  However, I found downloading the NVIDIA tools as whole packages and then replacing CUDA with an earlier version much installer then trying to pull everything together myself
+We will start with installing the base NVIDIA packages.  As part of it, we are going to get the wrong version of CUDA.  But, I found downloading the NVIDIA as whole packages and then replacing CUDA with an earlier version, much eaiser than trying to pull everything together myself.
 
 Ok, here we go.
 ```
 sudo pacman -S nvidia nvidia-utils cuda cdnn
 ```
-That might take awhile.  So, how you been?  Oh crap, it's down.
+That might take awhile.  
+
+...
+
+So, how you been?  Oh crap, it's done.
 
 Ok, to initialize the changes reboot.
 ```
@@ -113,10 +117,20 @@ That should have gotten everything at once.  Now, let's downgrade CUDA to from 9
 ```
 wget https://archive.archlinux.org/packages/c/cuda/cuda-9.0.176-4-x86_64.pkg.tar.xz
 ```
-This downloads a `pkg` file for CUDA 9.0, which is what the most recent version of Tensorflow (at this time, 1.8) is expecting.  I found the easiesy way to replace CUDA 9.1 with 9.0 to simply double click on the file we downloaded from the GUI file browser.  This opens it in Antergos' answer to a GUI based package manager.  It will warn you this package will downgrade your CUDA version and ask you to `Commit` to the changes.  Hit the commit button.
+This downloads a `pkg` file for CUDA 9.0, which is what the most recent version of Tensorflow is expecting (at this time, 1.8).  I found the easiest way to replace CUDA 9.1 with 9.0 to simply double click on the file we downloaded from the GUI file browser.  This opens it in Antergos' answer to a GUI based package manager.  It will warn you this package will downgrade your CUDA version and ask you to `Commit` to the changes.  Hit the commit button.
 
 Wait for the file to be replaced before moving on.
 
+### 4. Anaconda (Optional)
+Anaconda is a great package manager for data (mad) scientist tools.  It is Python centric, but also supports R and other stuff I don't know how to use yet.
+
+* [Anaconda](https://www.anaconda.com/what-is-anaconda/)
+
+We will be using it to prepare our system to support deep-learning projects.
+
+* [Download Anaconda](https://www.anaconda.com/what-is-anaconda/)
+
+Download the Linux version suited for your computer.
 
 
 ### Manual Setup for Dual-Boot

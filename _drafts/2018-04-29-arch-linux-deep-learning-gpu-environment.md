@@ -33,7 +33,7 @@ The Arch Linux package CUDA was pulling the latest version 9.1.1 (at writing) an
 ### 0. Other Arch Linux Deep-Learning Articles
 There are a couple other Arch Linux deep-learning setup walkthroughs.  Definitely need to give these guys credit, they are smarter than me.   Sadly, neither walkthrough had everything I was looking for.
 
-1.[Deep Learning Setup in Arch Linux: From Start To Finish with PyTorch + TensorFlow + Nvidia CUDA + Anaconda](https://medium.com/@k_efth/deep-learning-in-arch-linux-from-start-to-finish-with-pytorch-tensorflow-nvidia-cuda-9a873c2252ed)
+1. [Deep Learning Setup in Arch Linux: From Start To Finish with PyTorch + TensorFlow + Nvidia CUDA + Anaconda](https://medium.com/@k_efth/deep-learning-in-arch-linux-from-start-to-finish-with-pytorch-tensorflow-nvidia-cuda-9a873c2252ed)
 
 This article was alright.  But it focused a lot on setting up Arch Linux from the bare metal, which is usually the right idea with Arch, _if_ you don't have the resources.  For example, running on a server or Raspberry Pi.  But the extra few bytes of RAM used by desktop doesn't really justify the time spent on meticulous tunning.  And let my immolation begin.
 
@@ -81,12 +81,33 @@ If all goes well you should see a menu which says
 ```
 Welcome to GRUB!
 ```
-
 And then shows an Antergos boot menu.  Select boot Antergos Live.
 
 Once the boot sequence is finished you should see the Antergos desktop environment start and shortly after `cnchi`, which is Antergos' GUI installer
 
 ![](https://ladvien.com/images/cnchi.png)
+
+Select the `Install It`.  The installer is fairly self explantory.  However, if you run in to any issues, please feel free to ask me questions in the comments.  I'm glad to help.
+
+Once the installer is complete you will be prompted to restart the computer. It's go time.
+
+### 2. Install NVIDIA
+When you boot up the installed Antergos go ahead and open the terminal.
+
+We are going to start out with installing NVIDIA and tools.  As part of it, we are going to get the wrong version of CUDA.  However, I found downloading the NVIDIA tools as whole packages and then replacing CUDA with an earlier version much installer then trying to pull everything together myself
+
+Ok, here we go.
+```
+sudo pacman -S nvidia nvidia-utils cuda cdnn
+```
+That might take awhile.  So, how you been?  Oh crap, it's down.
+
+That should have gotten everything at once.  Now, let's downgrade CUDA to from 9.1 to _9.0_.
+
+```
+wget https://archive.archlinux.org/packages/c/cuda/cuda-9.0.176-4-x86_64.pkg.tar.xz
+```
+This downloads a `pkg` file for CUDA 9.0, which is what the most recent version of Tensorflow (at this time, 1.8)is expecting.
 
 
 ### Manual Setup for Dual-Boot

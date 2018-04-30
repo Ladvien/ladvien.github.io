@@ -136,6 +136,29 @@ Download the Linux version suited for your computer.
 Once the file is downloaded right click on the file and select `Show In Folder`.  Once there, right-click in the open space and select `Open in Terminal`.
 ![](https://ladvien.com/images/anaconda_download_box.png)
 
+Make Anaconda executable and then run it.
+```
+chmod +x Anaconda3-5.1.0-Linux-x86_64.sh
+./Anaconda3-5.1.0-Linux-x86_64.sh
+```
+The Anaconda installtion is off and running.  It will ask you to agree to a form.  After, it will ask whether you want to install Anaconda in its default directory.  We do.
+
+Now, it will install every data scientist package known to existance.  Mwhahaa. Erm.
+
+When it asks
+```
+Do you wish the installer to prepend the Anaconda3 install location
+to PATH in your /home/ladvien/.bashrc ? [yes|no]
+```
+Type `yes`.  This will make Anaconda accessible throughout your system.
+
+Of course, this new path variable will not be loaded until you start your user session again (log off and back on).  But we can force it to load by typing.
+
+```
+cd ~
+source ./bash_profile
+```
+
 ### Manual Setup for Dual-Boot
 I had to buy a graphics card for this project.  Sigh.  Not a great time to do it.  Between [cryptocurrency craze](https://www.gamesindustry.biz/articles/2018-01-25-gpu-prices-more-than-double-as-cryptocurrency-craze-accelerates), [shortage of DRAM](https://www.kitguru.net/components/matthew-wilson/dram-and-nand-supply-shortage-expected-to-last-until-2018/), and [NVIDIA's monopoly](https://www.reddit.com/r/pcmasterrace/comments/435sbf/can_someone_educate_me_in_the_supposed_nvidia/), well, it was painful.
 

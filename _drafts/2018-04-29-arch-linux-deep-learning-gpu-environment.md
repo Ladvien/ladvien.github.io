@@ -102,12 +102,21 @@ sudo pacman -S nvidia nvidia-utils cuda cdnn
 ```
 That might take awhile.  So, how you been?  Oh crap, it's down.
 
+Ok, to initialize the changes reboot.
+```
+sudo reboot now
+```
+
+### 3. Downgrade CUDA to match CDNN
 That should have gotten everything at once.  Now, let's downgrade CUDA to from 9.1 to _9.0_.
 
 ```
 wget https://archive.archlinux.org/packages/c/cuda/cuda-9.0.176-4-x86_64.pkg.tar.xz
 ```
-This downloads a `pkg` file for CUDA 9.0, which is what the most recent version of Tensorflow (at this time, 1.8)is expecting.
+This downloads a `pkg` file for CUDA 9.0, which is what the most recent version of Tensorflow (at this time, 1.8) is expecting.  I found the easiesy way to replace CUDA 9.1 with 9.0 to simply double click on the file we downloaded from the GUI file browser.  This opens it in Antergos' answer to a GUI based package manager.  It will warn you this package will downgrade your CUDA version and ask you to `Commit` to the changes.  Hit the commit button.
+
+Wait for the file to be replaced before moving on.
+
 
 
 ### Manual Setup for Dual-Boot

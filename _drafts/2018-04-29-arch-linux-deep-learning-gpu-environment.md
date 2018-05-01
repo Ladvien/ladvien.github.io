@@ -290,6 +290,9 @@ totalMemory: 5.93GiB freeMemory: 5.38GiB
 [1] 42
 ```
 
+### 9. Sream Hello World
+
+
 ### 5. 
 
 ### Manual Setup for Dual-Boot

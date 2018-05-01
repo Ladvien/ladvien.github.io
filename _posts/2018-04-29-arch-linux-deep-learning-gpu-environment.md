@@ -34,13 +34,13 @@ The Arch Linux package CUDA was pulling the latest version 9.1.1 (at writing) an
 ### 0. Other Arch Linux Deep-Learning Articles
 There are a couple other Arch Linux deep-learning setup walkthroughs.  Definitely need to give these guys credit, they are smarter than me.   However, neither walkthrough had everything I was looking for.
 
-1. [Deep Learning Setup in Arch Linux: From Start To Finish with PyTorch + TensorFlow + Nvidia CUDA + Anaconda](https://medium.com/@k_efth/deep-learning-in-arch-linux-from-start-to-finish-with-pytorch-tensorflow-nvidia-cuda-9a873c2252ed)
+* [Deep Learning Setup in Arch Linux: From Start To Finish with PyTorch + TensorFlow + Nvidia CUDA + Anaconda](https://medium.com/@k_efth/deep-learning-in-arch-linux-from-start-to-finish-with-pytorch-tensorflow-nvidia-cuda-9a873c2252ed)
 
 This article was alright.  But it focused a lot on preparing Arch Linux from the bare metal, which is usually the right idea with Arch, _if_ you are on a resource budget.  For example, running on a server or Raspberry Pi.  But the extra few bytes of RAM saved doesn't really justify the time spent on meticulous tunning when we will be talking in megabytes and not bytes.  And let my immolation begin.
 
 Also, this article doesn't include information on GPU support.  _Whaawhaa._
 
-2. [Getting Started With NVIDIA GPU, Anaconda, TensorFlow and Keras on Arch Linux](https://medium.com/@mimoralea/getting-started-with-nvidia-gpu-anaconda-tensorflow-and-keras-on-arch-linux-8f5f2868a455)
+* [Getting Started With NVIDIA GPU, Anaconda, TensorFlow and Keras on Arch Linux](https://medium.com/@mimoralea/getting-started-with-nvidia-gpu-anaconda-tensorflow-and-keras-on-arch-linux-8f5f2868a455)
 
 This one was a bit closer to what I need.  In fact, I did use the middle part.  However, the mismatch was not mentioned.  Of course, it's not the author's fault.   At the time he wrote it I'm guessing the repositories matched.
 

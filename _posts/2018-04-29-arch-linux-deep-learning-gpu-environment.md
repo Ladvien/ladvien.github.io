@@ -61,11 +61,11 @@ Download the `iso` file
 
 You'll need a little jumpdrive, 4gb should work.
 
-I use Etcher as it makes painless to create boot media.
+I use Etcher as it makes it painless to create boot media.
 
 * [Etcher](https://etcher.io/)
 
-Insert the jumpdrive, open Etcher, and then select the Antergos iso file.  *Here's the usual warning, if you have anything on your jumpdrive it's about to get deleted forever.*
+After Etcher does its thing, insert the jumpdrive, open Etcher, and then select the Antergos iso file.  *Here's the usual warning, if you have anything on your jumpdrive it's about to get deleted forever.*
 
 ![](https://ladvien.com/images/etcher_antergos.png)
 
@@ -88,7 +88,7 @@ Once the boot sequence is finished you should see the Antergos desktop environme
 
 ![](https://ladvien.com/images/cnchi.png)
 
-Select the `Install It`.  The installer is fairly self explantory.  But, if you run in to any issues, please feel free to ask me questions in the comments.  I'm glad to help.
+Select `Install It`.  The installer is fairly self explantory.  But, if you run in to any issues, please feel free to ask me questions in the comments.  I'm glad to help.
 
 Once the installer is complete you will be prompted to restart the computer. It's go time.
 
@@ -105,7 +105,7 @@ That might take awhile.
 
 ...
 
-So, how you been?  Oh crap, it's done.
+So, how you been?  Oh--wait, it's done.
 
 Ok, to initialize the changes reboot.
 ```

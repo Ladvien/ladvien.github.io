@@ -159,8 +159,80 @@ cd ~
 source ./bash_profile
 ```
 
+Double check we are using the Anaconda version of Python.
+```
+[ladvien@ladvien ~]$ which python
+/home/ladvien/anaconda3/bin/python
+```
+If it doesn't refer to `anaconda` somewhere in this path, then we need to fix that.  Let me know in the comments below and I'll walk you through correcting it.
+
+If it does, then let's move forward!
+
+### 6. Tensorflow and Keras
+Alright, almost done.
+
+Let's go back to the command prompt and type:
+```
+sudo pacman -S python-pip
+```
+This will download Python's module download manager `pip`.  This is usually packaged with Python, but isn't included on Arch.  
+
+How'd we get Python?  Anaconda installed it.
+
+Let's download Tensorflow with GPU support.
+```
+sudo pip install tensorflow-gpu --upgrade --ignore-installed
+```
+
+Let's test and see if it's worked. At command prompt type
+```
+python
+```
+Andin Python
+```
+import tensorflow as tf
+sess = tf.Session(config=tf.ConfigProto(log_device_placement=True))
+```
+You should a response similar to
+```
+2018-05-01 05:25:25.929575: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1356] Found device 0 with properties:
+name: GeForce GTX 1060 6GB major: 6 minor: 1 memoryClockRate(GHz): 1.7715
+pciBusID: 0000:01:00.0
+totalMemory: 5.93GiB freeMemory: 5.66GiB
+2018-05-01 05:25:25.929619: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1435] Adding visible gpu devices: 0
+2018-05-01 05:25:26.333292: I tensorflow/core/common_runtime/gpu/gpu_device.cc:923] Device interconnect StreamExecutor with strength 1 edge matrix:
+2018-05-01 05:25:26.333346: I tensorflow/core/common_runtime/gpu/gpu_device.cc:929]      0
+2018-05-01 05:25:26.333356: I tensorflow/core/common_runtime/gpu/gpu_device.cc:942] 0:   N
+2018-05-01 05:25:26.333580: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1053] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 5442 MB memory) -> physical GPU (device: 0, name: GeForce GTX 1060 6GB, pci bus id: 0000:01:00.0, compute capability: 6.1)
+Device mapping:
+/job:localhost/replica:0/task:0/device:GPU:0 -> device: 0, name: GeForce GTX 1060 6GB, pci bus id: 0000:01:00.0, compute capability: 6.1
+2018-05-01 05:25:26.455082: I tensorflow/core/common_runtime/direct_session.cc:284] Device mapping:
+/job:localhost/replica:0/task:0/device:GPU:0 -> device: 0, name: GeForce GTX 1060 6GB, pci bus id: 0000:01:00.0, compute capability: 6.1
+```
+Which means you are good to go!  At this point, Python is setup to do accelerated deep-learning.  Most deep-learning peeps stop here, as Python is the deep-learning language.  However, like a pirate I'm an R sort of guy.
+
+### 7. Installing R and RStudio
+To setup a GPU accelerated deep-learning environment in R there isn't a lot of additional setup.  There is a `keras` and `tensorflow` R packages, which connect the R code to a Python backend.
+
+To get R in Arch Linux open the terminal and type:
+```
+sudo pacman -S r
+``` 
+And what's R without RStudio?  Actually, it's still R, which is bad-ass unto itself.  But anyway, let's download RStudio as well.
+
+In terminal
+```
+cd ~
+git clone https://aur.archlinux.org/rstudio-desktop-bin.git
+cd rstudio-desktop-bin
+makepkg -i
+``` 
+After, you should find RStudio in the Antergos Menu.
+![](https://ladvien.com/images/rstudio_antergos.png)
+### 5. 
+
 ### Manual Setup for Dual-Boot
-I had to buy a graphics card for this project.  Sigh.  Not a great time to do it.  Between [cryptocurrency craze](https://www.gamesindustry.biz/articles/2018-01-25-gpu-prices-more-than-double-as-cryptocurrency-craze-accelerates), [shortage of DRAM](https://www.kitguru.net/components/matthew-wilson/dram-and-nand-supply-shortage-expected-to-last-until-2018/), and [NVIDIA's monopoly](https://www.reddit.com/r/pcmasterrace/comments/435sbf/can_someone_educate_me_in_the_supposed_nvidia/), well, it was painful.
+I had to buy a graphics card for this project.  Sigh.  Not a great time to do it.  Between [cryptocurrency craze](https://www.gamesindu stry.biz/articles/2018-01-25-gpu-prices-more-than-double-as-cryptocurrency-craze-accelerates), [shortage of DRAM](https://www.kitguru.net/components/matthew-wilson/dram-and-nand-supply-shortage-expected-to-last-until-2018/), and [NVIDIA's monopoly](https://www.reddit.com/r/pcmasterrace/comments/435sbf/can_someone_educate_me_in_the_supposed_nvidia/), well, it was painful.
 
 However, I talked my wife into it by saying, "But hey! We could also use it to play games with."  (Seems backwards somehow...)  But this meant I needed to leave our family's installation of Windows on the computer--dual booting.
 

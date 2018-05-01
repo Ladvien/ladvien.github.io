@@ -27,7 +27,7 @@ There was error I had a hell of a time debugging.  Installing the toolchain is f
 
 This results in an the following error every time I tried to import tensorflow in Python.
 ```
-ImportError: libcublas.so.9.0: cannot open shared object file: No such file or directorys
+ImportError: libcublas.so.9.0: cannot open shared object file: No such file or directory
 ```
 The Arch Linux package CUDA was pulling the latest version 9.1.1 (at writing) and the Arch Linux package CUDNN was looking for version 9.0.  That little mismatch cost me 10 hours.s
 

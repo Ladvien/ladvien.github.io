@@ -296,18 +296,10 @@ totalMemory: 5.93GiB freeMemory: 5.38GiB
 ### 9. Sream Hello World
 And the payoff?
 
+Using the prepared script Deep Dream script from the Keras documentation
 
+* [Keras Deep Dream in RStudi](https://keras.rstudio.com/articles/examples/deep_dream.html)
 
-### 5. 
+_Voila!_
 
-### Manual Setup for Dual-Boot
-I had to buy a graphics card for this project.  Sigh.  Not a great time to do it.  Between [cryptocurrency craze](https://www.gamesindu stry.biz/articles/2018-01-25-gpu-prices-more-than-double-as-cryptocurrency-craze-accelerates), [shortage of DRAM](https://www.kitguru.net/components/matthew-wilson/dram-and-nand-supply-shortage-expected-to-last-until-2018/), and [NVIDIA's monopoly](https://www.reddit.com/r/pcmasterrace/comments/435sbf/can_someone_educate_me_in_the_supposed_nvidia/), well, it was painful.
-
-However, I talked my wife into it by saying, "But hey! We could also use it to play games with."  (Seems backwards somehow...)  But this meant I needed to leave our family's installation of Windows on the computer--dual booting.
-
-If you want to dual boot as well, you will need to turn on your computer and create a separate partition for Arch Linux.
-
-* [Create a Linux Partition for Windows: Make Room for Linux](https://www.howtogeek.com/214571/how-to-dual-boot-linux-on-your-pc)
-* [Create a Linux Partition on Mac](https://www.imore.com/how-to-partition-your-mac)
-
-And if you are already using Linux, I'm going to guess you know how to create a second partition.
+![](https://ladvien.com/images/scream_hello_world.gif)

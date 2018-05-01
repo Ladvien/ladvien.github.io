@@ -213,7 +213,7 @@ Device mapping:
 Which means you are good to go!  At this point, Python is setup to do accelerated deep-learning.  Most deep-learning peeps stop here, as Python is the deep-learning language.  However, like a pirate I'm an R sort of guy.
 
 ### 7. Installing R and RStudio
-To setup a GPU accelerated deep-learning environment in R there isn't a lot of additional setup.  There is a `keras` and `tensorflow` R packages, which connect the R code to a Python backend.
+To setup a GPU accelerated deep-learning environment in R there isn't a lot of additional setup.  There are `keras` and `tensorflow` R packages, which connect the R code to a Python backend.
 
 To get R in Arch Linux open the terminal and type:
 ```
@@ -297,7 +297,7 @@ totalMemory: 5.93GiB freeMemory: 5.38GiB
 ### 9. Scream Hello World
 And the payoff?
 
-Using the prepared script Deep Dream script from the Keras documentation
+Using the prepared Deep Dream script from the Keras documentation
 
 * [Keras Deep Dream in RStudio](https://keras.rstudio.com/articles/examples/deep_dream.html)
 

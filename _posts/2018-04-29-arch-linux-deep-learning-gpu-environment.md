@@ -16,7 +16,7 @@ This article logs a weekend of efforts to create a deep-learning environment whi
 
 * GPU Enabled
 * On Arch Linux
-* Uses Keras with Tensorflow as a backend
+* Uses [Keras](https://keras.io/) with [Tensorflow](https://www.tensorflow.org/) as a backend
 * Main IDE being RStudio
 
 It was a tough one.
@@ -218,7 +218,7 @@ To get R in Arch Linux open the terminal and type:
 ```
 sudo pacman -S r
 ``` 
-And what's R without RStudio?  Actually, it's still R, which is bad-ass unto itself.  But anyway, let's download RStudio as well.
+And what's R without RStudio?  Actually, it's still R, which is bad-ass unto itself--but anyway, let's not argue.  Time to download RStudio...because you insist.
 
 In terminal
 ```
@@ -229,6 +229,67 @@ makepkg -i
 ``` 
 After, you should find RStudio in the Antergos Menu.
 ![](https://ladvien.com/images/rstudio_antergos.png)
+
+You can right click on the icon and click `Add to Panel` to make a shortcut.
+
+Open up RStudio and lets finish this up.
+
+### 8. R Pakcages for Deep Learning
+Inside RStudio's code console type
+```
+install.packages("tensorflow")
+```
+This will install the package which will help the R environment find the Tensorflow Python modules.
+
+Then,
+```
+install.packages("keras")
+```
+Keras is the boss package, it's going to connect all the Python modules needed to Tensorflow for us to focus on _just_ the high-level deep-learning tuning.  It's awesome.
+
+Once the `keras` package is installed, we need to load it and connect it to the unerlying infrastructure we setup.
+```
+library(keras)
+install_keras(method = "conda", tensorflow = "gpu")
+```
+This will install the underlying Keras packages using the Anaconda ecosystem and Tensorflow Python modules using CUDA and CUDDN.  Note, a lot of this we setup manually, so it should report the needed modules are already there.  However, this step is still needed to awaken R to the fact those modules exist.
+
+Alright, moment of truth.  Let's run this code in R.
+{% highlight r %}
+library(tensorflow)
+
+with(tf$device("/gpu:0"), {
+  const <- tf$constant(42)
+})
+
+sess <- tf$Session()
+sess$run(const)
+{% endhighlight %}
+
+If all went well, it should provide you with a familiar output
+```
+> library(tensorflow)
+>
+> with(tf$device("/gpu:0"), {
++   const <- tf$constant(42)
++ })
+/home/dl/.virtualenvs/r-tensorflow/lib/python3.6/site-packages/h5py/__init__.py:36: FutureWarning: Conversion of the second argument of issubdtype from `float` to `np.floating` is deprecated. In future, it will be treated as `np.float64 == np.dtype(float).type`.
+  from ._conv import register_converters as _register_converters
+>
+> sess <- tf$Session()
+2018-05-01 05:55:07.412011: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1356] Found device 0 with properties:
+name: GeForce GTX 1060 6GB major: 6 minor: 1 memoryClockRate(GHz): 1.7715
+pciBusID: 0000:01:00.0
+totalMemory: 5.93GiB freeMemory: 5.38GiB
+2018-05-01 05:55:07.412057: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1435] Adding visible gpu devices: 0
+2018-05-01 05:55:07.805042: I tensorflow/core/common_runtime/gpu/gpu_device.cc:923] Device interconnect StreamExecutor with strength 1 edge matrix:
+2018-05-01 05:55:07.805090: I tensorflow/core/common_runtime/gpu/gpu_device.cc:929]      0
+2018-05-01 05:55:07.805115: I tensorflow/core/common_runtime/gpu/gpu_device.cc:942] 0:   N
+2018-05-01 05:55:07.805348: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1053] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 5150 MB memory) -> physical GPU (device: 0, name: GeForce GTX 1060 6GB, pci bus id: 0000:01:00.0, compute capability: 6.1)
+> sess$run(const)
+[1] 42
+```
+
 ### 5. 
 
 ### Manual Setup for Dual-Boot

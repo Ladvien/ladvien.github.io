@@ -4,7 +4,7 @@ title: Creating a GPU Accelerated Deep-Learning Environment on Arch Linux
 categories: deep-learning
 series: Deep-Learning
 excerpt:
-tags: [deep-learning, arch-linux, keras, python, tensorflow, gpu, rs]
+tags: [deep-learning, arch-linux, keras, python, tensorflow, gpu, r]
 image: 
     feature: al-deep-learning.png
     thumb: al-deep-learning-thumb.png

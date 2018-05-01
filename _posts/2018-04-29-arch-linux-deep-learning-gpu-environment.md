@@ -189,7 +189,7 @@ Let's test and see if it's worked. At command prompt type
 ```
 python
 ```
-Andin Python
+And in Python
 ```
 import tensorflow as tf
 sess = tf.Session(config=tf.ConfigProto(log_device_placement=True))

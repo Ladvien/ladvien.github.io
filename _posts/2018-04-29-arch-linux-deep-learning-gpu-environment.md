@@ -113,7 +113,7 @@ sudo reboot now
 ```
 
 ### 3. Downgrade CUDA to match CDNN
-That should have gotten everything at once.  Now, let's downgrade CUDA to from 9.1 to _9.0_.
+That should have gotten everything at once.  Now, let's downgrade CUDA from 9.1 to _9.0_.
 
 ```
 wget https://archive.archlinux.org/packages/c/cuda/cuda-9.0.176-4-x86_64.pkg.tar.xz

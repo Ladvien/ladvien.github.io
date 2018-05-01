@@ -29,7 +29,7 @@ This results in an the following error every time I tried to import tensorflow i
 ```
 ImportError: libcublas.so.9.0: cannot open shared object file: No such file or directory
 ```
-The Arch Linux package CUDA was pulling the latest version 9.1.1 (at writing) and the Arch Linux package CUDNN was looking for version 9.0.  That little mismatch cost me 10 hours.s
+The Arch Linux package CUDA was pulling the latest version 9.1.1 (at writing) and the Arch Linux package CUDNN was looking for version 9.0.  That little mismatch cost me 10 hours.
 
 ### 0. Other Arch Linux Deep-Learning Articles
 There are a couple other Arch Linux deep-learning setup walkthroughs.  Definitely need to give these guys credit, they are smarter than me.   However, neither walkthrough had everything I was looking for.
@@ -44,10 +44,10 @@ Also, this article doesn't include information on GPU support.  _Whaawhaa._
 
 This one was a bit closer to what I need.  In fact, I did use the middle part.  However, the mismatch was not mentioned.  Of course, it's not the author's fault.   At the time he wrote it I'm guessing the repositories matched.
 
-Alright, on to my take on the setup.
+Alright, on to my attempt.
 
 ### 1. Install Antergos (Arch Linux)
-I love me some Arch Linux.  It's lightweight and avoids the long-term issues of other flavors.  Plus, it is meant to be headless, so it's great for embedded projects.  Given how many embedded projects I take on it made me accustomed to using it, and eventually, I made it my main desktop flavor. Specifically, I dual-boot it on my Mac Book Pro.  The one issue with Arch Linux is it can be a little unfriendly to new users--or those with limited time and cannot be bothered with the nuances of setup. Enter Antergos.
+I love me some Arch Linux.  It's lightweight and avoids the long-term issues of other flavors.  Plus, it is meant to be headless, so it's great for embedded projects.  Given how many embedded projects I take on it made me accustomed to using daily, eventually, I made it my main desktop flavor. It should sound too Linux-snobby, though, I dual-boot it on my Mac Book Pro.  The one issue with Arch Linux is it can be a little unfriendly to new users--or those with limited time and cannot be bothered with the nuances of setup. Enter Antergos.
 
 Antergos is essentially Arch Linux with a desktop environment and a GUI installer.  A perfect choice for my deep-learning endeavors.  Really, you should check it out.  Go now.
 

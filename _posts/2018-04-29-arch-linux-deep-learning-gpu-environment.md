@@ -6,7 +6,7 @@ series: Deep-Learning
 excerpt:
 tags: [deep-learning, arch-linux, keras, python, tensorflow, gpu, rs]
 image: 
-    feature: 
+    feature: al-deep-learning.png
 comments: true
 custom_css:
 custom_js: 

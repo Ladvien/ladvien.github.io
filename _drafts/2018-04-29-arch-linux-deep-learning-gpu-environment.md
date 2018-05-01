@@ -290,6 +290,9 @@ totalMemory: 5.93GiB freeMemory: 5.38GiB
 [1] 42
 ```
 
+![](https://ladvien.com/images/ensorflow_arch.mp4.gif)
+
+
 ### 9. Sream Hello World
 And the payoff?
 

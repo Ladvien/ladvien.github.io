@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Creating a GPU Arch Linux Deep-Learning Environment
+title: Creating a GPU Accelerated Deep-Learning Environment on Arch Linux
 categories: deep-learning
 series: Deep-Learning
 excerpt:

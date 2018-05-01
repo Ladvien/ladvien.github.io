@@ -234,7 +234,7 @@ You can right click on the icon and click `Add to Panel` to make a shortcut.
 
 Open up RStudio and lets finish this up.
 
-### 8. R Pakcages for Deep Learning
+### 8. R Packages for Deep Learning
 Inside RStudio's code console type
 ```
 install.packages("tensorflow")

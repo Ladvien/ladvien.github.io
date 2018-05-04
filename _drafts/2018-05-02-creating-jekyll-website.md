@@ -143,6 +143,12 @@ First, let's tell the computer which manages your server to install Linux on it.
 
 ![](https://ladvien.com/images/deploy_image.png)
 
+#### **Beware ye Stackscripts!**
+> A stackscript is a Linux script meant for a machine with newly installed Linux.  The script tells the machine to do a bunch of automated setup work to prepare the machine for a particular task.  In our case prepare our machine to be a server.  I'm not going to show how to use them in this walkthrough.  For a few reasons.  We will learn more setting things up ourselves, and therefore, will be able to maintain it.  Also, I've not found a stack which is specifically for Jekyll.  Most of them have a lot of extra stuff we don't need.
+
+Ok, back to work.  Let's fill out our setup request
+
+![](https://ladvien.com/images/install_linux.png)
 
 
 ### 5. SSH

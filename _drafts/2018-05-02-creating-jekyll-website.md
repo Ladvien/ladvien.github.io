@@ -125,4 +125,16 @@ Notice, the `IP Address` is the IP address of your very first server! Waahoo!
 
 ![](https://ladvien.com/images/linode_dashboard.png)
 
-### 4. Stackscripts (Yay!)
+It'll take it a second, but the status of your linode should change from `Being created` to `Brand new`, when it does, you will be ready for the fun!
+
+### 6. Setup Linux
+
+Let's get Linux setup on your machine.  Click on the name of your Linode.
+
+![](https://ladvien.com/images/your_linode_name.png)
+
+### 5. SSH
+SSH stands for secure shell access.  Shell being the command prompt environment which Linux is based.  This is going to be are main way of interacting with the server.  It may feel terse and inhumane, but I strongly encourage you to embrace the command line.  If you do, the powers of Linux will be yours for free.
+
+And besides, I'm writing this tutorial around it, so you kinda must to keep following along.
+

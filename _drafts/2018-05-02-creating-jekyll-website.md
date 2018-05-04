@@ -110,3 +110,10 @@ And `Sign Up`
 Login, then go to `Add Linode`.  Here select the smallest sized Linode as possible.  When I started, the small servers were $5 a month--but it looks like they've gone up.  My guess is, you can find them on sale occasionally.
  
 ![](https://ladvien.com/images/smallest_linode_server.png)
+
+You don't have to select the smallest--but I think it's plenty for a Jekyll blog.
+
+Once you've selected the size of server, scroll to the bottom and select a location central to your audience.  If there isn't one, then simply select the location closet to you.
+
+Then select `Add this Linode!`
+![](https://ladvien.com/images/set_location_add_linode.png)

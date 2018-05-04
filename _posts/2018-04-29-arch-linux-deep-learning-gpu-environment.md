@@ -291,7 +291,6 @@ totalMemory: 5.93GiB freeMemory: 5.38GiB
 [1] 42
 ```
 
-![](https://ladvien.com/images/tensorflow_arch.mp4.gif)
 
 
 ### 9. Scream Hello World
@@ -302,5 +301,3 @@ Using the prepared Deep Dream script from the Keras documentation
 * [Keras Deep Dream in RStudio](https://keras.rstudio.com/articles/examples/deep_dream.html)
 
 _Voila!_
-
-![](https://ladvien.com/images/scream_hello_world.gif)

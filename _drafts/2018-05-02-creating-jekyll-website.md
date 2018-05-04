@@ -68,7 +68,7 @@ Common Workflow         | My Workflow
 Also, the one thing you'll have setting up the server side I did not is this guide.  I plan to setup a new site walking while writing these articles to assure this guide is relevant.  But if I miss anything, I'm available to help in the comments.  It makes my day to save someone some development time.
 
 
-### 1. Get a Server
+### 2. Choose a Serer Provided
 Ever rented a server before? I hadn't either.  
 
 Here is my tip sheet laden with my opinion.
@@ -90,5 +90,19 @@ First, Windows back-ends aren't well documented on the web.  They cost more.  Th
 * [Five Reasons Linux Beats Windows for Servers](https://www.pcworld.com/article/204423/why_linux_beats_windows_for_servers.html)
 * [Linux Foundation finds enterprise Linux growing at Windows' expense](https://www.zdnet.com/article/linux-foundation-finds-enterprise-linux-growing-at-windows-expense/)
 
-There is a reason 80% (circa 2014) of backend servers are deployed using Linux, jus' sayin'.
+There is a reason 80% (circa 2014) of servers are deployed using Linux, jus' sayin'.
 
+#### c. Go Small and Scale
+If you go with Digital Ocean or Linode, they both have reasonable start servers, which can in turn be scaled.  Meaning, you can pay more later for additional server resources without having to completely rebuild your server.
+
+Ok!  For this article I'm going to use Linode.  I like them.  They've who I started with and was extremely happy with their quality and reliability.
+
+### 3. Get a Server
+
+Head over to 
+
+[Linode](https://linode.com)
+
+And `Sign Up`
+
+![](https://ladvien.com/images/sign_up_lindode.png)

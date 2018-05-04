@@ -116,4 +116,13 @@ You don't have to select the smallest--but I think it's plenty for a Jekyll blog
 Once you've selected the size of server, scroll to the bottom and select a location central to your audience.  If there isn't one, then simply select the location closet to you.
 
 Then select `Add this Linode!`
+
 ![](https://ladvien.com/images/set_location_add_linode.png)
+
+Once you've added your Linode you will be re-directed to your Linodes dashboard
+
+Notice, the `IP Address` is the IP address of your very first server! Waahoo!
+
+![](https://ladvien.com/images/linode_dashboard.png)
+
+### 4. Stackscripts (Yay!)

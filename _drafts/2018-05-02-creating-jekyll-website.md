@@ -41,19 +41,19 @@ In one way it makes sense to get a feel for Jekyll before deploying.  You aren't
 To compare the work steps
 
 
-Common Workflow         | My Workflow
-------------------------|------------------------|
- Setup Jekyll Locally   | Get Server  
- Deploy Site Locally    | Setup Server
- Refine                 | Setup Jekyll on Server
- Deploy Site Locally    | Setup Jekyll Locally
- Refine                 | Deploy Site to Server
- Deploy Site Locally    | Refine
- Get Server             | Deploy Site to Server
- Setup Server           | Refine
- Setup Jekyll on Server | Deploy Site to Server
- Deploy Site to Server  | Beer
- Beer                   | Second Beer
+| Common Workflow        | My Workflow            |
+| ---------------------- | ---------------------- |
+| Setup Jekyll Locally   | Get Server             |
+| Deploy Site Locally    | Setup Server           |
+| Refine                 | Setup Jekyll on Server |
+| Deploy Site Locally    | Setup Jekyll Locally   |
+| Refine                 | Deploy Site to Server  |
+| Deploy Site Locally    | Refine                 |
+| Get Server             | Deploy Site to Server  |
+| Setup Server           | Refine                 |
+| Setup Jekyll on Server | Deploy Site to Server  |
+| Deploy Site to Server  | Beer                   |
+| Beer                   | Second Beer            |
 
  A couple of reasons I prefer my workflow.
 
@@ -106,3 +106,7 @@ Head over to
 And `Sign Up`
 
 ![](https://ladvien.com/images/sign_up_lindode.png)
+
+Login, then go to `Add Linode`.  Here select the smallest sized Linode as possible.  When I started, the small servers were $5 a month--but it looks like they've gone up.  My guess is, you can find them on sale occasionally.
+ 
+![](https://ladvien.com/images/smallest_linode_server.png)

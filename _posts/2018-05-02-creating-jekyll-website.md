@@ -150,6 +150,9 @@ Ok, back to work.  Let's fill out our setup request
 
 ![](https://ladvien.com/images/install_linux.png)
 
+Be sure to save your password somewhere! Not a lot of ways to recover it.  Once everything is selected hit `Deploy`
+
+Your server will quickly be formatted and a fresh copy of Ubuntu 16.04 LTS installed.  Oh, and I've not mentioned
 
 ### 5. SSH
 SSH stands for secure shell access.  Shell being the command prompt environment which Linux is based.  This is going to be are main way of interacting with the server.  It may feel terse and inhumane, but I strongly encourage you to embrace the command line.  If you do, the powers of Linux will be yours for free.

@@ -18,7 +18,7 @@ I've used Jekyll to create my website.  A lot of the heavy lifting was done by [
 
 Much respect.
 
-But, setup was pretty painful for me.  I knew nothing about websites, let alone creating a [static page website](https://en.wikipedia.org/wiki/Static_web_page).  So, I've decided to set my hand to journal a lot of the nuances I ran into.  Try to save someone some time.
+But, setup was pretty painful for me.  I knew nothing about websites, let alone creating a [static page website](https://en.wikipedia.org/wiki/Static_web_page). I've decided to set my hand to journal a lot of the nuances I ran into.  Try to save someone some time.  Or, save myself some time when something goes wrong.
 
 These articles will not be on CSS, JavaScript, or HTML.  After tinkering with computers for 20 years, I still suck at CSS and HTML--no, there are much better resources on the matter.  
 
@@ -90,4 +90,5 @@ First, Windows back-ends aren't well documented on the web.  They cost more.  Th
 * [Five Reasons Linux Beats Windows for Servers](https://www.pcworld.com/article/204423/why_linux_beats_windows_for_servers.html)
 * [Linux Foundation finds enterprise Linux growing at Windows' expense](https://www.zdnet.com/article/linux-foundation-finds-enterprise-linux-growing-at-windows-expense/)
 
-There is a reason 80% (circa 2014) 
+There is a reason 80% (circa 2014) of backend servers are deployed using Linux, jus' sayin'.
+

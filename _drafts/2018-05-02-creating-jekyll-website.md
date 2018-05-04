@@ -133,6 +133,18 @@ Let's get Linux setup on your machine.  Click on the name of your Linode.
 
 ![](https://ladvien.com/images/your_linode_name.png)
 
+This should load the server dashboard for _your_ server.  Looking something like this.
+
+![](https://ladvien.com/images/your_server_dashboard.png)
+
+Don't be alarmed.  There is a lot going on here, but we are going to taker it one step at a time.  Don't worry, I got you.
+
+First, let's tell the computer which manages your server to install Linux on it.  You can do this by going to `Deploy an Image`
+
+![](https://ladvien.com/images/deploy_image.png)
+
+
+
 ### 5. SSH
 SSH stands for secure shell access.  Shell being the command prompt environment which Linux is based.  This is going to be are main way of interacting with the server.  It may feel terse and inhumane, but I strongly encourage you to embrace the command line.  If you do, the powers of Linux will be yours for free.
 

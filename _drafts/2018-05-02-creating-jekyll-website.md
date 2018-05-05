@@ -163,15 +163,95 @@ Ok, let's fire up your machine.  Open up the Linode dashboard and click on your 
 
 ![](https://ladvien.com/images/boot_up_server.png)
 
-I'm assuming you are using Linux or Mac as your local operating system.  On either, open a terminal and type
+Wait until the status below shows your linode has fully booted.
+
+Now, I'm assuming you are using Linux or Mac as your local operating system.  On either, open a terminal and type
 
 ```
 ssh root@your.ip.number.here
 ```
-
 And press enter.
 
 You should see something along the lines
 ```
+[ladvien@ladvien ladvien.github.io]$ ssh root@your.ip.number.here
+The authenticity of host 'your.ip.number.here (your.ip.number.here)' can't be established.
+ECDSA key fingerprint is SHA256:ee2BPBSeaZAFbVdpWFj1oHLxdPdGoxCaSRl3lu6u2Fc.
+Are you sure you want to continue connecting (yes/no)?
+```
+Type `yes` and hit enter.
 
+You will then be prompted to enter the password entered as the `root password` during the setup phase in the Linode Manager.
+
+### 6. Welcome to the Jungle
+You are now on your server.  Do you feel a bit like Mr. Robot?  Live the feeling.  And don't let anyone give you a hard time for being a shell noob.  Embrace the shell.
+
+I'm not going to go Linux stuff in detail.  Please refer to more in depth tutorial.  They are all over the internet.  But, I will point out, the `Tab` key works as an autocomplete.  This is the single most important tidbit of working in shell.  Instead of having to type out a long file name, type the first two letters and hit tab.  It'll try to fill it in for you.
+
+Let's start our server setup.
+
+Your server is simply a computer.  But, we are going to install a program your computer which will cause anyone visiting your IP address in the browser to see parts of your file system.  The vistor's browser loads information from your file system and, if the files are in a language the browser understands, renders it for the vistor.  These files will be in HTML and CSS produced by Jekyll. 
+
+Ok.  The server program we will be using is called `nginx`.  It is not the oldest or the most common. But I find its use straightforward and it seems pretty darn fast too.
+
+But first, let's update Linux system. At your server's command line type.
+```
+sudo apt-get update
+```
+And hit enter.  This causes all the repository links to be updated.  The repository links are libraries of Internet addresses telling your computer when it can find free stuff! Everything is swag on Linux.
+
+Let's take a second to check something before we start install `nginx`.  Open any browser and type your linode's ip address in the browser address bar and hit enter.  Most likely, nothing will happen.  The browser is trying to make contact with your server, but there is no program installed on your server to _serve_ the website to a browser.  That's what `nginx` will do.
+
+Let's download `nginx` now
+```
+sudo apt-get install nginx
+```
+
+It will ask if you want to install `nginx` say yes.
+
+Once it's installed, let's test and make sure it works.
+
+Type
+```
+nginx
+```
+
+It should respond with
+```
+nginx: [emerg] bind() to 0.0.0.0:80 failed (98: Address already in use)
+nginx: [emerg] bind() to [::]:80 failed (98: Address already in use)
+nginx: [emerg] bind() to 0.0.0.0:80 failed (98: Address already in use)
+nginx: [emerg] bind() to [::]:80 failed (98: Address already in use)
+nginx: [emerg] bind() to 0.0.0.0:80 failed (98: Address already in use)
+nginx: [emerg] bind() to [::]:80 failed (98: Address already in use)
+nginx: [emerg] bind() to 0.0.0.0:80 failed (98: Address already in use)
+nginx: [emerg] bind() to [::]:80 failed (98: Address already in use)
+nginx: [emerg] bind() to 0.0.0.0:80 failed (98: Address already in use)
+nginx: [emerg] bind() to [::]:80 failed (98: Address already in use)
+nginx: [emerg] still could not bind()
+```
+
+Also, open a browser and type your sever's IP address again.  Hit enter.  This time you should see:
+
+![](https://ladvien.com/images/welcome_nginx.png)
+
+Great! This means it is installed and working.  We just need to setup `nginx` to serve our files on our server address instead of `0.0.0.0:80`.
+
+Linode actually has a _great_ walkthrough on setting up Nginx.  
+
+* [Nginx Setup](https://www.linode.com/docs/web-servers/nginx/how-to-configure-nginx/)
+
+A lot of what I'm going to write is directly from this article, but boiled down for our Jekyll setup.  But, please, after you are done with my article--go back and read the Linode `Nginx Setup` article.
+
+We are going to start with editing the primary Nginx file `nginx.conf`.  When we installed `nginx` an initial `nginx.conf` was  created in the `/etc/nginx` folder.  Let's go there.
+
+Type
+```
+cd /etc/nginx
+```
+
+And open the configuration file for editing. Note, `nano` is a command line text editor built into Linux.
+
+```
+sudo nano nginx.conf
 ```

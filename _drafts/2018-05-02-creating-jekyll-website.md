@@ -161,7 +161,7 @@ And besides, I'm writing this tutorial around it, so you kinda must to keep foll
 
 Ok, let's fire up your machine.  Open up the Linode dashboard and click on your linode's name.  At the top right there be a box called `Server Status` and it is probably `Powered Off`.  Let's turn it on by hitting the `Boot` button.
 
-[](https://ladvien.com/images/boot_up_server.png)
+![](https://ladvien.com/images/boot_up_server.png)
 
 I'm assuming you are using Linux or Mac as your local operating system.  On either, open a terminal and type
 

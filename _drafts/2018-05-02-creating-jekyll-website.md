@@ -186,11 +186,11 @@ You will then be prompted to enter the password entered as the `root password` d
 ### 6. Welcome to the Jungle
 You are now on your server.  Do you feel a bit like Mr. Robot?  Live the feeling.  And don't let anyone give you a hard time for being a shell noob.  Embrace the shell.
 
-I'm not going to go Linux stuff in detail.  Please refer to more in depth tutorial.  They are all over the internet.  But, I will point out, the `Tab` key works as an autocomplete.  This is the single most important tidbit of working in shell.  Instead of having to type out a long file name, type the first two letters and hit tab.  It'll try to fill it in for you.
+I'm not going to go Linux stuff in detail.  Please refer to more in depth tutorial.  They are all over the Internet.  But, I will point out, the `Tab` key works as an auto-complete.  This is the single most important tidbit of working in shell.  Instead of having to type out a long file name, type the first two letters and hit tab.  It'll try to fill it in for you.
 
 Let's start our server setup.
 
-Your server is simply a computer.  But, we are going to install a program your computer which will cause anyone visiting your IP address in the browser to see parts of your file system.  The vistor's browser loads information from your file system and, if the files are in a language the browser understands, renders it for the vistor.  These files will be in HTML and CSS produced by Jekyll. 
+Your server is simply a computer.  But, we are going to install a program your computer which will cause anyone visiting your IP address in the browser to see parts of your file system.  The visitor's browser loads information from your file system and, if the files are in a language the browser understands, renders it for the visitor.  These files will be in HTML and CSS produced by Jekyll. 
 
 Ok.  The server program we will be using is called `nginx`.  It is not the oldest or the most common. But I find its use straightforward and it seems pretty darn fast too.
 
@@ -231,11 +231,64 @@ nginx: [emerg] bind() to [::]:80 failed (98: Address already in use)
 nginx: [emerg] still could not bind()
 ```
 
+Great! This means it is installed and working.  We just need to setup `nginx` to serve our files on our server address instead of `0.0.0.0:80`.
+
 Also, open a browser and type your sever's IP address again.  Hit enter.  This time you should see:
 
 ![](https://ladvien.com/images/welcome_nginx.png)
 
-Great! This means it is installed and working.  We just need to setup `nginx` to serve our files on our server address instead of `0.0.0.0:80`.
+Wow, your are now serving an html to the world, for anyone who visits your website.  Pretty cool, eh?  I think so.
+
+Want to see something pretty cool?  
+
+Type (note, *do not* include `sudo` here)
+```
+nano /var/www/html/index.nginx-debian.html
+```
+
+You should see the content of the html file being served by `nginx`.
+
+{% highlight html %}
+<!DOCTYPE html>
+<html>
+<head>
+<title>Welcome to nginx!</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<body>
+<h1>Welcome to nginx!</h1>
+<p>If you see this page, the nginx web server is successfully installed and
+working. Further configuration is required.</p>
+<p>For online documentation and support please refer to
+<a href="http://nginx.org/">nginx.org</a>.<br/>
+Commercial support is available at
+<a href="http://nginx.com/">nginx.com</a>.</p>
+
+<p><em>Thank you for using nginx.</em></p>
+</body>
+</html>
+{% endhighlight %}
+
+Change
+```
+<h1>Welcome to nginx!</h1>
+```
+To
+```
+<h1>Welcome to the Jungle, baby!</h1>
+```
+Then hit `CTRL + O`, which should save the file.  Then hit `CTRL + X` to exit the `nano` editor.
+
+Now, switch back to your browser, go back to your website's IP address, and hit refresh.   You should see.
+
+![](https://ladvien.com/images/welcome_t0_nginx_jungle.png)
+
 
 Linode actually has a _great_ walkthrough on setting up Nginx.  
 
@@ -250,8 +303,85 @@ Type
 cd /etc/nginx
 ```
 
-And open the configuration file for editing. Note, `nano` is a command line text editor built into Linux.
+`Nginx` comes with a default configuration file.  We are going to rename this so we can refer to it if needed.  Then we will create our own configuration file.
+
+Type
+```
+mv nginx.conf nginx.conf_backup
+```
+
+Now the default `nginx.conf` if backed up, let's create our own `nginx.conf` file. Note, `nano` is a command line text editor built into Linux.
 
 ```
-sudo nano nginx.conf
+nano nginx.conf
 ```
+
+At the top of the file paste (`CTRL+SHIFT+V` pastes in Linux)
+
+```
+http {
+    include       /etc/nginx/mime.types;
+    default_type  application/octet-stream;
+
+    log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+                      '$status $body_bytes_sent "$http_referer" '
+                      '"$http_user_agent" "$http_x_forwarded_for"';
+
+    access_log  /var/log/nginx/access.log  main;
+
+    sendfile        on;
+    #tcp_nopush     on;
+
+    keepalive_timeout  65;
+
+    #gzip  on;
+
+    include /etc/nginx/sites-enabled/*.conf;
+}
+```
+
+This sets up nginx to use hypter-text transfer protocol (HTTP).  These settings are pretty vanilla.  They go in all `nginx` server configurations.  However, notice the line `include /etc/nginx/sites-enabled/*.conf;`.  This tells `nginx` we want to include additional files which contain setup information.  Basicaly, every file in the `/etc/nginx/conf.d` directory.
+
+We are now going to add other configuration files in the `/etc/nginx/conf.d` directory.
+
+But you may ask why we set the includes directory to `/etc/nginx/sites-enabled/`.  Great question.  It has to do with being able to disable our website manually without deleting files. We do this by creating a [symbolic link](https://kb.iu.edu/d/abbe) to our configuration file in the /etc/nginx/sites-enabled/` to `etc/nginx/conf.d`.  When the symbolic link exist, our website is on, when it is deleted, our website is off.  It's like a lightswitch for our website.  
+
+Type
+```
+cd /etc/nginx/conf.d
+ls
+```
+
+The `ls` command list all the files in the directory. Right now it is empty.  But not for long! Let's setup our first website configuration file.  We are going to call the file by the name of your website.  Don't get confused, this is not the same as having a [domain name](https://en.wikipedia.org/wiki/Domain_name).
+
+```
+nano my.website.name.com
+```
+
+Inside the file paste
+
+```
+server {
+    listen         80 default_server;
+    listen         [::]:80 default_server;
+    server_name    45.233.1.68;
+    root           /var/www/my.website.name.com;
+    index          index.html;
+    try_files $uri /index.html;
+}
+```
+
+Ok, this is where the magic is really happening.  Breaking it down.
+
+You need to replace `45.233.1.68` with the IP of _your_ server.  This will need to change if you register a domain name later.
+
+Next, `/var/www/my.website.name.com` is going to be the directory we create and put all the Jekyll files in.  They will be served to the world--saying how awesome you are.
+
+Speaking of which, let's go create that directory.
+
+```
+
+```
+
+
+

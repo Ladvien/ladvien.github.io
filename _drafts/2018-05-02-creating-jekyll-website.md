@@ -155,7 +155,23 @@ Be sure to save your password somewhere! Not a lot of ways to recover it.  Once 
 Your server will quickly be formatted and a fresh copy of Ubuntu 16.04 LTS installed.  Oh, and I've not mentioned
 
 ### 5. SSH
-SSH stands for secure shell access.  Shell being the command prompt environment which Linux is based.  This is going to be are main way of interacting with the server.  It may feel terse and inhumane, but I strongly encourage you to embrace the command line.  If you do, the powers of Linux will be yours for free.
+SSH stands for secure shell access.  Shell being the command prompt environment which Linux is based.  This is going to be our main way of interacting with the server.  It may feel terse and inhumane, but I strongly encourage you to embrace the command line.  If you do, the powers of Linux will be yours for free.
 
 And besides, I'm writing this tutorial around it, so you kinda must to keep following along.
 
+Ok, let's fire up your machine.  Open up the Linode dashboard and click on your linode's name.  At the top right there be a box called `Server Status` and it is probably `Powered Off`.  Let's turn it on by hitting the `Boot` button.
+
+[](https://ladvien.com/images/boot_up_server.png)
+
+I'm assuming you are using Linux or Mac as your local operating system.  On either, open a terminal and type
+
+```
+ssh root@your.ip.number.here
+```
+
+And press enter.
+
+You should see something along the lines
+```
+
+```

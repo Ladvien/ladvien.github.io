@@ -383,9 +383,7 @@ Breaking this down, we used the `bundler` program to execute the `jekyll` progra
 
 In your file explorer, navigate to your website directory and enter the `_site` directory.  This directory contains your entire website after compilation.
 
-[jekyll_site_folder](https://ladvien.com/images/_site_folder.png)  
-
-
+![jekyll_site_folder](https://ladvien.com/images/the_site_folder.png)  
 
 
 

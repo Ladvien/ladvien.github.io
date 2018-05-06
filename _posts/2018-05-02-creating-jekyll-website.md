@@ -32,7 +32,7 @@ I actually recommend spending $30 on the following Udemy courses.  They are grea
 
 I'm not getting a kick back from Udemy, I list these courses because they are the ones I've taken and will vouch they are great courses to with this guide series.
 
-### 1. Orientation
+## 1. Orientation
 
 A lot of other articles will recommend setting up Jekyll locally, building your site to perfection, then get a rent a server when you have the time.  I _don't_ recommend going this route.
 
@@ -68,7 +68,7 @@ To compare the work steps
 Also, the one thing you'll have setting up the server side I did not is this guide.  I plan to setup a new site walking while writing these articles to assure this guide is relevant.  But if I miss anything, I'm available to help in the comments.  It makes my day to save someone some development time.
 
 
-### 2. Choose a Serer Provided
+## 2. Choose a Server Provided
 Ever rented a server before? I hadn't either.  
 
 Here is my tip sheet laden with my opinion.
@@ -97,7 +97,7 @@ If you go with Digital Ocean or Linode, they both have reasonable start servers,
 
 Ok!  For this article I'm going to use Linode.  I like them.  They've who I started with and was extremely happy with their quality and reliability.
 
-### 3. Get a Server
+## 3. Get a Server
 
 Head over to 
 
@@ -127,7 +127,7 @@ Notice, the `IP Address` is the IP address of your very first server! Waahoo!
 
 It'll take it a second, but the status of your linode should change from `Being created` to `Brand new`, when it does, you will be ready for the fun!
 
-### 6. Setup Linux
+## 6. Setup Linux
 
 Let's get Linux setup on your machine.  Click on the name of your Linode.
 
@@ -154,7 +154,7 @@ Be sure to save your password somewhere! Not a lot of ways to recover it.  Once 
 
 Your server will quickly be formatted and a fresh copy of Ubuntu 16.04 LTS installed.  Oh, and I've not mentioned
 
-### 5. SSH
+## 5. SSH
 SSH stands for secure shell access.  Shell being the command prompt environment which Linux is based.  This is going to be our main way of interacting with the server.  It may feel terse and inhumane, but I strongly encourage you to embrace the command line.  If you do, the powers of Linux will be yours for free.
 
 And besides, I'm writing this tutorial around it, so you kinda must to keep following along.
@@ -183,7 +183,7 @@ Type `yes` and hit enter.
 
 You will then be prompted to enter the password entered as the `root password` during the setup phase in the Linode Manager.
 
-### 6. Nginx Setup
+## 6. Nginx Setup
 You are now on your server.  Do you feel a bit like Mr. Robot?  Live the feeling.  And don't let anyone give you a hard time for being a shell noob.  Embrace the shell.
 
 I'm not going to go Linux stuff in detail.  Please refer to more in depth tutorial.  They are all over the Internet.  But, I will point out, the `Tab` key works as an auto-complete.  This is the single most important tidbit of working in shell.  Instead of having to type out a long file name, type the first two letters and hit tab.  It'll try to fill it in for you.
@@ -299,7 +299,7 @@ Linode actually has a _great_ walkthrough on setting up Nginx.
 
 But, for now, are going to stick with the basic `nginx` setup.  There will other articles in this series where I show how to edit `nginx` to make the website better.
 
-### 7. Jekyll
+## 7. Jekyll
 Let's setup Jekyll locally. To follow utilize Jekyll we are going to need to download and install the following programs.
 
 #### Ruby
@@ -334,7 +334,7 @@ gem install jekyll
 gem install bundler
 ```
 
-### 8. Get a Jekyll Starter
+## 8. Get a Jekyll Starter
 
 Jekyll is great for creating websites, but there is a lot of boilerplate.  I found it _much_ easier to clone someone else's Jekyll starter site than make my own from scratch.
 
@@ -350,7 +350,7 @@ git clone https://github.com/aron-bordin/neo-hpstr-jekyll-theme
 ```
 Git clones the `neo-HPSTR` theme from the Internet and puts it in a directory called `/neo-hpstr-jekyll-theme` Feel free to rename the directory the name of your website.  For example, my directory is called `ladvien.com` We are getting to putting this website on-line, just a few more steps.
 
-### 9. Build the Jekyll Theme
+## 9. Build the Jekyll Theme
 
 Open your website's directory
 ```
@@ -397,7 +397,7 @@ scp -r _site/*  root@your.website.ip.address:/var/www/html/
 ```
 This should copy all of your compiled website files to your website. Go to your website address and you should see the website on-line! _Booyah!_
 
-### 10. That It?
+## 10. That It?
 _Noooooo_, this was the bare minimum setup.  Here's a list of what I plan to tackle in this series.
 
 * Editing the `_config.yml` file to customize your theme

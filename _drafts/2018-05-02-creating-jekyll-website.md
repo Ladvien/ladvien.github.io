@@ -183,7 +183,7 @@ Type `yes` and hit enter.
 
 You will then be prompted to enter the password entered as the `root password` during the setup phase in the Linode Manager.
 
-### 6. Welcome to the Jungle
+### 6. Nginx Setup
 You are now on your server.  Do you feel a bit like Mr. Robot?  Live the feeling.  And don't let anyone give you a hard time for being a shell noob.  Embrace the shell.
 
 I'm not going to go Linux stuff in detail.  Please refer to more in depth tutorial.  They are all over the Internet.  But, I will point out, the `Tab` key works as an auto-complete.  This is the single most important tidbit of working in shell.  Instead of having to type out a long file name, type the first two letters and hit tab.  It'll try to fill it in for you.
@@ -289,10 +289,115 @@ Now, switch back to your browser, go back to your website's IP address, and hit 
 
 ![](https://ladvien.com/images/welcome_t0_nginx_jungle.png)
 
+Not seeing it?  You didn't change the `<title>` instead of the `<h1>`, right?  Ask me how I know that...
+
+Friggin awesome!  Let's move on to setting up Nginx, so you can serve your own website.  
 
 Linode actually has a _great_ walkthrough on setting up Nginx.  
 
 * [Nginx Setup](https://www.linode.com/docs/web-servers/nginx/how-to-configure-nginx/)
+
+But, for now, are going to stick with the basic `nginx` setup.  There will other articles in this series where I show how to edit `nginx` to make the website better.
+
+### 7. Jekyll
+Let's setup Jekyll locally. To follow utilize Jekyll we are going to need to download and install the following programs.
+
+#### Ruby
+[Ruby](https://en.wikipedia.org/wiki/Ruby_(programming_language)) is programing environment which contains a package manager which we will use a lot called `[gem](https://en.wikipedia.org/wiki/RubyGems)`.  For example, when we type `gem install cool-program` it is the `ruby` environment pulling the `cool-program` from the Internet and installing it on your machine.
+
+#### Bundler
+[Bundler](https://github.com/bundler/bundler) is a program which helps pull all the dependencies needed to run a program together. As they say in the README, "Bundler makes sure Ruby applications run the same code on every machine."
+
+#### Git
+[Git](https://en.wikipedia.org/wiki/Git) is version control program.  It also has the ability to pull source code off line.  We are going to use it at first to pull a theme off line, but eventually, we will manage your website Jekyll source code with it.
+
+#### Homebrew (Mac Only)
+[Homebrew](https://brew.sh/), often referred to sa Brew, is a program which is like `apt` for Linux.  It is a command line tool which lets you pull programs from the Internet and installs them locally.
+
+Ok, let's get going
+
+At your local computer's terminal type:
+
+#### Linux
+```
+sudo apt-get install ruby
+gem install jekyll
+```
+
+#### Mac
+To setup Ruby correctly on Mac we are going to install a command line package manager for Mac called [brewed](https://brew.sh/).  This is the equivalent of `apt` in Linux.  
+
+```
+/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+brew install ruby
+gem install jekyll
+gem install bundler
+```
+
+### 8. Get a Jekyll Starter
+
+Jekyll is great for creating websites, but there is a lot of boilerplate.  I found it _much_ easier to clone someone else's Jekyll starter site than make my own from scratch.
+
+* [Jekyll Themes](http://jekyllthemes.org/)
+
+For this series we are going to use the [Neo-HPSTR](http://aronbordin.com/neo-hpstr-jekyll-theme/) theme.
+
+Open the terminal and pick a directory where you would like to put a copy of your website.  For me, I'm Linux and will use the home directory.
+
+Now, let's download our theme.
+```
+git clone https://github.com/aron-bordin/neo-hpstr-jekyll-theme
+```
+Git clones the `neo-HPSTR` theme from the Internet and puts it in a directory called `/neo-hpstr-jekyll-theme` Feel free to rename the directory the name of your website.  For example, my directory is called `ladvien.com` We are getting to putting this website on-line, just a few more steps.
+
+### 9. Build the Jekyll Theme
+
+Open your website's directory
+```
+cd neo-hpstr-jekyll-theme
+```
+And enter
+```
+bundler install
+```
+This will pull all the need programs to make this theme build on your computer.  Note, you may be required to enter your password for file access.
+
+Ok, moment of truth. Type
+```
+bundle exec jekyll build
+```
+You should see a response similar to
+```
+Configuration file: /home/ladvien/neo-hpstr-jekyll-theme/_config.yml
+       Deprecation: The 'gems' configuration option has been renamed to 'plugins'. Please update your config file accordingly.
+            Source: /home/ladvien/neo-hpstr-jekyll-theme
+       Destination: /home/ladvien/neo-hpstr-jekyll-theme/_site
+ Incremental build: disabled. Enable with --incremental
+      Generating...
+                    done in 1.103 seconds.
+ Auto-regeneration: disabled. Use --watch to enable.
+ ```
+But, if you didn't get any errors, you should be good.
+
+Breaking this down, we used the `bundler` program to execute the `jekyll` program.  We passed the `build` command to the `jekyll` program, which tells `jekyll` to take all your jekyll files and compile them into your website.  The `bundler` program made sure `jekyll` had everything it needed to compile correctly.
+
+In your file explorer, navigate to your website directory and enter the `_site` directory.  This directory contains your entire website after compilation.
+
+[jekyll_site_folder](https://ladvien.com/images/_site_folder.png)  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 A lot of what I'm going to write is directly from this article, but boiled down for our Jekyll setup.  But, please, after you are done with my article--go back and read the Linode `Nginx Setup` article.
 
@@ -319,25 +424,70 @@ nano nginx.conf
 At the top of the file paste (`CTRL+SHIFT+V` pastes in Linux)
 
 ```
-http {
-    include       /etc/nginx/mime.types;
-    default_type  application/octet-stream;
+user www-data;
+worker_processes auto;
+pid /run/nginx.pid;
 
-    log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
-                      '$status $body_bytes_sent "$http_referer" '
-                      '"$http_user_agent" "$http_x_forwarded_for"';
-
-    access_log  /var/log/nginx/access.log  main;
-
-    sendfile        on;
-    #tcp_nopush     on;
-
-    keepalive_timeout  65;
-
-    #gzip  on;
-
-    include /etc/nginx/sites-enabled/*.conf;
+events {
+        worker_connections 768;
+        # multi_accept on;
 }
+
+http {
+
+        ##
+        # Basic Settings
+        ##
+
+        sendfile on;
+        tcp_nopush on;
+        tcp_nodelay on;
+        keepalive_timeout 65;
+        types_hash_max_size 2048;
+        # server_tokens off;
+
+        # server_names_hash_bucket_size 64;
+        # server_name_in_redirect off;
+
+        include /etc/nginx/mime.types;
+        default_type application/octet-stream;
+
+        ##
+        # SSL Settings
+        ##
+
+        ssl_protocols TLSv1 TLSv1.1 TLSv1.2; # Dropping SSLv3, ref: POODLE
+        ssl_prefer_server_ciphers on;
+
+        ##
+        # Logging Settings
+        ##
+
+        access_log /var/log/nginx/access.log;
+        error_log /var/log/nginx/error.log;
+
+        ##
+        # Gzip Settings
+        ##
+        gzip on;
+        gzip_disable "msie6";
+
+        gzip_vary on;
+        gzip_proxied any;
+        gzip_comp_level 6;
+        gzip_buffers 16 8k;
+        gzip_http_version 1.1;
+        gzip_types text/plain text/css application/json application/javascript text/xml application/xml application/xml+rss text/javascript application/vnd.ms-fontobjec$
+        gzip_min_length 256;
+
+        ##
+        # Virtual Host Configs
+        ##
+
+        include /etc/nginx/conf.d/*.conf;
+        include /etc/nginx/sites-enabled/*;
+}
+
 ```
 
 This sets up nginx to use hypter-text transfer protocol (HTTP).  These settings are pretty vanilla.  They go in all `nginx` server configurations.  However, notice the line `include /etc/nginx/sites-enabled/*.conf;`.  This tells `nginx` we want to include additional files which contain setup information.  Basicaly, every file in the `/etc/nginx/conf.d` directory.
@@ -365,7 +515,7 @@ server {
     listen         80 default_server;
     listen         [::]:80 default_server;
     server_name    45.233.1.68;
-    root           /var/www/my.website.name.com;
+    root           /var/www/html/my.website.name.com;
     index          index.html;
     try_files $uri /index.html;
 }
@@ -377,11 +527,120 @@ You need to replace `45.233.1.68` with the IP of _your_ server.  This will need 
 
 Next, `/var/www/my.website.name.com` is going to be the directory we create and put all the Jekyll files in.  They will be served to the world--saying how awesome you are.
 
-Speaking of which, let's go create that directory.
+To get all our changes to start we need to restart the `nginx daemon`.  In Linux a [daemon ](https://en.wikipedia.org/wiki/Daemon_(computing))is a program running in the background.
 
+Type
+```
+systemctl restart nginx.service
 ```
 
+Let's go create that main website directory.
+
+```
+mkdir /var/www/my.website.name.com
+cd /var/www/my.website.name.com
+ls
+```
+Empty.  Good deal.  This is where we are going to dump our Jekyll files soon.  Let's create a small html file so we will know when we are serving files out of this directory.
+
+Type
+```
+nano index.html
 ```
 
+Inside this file put
+```
+<h1>Ladvien's Lab is Awesome!</h1>
+```
+Do it...
+
+Alright, remember earlier how I said there was a light switch we had to enable for our server to be `on`.  Now's the time.
+
+Let's create a symbolic link from our `nginx.conf` file in the directory which will pick up any webserver configurations and run them.
+
+Type
+```
+cd /etc/nginx/sites-enabled
+ln -s /
+```
+
+sites-enabled
+```
+##
+# You should look at the following URL's in order to grasp a solid understanding
+# of Nginx configuration files in order to fully unleash the power of Nginx.
+# http://wiki.nginx.org/Pitfalls
+# http://wiki.nginx.org/QuickStart
+# http://wiki.nginx.org/Configuration
+#
+# Generally, you will want to move this file somewhere, and start with a clean
+# file but keep this around for reference. Or just disable in sites-enabled.
+#
+# Please see /usr/share/doc/nginx-doc/examples/ for more detailed examples.
+##
+
+# Default server configuration
+#
+
+# Expires map
+map $sent_http_content_type $expires {
+    default                    off;
+    text/html                  epoc;
+    text/css                   max;
+    application/javascript     max;
+    ~image/                    max;
+}
 
 
+server {
+        listen 80 default_server;
+        listen [::]:80 default_server;
+
+        expires $expires;
+
+        # SSL configuration
+        #
+        # listen 443 ssl default_server;
+        # listen [::]:443 ssl default_server;
+        #
+        # Note: You should disable gzip for SSL traffic.
+        # See: https://bugs.debian.org/773332
+        #
+        # Read up on ssl_ciphers to ensure a secure configuration.
+        # See: https://bugs.debian.org/765782
+        #
+        # Self signed certs generated by the ssl-cert package
+        # Don't use them in a production server!
+        #
+
+        # include snippets/snakeoil.conf;
+
+        root /var/www/html;
+
+        # Add index.php to the list if you are using PHP
+        index index.html index.htm index.nginx-debian.html;
+
+        server_name ladvien.com www.ladvien.com;
+        return 301 https://$server_name$request_uri;
+
+
+        location / {
+                # First attempt to serve request as file, then
+                # as directory, then fall back to displaying a 404.
+                try_files $uri $uri/ =404;
+        }
+
+        location ~ /.well-known {
+                allow all;
+        }
+
+        location ~*  /.(jpg|jpeg|png|gif|ico|css|js)$ {
+                expires 365d;
+        }
+
+        location ~*  /.(pdf)$ {
+                expires 30d;
+        }
+
+}
+```

@@ -387,7 +387,7 @@ In your file explorer, navigate to your website directory and enter the `_site` 
 
 Open this folder and then double click on the file `index.html`.  This should open your website locally in the browser.
 
-![jekyll_site_locally](https://ladvien.com/images/jekyll_site_locally.png)  
+![jekyll_site_locally](https://ladvien.com/images/local_jekyll.png)  
 
 
 

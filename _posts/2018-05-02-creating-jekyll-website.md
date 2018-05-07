@@ -6,7 +6,7 @@ series: Creating a Jekyll Website
 excerpt:
 tags: [jekyll]
 image: 
-    feature: 
+    feature: jekyll-feature.png
 comments: true
 custom_css:
 custom_js: 

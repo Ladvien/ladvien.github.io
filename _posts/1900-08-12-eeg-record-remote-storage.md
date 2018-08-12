@@ -81,6 +81,17 @@ After you hit Return it will prompt for your password
 
 ![cocoapods-installation](https://ladvien.com/images/cocoapods_installation.png)
 
+Now, let's setup a project folder.  This is main folder where all the iOS app code will live.  It's a bad habit, but I usually put mine on the Desktop.
+
+Open Xcode and Select
+![xcode-project-start](https://ladvien.com/images/xcode_project_start_1.png)
+
+Back in the terminal, type:
+```
+cd ~/Desktop/MindWaveJournaler
+```
+
+
 ### MindWaveJournaler-Bridging-Header.h
 {% highlight swift %}
 //

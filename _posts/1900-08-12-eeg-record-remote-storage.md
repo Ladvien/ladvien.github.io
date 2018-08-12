@@ -398,7 +398,7 @@ public class MindMobileEEGSample: NSObject {
     
     private func completePacket() -> Bool {
         
-        // blink is not checked, as it only updates when
+        // blink is not checked, as it only updates
         // on occurrence.
         
         if(theta        < 0 ||

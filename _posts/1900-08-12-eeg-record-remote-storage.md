@@ -70,12 +70,8 @@ Ok, let's get started!
 
 I'm going to assume you have Xcode installed.
 
-
+### ViewController.swift
 {% highlight swift %}
-
-// To interact with Node server.
-// https://stackoverflow.com/questions/32631184/the-resource-could-not-be-loaded-because-the-app-transport-security-policy-requi
-
 //
 //  ViewController.swift
 //  MindWaveJournaler
@@ -83,7 +79,6 @@ I'm going to assume you have Xcode installed.
 //  Created by Casey Brittain on 8/3/18.
 //  Copyright © 2018 Honeysuckle Hardware. All rights reserved.
 //
-
 
 import UIKit
 import CoreBluetooth
@@ -160,8 +155,7 @@ class ViewController: UIViewController, CBCentralManagerDelegate, MWMDelegate, M
     
     func storeSample(sample: Parameters) {
         Alamofire.request("http://ladvien.com:3000/eegsamples/", method: .post, parameters:  sample, encoding: JSONEncoding.default).responseJSON { response in
-            print(response)
-        }
+
     }
 
 }

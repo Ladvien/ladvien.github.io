@@ -25,5 +25,6 @@ To recap:
 * [MongoDB BI Connector Server](https://www.mongodb.com/products/bi-connector)
 * [Tableau Desktop Professional](https://www.tableau.com/products/desktop)
 
-The end result enables a visualizations of EEG samples per second.
+The end result is a system which could allow a remote EEG analyst to examine samples nearly in real time.
+
 ![eeg-visualization](https://ladvien.com/images/eeg_poc_tableau_viz.png)

@@ -155,9 +155,20 @@ Back in the same directory as the Podfile type:
 ```
 pod install
 ```
-You should CocoaPods do its thing with output much like below.
+You should see CocoaPods do its thing with output much like below.
 
 ![cocoapods-installed-alamofire](https://ladvien.com/images/alamofire_pod_installed.png)
+
+### Step 1.4: Install NeuroSky iOS SDK
+NeuroSky as a "Swift SDK."  Really, it's an Objective-C SDK which is "bridged" into Swift.  Essentialy, this means we won't be able to see what's going on the SDK, but we can use functions from the pre-compiled binaries.
+
+I've not been too impressed with NeuroSky's website.  Or the SDK, really.  It does the job, but not much more.  Anyway, the SDK is annoyingly behind a sign-up wall.
+
+* [NeuroSky iOS SDK](https://store.neurosky.com/products/ios-developer-tools-4)
+
+Visit the link above and click on "Add to Cart"
+
+![neurosky-sdk-sign-up](https://ladvien.com/images/neurosky-sdk-download-1.png)
 
 ### MindWaveJournaler-Bridging-Header.h
 {% highlight swift %}

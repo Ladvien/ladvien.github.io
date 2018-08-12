@@ -73,15 +73,13 @@ I'm going to assume you have Xcode installed.
 ### Step 1.1: Install CocoaPods
 [CocoaPods](https://guides.cocoapods.org/using/getting-started.html) is a package handler for Xcode.  We will be using it to install [Alamofire](https://github.com/Alamofire/Alamofire), which a Swift library for making HTTP requests.  We will need HTTP call support as we will call our server to store the EEG samples.
 
-To install CocoaPods we will install prerequisites [Homebrew](https://brew.sh/).  
 
-Installing Homebrew is pretty simple.  Open your terminal and paste the following:
 ```
-/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+sudo gem install cocoapods
 ```
-It will prompt you for the password, as it needs root access to setup correctly. Then, it clones Homebrew from Github and runs a script to set it up.  After a bit, you should end with "Installation Successful".
-![homebrew-installation](https://ladvien.com/images/homebrew_installation.png)
+After you hit Return it will prompt for your password
 
+![cocoapods-installation](https://ladvien.com/images/cocoapods_installation.png)
 
 ### MindWaveJournaler-Bridging-Header.h
 {% highlight swift %}
@@ -355,3 +353,19 @@ public class MindMobileEEGSample: NSObject {
 # Step 4: MongoDB BI Connector
 
 # Step 5: Connecting Tableau
+
+
+
+
+
+To install CocoaPods we will install prerequisites [Homebrew](https://brew.sh/).  
+
+Installing Homebrew is pretty simple.  Open your terminal and paste the following:
+```
+/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+```
+It will prompt you for the password, as it needs root access to setup correctly. Then, it clones Homebrew from Github and runs a script to set it up.  After a bit, you should end with "Installation Successful".
+
+![homebrew-installation](https://ladvien.com/images/homebrew_installation.png)
+
+Now Homebrew is setup, let's install CocoaPods

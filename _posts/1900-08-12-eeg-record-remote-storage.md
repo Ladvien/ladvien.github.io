@@ -7,7 +7,7 @@ excerpt:
 tags: [Electroencephalography, EEG, NeuroSky, iOS, NodeJS, MongoDB, Tableau]
 image: 
     feature: darius-bashar-529461-unsplash.jpg
-    credit: Photo by Darius Bashar
+    credit: Darius Bashar
 comments: true
 custom_css: 
 custom_js: 
@@ -16,6 +16,14 @@ custom_js:
 # Description
 This project takes brain wave readings from a MindMobile 2+, transmits them to an iOS app via Bluetooth LE.  The iOS app makes  calls to a remote Node server, which is a minimal REST API.  The Node server stores the data to a MongoDB server.  The MongoDB server is then exposed to business intelligence application use with MongoDB BI Connector.  Lastly, using Tableau Professional Desktop, the data is accessed and visualizations created.
 
-Whew.  To recap:
+Whew.  
 
-* 
+To recap:
+* [MindWave Mobile 2+](https://www.sparkfun.com/products/14758)
+* [iOS App](https://github.com/Ladvien/MindWaveJournaler) (tentatively named Mind Wave Journaler; Swift)
+* [REST Server](https://github.com/Ladvien/mind-wave-journal-server) (mind-wave-journaler; NodeJS)
+* [MongoDB BI Connector Server](https://www.mongodb.com/products/bi-connector)
+* [Tableau Desktop Professional](https://www.tableau.com/products/desktop)
+
+The end result enables a visualizations of EEG samples per second.
+![eeg-visualization](https://ladvien.com/images/eeg_poc_tableau_viz.png)

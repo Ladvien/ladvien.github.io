@@ -81,6 +81,7 @@ After you hit Return it will prompt for your password
 
 ![cocoapods-installation](https://ladvien.com/images/cocoapods_installation.png)
 
+### Step 1.2: Setup Xcode Project
 Now, let's setup a project folder.  This is main folder where all the iOS app code will live.  It's a bad habit, but I usually put mine on the Desktop.
 
 Open Xcode and select "Create a new Xcode proejct"
@@ -97,10 +98,12 @@ Let's call the project `MindWaveJournaler` and click "Next"
 Choose your Desktop as location for the project and click "Create"
 ![xcode-project-start](https://ladvien.com/images/xcode_project_start_4.png)
 
-
+### Step 1.3: Install Alamofire
 Back in the terminal, type:
+
 ```
 cd ~/Desktop/MindWaveJournaler
+
 ```
 
 

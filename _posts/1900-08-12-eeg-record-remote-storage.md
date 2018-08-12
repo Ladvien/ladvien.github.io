@@ -99,13 +99,65 @@ Choose your Desktop as location for the project and click "Create"
 ![xcode-project-start](https://ladvien.com/images/xcode_project_start_4.png)
 
 ### Step 1.3: Install Alamofire
-Back in the terminal, type:
+You've created a Project Folder, but we have to setup the project folder to be used with CocoaPods.  After, we will use CocoaPods to install Alamofire.
 
+Back in the terminal, type:
 ```
 cd ~/Desktop/MindWaveJournaler
+pod init
+```
+This creates a `Podfile` in the root folder of our project.  We can list CocoaPod packages in the Podfile and run `pod install` in the same directory, this will cause CocoaPods to install all the packages we listed.
 
+Sadly, we are really only doing this for Alamofire right now.  But, later, when we start building on to this app it will allow us to quickly access third-party frameworks.
+
+Ok, back to typing:
+```
+open -a Xcode Podfile
+```
+This will open the Podfile for editing in Xcode.  Now let's insert the our desired pod information. 
+
+Copy information below and paste it into your file:
+```
+# Uncomment the next line to define a global platform for your project
+platform :ios, '11.4'
+
+target 'MindWaveJournaler' do
+  # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
+  use_frameworks!
+
+  # Pods for MindWaveJournaler
+  pod 'Alamofire', '~> 4.7'
+
+  target 'MindWaveJournalerTests' do
+    inherit! :search_paths
+    # Pods for testing
+  end
+
+  target 'MindWaveJournalerUITests' do
+    inherit! :search_paths
+    # Pods for testing
+  end
+
+end
 ```
 
+You may notice the only changes we made were
+```
+platform :ios, '11.4'
+...
+pod 'Alamofire', '~> 4.7'
+```
+These lines tell CocoaPods which version of iOS we are targetting with our app (this will silence a warning, but shouldn't be required).  The other, is telling CocoaPods which version of Alamofire we'd like to use on this project.
+
+Ok, now let's run this Podfile.
+
+Back in the same directory as the Podfile type:
+```
+pod install
+```
+You should CocoaPods do its thing with output much like below.
+
+![cocoapods-installed-alamofire](https://ladvien.com/images/alamofire_pod_installed.png)
 
 ### MindWaveJournaler-Bridging-Header.h
 {% highlight swift %}

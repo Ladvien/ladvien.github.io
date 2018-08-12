@@ -87,8 +87,14 @@ Open Xcode and select "Create a new Xcode proejct"
 
 ![xcode-project-start](https://ladvien.com/images/xcode_project_start_1.png)
 
-Then select
+Then select "Single View App" and click "Next"
+
 ![xcode-project-start](https://ladvien.com/images/xcode_project_start_2.png)
+
+Let's call the project `MindWaveJournaler` and click "Next"
+![xcode-project-start](https://ladvien.com/images/xcode_project_start_3.png)
+
+
 
 Back in the terminal, type:
 ```

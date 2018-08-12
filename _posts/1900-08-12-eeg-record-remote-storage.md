@@ -170,6 +170,11 @@ Visit the link above and click on "Add to Cart"
 
 ![neurosky-sdk-sign-up](https://ladvien.com/images/neurosky-sdk-download-1.png)
 
+Then "Proceed to Checkout"
+
+![neurosky-sdk-sign-up](https://ladvien.com/images/neurosky-sdk-download-2.png)
+
+
 ### MindWaveJournaler-Bridging-Header.h
 {% highlight swift %}
 //

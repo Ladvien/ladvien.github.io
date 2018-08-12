@@ -83,9 +83,12 @@ After you hit Return it will prompt for your password
 
 Now, let's setup a project folder.  This is main folder where all the iOS app code will live.  It's a bad habit, but I usually put mine on the Desktop.
 
-Open Xcode and Select
+Open Xcode and select "Create a new Xcode proejct"
 
 ![xcode-project-start](https://ladvien.com/images/xcode_project_start_1.png)
+
+Then select
+![xcode-project-start](https://ladvien.com/images/xcode_project_start_2.png)
 
 Back in the terminal, type:
 ```

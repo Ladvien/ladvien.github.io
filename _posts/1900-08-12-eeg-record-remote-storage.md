@@ -174,6 +174,15 @@ Then "Proceed to Checkout"
 
 ![neurosky-sdk-sign-up](https://ladvien.com/images/neurosky-sdk-download-2.png)
 
+Lastly, you have to enter your "Billing Information."  Really, this is only your email address, last name, street address, city, and zip.
+
+(Really NeuroSky?  This is very 1990.)
+
+Eh, I made mine up.
+
+Anyway, after your enter information click, then click "Continue to PayPal" (What? I just provided my information...)  You should be rewarded with a download link.
+
+![neurosky-sdk-sign-up](https://ladvien.com/images/neurosky-sdk-download-5.png)
 
 ### MindWaveJournaler-Bridging-Header.h
 {% highlight swift %}

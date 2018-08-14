@@ -207,7 +207,8 @@ But first, another caveat.  CoreBluetooth, Apple's Bluetooth LE Framework, _only
 
 ![eeg-apple-workspace](https://ladvien.com/images/mind-wave-journaler-project-setup-2.png)
 
-
+Moving on.  Click on the yellow warning.  Then click on the warning in the sidebar.  This should prompt
+![eeg-apple-workspace-resolve-warning](https://ladvien.com/images/mind-wave-journaler-project-setup-3.png)
 
 ### MindWaveJournaler-Bridging-Header.h
 {% highlight swift %}

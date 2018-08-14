@@ -182,9 +182,20 @@ Lastly, you have to enter your "Billing Information."  Really, this is only your
 
 Eh, I made mine up.
 
-Anyway, after your enter information click, then click "Continue to PayPal" (What? I just provided my information...)  You should be rewarded with a download link.
+Anyway, after your enter information click, then click "Continue to PayPal" (What? I just provided my information...)  You should be rewarded with a download link.  Click it and download the files.
+
 
 ![neurosky-sdk-sign-up](https://ladvien.com/images/neurosky-sdk-download-5.png)
+
+Unzip the files and navigate `lib` folder
+```
+iOS Developer Tools 4.8 -> MWM_Comm_SDK_for_iOS_V0.2.9 -> lib
+```
+Copy all files from the `lib` folder into the main directory of the `MindWaveJournaler` project folders.
+
+![neurosky-sdk-lib](https://ladvien.com/images/neurosky-sdk-download-7.png)
+
+
 
 ### MindWaveJournaler-Bridging-Header.h
 {% highlight swift %}

@@ -98,7 +98,7 @@ Let's call the project `MindWaveJournaler` and click "Next"
 Choose your Desktop as location for the project and click "Create"
 ![xcode-project-start](https://ladvien.com/images/xcode_project_start_4.png)
 
-### Step 1.3: Install Alamofire
+### Step 1.3: Development Environment Setup
 You've created a Project Folder, but we have to setup the project folder to be used with CocoaPods.  After, we will use CocoaPods to install Alamofire.
 
 Back in the terminal, type:
@@ -195,7 +195,11 @@ Copy all files from the `lib` folder into the main directory of the `MindWaveJou
 
 ![neurosky-sdk-lib](https://ladvien.com/images/neurosky-sdk-download-7.png)
 
+### Step 1.5: Workspace Setup
+CocoaPods works by creating a `.xcworkspace` file.  It contains all the information needed to compile your project _with_ all of the CocoaPod packages installed.  In our case the file will be called `MindWaveJournaler.xcworkspace`.  And every time you want to work on your project, you must open it with this specific file.
 
+It can be a bit confusing because Xcode created a `.xcodeproj` file which is tempting to click on.
+![xcworkspace](https://ladvien.com/mind-wave-journaler-project-setup-1.png)
 
 ### MindWaveJournaler-Bridging-Header.h
 {% highlight swift %}

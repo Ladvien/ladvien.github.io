@@ -203,8 +203,9 @@ It can be a bit confusing because Xcode created a `.xcodeproj` file which is tem
 
 Go ahead and open the `MindWaveJournaler.xcworkspace` file.  The workspace should open with one warning, which we will resolve shortly.  
 
-But first, another caveat.  CoreBluetooth, Apple's Bluetooth LE Framework, _only_ works when compiled for and run on an actual device.  *It does *not* work in the iOS Simulator*
-(https://ladvien.com/images/mind-wave-journaler-project-setup-1.png)
+But first, another caveat.  CoreBluetooth, Apple's Bluetooth LE Framework, _only_ works when compiled for and run on an actual device.  *It does *not* work in the iOS Simulator.*  Once upon a time it did, if your Mac had the hardware, however, my version of the story is Apple didn't like having to support the confusion and dropped it.
+
+![eeg-apple-workspace](https://ladvien.com/images/mind-wave-journaler-project-setup-2.png)
 
 
 

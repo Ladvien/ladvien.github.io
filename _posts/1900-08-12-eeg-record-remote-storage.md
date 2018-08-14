@@ -199,7 +199,14 @@ Copy all files from the `lib` folder into the main directory of the `MindWaveJou
 CocoaPods works by creating a `.xcworkspace` file.  It contains all the information needed to compile your project _with_ all of the CocoaPod packages installed.  In our case the file will be called `MindWaveJournaler.xcworkspace`.  And every time you want to work on your project, you must open it with this specific file.
 
 It can be a bit confusing because Xcode created a `.xcodeproj` file which is tempting to click on.
-![xcworkspace](https://ladvien.com/mind-wave-journaler-project-setup-1.png)
+![xcworkspace](https://ladvien.com/images/mind-wave-journaler-project-setup-1.png)
+
+Go ahead and open the `MindWaveJournaler.xcworkspace` file.  The workspace should open with one warning, which we will resolve shortly.  
+
+But first, another caveat.  CoreBluetooth, Apple's Bluetooth LE Framework, _only_ works when compiled for and run on an actual device.  *It does *not* work in the iOS Simulator*
+(https://ladvien.com/images/mind-wave-journaler-project-setup-1.png)
+
+
 
 ### MindWaveJournaler-Bridging-Header.h
 {% highlight swift %}

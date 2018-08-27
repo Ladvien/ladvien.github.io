@@ -249,11 +249,11 @@ Name the file `YourProjectName-Bridge-Header` and **make sure the file is saved 
 
 The header file should automatically open.  Copy and paste the following to the bottom of the header file.
 
-{% highlight swift %}
+```
 #import "MWMDevice.h"
 #import "MWMDelegate.h"
 #import "MWMEnum.h"
-{% endhighlight %}
+```
 
 My entire file looked like this once done.
 

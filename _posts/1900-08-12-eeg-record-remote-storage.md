@@ -278,8 +278,7 @@ My entire file looked like this once done.
 #import "MWMEnum.h"
 {% endhighlight %}
 
-Let's tell the Swift compile we have a header file.  In Xcode go to 
-
+Let's tell the Swift compile we have a header file.  In Xcode go to `Project File -> Build Settings -> All`  then in the search box type `Swift Compiler - General`  (if you don't include the hyphen and spaces it wont find it). 
 
 ![bridge-header-file](https://ladvien.com/images/bridge-header-setup-04.png)
 

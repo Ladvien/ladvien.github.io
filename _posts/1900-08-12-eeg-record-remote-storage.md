@@ -235,9 +235,14 @@ There's a few other bits of housekeeping, though.  As I mentioned earlier, the M
 
 * [Manually Creating Bridging Header](https://stackoverflow.com/a/39615171)
 
-Start by creating the bridge header file.  Go to `File` 
+Start by creating the bridge header file.  Go to `File -> New -> File...`
 
 ![bridge-header-file](https://ladvien.com/images/bridge-header-setup-01.png)
+
+Then select `Header` and click `Next`.
+
+![bridge-header-file](https://ladvien.com/images/bridge-header-setup-02.png)
+
 
 ### MindWaveJournaler-Bridging-Header.h
 {% highlight swift %}

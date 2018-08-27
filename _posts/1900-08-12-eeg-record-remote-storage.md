@@ -243,13 +243,21 @@ Then select `Header` and click `Next`.
 
 ![bridge-header-file](https://ladvien.com/images/bridge-header-setup-02.png)
 
-Name the file `YourProjectName-Bridge-Header` and **make sure the file is saved to the same folder which contains the `.xcworkspace` file.**
+Name the file `YourProjectName-Bridge-Header` and **make sure the file is saved to the same folder which contains the `.xcworkspace` file**, then click `Create`.
 
 ![bridge-header-file](https://ladvien.com/images/bridge-header-setup-03.png)
 
+The header file should automatically open.  Copy and paste the following to the bottom of the header file.
 
+{% highlight swift %}
+#import "MWMDevice.h"
+#import "MWMDelegate.h"
+#import "MWMEnum.h"
+{% endhighlight %}
 
-### MindWaveJournaler-Bridging-Header.h
+My entire file looked like this once done.
+
+#### MindWaveJournaler-Bridging-Header.h
 {% highlight swift %}
 //
 //  MindWaveJournaler-Bridging-Header.h

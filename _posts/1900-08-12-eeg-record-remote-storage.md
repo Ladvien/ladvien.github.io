@@ -278,6 +278,11 @@ My entire file looked like this once done.
 #import "MWMEnum.h"
 {% endhighlight %}
 
+Let's tell the Swift compile we have a header file.  In Xcode go to 
+
+
+![bridge-header-file](https://ladvien.com/images/bridge-header-setup-04.png)
+
 ### ViewController.swift
 {% highlight swift %}
 //

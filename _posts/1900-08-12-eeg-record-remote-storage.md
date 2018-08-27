@@ -214,8 +214,8 @@ Click `Perform Changes`.
 
 This should silence the warning and make your project error free.  Go ahead and hit `Play` button and let it compile to the simulator (we aren't testing the Bluetooth, so it's ok).  Everything should compile correctly, if not, just let me know the specifics of your problems in the comments.
 
-### Step 1.5: Internal Workspace Setup
-There are still a few tweaks we need to make to the Xcode workspace to get everything work.  
+### Step 1.5: Enable Secure HTTP Request
+There are still a few tweaks we need to make to the Xcode workspace to get everything working.  
 
 First, open the `ViewController.swift` file and add `import Alamofire` right below `import UIKit`.  If auto-complete lists Alamofire as an option you know the workspace is detecting its presence.  Good deal.
 
@@ -223,11 +223,21 @@ Now, for Alamofire to be able to securely make HTTP request an option needs to b
 
 * [The resource could not be loaded](https://stackoverflow.com/a/32631185/2108441)
 
-Thanks, buddy. 
+Thanks, buddy.
 
 Ok, following his instructions open up the `Info.plist` file in your MindWaveJournaler folder.  Now add an entry by right-clicking and selecting `Add Row`.  Change the `Application Category` to `NSAppTransportSecurity` and make sure it's set as `dictionary`.  Now, click the plus sign by the new dictionary and set this attribute as `NSAllowsArbitraryLoads`, setting the type `bool`, and the value as `YES`.
 
 ![eeg-apple-workspace-add-secure-layer](https://ladvien.com/images/mind-wave-journaler-project-setup-4.png)
+
+### Step 1.5: Setup Objective-C Bridge Header for MindWave SDK
+
+There's a few other bits of housekeeping, though.  As I mentioned earlier, the MindwAve SDK is in an Objective-C precompiled binary.  It is usable in a Swift project, but requires setting up a "bridge header" file.
+
+* [Manually Creating Bridging Header](https://stackoverflow.com/a/39615171)
+
+Start by creating the bridge header file.  Go to `File` 
+
+![bridge-header-file](https://ladvien.com/images/bridge-header-setup-01.png)
 
 ### MindWaveJournaler-Bridging-Header.h
 {% highlight swift %}

@@ -282,6 +282,10 @@ Let's tell the Swift compile we have a header file.  In Xcode go to `Project Fil
 
 ![bridge-header-file](https://ladvien.com/images/bridge-header-setup-04.png)
 
+Double click under the name of 
+
+![bridge-header-file](https://ladvien.com/images/bridge-header-setup-05.png)
+
 ### ViewController.swift
 {% highlight swift %}
 //

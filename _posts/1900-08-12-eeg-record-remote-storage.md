@@ -243,7 +243,7 @@ Then select `Header` and click `Next`.
 
 ![bridge-header-file](https://ladvien.com/images/bridge-header-setup-02.png)
 
-Name the file `YourProjectName-Bridge-Header` and **make sure the file is saved to the same folder which contains the `.xcworkspace` file**, then click `Create`.
+Name the file `YourProjectName-Bridging-Header` and **make sure the file is saved to the same folder which contains the `.xcworkspace` file**, then click `Create`.
 
 ![bridge-header-file](https://ladvien.com/images/bridge-header-setup-03.png)
 

@@ -282,8 +282,13 @@ Let's tell the Swift compile we have a header file.  In Xcode go to `Project Fil
 
 ![bridge-header-file](https://ladvien.com/images/bridge-header-setup-04.png)
 
-Double click under the name of 
+Double-click on the line `Objective-C Bridging Header` directly underneath the name of your project (see red box in image).  Copy and paste the following into the box and click off to save the change.
 
+```
+$(PROJECT_DIR)/$(PROJECT_NAME)-Bridging-Header.h
+```
+
+This creates a relative path to your Bridging-Header file.  In a little bit we are going to try to compile, if you get errors around this file not being found, then it's probably not named per our naming scheme (`YourProjectName-Bridging-Header`) or it wasn't saved in the same folder as the `.xworkspace` file.  No worries, if you have troubles just leave me a comment below.
 ![bridge-header-file](https://ladvien.com/images/bridge-header-setup-05.png)
 
 ### ViewController.swift

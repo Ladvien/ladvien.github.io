@@ -321,6 +321,17 @@ Watch for autocomplete detecting the existince of the MindWave SDK
 
 ![mindwave-sdk](https://ladvien.com/images/mindwave-sdk-5.png)
 
+Now for the true test, `Compile` and `Run`.  But, before we do, **please be aware--this will only work on an actual iOS device.  If you try to run it in the iOS simulator it will fail.**  It actually fails on two accounts, first, `CoreBluetooth` will not work in the iOS simulator, second, the MindWave SDK binaries were compiled specifically ARM architecture.
+
+Ok! Enough preamble! Connect and select your iOS device and hit `Run`!
+
+![mindwave-app-run](https://ladvien.com/images/mindwave-app-run.png)
+
+If all goes well you should see two things.  A blank white screen appear on your phone and concerning message in the Xcode console.  
+
+![corebluetooth-error-api-misuse](https://ladvien.com/images/corebluetooth-error-1.png)
+
+If you get any other errors, let's chat.  I help if I can.
 
 ### ViewController.swift
 {% highlight swift %}

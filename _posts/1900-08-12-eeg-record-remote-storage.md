@@ -304,7 +304,7 @@ When you add the SDK, Xcode should automatically detect the binary file (`libMWM
 
 ![mindwave-sdk](https://ladvien.com/images/mindwave-sdk-3.png)
 
-It needs to be linked under the `Build Phases` tab as well, under
+It needs to be linked under the `Build Phases` tab as well, under `Linked Frameworks and Libraries`.
 
 ![mindwave-sdk](https://ladvien.com/images/mindwave-sdk-4.png)
 

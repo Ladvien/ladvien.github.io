@@ -294,8 +294,13 @@ This creates a relative path to your Bridging-Header file.  In a little bit we a
 
 One last thing to do before we're ready to code.  We still need to import the MindWave SDK into our project.
 
-![mindwave-sdk](https://ladvien.com/images/mindwave-sdk-1.png)
-![mind-wave](https://ladvien.com/images/mindwave-sdk-1.png)
+![bridge-header-file](https://ladvien.com/images/mindwave-sdk-1.png)
+
+Right click on your project file and select `New Group`.  Name the group `MindWave SDK`.  Now right click on the folder you created and select `Add Files to "MindWave SDK"...`.  Navigate to the `lib` folder containing the MindWave SDK and select all files inside it.
+
+When you add the SDK, Xcode should automatically detect the binary file (`libMWMSDK.a`) and create a link to it.  But, let's make sure, just in case.  Click on your project file, then go to the `General` tab.
+
+![mindwave-sdk](https://ladvien.com/images/mindwave-sdk-4.png)
 
 
 ### ViewController.swift

@@ -308,6 +308,20 @@ It needs to be linked under the `Build Phases` tab as well, under `Linked Framew
 
 ![mindwave-sdk](https://ladvien.com/images/mindwave-sdk-4.png)
 
+That's it.  Let's test and make sure your app is finding the SDK appropriately.  
+
+Open the `ViewController` file and under `viewDidLoad()` after the existing code, type:
+
+```
+let mwDevice = MWMDevice()
+mwDevice.scanDevice()
+```
+
+Watch for autocomplete detecting the existince of the MindWave SDK
+
+![mindwave-sdk](https://ladvien.com/images/mindwave-sdk-5.png)
+
+
 ### ViewController.swift
 {% highlight swift %}
 //

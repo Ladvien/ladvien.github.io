@@ -298,10 +298,15 @@ One last thing to do before we're ready to code.  We still need to import the Mi
 
 Right click on your project file and select `New Group`.  Name the group `MindWave SDK`.  Now right click on the folder you created and select `Add Files to "MindWave SDK"...`.  Navigate to the `lib` folder containing the MindWave SDK and select all files inside it.
 
+![mindwave-sdk](https://ladvien.com/images/mindwave-sdk-2.png)
+
 When you add the SDK, Xcode should automatically detect the binary file (`libMWMSDK.a`) and create a link to it.  But, let's make sure, just in case.  Click on your project file, then go to the `General` tab.
 
-![mindwave-sdk](https://ladvien.com/images/mindwave-sdk-4.png)
+![mindwave-sdk](https://ladvien.com/images/mindwave-sdk-3.png)
 
+It needs to be linked under the `Build Phases` tab as well, under
+
+![mindwave-sdk](https://ladvien.com/images/mindwave-sdk-4.png)
 
 ### ViewController.swift
 {% highlight swift %}

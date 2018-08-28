@@ -289,7 +289,12 @@ $(PROJECT_DIR)/$(PROJECT_NAME)-Bridging-Header.h
 ```
 
 This creates a relative path to your Bridging-Header file.  In a little bit we are going to try to compile, if you get errors around this file not being found, then it's probably not named per our naming scheme (`YourProjectName-Bridging-Header`) or it wasn't saved in the same folder as the `.xworkspace` file.  No worries, if you have troubles just leave me a comment below.
+
 ![bridge-header-file](https://ladvien.com/images/bridge-header-setup-05.png)
+
+One last thing to do before we're ready to code.  We still need to import the MindWave SDK into our project.
+
+![mindwave-sdk](https://ladvien.com/images/mindwave-sdk-1.png)
 
 ### ViewController.swift
 {% highlight swift %}

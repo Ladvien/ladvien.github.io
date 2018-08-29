@@ -324,7 +324,7 @@ Watch for autocomplete detecting the existince of the MindWave SDK
 
 Now for the true test, `Compile` and `Run`.  But, before we do, **please be aware--this will only work on an actual iOS device.  If you try to run it in the iOS simulator it will fail.**  It actually fails on two accounts, first, `CoreBluetooth` will not work in the iOS simulator, second, the MindWave SDK binaries were compiled specifically ARM architecture.
 
-Ok! Enough preamble! Connect and select your iOS device and hit `Run`!
+Ok! Enough preamble. Connect and select your iOS device and hit `Run`.
 
 ![mindwave-app-run](https://ladvien.com/images/mindwave-app-run-1.png)
 

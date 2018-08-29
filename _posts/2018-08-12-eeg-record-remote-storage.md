@@ -8,6 +8,7 @@ tags: [Electroencephalography, EEG, NeuroSky, iOS, NodeJS, MongoDB, Tableau]
 image: 
     feature: darius-bashar-529461-unsplash.jpg
     credit: Darius Bashar
+    thumbnail: mindwave-journaler-thumbnail.png
 comments: true
 custom_css: 
 custom_js: 

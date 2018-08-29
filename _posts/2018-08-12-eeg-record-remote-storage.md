@@ -334,6 +334,6 @@ If all goes well you should see two things.  A blank white screen appear on your
 
 The `CoreBluetooth` error has to do with firing up the iOS Bluetooth services _without_ checking to make sure the iOS BLE is turned on and ready to go.  This is a good thing, it probably means the MindWave SDK has been foudn and is functioning properly.
 
-If you get any other errors, let's chat.  I help if I can.
+If you get any other errors, let's chat.  I'll help if I can.
 
 This is part of a series, which I'm writing with care as I've time.  I'll get the next part out ASAP.

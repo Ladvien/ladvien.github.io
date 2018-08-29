@@ -326,7 +326,7 @@ Now for the true test, `Compile` and `Run`.  But, before we do, **please be awar
 
 Ok! Enough preamble! Connect and select your iOS device and hit `Run`!
 
-![mindwave-app-run](https://ladvien.com/images/mindwave-app-run.png)
+![mindwave-app-run](https://ladvien.com/images/mindwave-app-run-1.png)
 
 If all goes well you should see two things.  A blank white screen appear on your phone and concerning message in the Xcode console.  
 

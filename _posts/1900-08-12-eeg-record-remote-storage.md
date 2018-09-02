@@ -84,7 +84,7 @@ mongo
 ```
 
 You should get the following:
-{% highlight bash %}
+```
 root@localhost:~# mongo
 MongoDB shell version v4.0.2
 connecting to: mongodb://127.0.0.1:27017
@@ -115,4 +115,4 @@ To enable free monitoring, run the following command: db.enableFreeMonitoring()
 To permanently disable this reminder, run the following command: db.disableFreeMonitoring()
 ---
 >
-{% endhighlight %}
+```

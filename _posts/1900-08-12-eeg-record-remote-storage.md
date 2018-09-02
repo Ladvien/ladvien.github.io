@@ -116,3 +116,41 @@ To permanently disable this reminder, run the following command: db.disableFreeM
 ---
 >
 ```
+
+This is good.  It means Mongo is up and running.  Notice, it is listening on `127.0.0.1:27017`.  If you try to access the database from any network, other than locally, it will refuse.  The plan, to have NodeJS connect to the MongoDB database locally.  Then, will send all of our data to Node and let it handle security.
+
+In the Mongo command line type:
+```
+quit()
+```
+
+And hit enter.  This should bring you back to the Linux command prompt.
+
+A few notes on `MongoDB` on Ubuntu.
+
+* The congfiguration file is located at `/etc/mongod.conf`
+* Log file is at `/var/log/mongodb/mongod.log`
+* The database is stored at `/var/lib/mongodb`, but this can be changed in the config file.
+
+Oh, and one last bit.  Still at the Linux command prompt type:
+
+```
+sudo systemctl enable mongod
+```
+
+You should get back
+```
+Created symlink from /etc/systemd/system/multi-user.target.wants/mongod.service to /lib/systemd/system/mongod.service.
+```
+
+This setup a symlink which will cause Linux to load mongod every time it boots--you won't need to manually start it.
+
+Next, NodeJS.
+
+## Install NodeJS
+
+Type
+```
+sudo apt-get install nodejs -y
+```
+This should install `NodeJS`, and with it, the `npm` package manager.

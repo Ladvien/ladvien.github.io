@@ -153,4 +153,27 @@ Type
 ```
 sudo apt-get install nodejs -y
 ```
-This should install `NodeJS`, and with it, the `npm` package manager.
+This should install `NodeJS`, but we also need the Node Package Managers `npm`.
+
+```
+sudo apt-get install npm -y
+```
+
+I've already created a basic Node project, which we'll be able to grab from my Github account.  
+
+If you don't already have git installed, let's do it now.
+```
+sudo apt-get install git -y
+```
+
+Now, grab the Noder server I built.
+```
+git clone https://github.com/Ladvien/mind-wave-journal-server.git
+cd mind-wave-journal-server/
+```
+
+Install all the needed Node packages.
+```
+npm install
+```
+This should download all the packages needed to run the little server program I wrote to store the EEG data into the Mongo database.

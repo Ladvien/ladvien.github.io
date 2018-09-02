@@ -147,7 +147,7 @@ This setup a symlink which will cause Linux to load mongod every time it boots--
 
 Next, NodeJS.
 
-## Install NodeJS
+## 3. Install NodeJS and npm
 
 Type
 ```
@@ -159,6 +159,43 @@ This should install `NodeJS`, but we also need the Node Package Managers `npm`.
 sudo apt-get install npm -y
 ```
 
+Let's upgrade `npm`.  This is important, as the `mind-wave-journal-server` depends on recent versions of several packages that are not accessible to earlier versions of `npm`.
+
+The following commands should prepare `npm` for upgrading, then upgrade.
+```
+sudo npm cache clean -f
+sudo npm install -g n
+sudo n stable
+sudo n latest
+```
+
+Let's reboot the server to make sure all of the upgrades are in place.
+
+```
+sudo reboot now
+```
+When the server boots back up, `ssh` back in.
+
+Check and make sure your `mongod` is still running
+```
+mongo
+```
+If `mongo` doesn't start, then revisit step 2.
+
+Let's check our `node` and `npm` versions.
+
+```
+node -v
+```
+I'm running `node` v10.9.0
+
+```
+npm -v
+```
+I'm running `npm` v6.2.0
+
+
+## 4. Clone, Install, and Run the mind-wave-journal-server
 I've already created a basic Node project, which we'll be able to grab from my Github account.  
 
 If you don't already have git installed, let's do it now.
@@ -177,3 +214,4 @@ Install all the needed Node packages.
 npm install
 ```
 This should download all the packages needed to run the little server program I wrote to store the EEG data into the Mongo database.
+

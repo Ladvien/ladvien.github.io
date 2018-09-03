@@ -314,3 +314,7 @@ Lastly, select `Body`, then `raw` and enter the following JSON into the text are
 And then! Hit `Send`
 
 ![create-request-postman-chrome-app](https://ladvien.com/images/postman-8.png)
+
+If all goes well, then you should get a similar response in the Postman response section
+
+![create-request-postman-chrome-app](https://ladvien.com/images/postman-9.png)

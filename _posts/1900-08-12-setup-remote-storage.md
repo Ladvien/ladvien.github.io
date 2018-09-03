@@ -310,3 +310,7 @@ Lastly, select `Body`, then `raw` and enter the following JSON into the text are
    "time":4
 }
 {% endhighlight %}
+
+And then! Hit `Send`
+
+![create-request-postman-chrome-app](https://ladvien.com/images/postman-8.png)

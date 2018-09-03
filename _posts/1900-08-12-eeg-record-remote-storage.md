@@ -240,3 +240,7 @@ Head over to the Chrome app store:
 * [Postman Chrome App](https://chrome.google.com/webstore/detail/postman/fhbjgbiflinjbdggehcddcbncdddomop?hl=en)
 
 ![add-postman-chrome-app](https://ladvien.com/images/postman-1.png)
+
+After you add the Postman app it should redirect you to your Chrome applications.  Click on the Postman icon.
+
+![run-postman-chrome-app](https://ladvien.com/images/postman-2.png)

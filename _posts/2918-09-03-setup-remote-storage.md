@@ -5,6 +5,7 @@ desription: Setting up MongoDB and NodeJS to record EEG readings.
 categories: data
 excerpt:
 tags: [Electroencephalography, EEG, NeuroSky, iOS, NodeJS, MongoDB]
+series: MindWave Mobile 2+
 image: 
     feature: darius-bashar-529461-unsplash.jpg
     credit: Darius Bashar

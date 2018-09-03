@@ -249,7 +249,12 @@ Your choice, but I skipped the sign-up option for now.
 
 ![skipped-signup-postman-chrome-app](https://ladvien.com/images/postman-3.png)
 
-The post of Postman, in a nutshell, we are going to use it to create POST requests and send them to the `mind-wave-journal-server` to make sure it's ready for the iOS app to start making POST requests, saving the EEG data to our Mongo server.
 
 Select `Create a Request`
 ![skipped-signup-postman-chrome-app](https://ladvien.com/images/postman-4.png)
+
+The purpose of Postman, in a nutshell, we are going to use it to create POST requests and send them to the `mind-wave-journal-server` to make sure it's ready for the iOS app to start making POST requests, saving the EEG data to our Mongo server.
+
+Let's create our first test POST request.  Start by naming the request `Test eegsamples`.  Create a folder to put the new request in, I named it `mind-wave-journal-server`.  Then click
+
+![create-request-postman-chrome-app](https://ladvien.com/images/postman-5.png)

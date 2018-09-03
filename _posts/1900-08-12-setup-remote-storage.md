@@ -289,3 +289,25 @@ http://your_ip_address:8080/eegsamples
 ```
 
 ![create-request-postman-chrome-app](https://ladvien.com/images/postman-6.png)
+
+No select the `Headers` section and add the `Content Type: application/json`
+
+![create-request-postman-chrome-app](https://ladvien.com/images/postman-7.png)
+
+
+
+{% highlight json %}
+{  
+   "highBeta":5,
+   "lowGamma":6,
+   "theta":55,
+   "lowAlpha":2,
+   "highAlpha":3,
+   "lowBeta":4,
+   "highGamma":7,
+   "blink":55,
+   "attention":8,
+   "meditation":9,
+   "time":4
+}
+{% endhighlight %}

@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Recording Brain Waves -- Mongo Database
+title: Recording Brain Waves -- Mongo Database with a NodeJS API
 desription: Setting up MongoDB and NodeJS to record EEG readings.
 categories: data
 excerpt:
@@ -318,3 +318,16 @@ And then! Hit `Send`
 If all goes well, then you should get a similar response in the Postman response section
 
 ![create-request-postman-chrome-app](https://ladvien.com/images/postman-9.png)
+
+Notice, the response is similar to what we sent.  However, there is the additional `_id`.  This is great.  It is the id assigned to the by MongoDB when the data is entered.  In short, it means it successfully saved to the database.
+
+## 6. Now What?
+
+Several caveats.
+
+First, each time you restart your server you will manually need to start your `mind-waver-journal-server`.  You can turn it into a Linux service and `enable` it.  If this interests anyone, let me know in the comments and I'll add it.
+
+Second, notice I don't currently have a way to retrieve data from the MongDB.  The easiest way will probably be using [Robot 3T](https://robomongo.org/).  Like the first caveat, if anyone is interested let me know and I'll add instructions.  Otherwise, this series will stay on track to setup a Mongo BI connection to the database for viewing in Tableau (eh, gross).
+
+Your Node server is ready to be called by the iOS app.  In the next article I'll return to building the MindWaveJournal app in iOS.
+

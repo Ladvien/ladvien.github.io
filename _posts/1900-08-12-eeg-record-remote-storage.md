@@ -239,3 +239,4 @@ Head over to the Chrome app store:
 
 * [Postman Chrome App](https://chrome.google.com/webstore/detail/postman/fhbjgbiflinjbdggehcddcbncdddomop?hl=en)
 
+![add-postman-chrome-app](https://ladvien.com/images/postman-1.png)

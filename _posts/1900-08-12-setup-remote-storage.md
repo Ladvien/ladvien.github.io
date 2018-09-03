@@ -294,8 +294,7 @@ No select the `Headers` section and add the `Content Type: application/json`
 
 ![create-request-postman-chrome-app](https://ladvien.com/images/postman-7.png)
 
-
-
+Lastly, select `Body`, then `raw` and enter the following JSON into the text area:
 {% highlight json %}
 {  
    "highBeta":5,

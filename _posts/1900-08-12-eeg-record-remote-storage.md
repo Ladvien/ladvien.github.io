@@ -215,3 +215,27 @@ npm install
 ```
 This should download all the packages needed to run the little server program I wrote to store the EEG data into the Mongo database.
 
+Let's run the `mind-wave-journal-server`.  
+```
+node server/server.js
+```
+
+This should be followed with:
+```
+root@localhost:~/mind-wave-journal-server# node server/server.js 
+(node:1443) DeprecationWarning: current URL string parser is deprecated, and will be removed in a future version. To use the new parser, pass option { useNewUrlParser: true } to MongoClient.connect.
+Started on port 8080
+```
+
+## 5. Testing mind-wave-journal-server with Postman
+
+Now, we are going to use Postman to test our new API.
+
+For this next part you'll need either a Mac or Chrome, as Postman has a native Mac app or a Chrome app.
+
+I'm going to show the Chrome application.
+
+Head over to the Chrome app store:
+
+* [Postman Chrome App](https://chrome.google.com/webstore/detail/postman/fhbjgbiflinjbdggehcddcbncdddomop?hl=en)
+

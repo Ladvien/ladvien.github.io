@@ -248,3 +248,8 @@ After you add the Postman app it should redirect you to your Chrome applications
 Your choice, but I skipped the sign-up option for now.
 
 ![skipped-signup-postman-chrome-app](https://ladvien.com/images/postman-3.png)
+
+The post of Postman, in a nutshell, we are going to use it to create POST requests and send them to the `mind-wave-journal-server` to make sure it's ready for the iOS app to start making POST requests, saving the EEG data to our Mongo server.
+
+Select `Create a Request`
+![skipped-signup-postman-chrome-app](https://ladvien.com/images/postman-4.png)

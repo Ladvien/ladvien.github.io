@@ -258,3 +258,11 @@ The purpose of Postman, in a nutshell, we are going to use it to create POST req
 Let's create our first test POST request.  Start by naming the request `Test eegsamples`.  Create a folder to put the new request in, I named it `mind-wave-journal-server`.  Then click
 
 ![create-request-postman-chrome-app](https://ladvien.com/images/postman-5.png)
+
+You will need to set the type as `POST`.  The url will be
+
+```
+http://your_ip_address:8080/eegsamples
+```
+
+![create-request-postman-chrome-app](https://ladvien.com/images/postman-6.png)

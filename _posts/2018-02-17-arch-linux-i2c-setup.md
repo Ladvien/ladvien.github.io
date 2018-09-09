@@ -154,7 +154,7 @@ pacman -S git python2 i2c-tools base-devel python2-distribute python2-pip
 Use Python's Package Index (pip) to install Raspberry Pi GPIO support
 
 ```
-pip2 install RPi.GPIO
+sudo pip2 install RPi.GPIO
 ```
 
 ## 3. Install raspi-config

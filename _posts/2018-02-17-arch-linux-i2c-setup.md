@@ -185,6 +185,8 @@ And when I attempted to enable I2C it gave this error.
 
 But it still seemed to do the job. I'll investigate more when I've time.
 
+**Now, we need to reboot the system for everything to register.**
+
 
 ## 4. Test the I2C Setup
 We _should_ be all setup.  Try running

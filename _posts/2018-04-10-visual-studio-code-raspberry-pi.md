@@ -14,7 +14,7 @@ custom_js:
 
 I'm spoiled.  I love the pretty colors of modern text IDEs.  My favorite among them being Visual Studio Code.
 
-* [Visual Studio Code](https://code.visualstudio.com)
+- [1. Get Visual Studio Code](#1-get-visual-studio-code)
 
 I know it'll engender a lot of bad rep with the old-timers, but I prefer the one on the right.
 
@@ -87,6 +87,7 @@ Start by SSH'ing into your Raspberry Pi.
 Then type
 ```
 sudo pacman -S ruby
+sudo pacman -S ruby-docs
 cd ~
 gem install rmate
 PATH="$PATH:$(ruby -e 'print Gem.user_dir')/bin"

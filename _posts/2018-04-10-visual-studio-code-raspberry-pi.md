@@ -87,12 +87,13 @@ Start by SSH'ing into your Raspberry Pi.
 Then type
 ```
 sudo pacman -S ruby
-sudo pacman -S ruby-docs
 cd ~
-gem install rmate
 PATH="$PATH:$(ruby -e 'print Gem.user_dir')/bin"
 echo 'PATH="$PATH:$(ruby -e 'print Gem.user_dir')/bin"' >> /etc/profile
 echo 'export GEM_HOME=$HOME/.gem' >> /etc/profile
+source /etc/profile
+gem install rdoc
+gem install rmate
 ```
 The above commands install [Ruby](https://www.ruby-lang.org/en/), moves to to the user's directory, uses the Ruby package manager to install rmate, then adds Ruby and it's Gems (packages) executables to the environment variables.  All of this is necessary to get Rmate working on Arch Linux.
 

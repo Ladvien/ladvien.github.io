@@ -89,7 +89,7 @@ Run an update
 pacman -Syu
 ```
 
-Let's try to install `ruby` using sudo powers.
+Let's install ruby and supporting packages.
 ```
 pacman -S ruby ruby-docs ruby-rdoc
 sed "s|unset appendpath|appendpath \'$(ruby -e 'print Gem.user_dir')/bin'\\nunset appendpath|g" /etc/profile >> /etc/profile

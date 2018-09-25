@@ -93,6 +93,7 @@ Let's install ruby and supporting packages.
 ```
 pacman -S ruby ruby-docs ruby-rdoc
 sed "s|unset appendpath|appendpath \'$(ruby -e 'print Gem.user_dir')/bin'\\nunset appendpath|g" /etc/profile >> /etc/profile
+source /etc/profile
 ```
 If it installs, then we setup the remote correctly.  If not, feel free to ask debugging questions in the comments.
 

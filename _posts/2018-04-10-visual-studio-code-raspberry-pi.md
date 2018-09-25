@@ -82,18 +82,24 @@ We need to change it to `true` by clicking on the pencil next to its name.  This
 
 Almost there.  Now to setup the Raspberry Pi.  We need to install a program on the Pi which will send a file of our choosing to Visual Studio Code to be edited.  [RMate](https://github.com/textmate/rmate) was my choice.
 
-Start by SSH'ing into your Raspberry Pi.
+Start by SSH'ing into your Raspberry Pi as root.
 
-Then type
+Run an update
 ```
-sudo pacman -S ruby
-cd ~
-PATH="$PATH:$(ruby -e 'print Gem.user_dir')/bin"
-echo 'PATH="$PATH:$(ruby -e 'print Gem.user_dir')/bin"' >> /etc/profile
-echo 'export GEM_HOME=$HOME/.gem' >> /etc/profile
-source /etc/profile
-gem install rdoc
+pacman -Syu
+```
+
+Let's try to install `ruby` using sudo powers.
+```
+pacman -S ruby ruby-docs ruby-rdoc
+sed "s|unset appendpath|appendpath \'$(ruby -e 'print Gem.user_dir')/bin'\\nunset appendpath|g" /etc/profile >> /etc/profile
+```
+If it installs, then we setup the remote correctly.  If not, feel free to ask debugging questions in the comments.
+
+Now we'll install the needed Ruby `gems`.
+```
 gem install rmate
+gem install rdoc
 ```
 The above commands install [Ruby](https://www.ruby-lang.org/en/), moves to to the user's directory, uses the Ruby package manager to install rmate, then adds Ruby and it's Gems (packages) executables to the environment variables.  All of this is necessary to get Rmate working on Arch Linux.
 

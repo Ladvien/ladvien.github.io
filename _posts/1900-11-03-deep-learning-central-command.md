@@ -52,8 +52,8 @@ I've landed on a fairly complicated process of handling the above.  I've tried c
 |  database.                   ====== 0                      |
 |                               ____                         |
 |                               |""|                         |
-|                         #3    |__|                         |
-|                              [ ==.]`)                      |
+|                         #3    |__|        Worker           |
+|                              [ ==.]`)     Nodes            |
 |                              ====== 0                      |
 |                                                            |
 +------------------------------------------------------------+
@@ -62,7 +62,7 @@ I've landed on a fairly complicated process of handling the above.  I've tried c
 
 ```
 +-Local------------------------------------------------------+
-|                 Each worker Node checks                    |
+|                 Each worker Node checks         Workers    |
 |        ____    with HQ on a set interval         ____      |
 |        |""|       for jobs to run                |""|      |
 |  HQ    |__|   <--------------------------+ #1    |__|      |

@@ -7,7 +7,7 @@ excerpt:
 tags: [Node, Python, Angular, Machine Learning, MySQL]
 series: PANS Stack
 image: 
-    feature: darius-bashar-529461-unsplash.jpg
+    feature: louis-reed-747361-unsplash.jpg
     credit: Louis Reed
 comments: true
 custom_css: 

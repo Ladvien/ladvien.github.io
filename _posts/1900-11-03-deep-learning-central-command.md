@@ -33,6 +33,8 @@ I've landed on a fairly complicated process of handling the above.  I've tried c
 * Angular to interact with the `HQ Node` for creating job creation and results viewing UI.
 * [ngx-datatables](https://github.com/swimlane/ngx-datatable) for viewing tabular results.
 * [ngx-charts](https://github.com/swimlane/ngx-charts) for viewing job results (e.g., visualizing variance and linearity )
+* Python for access to all the latest awesome ML frameworks
+* [python-shell (npm)](https://www.npmjs.com/package/python-shell) for creating an inteface between Node and Python.
 
 
 ```
@@ -65,7 +67,7 @@ I've landed on a fairly complicated process of handling the above.  I've tried c
 |        |""|       for jobs to run                |""|      |
 |  HQ    |__|   <--------------------------+ #1    |__|      |
 |       [ ==.]`)                                  [ ==.]`)   |
-|       ==+=== 0                                  ====== 0   |
+|       ====== 0                                  ====== 0   |
 |       ^ |                                        ____      |
 |       | |                                  #2    |""|      |
 |       | +--------------------------------------->|__|      |

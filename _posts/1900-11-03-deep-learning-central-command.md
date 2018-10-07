@@ -1,10 +1,10 @@
 ---
 layout: post
-title: Using Python, NodeJS, Angular and SQL to Create a Machine Learning System
+title: Using Python, NodeJS, Angular, and MongoDB to Create a Machine Learning System
 desription: TBD
 categories: data
 excerpt:
-tags: [Node, Python, Angular, Machine Learning, MySQL]
+tags: [Node, Python, Angular, Machine Learning, MongoDB]
 series: PANS Stack
 image: 
     feature: louis-reed-747361-unsplash.jpg

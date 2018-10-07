@@ -13,3 +13,26 @@ comments: true
 custom_css: 
 custom_js: 
 ---
+
+
+```
++-Local------------------------------------------------------+
+|                                                            |
+|        ____                   ____      Each machine runs  |
+|        |""|                   |""|      Node and Express   |
+|  HQ    |__|             #1    |__|      server, creating   |
+|       [ ==.]`)               [ ==.]`)   routes to Python   |
+|       ====== 0               ====== 0   scripts using      |
+|  The HQ machine runs          ____      stdin and stdout   |
+|  Node and Express, but        |""|                         |
+|  the routes are for     #2    |__|                         |
+|  storing results in a        [ ==.]`)                      |
+|  database.                   ====== 0                      |
+|                               ____                         |
+|                               |""|                         |
+|                         #3    |__|                         |
+|                              [ ==.]`)                      |
+|                              ====== 0                      |
+|                                                            |
++------------------------------------------------------------+
+```

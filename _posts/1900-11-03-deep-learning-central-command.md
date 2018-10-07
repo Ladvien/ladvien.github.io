@@ -56,3 +56,26 @@ I've landed on a fairly complicated process of handling the above.  I've tried c
 |                                                            |
 +------------------------------------------------------------+
 ```
+
+
+```
++-Local------------------------------------------------------+
+|                 Each worker Node checks                    |
+|        ____    with HQ on a set interval         ____      |
+|        |""|       for jobs to run                |""|      |
+|  HQ    |__|   <--------------------------+ #1    |__|      |
+|       [ ==.]`)                                  [ ==.]`)   |
+|       ==+=== 0                                  ====== 0   |
+|       ^ |                                        ____      |
+|       | |                                  #2    |""|      |
+|       | +--------------------------------------->|__|      |
+|       |             If there is a job, the      [ ==.]`)   |
+|       |             Worker will send a GET      ====== 0   |
+|       |              request for the job         ____      |
+|       |                  parameters              |""|      |
+|       |                                    #3    |__|      |
+|       +-----------------------------------------[ ==.]`)   |
+|         Once completed, the Worker updates HQ   ====== 0   |
+|              with the job results.                         |
++------------------------------------------------------------+
+```

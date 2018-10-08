@@ -5,7 +5,7 @@ desription: TBD
 categories: data
 excerpt:
 tags: [Node, Python, Angular, Machine Learning, MongoDB]
-series: PANS Stack
+series: Mad Datum
 image: 
     feature: louis-reed-747361-unsplash.jpg
     credit: Louis Reed
@@ -16,7 +16,7 @@ custom_js:
 
 I've started designing a system to manage data analysis tools I build.  
 
-1. A RESTful interface
+1. An illegitimate REST interface
 2. Interface for existing Python scripts
 3. Process for creating micro-services from Python scripts
 4. Interface for creating machine learning jobs to be picked up my free machines.
@@ -87,4 +87,68 @@ Here are my napkin doodles:
 |         Once completed, the Worker updates HQ   ====== 0   |
 |              with the job results.                         |
 +------------------------------------------------------------+
+```
+
+### Worker Nodes
+The `Worker Nodes` code is pretty straightforward.  It uses Node, Express, and python-shell to create a bastardized REST interface to create simple interactions between the `HQ Node` controlling the job queue.
+
+Here's the proof-of-concept NodeJS code.
+```js
+var express = require('express');
+var bodyParser = require('body-parser');
+var pythonRunner = require('./preprocessing-services/python-runner');
+
+var app = express();
+const port = 3000;
+
+app.use(bodyParser.json())
+
+// Python script runner interface
+app.post('/scripts/run', (req, res) => {
+    try {
+        let pythonJob = req.body;
+        pythonRunner.scriptRun(pythonJob)
+        .then((response, rejection) => {
+            res.send(response);
+        });
+    } catch (err) {
+        res.send(err);
+    }
+});
+
+app.listen(port, () => {
+    console.log(`Started on port ${port}`);
+});
+```
+
+Here's the `python-runner.js`
+
+```js
+let {PythonShell} = require('python-shell')
+var scriptRun = function(pythonJob){    
+    return new Promise((resolve, reject) => {
+        try {
+            let options = {
+                mode: 'text',
+                pythonOptions: ['-u'], // get print results in real-time
+                scriptPath: pythonJob.scriptsPath,
+                args: [pythonJob.jobParameters.dataFileName, 
+                       pythonJob.jobParameters.dataPath, 
+                       pythonJob.jobParameters.writePath]
+            };
+            PythonShell.run(pythonJob.scriptName, options, function (err, results) {
+                if (err) throw err;
+                result = JSON.parse(results[0]);
+                if(result) {
+                    resolve(results);
+                } else {
+                    reject({'err': ''})
+                }
+            });
+        } catch (err) {
+            reject(err)
+        }
+    });
+}
+module.exports = {scriptRun}
 ```

@@ -178,19 +178,12 @@ Here's the Python script in the above example.  It is meant to detect what type 
 Created on Mon Jun 11 21:12:10 2018
 @author: cthomasbrittain
 """
-
 import sys
 import json
 #
 filename = sys.argv[1]
 filepath = sys.argv[2]
 pathToWriteProcessedFile = sys.argv[3]
-
-# TEST ###########
-#filename = 'wine_quality_test_data.csv'
-#filepath = '/Users/cthomasbrittain/dl-data/'
-#pathToWriteProcessedFile = '/Users/cthomasbrittain/dl-data/encoded/'
-#################
 
 pathToData = filepath + filename
 
@@ -316,7 +309,7 @@ def dummy_categorical(df, drop_first = True):
                 new_tmp_name = tmp_name.replace(" ", "_").replace("/", "_").lower()
                 new_tmp_name = clean_name + "_" + new_tmp_name
                 names[tmp_name] = new_tmp_name
-        
+
         # Rename the dummy variable dataframe
         tmp = tmp.rename(columns=names)
 

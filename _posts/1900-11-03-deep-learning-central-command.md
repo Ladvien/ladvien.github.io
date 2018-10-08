@@ -121,6 +121,22 @@ app.listen(port, () => {
 });
 ```
 
+The above code is a dead simple NodeJS server using Express. It is using `body-parser` middleware to shape JSON objects.  The `pythonJob` object looks something like this (real paths names have been changed to help protect their anonymity).
+
+```json
+{
+    "scriptsPath": "/home/dirky-dork/dl-principal/python-scripts/",
+    "scriptName": "data_prep.py",
+    "jobParameters": {
+        "dataFileName": "wine_quality.csv",
+        "dataPath": "/home/dirky-dork/dl-data/",
+        "writePath": "/home/dirky-dork/dl-data/encoded/"
+
+    }
+}
+```
+Each of these attributes will be passed to the Python shell in order to execute `data_prep.py`.  They are passed to the shell as system arguments.
+
 Here's the `python-runner.js`
 
 ```js

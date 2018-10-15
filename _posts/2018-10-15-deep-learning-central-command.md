@@ -191,6 +191,7 @@ Here's the Python script in the above example.  It is meant to detect what type 
 Created on Mon Jun 11 21:12:10 2018
 @author: cthomasbrittain
 """
+
 import sys
 import json
 #
@@ -198,7 +199,20 @@ filename = sys.argv[1]
 filepath = sys.argv[2]
 pathToWriteProcessedFile = sys.argv[3]
 
+request = sys.argv[4]
+request = json.loads(request)
+
+try:
+    cols_to_remove = request['columnsToRemove']
+    unreasonable_increase = request['unreasonableIncreaseThreshold']
+except:
+    # If columns aren't contained or no columns, exit nicely
+    result = {'status': 400, 'message': 'Expected script parameters not found.'}
+    print(str(json.dumps(result)))
+    quit()
+
 pathToData = filepath + filename
+
 
 # Clean Data --------------------------------------------------------------------
 # -------------------------------------------------------------------------------
@@ -312,7 +326,7 @@ def dummy_categorical(df, drop_first = True):
 
         tmp = pd.get_dummies(df[name], drop_first = drop_first)
         names = {}
-
+        
         # Get a clean column name.
         clean_name = name.replace(" ", "_").replace("/", "_").lower()
         # Get a dictionary for renaming the dummay variables in the scheme of old_col_name + response_string
@@ -322,31 +336,61 @@ def dummy_categorical(df, drop_first = True):
                 new_tmp_name = tmp_name.replace(" ", "_").replace("/", "_").lower()
                 new_tmp_name = clean_name + "_" + new_tmp_name
                 names[tmp_name] = new_tmp_name
-
+        
         # Rename the dummy variable dataframe
         tmp = tmp.rename(columns=names)
-
+        
         # join the dummy variable back to original dataframe.
         df = df.join(tmp)
-
+    
     # Drop all old categorical columns
     df = df.drop(columns=columnsToEncode, axis=1)
     return df
 
+# Read the file
 df = pd.read_csv(pathToData)
+
+# Drop columns such as unique IDs
+try:
+    df = df.drop(cols_to_remove, axis=1)
+except:
+    # If columns aren't contained or no columns, exit nicely
+    result = {'status': 404, 'message': 'Problem with columns to remove.'}
+    print(str(json.dumps(result)))
+    quit()
+    
+# Get the number of columns before hot encoding
+num_cols_before = df.shape[1]
+
+# Encode the data.
 df = add_datatype_prefix(df)
 df = dummy_categorical(df)
 
-filename = filename.replace(".csv", "")
-import os
-if not os.path.exists(pathToWriteProcessedFile):
-    os.makedirs(pathToWriteProcessedFile)
+# Get the new dataframe shape.
+num_cols_after = df.shape[1]
 
-writeFile = pathToWriteProcessedFile + filename + "_encoded.csv"
-df.to_csv(path_or_buf=writeFile, sep=',')
 
-# Process the results and return JSON results object
-result = {'status': 200, 'message': 'encoded data', 'path': writeFile}
+percentage_increase = num_cols_after / num_cols_before
+
+result = ""
+
+if percentage_increase > unreasonable_increase:
+    message = "\"error\": \"Feature increase is greater than unreasonableIncreaseThreshold, most likely a unique id was included."
+    result = {'status': 400, 'message': message}
+else:
+    filename = filename.replace(".csv", "")
+    import os
+    if not os.path.exists(pathToWriteProcessedFile):
+        os.makedirs(pathToWriteProcessedFile)
+        
+    
+    writeFile = pathToWriteProcessedFile + filename + "_encoded.csv"
+    df.to_csv(path_or_buf=writeFile, sep=',')
+    
+    
+    # Process the results and return JSON results object
+    result = {'status': 200, 'message': 'encoded data', 'path': writeFile}
+ 
 print(str(json.dumps(result)))
 ```
 

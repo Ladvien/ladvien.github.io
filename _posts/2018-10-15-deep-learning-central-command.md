@@ -5,7 +5,7 @@ desription: TBD
 categories: data
 excerpt:
 tags: [Node, Python, Angular, Machine Learning, MongoDB]
-series: Mad Datum
+series: Deep, Deep Learning
 image: 
     feature: louis-reed-747361-unsplash.jpg
     credit: Louis Reed
@@ -25,7 +25,7 @@ I've started designing a system to manage data analysis tools I build.
 7. Results access and job meta data
 8. A way to visualize results
 
-I've landed on a fairly complicated process of handling the above.  I've tried cutting the number of frameworks down, as I know it'll be a nightmare to maintain, but I'm not seeing it.
+I've landed on a fairly complicated process of handling the above.  I've tried cutting frameworks, as I know it'll be a nightmare to maintain, but I'm not seeing it.
 
 * Node for creating RESTful interfaces between the `HQ Machine` and the `Worker Nodes`
 * Node on the workers to ping the HQ machine periodically to see if their are jobs to run
@@ -37,13 +37,15 @@ I've landed on a fairly complicated process of handling the above.  I've tried c
 * [python-shell (npm)](https://www.npmjs.com/package/python-shell) for creating an interface between Node and Python.
 
 ### Utilizing all Machines in the House
-Machine learning is a new world for me.  But, it's pretty dern cool.  I'm a lover of making machines do the hard stuff while I'm off doing other work.  It makes me feel productive--like, I created that machine, so any work it does I get credit for.  _And_! The work I did while it as doing its work.  This is the reason I own two 3D-printers.  And I'm noticing there is a possibility of utilizing old computers I've lying around the house.  The plan is to abstract a neural network script, install it on all the computers I've sitting around the house, and then create a `HQ Computer` where I can create a set of hyperparameters passed to the `Worker Nodes` throughout the house.
+Machine learning is a new world for me.  But, it's pretty dern cool. I like making machines do the hard stuff while I'm off doing other work.  It makes me feel extra productive--like, "I created that machine, so any work it does I get credit for.  _And_! The work I did while it as doing its work."  This is the reason I own two 3D-printers.  
 
-Why?  Glad I asked for you. I feel guilty there are computers sitting not being used.  There's an old AMD desktop with a GFX1060 in it, a 2013 MacBook Pro (my sons), and my 2015 MacBook Pro.  All of these don't see much use anymore, since my employer has provided an iMac to work on.  They need to earn their keep.
+I'm noticing there is a possibility of utilizing old computers I've lying around the house for the same effect.  The plan is to abstract a neural network script, install it on all the computers lying about, and  create a `HQ Computer` where I can create a sets of hyperparameters passed to the `Worker Nodes` throughout the house.
 
-How? Again, glad to ask for you.  I'll create a system to make deep-learning jobs from hyperparameter sets and send them to these idle machines, thus, trying to get them to solve problems throughout the day, while I'm working on paying the bills.  This comes from the power of NNs.  They need little of manual tweaking.  You simply provide them with hyperparameters and let them run.
+Why?  Glad I asked for you. I feel guilty there are computers used.  There's an old AMD desktop with a GFX1060 in it, a 2013 MacBook Pro (my son's), and my 2015 MacBook Pro.  These don't see much use anymore, since my employer has provided an iMac to work on.  They need to earn their keep.
 
-Here are my napkin doodles:
+How? Again, glad to ask for you.  I'll create a system to make deep-learning jobs from hyperparameter sets and send them to these idle machines, thus, trying to get them to solve problems while I'm working on paying the bills.  This comes from the power of neural networks.  They need little manual tweaking.  You simply provide them with hyperparameters and let them run.
+
+Here are the napkin-doodles:
 ```
 +-Local------------------------------------------------------+
 |                                                            |
@@ -126,13 +128,17 @@ The above code is a dead simple NodeJS server using Express. It is using `body-p
 
 ```json
 {
-    "scriptsPath": "/home/dirky-dork/dl-principal/python-scripts/",
-    "scriptName": "data_prep.py",
+    "scriptsPath": "/Users/hinky-dink/dl-principal/python-scripts/",
+    "scriptName": "union.py",
     "jobParameters": {
-        "dataFileName": "wine_quality.csv",
-        "dataPath": "/home/dirky-dork/dl-data/",
-        "writePath": "/home/dirky-dork/dl-data/encoded/"
-
+    	"dataFileName": "",
+        "dataPath": "/Users/hinky-dink/bit-dl/data/lot-data/lot_encoded/",
+        "writePath": "/Users/hinky-dink/bit-dl/data/lot-data/lot_encoded/",
+        "execution": {
+        	"dataFileOne": "lot_nev_2017_encoded.csv",
+        	"dataFileTwo": "lot_nev_2018_encoded.csv",
+        	"outputFilename": "lot_nev_17-18.csv"
+        }
     }
 }
 ```
@@ -142,8 +148,10 @@ Here's the `python-runner.js`
 
 ```js
 let {PythonShell} = require('python-shell')
+ 
 var scriptRun = function(pythonJob){    
     return new Promise((resolve, reject) => {
+        console.log(pythonJob)
         try {
             let options = {
                 mode: 'text',
@@ -151,15 +159,20 @@ var scriptRun = function(pythonJob){
                 scriptPath: pythonJob.scriptsPath,
                 args: [pythonJob.jobParameters.dataFileName, 
                        pythonJob.jobParameters.dataPath, 
-                       pythonJob.jobParameters.writePath]
+                       pythonJob.jobParameters.writePath,
+                       JSON.stringify(pythonJob.jobParameters.execution)]
             };
             PythonShell.run(pythonJob.scriptName, options, function (err, results) {
                 if (err) throw err;
-                result = JSON.parse(results[0]);
-                if(result) {
-                    resolve(results);
-                } else {
-                    reject({'err': ''})
+                try {
+                    result = JSON.parse(results.pop());
+                    if(result) {
+                        resolve(result);
+                    } else {
+                        reject({'err': ''})
+                    }
+                } catch (err) {
+                    reject({'error': 'Failed to parse Python script return object.'})
                 }
             });
         } catch (err) {
@@ -336,3 +349,5 @@ df.to_csv(path_or_buf=writeFile, sep=',')
 result = {'status': 200, 'message': 'encoded data', 'path': writeFile}
 print(str(json.dumps(result)))
 ```
+
+That's the premise.  I'll be adding more services to as a series of articles.

@@ -5,6 +5,7 @@ categories: deep-learning
 series: Deep-Learning
 excerpt:
 tags: [deep-learning, arch-linux, keras, python, tensorflow, gpu, r]
+series: Deep, Deep Learning
 image: 
     feature: al-deep-learning.png
     thumb: al-deep-learning-thumb.png

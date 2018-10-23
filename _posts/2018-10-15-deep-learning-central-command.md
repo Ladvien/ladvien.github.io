@@ -132,12 +132,12 @@ The above code is a dead simple NodeJS server using Express. It is using `body-p
     "scriptName": "union.py",
     "jobParameters": {
     	"dataFileName": "",
-        "dataPath": "/Users/hinky-dink/bit-dl/data/lot-data/lot_encoded/",
-        "writePath": "/Users/hinky-dink/bit-dl/data/lot-data/lot_encoded/",
+        "dataPath": "/Users/hinky-dink/bit-dl/data/lot-data/wine_encoded/",
+        "writePath": "/Users/hinky-dink/bit-dl/data/lot-data/wine_encoded/",
         "execution": {
-        	"dataFileOne": "lot_nev_2017_encoded.csv",
-        	"dataFileTwo": "lot_nev_2018_encoded.csv",
-        	"outputFilename": "lot_nev_17-18.csv"
+        	"dataFileOne": "wine_2017_encoded.csv",
+        	"dataFileTwo": "wine_2018_encoded.csv",
+        	"outputFilename": "wine_17-18.csv"
         }
     }
 }

@@ -146,9 +146,9 @@ brew services start mongo
             "dropout" : 0.2
         }
     ],
-    "dataFileName" : "lot_la_wa_nev_scc_onesf_15-18.csv",
+    "dataFileName" : "wine_data.csv",
     "scriptName" : "nn.py",
-    "projectName" : "lot_homeless",
+    "projectName" : "wine_data",
     "depedentVariable" : "con_lot",
     "crossValidateOnly" : true,
     "crossValidationCrossingType" : "neg_mean_squared_error",

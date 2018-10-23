@@ -403,33 +403,6 @@ app.post('/worker-node/:method', (req, res) => {
     }
 });
 
-app.post('/test', (req, res) => {
-    if (!req.body) { return { 'message': 'No request provided.' }};
-    try {
-        let job = req.body;
-        console.log(job);
-        // Assign the job
-        work.assign({'workerNodeName': 'dl',
-        'workerNodeAddress': 'http://192.168.1.88:3000',
-        'creationDate': new Date(),
-        'job': job }).then((response) => {
-            // Execute
-            const assignment = response;
-
-            // Add the generated Id to the job. Tag and track.
-            job.callbackAddress = bossAddress;
-            job.assignmentId = response._id
-            work.file(job)
-            .then((result) =>{
-                console.log(result);
-                res.send(result);
-            });
-        });
-    } catch (err) {
-        res.send({'error': 'Error with request shape.', err })
-    }
-});
-
 app.post('/callback', (req, res) => {
     if (!req.body) { return { 'message': 'No request provided.' }};
     let outcome = req.body;

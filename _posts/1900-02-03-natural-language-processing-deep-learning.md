@@ -120,7 +120,7 @@ for index in range(vocab_size):
 The two dictionaries `index2word` and `word2idx` are key to embeddings.
 
 The `word2idx` is a dictionary where the keys are the words contained in the embedding and the values are the integers they represent.
-```json
+```python
 word2idx = {
     "the": 0,
     ",": 1,
@@ -133,7 +133,7 @@ word2idx = {
 ```
 
 `index2word` is a list where the the values are the words and the word's position in the string represents it's index in the `word2idx`.
-```json
+```python
 ["the", ",", ".", "of", "to", "and", ...]
 ```
 These will be used to turned our comment strings into integer vectors.
@@ -197,7 +197,7 @@ The `Tokenizer` object comes from the `Keras` API.  It takes chunks of texts cle
 The `num_words` argument tells the Tokenizer to only preserve the word frequencies higher than this threshold.  This makes it necessary to run the `fit()` on the targeted texts before using the Tokenizer.  The fit function will determine the number of occurrences each word has throughout all the texts provided, then, it will order these by frequency.  This frequency rank can be found in the `tokenizer.word_index` property.
 
 For example, looking at the dictionary below, if `num_words` = 7 all words after "i" would be excluded.
-```json
+```python
 {
     "the": 1,
     "to": 2,

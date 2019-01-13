@@ -159,6 +159,12 @@ We will use the text in the `toxic_comments` dataframe to predict the data found
 
 Sample data from `toxic_comments` dataframe
 
+|    | id| comment_text  |   toxic |   severe_toxic |   obscene |   threat |   insult |   identity_hate |
+|---|-----------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------|---------------|----------|---------|---------|----------------|
+|  5 | 00025465d4725e87 |Congratulations from me as well, use the tools well.  · talk |0 |     0 |0 | 0 | 0 |0 |
+|  6 | 0002bcb3da6cb337 | COCKSUCKER BEFORE YOU PISS AROUND ON MY WORK|1 |     1 |1 | 0 | 1 |0 |
+|  7 | 00031b1e95af7921 | Your vandalism to the Matt Shirvington article has been reverted.  Please don't do it again, or you will be banned.    |0 |     0 |0 | 0 | 0 |0 |
+
 
 Sample data from the `labels` numpy matrix.
 

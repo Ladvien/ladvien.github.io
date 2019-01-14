@@ -14,11 +14,11 @@ custom_js:
 ---
 
 ## The Plan
-I'm going to write out my learning-notes from implementing a "toxic comment" detector using a convolutional neural network (CNN).  This is a common project, however, the articles I've read seem to leave a few bits out.  So, I'm attempting to augment public knowledge--not write a comprehensive tutorial.
+I'm writing learning-notes from implementing a "toxic comment" detector using a convolutional neural network (CNN).  This is a common project across the interwebs, however, the articles I've read on the matter seem to leave a few bits out.  So, I'm attempting to augment public knowledge--not write a comprehensive tutorial.
 
-With that, I've put all the original code, relevant project links, tutorial links, and other resources towards the bottom.  From here to there I'll attempt to focus on annotating the code.
+A common omission is what the data look like as they travel through pre-processing.  I'll try to show how the data look before falling into the neural-net black-hole.
 
-One of the pieces I felt left out most elsewhere, is what the data look like as they travel through the pre-processing stages and up to falling into the black-hole that is the neural-net.  I'll attempt to fill the gap--trying to show what the data look at before and after critical changes.
+With that, I've put all the original code, relevant project links, tutorial links, and other resources towards the bottom.  From here to there I'll attempt to focus on annotating code.
 
 ## The Code
 
@@ -48,10 +48,6 @@ pip install pandas
 
 #### Code: Constants
 ```python
-############################
-# Constants
-############################
-
 BASE_DIR = 'your project directory'
 TRAIN_TEXT_DATA_DIR = BASE_DIR + 'train.csv'
 MAX_SEQUENCE_LENGTH = 100
@@ -59,50 +55,53 @@ MAX_NUM_WORDS = 20000
 EMBEDDING_DIM = 300
 VALIDATION_SPLIT = 0.2
 ```
-The above constants will be used throughout the project to define the neural-network.
+The above constants define the preprocessing actions and the neural-network.
 
-* TRAIN_TEXT_DATA_DIR
+```
+TRAIN_TEXT_DATA_DIR
+```
 
-The directory containing the training data called `train.csv`
+The directory containing the data file `train.csv`
 
-* MAX_SEQUENCE_LENGTH
+```
+MAX_SEQUENCE_LENGTH
+```
 
-The toxic_comment data set contains comments collected from Wikipedia.  MAX_SEQUENCE_LENGTH is used in the preprocessing stages to truncate comments if they get to be too long.  For example, a comment like
+The toxic_comment data set contains comments collected from Wikipedia.  MAX_SEQUENCE_LENGTH is used in the preprocessing stages to truncate comments if too long.  For example, a comment like:
 
 ```
 You neeed to @#$ you mother!$@#$&...
 ```
 
-Probably doesn't need much more for the network to discern it's a toxic comment.  And if we create the network based around the longest comment, it will become unnecessarily large and slow.
+Probably doesn't need much more for the network to discern it's a toxic comment.  Also, if we create the network based around the longest comment, it will become unnecessarily large and slow. Much like the human brain, we need to provide as little information as needed to make a good decision.
+```
+MAX_NUM_WORDS = 20000
+```
+This constant is the maximum number of words to include--or, vocabulary size.  
 
-* MAX_NUM_WORDS = 20000
-
-The max size of the vocabulary.  Much like truncating the sequence length, the maximum vocabulary should not be overly inclusive.  The number `20,000` comes from a "study" stating an average person only uses 20,000 words.  Of course, I've not found a primary source stating this--not saying it's not out there, but I've not found it yet.
+Much like truncating the sequence length, the maximum vocabulary should not be overly inclusive.  The number `20,000` comes from a "study" stating an average person only uses 20,000 words.  Of course, I've not found a primary source stating this--not saying it's not out there, but I've not found it yet. (See my primary source search in the appendix.)
 
 Regardless, it seems to help us justify keeping the NN nimble.
-
-* EMBEDDING_DIM = 300
-
-In my code, I've used `genism` to download pre-trained word embeddings.  But now all pre-trained embeddings have the same number of dimensions.  This constants defines the size of the embeddings used.
+```
+EMBEDDING_DIM = 300
+```
+In my code, I've used `genism` to download pre-trained word embeddings.  But not all pre-trained embeddings have the same number of dimensions.  This constants defines the size of the embeddings used.
 
 **Please note, if you use embeddings other than `glove-wiki-gigaword-300` you will need to change this constant to match.**
-
-* VALIDATION_SPLIT = 0.2
-
-Part of the Keras library includes automatically split our prepared dataset into a `test` and `validation`.  This percentage represents how much of the data to hold back for validation.
+```
+VALIDATION_SPLIT = 0.2
+```
+A helper function in Keras will split our into a `test` and `validation`.  This percentage represents how much of the data to hold back for validation.
 
 #### Code: Load Embeddings
 ```python
-##############################
-# Load Embeddings
-##############################
 print('Loading word vectors.')
 # Load embeddings
 info = api.info()
 embedding_model = api.load("glove-wiki-gigaword-300")
 ```
 
-The `info` object is a list of `genism` embeddings available.  You can any of the listed embeddings in the format `api.load('name-of-desired-embedding')`.  The great thing about `genism`'s `api.load` is it will automatically download the embeddings from the Internet and load them into Python.  Of course, once they've been downloaded, `gensim` will simple load them locally.
+The `info` object is a list of `genism` embeddings available.  You can any of the listed embeddings in the format `api.load('name-of-desired-embedding')`.  Once nice feature of `genism`'s `api.load` is it will automatically download the embeddings from the Internet and load them into Python.  Of course, once they've been downloaded, `gensim` will simple load them from the local copy.  This makes it easy to experiment with switching out embedding layers.
 
 If you want to know more about `gensim` and how it can be used with Keras here's an article.
 
@@ -131,19 +130,14 @@ word2idx = {
     ....
 }
 ```
-
 `index2word` is a list where the the values are the words and the word's position in the string represents it's index in the `word2idx`.
 ```python
-["the", ",", ".", "of", "to", "and", ...]
+index2word = ["the", ",", ".", "of", "to", "and", ...]
 ```
-These will be used to turned our comment strings into integer vectors.
+These will be used to turn our comment strings into integer vectors.
 
 #### Code: Get Toxic Comments Labels
 ```python
-############################################
-# Get labels
-############################################
-
 print('Loading Toxic Comments data.')
 with open(TRAIN_TEXT_DATA_DIR) as f:
     toxic_comments = pd.read_csv(TRAIN_TEXT_DATA_DIR)
@@ -165,11 +159,12 @@ Sample data from `toxic_comments` dataframe
 |  6 | 0002bcb3da6cb337 | COCKSUCKER BEFORE YOU PISS AROUND ON MY WORK|1 |     1 |1 | 0 | 1 |0 |
 |  7 | 00031b1e95af7921 | Your vandalism to the Matt Shirvington article has been reverted.  Please don't do it again, or you will be banned.    |0 |     0 |0 | 0 | 0 |0 |
 
+Note, for `x_train` we will end up only using the `comment_text` from the above dataframe.
 
-Sample data from the `labels` numpy matrix.
+Sample data from the `labels` (`y_train`) numpy matrix.
 
 |   0 |   1 |   2 |   3 |   4 |   5 |
-|----|----|----|----|----|----|
+|----|----|----|----|----|----|-----|
 |   0 |   0 |   0 |   0 |   0 |   0 |
 |   1 |   1 |   1 |   0 |   1 |   0 |
 |   0 |   0 |   0 |   0 |   0 |   0 |
@@ -177,10 +172,6 @@ Sample data from the `labels` numpy matrix.
 
 #### Code: Convert Comments to Sequences
 ```python
-############################################
-# Convert Toxic Comments to Sequences
-############################################
-
 print('Tokenizing and sequencing text.')
 
 tokenizer = Tokenizer(num_words=MAX_NUM_WORDS)
@@ -219,9 +210,6 @@ Also, as we are loading the data, we are filling any missing values with a dummy
 
 #### Code: Applying Embeddings
 ```python
-###################################################
-# Convert Toxic Comment Vectors to Embedding Layer
-###################################################
 num_words = min(MAX_NUM_WORDS, len(word_index)) + 1
 embedding_matrix = np.zeros((num_words, EMBEDDING_DIM))
 for word, i in word_index.items():
@@ -233,23 +221,23 @@ for word, i in word_index.items():
         continue
 ```
 
-Here's where stuff gets good.  The code above will take all the words from our `tokenizer`, look up the word-embedding (vector) for each word, then add this to the embedding matrix.  The embedding_matrix will be converted into a `keras.layer.Embeddings` object.
+Here's where stuff gets good.  The code above will take all the words from our `tokenizer`, look up the word-embedding (vector) for each word, then add this to the `embedding matrix`.  The `embedding_matrix` will be converted into a `keras.layer.Embeddings` object.
 
 * [Embeddings](https://keras.io/layers/embeddings/)
 
-I think of an `Embedding` layer as a transformation tool sitting at the top of our neural-network.  It takes the integer representing a word and looks up the word-embedding for the word.  It then passes the word-vector into the neural-network.  Simples!
+I think of an `Embedding` layer as a transformation tool sitting at the top of our neural-network.  It takes the integer representing a word and outputs its word-embedding vector.  It then passes the vector into the neural-network.  Simples!
 
 Probably best to visually walk through what's going on.  But first, let's talk about the code before the `for-loop`.
 
 ```python
 num_words = min(MAX_NUM_WORDS, len(word_index)) + 1
 ```
-This gets the maximum number of words to be addeded in our embedding layer.  If it is less than our "average English speaker's vocabulary"--20,000--we'll use all the number of words found in our tokenizer.  Otherwise, the `for-loop` will stop after `num_words` is met.  And rememebr, the `tokenizer` has kept the words in order of their frequency--so, the words which are lost aren't too critical.
+This gets the maximum number of words to be addeded in our embedding layer.  If it is less than our "average English speaker's vocabulary"--20,000--we'll use all of the words found in our tokenizer.  Otherwise, the `for-loop` will stop after `num_words` is met.  And remember, the `tokenizer` has kept the words in order of their frequency--so, the words which are lost aren't too critical.
 
 ```python
 embedding_matrix = np.zeros((num_words, EMBEDDING_DIM))
 ```
-This simply initializes our embedding_matrix, which is a `numpy` object with all values set to zero.  Note, if the `EMBEDDING_DIM` size does not match the size of the word-embeddings loaded, the code will execute, but you will get a bad embedding matrix.  Worse, you might not notice until your network isn't training.  I mean, not that this happened to *me*--I'm just guessing it could happen to _someone_.
+This initializes our embedding_matrix, which is a `numpy` object with all values set to zero.  Note, if the `EMBEDDING_DIM` size does not match the size of the word-embeddings loaded, the code will execute, but you will get a bad embedding matrix.  Further, you might not notice until your network isn't training.  I mean, not that this happened to *me*--I'm just guessing it could happen to _someone_.
 
 ```python
 for word, i in word_index.items():
@@ -261,7 +249,7 @@ for word, i in word_index.items():
         continue
 ```
 
-Here's where the magic happens.  The `for-loop` iterates over the words in the `tokenizer` object `word_index`.  It attempts to find the word in word-embeddings and if it does, it adds the vector to the embedding matrix at a row respective to its index in the `word_index` object.
+Here's where the magic happens.  The `for-loop` iterates over the words in the `tokenizer` object `word_index`.  It attempts to find the word in word-embeddings, and if it does, it adds the vector to the embedding matrix at a row respective to its index in the `word_index` object.
 
 Confused? Me too.  Let's visualize it.
 
@@ -282,7 +270,7 @@ This list is contained in a `numpy.array` object.
 embedding_matrix[i] = embedding_vector
 ```
 
-Lastly, the word-embedding vector representing the "of" gets added to the third row of the embedding matrix (remember the matrix index starts at 0).
+Lastly, the word-embedding vector representing  "of" gets added to the third row of the embedding matrix (the matrix index starts at 0).
 
 Below is a visualization of the embedding matrix after the word "of" is added.  Note, I've added the first column for readability.
 
@@ -293,10 +281,26 @@ Below is a visualization of the embedding matrix after the word "of" is added.  
 | of | -0.25756 | -0.057132 | -0.6719    | -0.38082 | ... |
 | ... | ... | ... | ... | ... | ... |
 
+#### Code: Creating Embedding Layer
+```python
+embedding_layer = Embedding(len(word2idx),
+                            EMBEDDING_DIM,
+                            embeddings_initializer=Constant(embedding_matrix),
+                            input_length=MAX_SEQUENCE_LENGTH,
+                            trainable=False)
+```
+Here we are creating the first layer of our NN.  The primary parameter passed into the Keras `Embedding` class is the `embedding_matrix`, which we created above.  However, there are several other dimensions of the `embedding_layer` we must define for it to work correctly. 
 
-## Resources
+Also, it is helpful to remember, our `embedding_layer` will take an integer representing a word as input and output a vector, which is the word-embedding is the input word's embedding vector.
 
-### Documentation
+First, the `embedding_layers` needs to know the input dimensions.  The input dimension is the number of words we are considering for this training session.  This can be found by taking the length of our `word2idx` object.  So, the `len(word2idx)` returns the total number of words we are considering.  
+
+One note on the layer's input, there are two arguments for `keras.layers.Embedding` class initializer, which can be confused.  They are `input` and `input_length`.
+
+Next, the `embedding_layers` needs to know the dimensions of the output.  The output is going to be a vector
+
+
+### Appendix
 
 Existing tutorials and references:
 
@@ -311,3 +315,10 @@ The data we will use to train is hosted by Kaggle.  They are comments collected 
 * [Wikipedia's "Toxic Comment" Data](https://www.kaggle.com/c/jigsaw-toxic-comment-classification-challenge/data)
 
 Please note, you will have to sign-up for a Kaggle account.
+
+Primary sources on vocabulary size:
+https://www.frontiersin.org/articles/10.3389/fpsyg.2016.01116/full
+https://www.victoria.ac.nz/lals/about/staff/publications/paul-nation/1990-Goulden-Voc-size.pdf
+https://journals.sagepub.com/doi/abs/10.1080/10862969109547729
+http://centaur.reading.ac.uk/29879/
+https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4965448/

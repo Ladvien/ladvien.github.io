@@ -289,17 +289,21 @@ embedding_layer = Embedding(len(word2idx),
                             input_length=MAX_SEQUENCE_LENGTH,
                             trainable=False)
 ```
-Here we are creating the first layer of our NN.  The primary parameter passed into the Keras `Embedding` class is the `embedding_matrix`, which we created above.  However, there are several other dimensions of the `embedding_layer` we must define for it to work correctly. 
-
-Also, it is helpful to remember, our `embedding_layer` will take an integer representing a word as input and output a vector, which is the word-embedding is the input word's embedding vector.
+Here we are creating the first layer of our NN.  The primary parameter passed into the Keras `Embedding` class is the `embedding_matrix`, which we created above.  However, there are several other attributes of the `embedding_layer` we must define. Keep in mind our `embedding_layer` will take an integer representing a word as input and output a vector, which is the word-embedding.
 
 First, the `embedding_layers` needs to know the input dimensions.  The input dimension is the number of words we are considering for this training session.  This can be found by taking the length of our `word2idx` object.  So, the `len(word2idx)` returns the total number of words we are considering.  
 
-One note on the layer's input, there are two "input" arguments for `keras.layers.Embedding` class initializer, which can be confused.  They are `input` and `input_length`.
+One note on the layer's input, there are two "input" arguments for `keras.layers.Embedding` class initializer, which can be confusing.  They are `input` and `input_length`. The `input` is the number of possible values provided to the layer.  The `input_length` is how many values will be passed in sequence.
 
-The `input` is the number of possible values provided to the layer.  The `input_length` is how many values will be passed in sequence.
+Here are the descriptions from the Keras documentation:
 
-In our case, the `input_length
+`input`
+> int > 0. Size of the vocabulary, i.e. maximum integer index + 1.
+
+`input_length`
+> Length of input sequences, when it is constant. This argument is required if you are going to connect  Flatten then Dense layers upstream (without it, the shape of the dense outputs cannot be computed).
+
+In our case, the `input` will be the vocabulary size and `input_length` is the number of words in a sequence, which should be `MAX_SEQUENCE_LENGTH`.  This is also why we padded comments shorter than `MAX_SEQUENCE_LENGTH`, as this the embedding layer will expect them to be a consistent size.
 
 Next, the `embedding_layers` needs to know the dimensions of the output.  The output is going to be a vector
 

@@ -295,7 +295,11 @@ Also, it is helpful to remember, our `embedding_layer` will take an integer repr
 
 First, the `embedding_layers` needs to know the input dimensions.  The input dimension is the number of words we are considering for this training session.  This can be found by taking the length of our `word2idx` object.  So, the `len(word2idx)` returns the total number of words we are considering.  
 
-One note on the layer's input, there are two arguments for `keras.layers.Embedding` class initializer, which can be confused.  They are `input` and `input_length`.
+One note on the layer's input, there are two "input" arguments for `keras.layers.Embedding` class initializer, which can be confused.  They are `input` and `input_length`.
+
+The `input` is the number of possible values provided to the layer.  The `input_length` is how many values will be passed in sequence.
+
+In our case, the `input_length
 
 Next, the `embedding_layers` needs to know the dimensions of the output.  The output is going to be a vector
 

@@ -294,12 +294,13 @@ We defined this size with the `EMBEDDING_DIM` variable.
 
 Let's recap:
 
-Word-embeddings are loaded, for the `glove-wiki-gigaword-300` data set.  These embeddings contain three important objects 
-1. Pre-trained relationships between words, which is a matrix of numbers 300 x 400,000.
-2. `inex2word` -- A dictionary containing `key-value` pairs, the key being the word as a string and value being the integer representing the word.  Note, these integers correspond with the index in the relationship matrix.
-3. `word2idx` -- A list containing all the words, the index corresponding to the word's position in the word embeddings.  Essentially, the reverse of the `index2word`.
-
+* Word-embeddings are loaded, for the `glove-wiki-gigaword-300` data set.  These embeddings contain three important objects 
+  1. Pre-trained relationships between words, which is a matrix of numbers 300 x 400,000.
+  2. `inex2word` -- A dictionary containing `key-value` pairs, the key being the word as a string and value being the integer representing the word.  Note, these integers correspond with the index in the relationship matrix.
+  3. `word2idx` -- A list containing all the words, the index corresponding to the word's position in the word embeddings.  Essentially, the reverse of the `index2word`.
 ![](https://ladvien.com/images/embeddings_1.png)
+
+* 
 
 
 

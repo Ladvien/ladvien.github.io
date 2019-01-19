@@ -4,7 +4,7 @@ title: Deep Learning in NLP
 description: Expanding on Lazyprogrammer's NLP "tutorials"
 categories: neural-nets
 excerpt:
-series: Deep, Deep Learning
+series: Deep Learning Journal
 tags: [NLP, Natural Language Processing, Deep Learning, Word Vectors, Convolutional Neural Networks]
 image: 
     feature: 

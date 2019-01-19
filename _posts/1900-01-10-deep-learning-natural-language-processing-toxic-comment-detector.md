@@ -64,13 +64,12 @@ The toxic_comment data set contains comments collected from Wikipedia.  MAX_SEQU
 ```
 You neeed to @#$ you mother!$@#$&...
 ```
-
-Probably doesn't need much more for the network to discern it's a toxic comment.  Also, if we create the network based around the longest comment, it will become unnecessarily large and slow. Much like the human brain, we need to provide as little information as needed to make a good decision.
+Probably doesn't need much more for the network to discern it's a toxic comment.  Also, if we create the network based around the longest comment, it will become unnecessarily large and slow. Much like the human brain (doi: 10.1037), we need to provide as little information as needed to make a good decision.
 
 #### MAX_NUM_WORDS
 This constant is the maximum number of words to include--or, vocabulary size.  
 
-Much like truncating the sequence length, the maximum vocabulary should not be overly inclusive.  The number `20,000` comes from a "study" stating an average person only uses 20,000 words.  Of course, I've not found a primary source stating this--not saying it's not out there, but I've not found it yet. (See my primary source search in the appendix.)
+Much like truncating the sequence length, the maximum vocabulary should not be overly inclusive.  The number `20,000` comes from a "study" stating an average person only uses 20,000 words.  Of course, I've not found a primary source stating this--not saying it's not out there, but I've not found it yet. (Halfhearted search results in the appendix.)
 
 Regardless, it seems to help us justify keeping the NN nimble.
 

@@ -198,7 +198,7 @@ For example, looking at the dictionary below, if `num_words` = 7 all words after
 }
 ```
 
-Also, as we are loading the data, we are filling any missing values with a dummy token (i.e., "<DT>").  This probably isn't the _best_ way to handle missing values, however, given the amount of data, it's probably best to try and train the network using this method.  Then, if you can't get your NN to become as accurate as you want, come back and handle `na` values more strategically.  Diminishing returns and all that.
+Also, as we are loading the data, we are filling any missing values with a dummy token (i.e., "<DT>").  This probably isn't the _best_ way to handle missing values, however, given the amount of data, it's probably best to try and train the network using this method.  Then, come back and handle `na` values more strategically.  Diminishing returns and all that.
 
 #### Code: Applying Embeddings
 ```python

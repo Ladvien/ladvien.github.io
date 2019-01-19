@@ -74,7 +74,7 @@ Much like truncating the sequence length, the maximum vocabulary should not be o
 Regardless, it seems to help us justify keeping the NN nimble.
 
 #### EMBEDDING_DIM
-In my code, I've used `genism` to download pre-trained word embeddings.  But  beware, not all pre-trained embeddings have the same number of dimensions.  This variables defines the size of the embeddings used.
+In my code, I've used [gensim](https://radimrehurek.com/gensim/) to download pre-trained word embeddings.  But  beware, not all pre-trained embeddings have the same number of dimensions.  This variables defines the size of the embeddings used.
 
 **Please note, if you use embeddings other than `glove-wiki-gigaword-300` you will need to change this variable to match.**
 
@@ -89,7 +89,7 @@ info = api.info()
 embedding_model = api.load("glove-wiki-gigaword-300")
 ```
 
-The `info` object is a list of `genism` embeddings available.  You can any of the listed embeddings in the format `api.load('name-of-desired-embedding')`.  Once nice feature of `genism`'s `api.load` is it will automatically download the embeddings from the Internet and load them into Python.  Of course, once they've been downloaded, [gensim](https://radimrehurek.com/gensim/) will simple load them from the local copy.  This makes it easy to experiment with switching out embedding layers.
+The `info` object is a list of [gensim](https://radimrehurek.com/gensim/) embeddings available.  You can any of the listed embeddings in the format `api.load('name-of-desired-embedding')`.  Once nice feature of [gensim](https://radimrehurek.com/gensim/)'s `api.load` is it will automatically download the embeddings from the Internet and load them into Python.  Of course, once they've been downloaded, [gensim](https://radimrehurek.com/gensim/) will simple load them from the local copy.  This makes it easy to experiment with switching out embedding layers.
 
 If you want to know more about [gensim](https://radimrehurek.com/gensim/) and how it can be used with Keras here's an article.
 

@@ -91,11 +91,11 @@ The `info` object is a list of [gensim](https://radimrehurek.com/gensim/) embedd
 
 #### Code: Process Embeddings
 ```python
-index2word = embedding_model.index2entity
+index2word = embedding_model.index2word
 vocab_size = len(embedding_model.vocab)
 word2idx = {}
 for index in range(vocab_size):
-    word2idx[embedding_model.index2word[index]] = index
+    word2idx[index2word[index]] = index
 ```
 
 The two dictionaries `index2word` and `word2idx` are key to embeddings.
@@ -122,7 +122,7 @@ These will be used to turn our comment strings into integer vectors.
 
 Let's look at it a different way, the `gensim` object called `embedding_model` has three different important objects
 1. Pre-trained relationships between words, which is a matrix 300 x 400,000.
-2. `inex2word` -- A dictionary containing `key-value` pairs, the key being the word as a string and value being the integer representing the word.  Note, these integers correspond with the index in the relationship matrix.
+2. `embedding_model.index2word` -- A dictionary containing `key-value` pairs, the key being the word as a string and value being the integer representing the word.  Note, these integers correspond with the index in the relationship matrix.
 3. `word2idx` -- A list containing all the words.  The index corresponds to the word's position in the word embeddings.  Essentially, the reverse of the `index2word`.
 ![](https://ladvien.com/images/embeddings_1.png)
 

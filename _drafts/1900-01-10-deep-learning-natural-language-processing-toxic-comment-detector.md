@@ -200,6 +200,14 @@ For example, looking at the dictionary below, if `num_words` = 7 all words after
 
 Also, as we are loading the data, we are filling any missing values with a dummy token (i.e., "<DT>").  This probably isn't the _best_ way to handle missing values, however, given the amount of data, it's probably best to try and train the network using this method.  Then, come back and handle `na` values more strategically.  Diminishing returns and all that.
 
+#### Code: Padding
+```python
+data = pad_sequences(sequences, maxlen=MAX_SEQUENCE_LENGTH)
+```
+This is an easy one.  It pads our sequences so they are all the same size.  Taking
+
+
+
 #### Code: Applying Embeddings
 ```python
 num_words = min(MAX_NUM_WORDS, len(word_index)) + 1
@@ -287,9 +295,9 @@ embedding_layer = Embedding(len(word2idx),
 ```
 Here we are creating the first layer of our NN.  The primary parameter passed into the Keras `Embedding` class is the `embedding_matrix`, which we created above.  However, there are several other attributes of the `embedding_layer` we must define. Keep in mind our `embedding_layer` will take an integer representing a word as input and output a vector, which is the word-embedding.
 
-First, the `embedding_layers` needs to know the input dimensions.  The input dimension is the number of words we are considering for this training session.  This can be found by taking the length of our `word2idx` object.  So, the `len(word2idx)` returns the total number of words we are considering.  
+First, the `embedding_layers` needs to know the input dimensions.  The input dimension is the number of words we are considering for this training session.  This can be found by taking the length of our `word2idx` object.  So, the `len(word2idx)` returns the total number of words to consider.  
 
-One note on the layer's input, there are two "input" arguments for `keras.layers.Embedding` class initializer, which can be confusing.  They are `input` and `input_length`. The `input` is the number of possible values provided to the layer.  The `input_length` is how many values will be passed in sequence.
+One note on the layer's input, there are two "input" arguments for `keras.layers.Embedding` class initializer, which can be confusing.  They are `input` and `input_length`. The `input` is the number of possible values provided to the layer.  The `input_length` is how many values will be passed in a sequence.
 
 Here are the descriptions from the Keras documentation:
 
@@ -304,7 +312,23 @@ In our case, the `input` will be the vocabulary size and `input_length` is the n
 Next, the `embedding_layers` needs to know the dimensions of the output.  The output is going to be a word-embedding vector, which _should_ be the same size as the word embeddings loaded from the [gensim](https://radimrehurek.com/gensim/) library.  
 We defined this size with the `EMBEDDING_DIM` variable.
 
-Let's recap:
+Lastly, the `training` option is set to `False` so the word-embedding relationships are not updated as we train our `toxic_comment` detector.  You could set it to `True`, but come on, let's be honest, are we going to be doing better than Google?
+
+#### Code: Splitting the Data
+```python
+nb_validation_samples = int(VALIDATION_SPLIT * data.shape[0])
+x_train = data[:-nb_validation_samples]
+y_train = labels[:-nb_validation_samples]
+x_val = data[-nb_validation_samples:]
+y_val = labels[-nb_validation_samples:]
+```
+Here we are forming our data as inputs.  We convert the `data` into `x_train`, 
+
+Ok! Let's recap:
+
+1. Load the word-embeddings.  These are pre-trained word relationships.  It is a matrix 300 x 400,000.
+2. Create two look up objects: `index2word` and `word2idx`
+3. Get our 
 
 
 

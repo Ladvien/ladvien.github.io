@@ -9,3 +9,4 @@ Gemfile.lock
 .jekyll-metadata
 lad-u
 images/*.sketch
+/raw_images

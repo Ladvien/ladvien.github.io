@@ -264,7 +264,7 @@ embedding_matrix[i] = embedding_vector
 
 Lastly, the word-embedding vector representing  "of" gets added to the third row of the embedding matrix (the matrix index starts at 0).
 
-Below is a visualization of the embedding matrix after the word "of" is added.  Note, I've added the first column for readability.
+Here's how the embedding matrix should look after the word "of" is added. (The first column added for readability.)
 
 |word | 1        | 2         | 3          | 4        | ... |
 |---|----------|-----------|------------|----------|----------| 

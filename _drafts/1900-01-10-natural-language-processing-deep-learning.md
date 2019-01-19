@@ -16,9 +16,7 @@ custom_js:
 ## The Plan
 I'm writing learning-notes from implementing a "toxic comment" detector using a convolutional neural network (CNN).  This is a common project across the interwebs, however, the articles I've read on the matter seem to leave a few bits out.  So, I'm attempting to augment public knowledge--not write a comprehensive tutorial.
 
-A common omission is what the data look like as they travel through pre-processing.  I'll try to show how the data look before falling into the neural-net black-hole.
-
-With that, I've put all the original code, relevant project links, tutorial links, and other resources towards the bottom.  From here to there I'll attempt to focus on annotating code.
+A common omission is what the data look like as they travel through pre-processing.  I'll try to show how the data look before falling into the neural-net black-hole.  With that, I've put all the original code, relevant project links, tutorial links, and other resources towards the bottom.  From here to there I'll attempt to focus on annotating the **preprocessing** code.
 
 ## The Code
 
@@ -314,9 +312,10 @@ Let's recap:
 
 Word-embeddings are loaded, for the `glove-wiki-gigaword-300` data set.  These embeddings contain three important objects 
 1. Pre-trained relationships between words, which is a matrix of numbers 300 x 400,000.
-2. A dictionary containing `key-value` pairs, the key being the word as a string and value being the integer representing the word.  Note, these integers correspond with the index in the relationship matrix.
+2. `inex2word` -- A dictionary containing `key-value` pairs, the key being the word as a string and value being the integer representing the word.  Note, these integers correspond with the index in the relationship matrix.
+3. `word2idx` -- A list containing all the words, the index corresponding to the word's position in the word embeddings.  Essentially, the reverse of the `index2word`.
 
-
+![](https://ladvien.com/images/embeddings_1.png)
 
 
 

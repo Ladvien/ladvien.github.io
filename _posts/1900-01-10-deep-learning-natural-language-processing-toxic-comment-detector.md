@@ -142,6 +142,8 @@ This loads the `toxic_comment.csv` as a Pandas dataframe called `toxic_comments`
 
 We will use the text in the `toxic_comments` dataframe to predict the data found in the `labels` matrix.  That is, `toxic_comments` will be our `x_train` and `labels` our `y_train`.
 
+You may notice, the labels are also included in our `toxic_comments`.  But they will not be used, as we will only be taking the `comment_text` column to become our `sequences` here in a moment.
+
 #### `toxic_comments` dataframe
 
 |    | id| comment_text  |   toxic |   severe_toxic |   obscene |   threat |   insult |   identity_hate |

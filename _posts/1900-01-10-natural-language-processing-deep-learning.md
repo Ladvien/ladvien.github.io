@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Deep Learning in NLP
+title: Deep Learning -- Toxic Comment Detector
 description: Expanding on Lazyprogrammer's NLP "tutorials"
 categories: neural-nets
 excerpt:

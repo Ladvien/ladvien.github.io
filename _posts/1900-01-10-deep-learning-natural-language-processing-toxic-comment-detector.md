@@ -224,7 +224,7 @@ Probably best to visually walk through what's going on.  But first, let's talk a
 ```python
 num_words = min(MAX_NUM_WORDS, len(word_index)) + 1
 ```
-This gets the maximum number of words to be addeded in our embedding layer.  If it is less than our "average English speaker's vocabulary"--20,000--we'll use all of the words found in our tokenizer.  Otherwise, the `for-loop` will stop after `num_words` is met.  And remember, the `tokenizer` has kept the words in order of their frequency--so, the words which are lost aren't too critical.
+This gets the maximum number of words to be addeded in our embedding layer.  If it is less than our "average English speaker's vocabulary"--20,000--we'll use all of the words found in our tokenizer.  Otherwise, the `for-loop` will stop after `num_words` is met.  And remember, the `tokenizer` has kept the words in order of their frequency--so, the words which are lost aren't as critical.
 
 ```python
 embedding_matrix = np.zeros((num_words, EMBEDDING_DIM))

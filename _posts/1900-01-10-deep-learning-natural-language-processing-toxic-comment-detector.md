@@ -120,9 +120,10 @@ index2word = ["the", ",", ".", "of", "to", "and", ...]
 ```
 These will be used to turn our comment strings into integer vectors.
 
-Let's look at it a different way, the `gensim` object called `embedding_model` has three different important objects
-1. Pre-trained relationships between words, which is a matrix 300 x 400,000.
-2. `embedding_model.index2word` -- A dictionary containing `key-value` pairs, the key being the word as a string and value being the integer representing the word.  Note, these integers correspond with the index in the relationship matrix.
+After this bit of code we should have three objects. 
+
+1. `embedding_model` -- Pre-trained relationships between words, which is a matrix 300 x 400,000.
+2. `index2word` -- A dictionary containing `key-value` pairs, the key being the word as a string and value being the integer representing the word.  Note, these integers correspond with the index in the relationship matrix.
 3. `word2idx` -- A list containing all the words.  The index corresponds to the word's position in the word embeddings.  Essentially, the reverse of the `index2word`.
 ![](https://ladvien.com/images/embeddings_1.png)
 

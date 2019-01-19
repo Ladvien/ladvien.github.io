@@ -44,7 +44,7 @@ pip install gensim
 pip install pandas
 ```
 
-#### Code: Constants
+#### Code: Variables
 ```python
 BASE_DIR = 'your project directory'
 TRAIN_TEXT_DATA_DIR = BASE_DIR + 'train.csv'
@@ -53,7 +53,7 @@ MAX_NUM_WORDS = 20000
 EMBEDDING_DIM = 300
 VALIDATION_SPLIT = 0.2
 ```
-The above constants define the preprocessing actions and the neural-network.
+The above variables define the preprocessing actions and the neural-network.
 
 #### TRAIN_TEXT_DATA_DIR
 The directory containing the data file `train.csv`
@@ -67,16 +67,16 @@ You neeed to @#$ you mother!$@#$&...
 Probably doesn't need much more for the network to discern it's a toxic comment.  Also, if we create the network based around the longest comment, it will become unnecessarily large and slow. Much like the human brain (See [Overchoice](https://en.wikipedia.org/wiki/Overchoice#cite_note-4)), we need to provide as little information as needed to make a good decision.
 
 #### MAX_NUM_WORDS
-This constant is the maximum number of words to include--or, vocabulary size.  
+This variable is the maximum number of words to include--or, vocabulary size.  
 
 Much like truncating the sequence length, the maximum vocabulary should not be overly inclusive.  The number `20,000` comes from a "study" stating an average person only uses 20,000 words.  Of course, I've not found a primary source stating this--not saying it's not out there, but I've not found it yet. (Halfhearted search results in the appendix.)
 
 Regardless, it seems to help us justify keeping the NN nimble.
 
 #### EMBEDDING_DIM
-In my code, I've used `genism` to download pre-trained word embeddings.  But  beware, not all pre-trained embeddings have the same number of dimensions.  This constants defines the size of the embeddings used.
+In my code, I've used `genism` to download pre-trained word embeddings.  But  beware, not all pre-trained embeddings have the same number of dimensions.  This variables defines the size of the embeddings used.
 
-**Please note, if you use embeddings other than `glove-wiki-gigaword-300` you will need to change this constant to match.**
+**Please note, if you use embeddings other than `glove-wiki-gigaword-300` you will need to change this variable to match.**
 
 #### VALIDATION_SPLIT
 A helper function in Keras will split our into a `test` and `validation`.  This percentage represents how much of the data to hold back for validation.
@@ -296,7 +296,7 @@ Here are the descriptions from the Keras documentation:
 In our case, the `input` will be the vocabulary size and `input_length` is the number of words in a sequence, which should be `MAX_SEQUENCE_LENGTH`.  This is also why we padded comments shorter than `MAX_SEQUENCE_LENGTH`, as the embedding layer will expect a consistent size.
 
 Next, the `embedding_layers` needs to know the dimensions of the output.  The output is going to be a word-embedding vector, which _should_ be the same size as the word embeddings loaded from the [gensim](https://radimrehurek.com/gensim/) library.  
-We defined this size with the `EMBEDDING_DIM` constant.
+We defined this size with the `EMBEDDING_DIM` variable.
 
 Let's recap:
 

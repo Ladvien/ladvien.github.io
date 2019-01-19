@@ -204,8 +204,17 @@ Also, as we are loading the data, we are filling any missing values with a dummy
 ```python
 data = pad_sequences(sequences, maxlen=MAX_SEQUENCE_LENGTH)
 ```
-This is an easy one.  It pads our sequences so they are all the same size.  Taking
+This is an easy one.  It pads our sequences so they are all the same length.  The [pad_sequences](https://keras.io/preprocessing/sequence/) function is part of the Keras library.  A couple of important arguments have default values: `padding` and `truncating`.
 
+Here's the Keras docs explanation:
+
+> padding: String, 'pre' or 'post': pad either before or after each sequence.
+
+> truncating: String, 'pre' or 'post': remove values from sequences larger than  maxlen, either at the beginning or at the end of the sequences.
+
+Both arguments default to `pre`.
+
+Lastly, the `maxlen` argument controls where padding and truncation happen.  And we are setting it with our `MAX_SEQUENCE_LENGTH` variable.
 
 
 #### Code: Applying Embeddings

@@ -16,9 +16,7 @@ custom_js:
 ## The Plan
 I'm writing learning-notes from implementing a "toxic comment" detector using a convolutional neural network (CNN).  This is a common project across the interwebs, however, the articles I've seen on the matter leave a few bits out.  So, I'm attempting to augment public knowledge--not write a comprehensive tutorial.
 
-A common omission is what the data look like as they travel through pre-processing.  I'll try to show how the data look before falling into the neural-net black-hole.  However, I'll stop short before reviewing the CNN setup, as this is explained much better elsewhere.
-
-I've put all the original code, relevant project links, tutorial links, and other resources towards the bottom.  From here to there I'll attempt to focus on annotating the **preprocessing** code.
+A common omission is what the data look like as they travel through pre-processing.  I'll try to show how the data look before falling into the neural-net black-hole.  However, I'll stop short before reviewing the CNN setup, as this is explained much better elsewhere.  Though, I've put all the original code, relevant project links, tutorial links, and other resources towards the bottom.
 
 ## The Code
 
@@ -38,7 +36,7 @@ import matplotlib.pyplot as plt
 from sklearn.metrics import roc_auc_score
 
 ```
-The above code includes several packages which would need to be downloaded.  The easiest way is to use `pip`.
+The above code includes several packages which would need to be downloaded.  The easiest way is to use [pip](https://www.w3schools.com/python/python_pip.asp).
 
 ```
 pip install keras

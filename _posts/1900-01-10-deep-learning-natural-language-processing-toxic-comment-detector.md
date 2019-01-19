@@ -142,7 +142,7 @@ This loads the `toxic_comment.csv` as a Pandas dataframe called `toxic_comments`
 
 We will use the text in the `toxic_comments` dataframe to predict the data found in the `labels` matrix.  That is, `toxic_comments` will be our `x_train` and `labels` our `y_train`.
 
-Sample data from `toxic_comments` dataframe
+#### `toxic_comments` dataframe
 
 |    | id| comment_text  |   toxic |   severe_toxic |   obscene |   threat |   insult |   identity_hate |
 |---|-----------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------|---------------|----------|---------|---------|----------------|
@@ -152,7 +152,7 @@ Sample data from `toxic_comments` dataframe
 
 Note, for `x_train` we will end up only using the `comment_text` from the above dataframe.
 
-Sample data from the `labels` (`y_train`) numpy matrix.
+#### `labels` (`y_train`) numpy matrix
 
 |   0 |   1 |   2 |   3 |   4 |   5 |
 |----|----|----|----|----|----|-----|

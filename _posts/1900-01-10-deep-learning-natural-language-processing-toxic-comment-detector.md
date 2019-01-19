@@ -273,6 +273,10 @@ Here's how the embedding matrix should look after the word "of" is added. (The f
 | of | -0.25756 | -0.057132 | -0.6719    | -0.38082 | ... |
 | ... | ... | ... | ... | ... | ... |
 
+Also, for a deep visualization, check the image above.  The picture labeled "word embeddings" is _actually_ the output of our `embedding_matrix`.  The big difference? The word vectors in the `gensim` embedding_model which are not found anywhere in our corpus (all the text contained in the toxic_comments column) have been replaced with all zeroes. 
+
+![embedding-matrix](https://ladvien.com/images/embeddings_2.png)
+
 #### Code: Creating Embedding Layer
 ```python
 embedding_layer = Embedding(len(word2idx),

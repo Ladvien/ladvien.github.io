@@ -74,12 +74,10 @@ Much like truncating the sequence length, the maximum vocabulary should not be o
 Regardless, it seems to help us justify keeping the NN nimble.
 
 #### EMBEDDING_DIM
-In my code, I've used [gensim](https://radimrehurek.com/gensim/) to download pre-trained word embeddings.  But  beware, not all pre-trained embeddings have the same number of dimensions.  This variables defines the size of the embeddings used.
-
-**Please note, if you use embeddings other than `glove-wiki-gigaword-300` you will need to change this variable to match.**
+In my code, I've used [gensim](https://radimrehurek.com/gensim/) to download pre-trained word embeddings.  But  beware, not all pre-trained embeddings have the same number of dimensions.  This variables defines the size of the embeddings used.  **Please note, if you use embeddings other than `glove-wiki-gigaword-300` you will need to change this variable to match.**
 
 #### VALIDATION_SPLIT
-A helper function in Keras will split our into a `test` and `validation`.  This percentage represents how much of the data to hold back for validation.
+A helper function in Keras will split our data into a `test` and `validation`.  This percentage represents how much of the data to hold back for validation.
 
 #### Code: Load Embeddings
 ```python

@@ -128,7 +128,9 @@ word2idx = {
     "to": 4,
     "and": 5,
     ....
-}
+    "blah": 12984,
+    ...
+}  
 ```
 `index2word` is a list where the the values are the words and the word's position in the string represents it's index in the `word2idx`.
 ```python
@@ -303,9 +305,19 @@ Here are the descriptions from the Keras documentation:
 `input_length`
 > Length of input sequences, when it is constant. This argument is required if you are going to connect  Flatten then Dense layers upstream (without it, the shape of the dense outputs cannot be computed).
 
-In our case, the `input` will be the vocabulary size and `input_length` is the number of words in a sequence, which should be `MAX_SEQUENCE_LENGTH`.  This is also why we padded comments shorter than `MAX_SEQUENCE_LENGTH`, as this the embedding layer will expect them to be a consistent size.
+In our case, the `input` will be the vocabulary size and `input_length` is the number of words in a sequence, which should be `MAX_SEQUENCE_LENGTH`.  This is also why we padded comments shorter than `MAX_SEQUENCE_LENGTH`, as the embedding layer will expect a consistent size.
 
-Next, the `embedding_layers` needs to know the dimensions of the output.  The output is going to be a vector
+Next, the `embedding_layers` needs to know the dimensions of the output.  The output is going to be a word-embedding vector, which _should_ be the same size as the word embeddings loaded from the `gensim` library.  
+We defined this size with the `EMBEDDING_DIM` constant.
+
+Let's recap:
+
+Word-embeddings are loaded, for the `glove-wiki-gigaword-300` data set.  These embeddings contain three important objects 
+1. Pre-trained relationships between words, which is a matrix of numbers 300 x 400,000.
+2. A dictionary containing `key-value` pairs, the key being the word as a string and value being the integer representing the word.  Note, these integers correspond with the index in the relationship matrix.
+
+
+
 
 
 ### Appendix

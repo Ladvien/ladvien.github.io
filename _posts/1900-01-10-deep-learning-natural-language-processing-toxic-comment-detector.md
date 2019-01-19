@@ -7,7 +7,7 @@ excerpt:
 series: Deep Learning Journal
 tags: [NLP, Natural Language Processing, Deep Learning, Word Vectors, Convolutional Neural Networks]
 image: 
-    feature: 
+    feature: anns_everywhere.png
 comments: true
 custom_css: 
 custom_js: 

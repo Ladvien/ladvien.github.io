@@ -59,7 +59,7 @@ The above constants define the preprocessing actions and the neural-network.
 The directory containing the data file `train.csv`
 
 #### MAX_SEQUENCE_LENGTH
-The toxic_comment data set contains comments collected from Wikipedia.  MAX_SEQUENCE_LENGTH is used in the preprocessing stages to truncate comments if too long.  For example, a comment like:
+The toxic_comment data set contains comments collected from Wikipedia.  MAX_SEQUENCE_LENGTH is used in the preprocessing stages to truncate a comment if too long.  That is, greater than `MAX_SEQUENCE_LENGTH`.  For example, a comment like:
 
 ```
 You neeed to @#$ you mother!$@#$&...

@@ -74,7 +74,7 @@ Much like truncating the sequence length, the maximum vocabulary should not be o
 Regardless, it seems to help us justify keeping the NN nimble.
 
 #### EMBEDDING_DIM
-In my code, I've used `genism` to download pre-trained word embeddings.  But not all pre-trained embeddings have the same number of dimensions.  This constants defines the size of the embeddings used.
+In my code, I've used `genism` to download pre-trained word embeddings.  But  beware, not all pre-trained embeddings have the same number of dimensions.  This constants defines the size of the embeddings used.
 
 **Please note, if you use embeddings other than `glove-wiki-gigaword-300` you will need to change this constant to match.**
 

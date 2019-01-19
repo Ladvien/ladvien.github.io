@@ -89,10 +89,6 @@ embedding_model = api.load("glove-wiki-gigaword-300")
 
 The `info` object is a list of [gensim](https://radimrehurek.com/gensim/) embeddings available.  You can use any of the listed embeddings in the format `api.load('name-of-desired-embedding')`.  One nice feature of [gensim](https://radimrehurek.com/gensim/)'s `api.load` is it will automatically download the embeddings from the Internet and load them into Python.  Of course, once they've been downloaded, [gensim](https://radimrehurek.com/gensim/) will load the local copy.  This makes it easy to experiment with switching embedding layers.
 
-If you want to know more about [gensim](https://radimrehurek.com/gensim/) and how it can be used with Keras here's an article.
-
-* [Depends on the Definition](https://www.depends-on-the-definition.com/guide-to-word-vectors-with-gensim-and-keras/)
-
 #### Code: Process Embeddings
 ```python
 index2word = embedding_model.index2entity
@@ -315,6 +311,9 @@ Existing tutorials and references:
 * [Kaggle Projects Using a CNN and Toxicty Data](https://www.kaggle.com/c/jigsaw-toxic-comment-classification-challenge/kernels?sortBy=relevance&group=everyone&search=cnn&page=1&pageSize=20&competitionId=8076)
 * [Tutorial of Using Word Vectors](https://www.depends-on-the-definition.com/guide-to-word-vectors-with-gensim-and-keras/)
 * [Keras Tutorial on Using Pretrained Word Embeddings](https://blog.keras.io/using-pre-trained-word-embeddings-in-a-keras-model.html)
+
+If you want to know more about [gensim](https://radimrehurek.com/gensim/) and how it can be used with Keras here's an article.
+* [Depends on the Definition](https://www.depends-on-the-definition.com/guide-to-word-vectors-with-gensim-and-keras/)
 
 ### Data
 The data we will use to train is hosted by Kaggle.  They are comments collected from Wikipedia and classified with one of the following markers (mutually inclusive).

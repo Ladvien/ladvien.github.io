@@ -87,7 +87,7 @@ info = api.info()
 embedding_model = api.load("glove-wiki-gigaword-300")
 ```
 
-The `info` object is a list of [gensim](https://radimrehurek.com/gensim/) embeddings available.  You can use any of the listed embeddings in the format `api.load('name-of-desired-embedding')`.  One nice feature of [gensim](https://radimrehurek.com/gensim/)'s `api.load` is it will automatically download the embeddings from the Internet and load them into Python.  Of course, once they've been downloaded, [gensim](https://radimrehurek.com/gensim/) will load the local copy.  This makes it easy to experiment with switching embedding layers.
+The `info` object is a list of [gensim](https://radimrehurek.com/gensim/) embeddings available.  You can use any of the listed embeddings in the format `api.load('name-of-desired-embedding')`.  One nice feature of [gensim](https://radimrehurek.com/gensim/)'s `api.load` is it will automatically download the embeddings from the Internet and load them into Python.  Of course, once they've been downloaded, [gensim](https://radimrehurek.com/gensim/) will load the local copy.  This makes it easy to experiment with different embedding layers.
 
 #### Code: Process Embeddings
 ```python

@@ -55,16 +55,10 @@ VALIDATION_SPLIT = 0.2
 ```
 The above constants define the preprocessing actions and the neural-network.
 
-```
-TRAIN_TEXT_DATA_DIR
-```
-
+#### TRAIN_TEXT_DATA_DIR
 The directory containing the data file `train.csv`
 
-```
-MAX_SEQUENCE_LENGTH
-```
-
+#### MAX_SEQUENCE_LENGTH
 The toxic_comment data set contains comments collected from Wikipedia.  MAX_SEQUENCE_LENGTH is used in the preprocessing stages to truncate comments if too long.  For example, a comment like:
 
 ```
@@ -72,23 +66,20 @@ You neeed to @#$ you mother!$@#$&...
 ```
 
 Probably doesn't need much more for the network to discern it's a toxic comment.  Also, if we create the network based around the longest comment, it will become unnecessarily large and slow. Much like the human brain, we need to provide as little information as needed to make a good decision.
-```
-MAX_NUM_WORDS = 20000
-```
+
+#### MAX_NUM_WORDS
 This constant is the maximum number of words to include--or, vocabulary size.  
 
 Much like truncating the sequence length, the maximum vocabulary should not be overly inclusive.  The number `20,000` comes from a "study" stating an average person only uses 20,000 words.  Of course, I've not found a primary source stating this--not saying it's not out there, but I've not found it yet. (See my primary source search in the appendix.)
 
 Regardless, it seems to help us justify keeping the NN nimble.
-```
-EMBEDDING_DIM = 300
-```
+
+#### EMBEDDING_DIM
 In my code, I've used `genism` to download pre-trained word embeddings.  But not all pre-trained embeddings have the same number of dimensions.  This constants defines the size of the embeddings used.
 
 **Please note, if you use embeddings other than `glove-wiki-gigaword-300` you will need to change this constant to match.**
-```
-VALIDATION_SPLIT = 0.2
-```
+
+#### VALIDATION_SPLIT
 A helper function in Keras will split our into a `test` and `validation`.  This percentage represents how much of the data to hold back for validation.
 
 #### Code: Load Embeddings

@@ -216,6 +216,7 @@ Both arguments default to `pre`.
 
 Lastly, the `maxlen` argument controls where padding and truncation happen.  And we are setting it with our `MAX_SEQUENCE_LENGTH` variable.
 
+![padding-sequences-before-after](https://ladvien.com/images/embeddings_3.png)
 
 #### Code: Applying Embeddings
 ```python

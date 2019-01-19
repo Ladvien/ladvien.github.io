@@ -64,7 +64,7 @@ The toxic_comment data set contains comments collected from Wikipedia.  MAX_SEQU
 ```
 You neeed to @#$ you mother!$@#$&...
 ```
-Probably doesn't need much more for the network to discern it's a toxic comment.  Also, if we create the network based around the longest comment, it will become unnecessarily large and slow. Much like the human brain (doi: 10.1037), we need to provide as little information as needed to make a good decision.
+Probably doesn't need much more for the network to discern it's a toxic comment.  Also, if we create the network based around the longest comment, it will become unnecessarily large and slow. Much like the human brain (See [Overchoice](https://en.wikipedia.org/wiki/Overchoice#cite_note-4)), we need to provide as little information as needed to make a good decision.
 
 #### MAX_NUM_WORDS
 This constant is the maximum number of words to include--or, vocabulary size.  
@@ -89,9 +89,9 @@ info = api.info()
 embedding_model = api.load("glove-wiki-gigaword-300")
 ```
 
-The `info` object is a list of `genism` embeddings available.  You can any of the listed embeddings in the format `api.load('name-of-desired-embedding')`.  Once nice feature of `genism`'s `api.load` is it will automatically download the embeddings from the Internet and load them into Python.  Of course, once they've been downloaded, `gensim` will simple load them from the local copy.  This makes it easy to experiment with switching out embedding layers.
+The `info` object is a list of `genism` embeddings available.  You can any of the listed embeddings in the format `api.load('name-of-desired-embedding')`.  Once nice feature of `genism`'s `api.load` is it will automatically download the embeddings from the Internet and load them into Python.  Of course, once they've been downloaded, [gensim](https://radimrehurek.com/gensim/) will simple load them from the local copy.  This makes it easy to experiment with switching out embedding layers.
 
-If you want to know more about `gensim` and how it can be used with Keras here's an article.
+If you want to know more about [gensim](https://radimrehurek.com/gensim/) and how it can be used with Keras here's an article.
 
 * [Depends on the Definition](https://www.depends-on-the-definition.com/guide-to-word-vectors-with-gensim-and-keras/)
 
@@ -295,7 +295,7 @@ Here are the descriptions from the Keras documentation:
 
 In our case, the `input` will be the vocabulary size and `input_length` is the number of words in a sequence, which should be `MAX_SEQUENCE_LENGTH`.  This is also why we padded comments shorter than `MAX_SEQUENCE_LENGTH`, as the embedding layer will expect a consistent size.
 
-Next, the `embedding_layers` needs to know the dimensions of the output.  The output is going to be a word-embedding vector, which _should_ be the same size as the word embeddings loaded from the `gensim` library.  
+Next, the `embedding_layers` needs to know the dimensions of the output.  The output is going to be a word-embedding vector, which _should_ be the same size as the word embeddings loaded from the [gensim](https://radimrehurek.com/gensim/) library.  
 We defined this size with the `EMBEDDING_DIM` constant.
 
 Let's recap:

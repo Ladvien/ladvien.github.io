@@ -152,7 +152,6 @@ You may notice, the labels are also included in our `toxic_comments`.  But they 
 |  6 | 0002bcb3da6cb337 | COCKSUCKER BEFORE YOU PISS AROUND ON MY WORK|1 |     1 |1 | 0 | 1 |0 |
 |  7 | 00031b1e95af7921 | Your vandalism to the Matt Shirvington article has been reverted.  Please don't do it again, or you will be banned.    |0 |     0 |0 | 0 | 0 |0 |
 
-Note, for `x_train` we will end up only using the `comment_text` from the above dataframe.
 
 #### `labels` (`y_train`) numpy matrix
 

@@ -417,7 +417,7 @@ Well, that's what I got.  Thanks for sticking it out.  Let me know if you have a
 
 #### Full Code
 
-* toxic_comment.py
+* [toxic_comment.py](https://github.com/Ladvien/nn_learning_cnn_toxic_comment)
 
 #### Tutorials
 Existing tutorials and references:

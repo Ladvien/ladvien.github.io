@@ -348,10 +348,9 @@ But! Let's recap before you click away:
 
 And that's it.  The the prepared `embedding_layer` will become the first layer in the network.
 
-### Summary
-Like I stated at the beginning, I'm not going to review training the network, as I've found many better explanations--and I'll like them in the Appendix.  However, for those interested, here's the rest of the code.
-
 #### Code: Training
+Like I stated at the beginning, I'm not going to review training the network, as there are many better explanations--and I'll link them in the Appendix.  However, for those interested, here's the rest of the code.
+
 ```python
 input_ = Input(shape=(MAX_SEQUENCE_LENGTH,))
 x = embedding_layer(input_)
@@ -375,9 +374,8 @@ history = model.fit(x_train, y_train, epochs=2, batch_size=512, validation_data=
 
 Oh! There's one more bit I'd like to go over, which most other articles have left out.  Prediction.
 
-I mean, training a CNN is fun and all, but how does one use it?
-
 #### Code: Predictions
+I mean, training a CNN is fun and all, but how does one use it?  Essentially, it comes down to repeating the steps above, but with with less data.
 
 ```python
 def create_prediction(model, sequence, tokenizer, max_length, prediction_labels):
@@ -402,8 +400,24 @@ sequence = ["""
 prediction = create_prediction(model, sequence, tokenizer, MAX_SEQUENCE_LENGTH, prediction_labels)
 ```
 
+The function above needs the following arguments:
+* The pre-trained `model`.  This is the Keras model we just trained.  
+* A `sequence` you'd like to determine whether it is "toxic".
+* The `tokenizer`, which is used to encode the prediction sequence the same way as the training sequences.
+* `max_length` must be the same as the maximum size of the training sequences
+* The `prediction_labels` are a list of strings containing the human readable labels for the predicted tags (e.g. "toxic", "severe_toxic", "insult", etc.)
+
+Really, the function takes all the important parts of our pre-processing and reuses them on the prediction sequence.  
+
+One piece of the function you might tweak is the `.round(0)`.  I've put this there to convert the predictions into binary.  That is, if prediction for a sequence is `.78` it is rounded up to `1`.  This is do to the binary nature of the prediction.  Either a comment is toxic or it is not.  Either `0` or `1`.
+
+Well, that's what I got.  Thanks for sticking it out.  Let me know if you have any questions.
+
 ### Appendix
 
+#### Full Code
+
+#### Tutorials
 Existing tutorials and references:
 
 * [Convolutional Neural Networks for Toxic Comment Classification (Academic)](https://arxiv.org/pdf/1802.09957.pdf)
@@ -411,19 +425,20 @@ Existing tutorials and references:
 * [Tutorial of Using Word Vectors](https://www.depends-on-the-definition.com/guide-to-word-vectors-with-gensim-and-keras/)
 * [Keras Tutorial on Using Pretrained Word Embeddings](https://blog.keras.io/using-pre-trained-word-embeddings-in-a-keras-model.html)
 
-If you want to know more about [gensim](https://radimrehurek.com/gensim/) and how it can be used with Keras here's an article.
+If you want to know more about [gensim](https://radimrehurek.com/gensim/) and how it can be used with Keras.
 * [Depends on the Definition](https://www.depends-on-the-definition.com/guide-to-word-vectors-with-gensim-and-keras/)
 
-### Data
-The data we will use to train is hosted by Kaggle.  They are comments collected from Wikipedia and classified with one of the following markers (mutually inclusive).
+#### Data
+The data are hosted by Kaggle.
 
 * [Wikipedia's "Toxic Comment" Data](https://www.kaggle.com/c/jigsaw-toxic-comment-classification-challenge/data)
 
 Please note, you will have to sign-up for a Kaggle account.
 
+#### Average Person's Vocabulary Size
 Primary sources on vocabulary size:
-https://www.frontiersin.org/articles/10.3389/fpsyg.2016.01116/full
-https://www.victoria.ac.nz/lals/about/staff/publications/paul-nation/1990-Goulden-Voc-size.pdf
-https://journals.sagepub.com/doi/abs/10.1080/10862969109547729
-http://centaur.reading.ac.uk/29879/
-https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4965448/
+* https://www.frontiersin.org/articles/10.3389/fpsyg.2016.01116/full
+* https://www.victoria.ac.nz/lals/about/staff/publications/paul-nation/1990-Goulden-Voc-size.pdf
+* https://journals.sagepub.com/doi/abs/10.1080/10862969109547729
+* http://centaur.reading.ac.uk/29879/
+* https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4965448/

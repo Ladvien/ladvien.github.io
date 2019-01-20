@@ -332,17 +332,75 @@ y_train = labels[:-nb_validation_samples]
 x_val = data[-nb_validation_samples:]
 y_val = labels[-nb_validation_samples:]
 ```
-Here we are forming our data as inputs.  We convert the `data` into `x_train`, 
+Here we are forming our data as inputs.  We convert the `data` into `x_train` and `x_val`.  The `labels` dataframe becomes `y_train` and `y_val`.  And here marks the end of **pre-processing.**
 
-Ok! Let's recap:
+But! Let's recap before you click away:
 
 1. Load the word-embeddings.  These are pre-trained word relationships.  It is a matrix 300 x 400,000.
 2. Create two look up objects: `index2word` and `word2idx`
-3. Get our 
+3. Get our `toxic_comment` and `labels` data.
+4. Convert the `comments` column from `toxic_comments` dataframe into the `sequences` list.
+5. Create a `tokenizer` object and fit it to the `sequences` text
+6. Pad all the sequences so they are the same size.
+7. Look up the word-embedding vector for each unique word in `sequences`.  Store the word-embedding vector in th`embedding_matrix`.  If the word is not found in the embeddings, then leave the index all zeroes.  Also, limit the embedding-matrix to the 20,000 most used words.
+8. Create a Keras `Embedding` layer from the `embedding_matrix`
+9. Split the data for training and validation.
 
+And that's it.  The the prepared `embedding_layer` will become the first layer in the network.
 
+### Summary
+Like I stated at the beginning, I'm not going to review training the network, as I've found many better explanations--and I'll like them in the Appendix.  However, for those interested, here's the rest of the code.
 
+#### Code: Training
+```python
+input_ = Input(shape=(MAX_SEQUENCE_LENGTH,))
+x = embedding_layer(input_)
+x = Conv1D(128, 5, activation='relu')(x)
+x = MaxPooling1D(5)(x)
+x = Conv1D(128, 5, activation='relu')(x)
+x = MaxPooling1D(5)(x)
+x = Conv1D(128, 3, activation='relu')(x)
+x = GlobalMaxPooling1D()(x)
+x = Dense(128, activation='relu')(x)
+output = Dense(len(prediction_labels), activation='sigmoid')(x)
+model = Model(input_, output)
+model.compile(loss='binary_crossentropy',
+              optimizer='rmsprop',
+              metrics=['acc'])
 
+print('Training model.')
+# happy learning!
+history = model.fit(x_train, y_train, epochs=2, batch_size=512, validation_data=(x_val, y_val))
+```
+
+Oh! There's one more bit I'd like to go over, which most other articles have left out.  Prediction.
+
+I mean, training a CNN is fun and all, but how does one use it?
+
+#### Code: Predictions
+
+```python
+def create_prediction(model, sequence, tokenizer, max_length, prediction_labels):
+    # Convert the sequence to tokens and pad it.
+    sequence = tokenizer.texts_to_sequences(sequence)
+    sequence = pad_sequences(sequence, maxlen=max_length)
+
+    # Make a prediction
+    sequence_prediction = model.predict(sequence, verbose=1)
+
+    # Take only the first of the batch of predictions
+    sequence_prediction = pd.DataFrame(sequence_prediction).round(0)
+
+    # Label the predictions
+    sequence_prediction.columns = prediction_labels
+    return sequence_prediction
+
+# Create a test sequence
+sequence = ["""
+            Put your test sentence here.
+            """]
+prediction = create_prediction(model, sequence, tokenizer, MAX_SEQUENCE_LENGTH, prediction_labels)
+```
 
 ### Appendix
 

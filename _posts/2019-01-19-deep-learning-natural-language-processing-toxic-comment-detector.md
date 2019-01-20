@@ -437,8 +437,9 @@ Please note, you will have to sign-up for a Kaggle account.
 
 #### Average Person's Vocabulary Size
 Primary sources on vocabulary size:
-* https://www.frontiersin.org/articles/10.3389/fpsyg.2016.01116/full
-* https://www.victoria.ac.nz/lals/about/staff/publications/paul-nation/1990-Goulden-Voc-size.pdf
-* https://journals.sagepub.com/doi/abs/10.1080/10862969109547729
-* http://centaur.reading.ac.uk/29879/
-* https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4965448/
+* [How Many Words Do We Know? Practical Estimates of Vocabulary Size Dependent on Word Definition, the Degree of Language Input and the Participant’s Age](https://www.frontiersin.org/articles/10.3389/fpsyg.2016.01116/full)
+* [How Large Can a Receptive Vocabulary Be?](https://www.victoria.ac.nz/lals/about/staff/publications/paul-nation/1990-Goulden-Voc-size.pdf)
+* [Toward a Meaningful Definition of Vocabulary Size](https://journals.sagepub.com/doi/abs/10.1080/10862969109547729)
+* [Vocabulary size revisited: the link between vocabulary size and academic achievement](http://centaur.reading.ac.uk/29879/)
+* [How Many Words Do We Know? Practical Estimates of Vocabulary Size Dependent on Word Definition, the Degree of Language Input and the Participant’s Age
+](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4965448/)

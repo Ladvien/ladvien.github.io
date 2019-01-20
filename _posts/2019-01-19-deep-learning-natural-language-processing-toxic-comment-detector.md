@@ -420,8 +420,6 @@ Well, that's what I got.  Thanks for sticking it out.  Let me know if you have a
 * [toxic_comment.py](https://github.com/Ladvien/nn_learning_cnn_toxic_comment)
 
 #### Tutorials
-Existing tutorials and references:
-
 * [Convolutional Neural Networks for Toxic Comment Classification (Academic)](https://arxiv.org/pdf/1802.09957.pdf)
 * [Kaggle Projects Using a CNN and Toxicty Data](https://www.kaggle.com/c/jigsaw-toxic-comment-classification-challenge/kernels?sortBy=relevance&group=everyone&search=cnn&page=1&pageSize=20&competitionId=8076)
 * [Tutorial of Using Word Vectors](https://www.depends-on-the-definition.com/guide-to-word-vectors-with-gensim-and-keras/)

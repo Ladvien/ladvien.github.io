@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Deep Learning -- Toxic Comment Detector
-description: Expanding on Lazyprogrammer's NLP "tutorials"
+description: Explaining the pre-processing stages of creating a text classification neural network.
 categories: neural-nets
 excerpt:
 series: Deep Learning Journal
@@ -416,6 +416,8 @@ Well, that's what I got.  Thanks for sticking it out.  Let me know if you have a
 ### Appendix
 
 #### Full Code
+
+* toxic_comment.py
 
 #### Tutorials
 Existing tutorials and references:

@@ -23,6 +23,21 @@ This article logs a weekend of efforts to create a deep-learning environment whi
 
 It was a tough one.
 
+## UPDATE: 2019-01-19
+It seems the Anaconda `conda` install tool now takes care of the gpu setup.
+
+The following steps:
+
+* 2. Install NVIDIA
+* 3. Downgrade CUDA to match CDNN
+
+Can now be replaced by installing `tensorflow-gpu` after installing Anaconda.
+
+Run the following once `conda` is setup:
+```bash
+conda install -vv tensorflow-gpu
+```
+
 ## TL;DR
 There was error I had a hell of a time debugging.  Installing the toolchain is fairly straightforward, _except_ CUDA.  At the time of writing this article (2018-04-29), there is a version mismatch between CUDA and CUDNN in the Arch Linux repositories.
 
@@ -123,7 +138,7 @@ This downloads a `pkg` file for CUDA 9.0, which is what the most recent version 
 
 Wait for the file to be replaced before moving on.
 
-### 4. Anaconda (Optional)
+### 4. Anaconda
 Anaconda is a great package manager for data (mad) scientist tools.  It is Python centric, but also supports R and other stuff I don't know how to use yet.
 
 * [Anaconda](https://www.anaconda.com/what-is-anaconda/)

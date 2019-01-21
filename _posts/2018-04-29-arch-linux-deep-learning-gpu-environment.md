@@ -28,8 +28,8 @@ It seems the Anaconda `conda` install tool now takes care of the gpu setup.
 
 The following steps:
 
-* 2. Install NVIDIA
-* 3. Downgrade CUDA to match CDNN
+* Install NVIDIA
+* Downgrade CUDA to match CDNN
 
 Can now be replaced by installing `tensorflow-gpu` after installing Anaconda.
 

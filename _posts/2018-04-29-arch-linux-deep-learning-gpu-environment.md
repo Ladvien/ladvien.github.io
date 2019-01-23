@@ -115,7 +115,7 @@ We will start with installing the base NVIDIA packages.  As part of it, we are g
 
 Ok, here we go.
 ```
-sudo pacman -S nvidia nvidia-utils cuda cdnn
+sudo pacman -S nvidia nvidia-utils cuda cudnn
 ```
 That might take awhile.  
 

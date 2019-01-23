@@ -124,5 +124,106 @@ git clone https://aur.archlinux.org/mongodb.git
 cd mongodb
 makepkg -i
 ```
+### Setup User on Centos
+Login as root
+```
+useradd my_user
+passwd my_user 
+```
+Set the password for the `my_user`
 
+Now, let's give the `my_user` sudo powers
+```
+EDITOR=nano visudo
+```
+Find line with:
+```
+root    ALL=(ALL)	ALL
+```
+And add the exact same entry for `my_user`.  It should look like this when done
+```
+root    ALL=(ALL)	ALL
+my_user    ALL=(ALL)	ALL
+```
+Now save the file and exit.
 
+Let's login as our new user.  Exit your shell and login back in as the `my_user`.  If you are ssh'ing to the server it should look something like this, typed on your local computer command line.
+```
+ssh my_user@erver_ip_address
+```
+And let's test the `my_user`'s sudo powers
+```
+sudo ls
+```
+If you are greeted with:
+```
+We trust you have received the usual lecture from the local System
+Administrator. It usually boils down to these three things:
+
+    #1) Respect the privacy of others.
+    #2) Think before you type.
+    #3) With great power comes great responsibility.
+
+[sudo] password for my_user: 
+```
+Then task complete!  Otherwise, feel free to ask questions in the comments.
+
+### Setup Miniconda on Centos
+
+```bash
+sudo yum install wget bzip2
+wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+chmod +x Miniconda3-latest-Linux-x86_64.sh
+./Miniconda3-latest-Linux-x86_64.sh
+source .bashrc
+conda install python=3.6
+conda install tensorflow scikit-learn keras pandas
+```
+Important Step. **Reboot and log back in.**
+
+### Install MongoDB
+MongoDB has license with some harsh redistribution clauses.  Most distros no longer include it in the package repos.  However, MongoDB has several distro repos of their own--luckily, REHL and Centos are included 
+
+But not Arch Linux? Really? :|
+
+Ok, to install MongoDB from the private repo we need to add it to the repo addresses locally.
+
+>Create a /etc/yum.repos.d/mongodb-org-4.0.repo file so that you can install MongoDB directly using yum:
+
+We can create the file by typing:
+```
+sudo nano /etc/yum.repos.d/mongodb-org-4.0.repo
+```
+Add the following to the file.  One word of caution, this description was copied from the MongoDB website.
+
+* [MongoDB Install Instructions](https://docs.mongodb.com/manual/tutorial/install-mongodb-on-red-hat/)
+
+It's probably best to copy the repo information directly from the link above, in case there is a newer version.
+
+```bash
+[mongodb-org-4.0]
+name=MongoDB Repository
+baseurl=https://repo.mongodb.org/yum/redhat/$releasever/mongodb-org/4.0/x86_64/
+gpgcheck=1
+enabled=1
+gpgkey=https://www.mongodb.org/static/pgp/server-4.0.asc
+```
+Save the file.
+
+Now run 
+```
+sudo yum install -y mongodb-org
+```
+Yum should now find the private repo and install MongoDB.
+
+Now, we need to enable the mongod.service.
+
+```
+sudo systemctl enable mongod.service
+```
+And reboot
+```
+sudo reboot now
+```
+
+#### Setup MongoDB

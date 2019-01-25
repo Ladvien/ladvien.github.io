@@ -1,11 +1,11 @@
 ---
 layout: post
 title: Deep Learning -- Mechanizing a CNN
-description: Preparing a small server to provide access to a convolutional neural network through a NodeJS REST API
+description: Preparing a small server to provide access to a convolutional neural network through a NodeJS REST API.
 categories: neural-nets
 excerpt:
 series: Deep Learning Journal
-tags: [NLP, Natural Language Processing, Deep Learning, Word Vectors, Convolutional Neural Networks]
+tags: [NLP, MongoDB, CentOS, Natural Language Processing, Deep Learning, Word Vectors, Convolutional Neural Networks]
 image: 
     feature: anns_everywhere.png
 comments: true

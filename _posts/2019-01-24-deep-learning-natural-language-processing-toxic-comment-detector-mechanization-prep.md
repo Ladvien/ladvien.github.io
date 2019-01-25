@@ -280,6 +280,7 @@ scp -r /directory_to_save/name_of_output_folder user_name@remote_ip_address:/hom
 ```
 Now, log in to your remote server and create a DB from the data dumps.
 ```
+mkdir /home/user_name/word_embeddings
 mongorestore --db word_embeddings /home/user_name/word_embeddings
 ```
 If you would like to enable access to the database remotely (see instructions in Appendix) you could use [Robo3T](https://robomongo.org/) to make sure everything is in place.  But if you didn't get any errors, we're probably good to go. 
@@ -342,3 +343,11 @@ net:
   #bindIp: 127.0.0.1  # Enter 0.0.0.0,:: to bind to all IPv4 and IPv6 addresses or, alternatively, us$
 ```
 This allows us to connect to the MongoDB from any IP address.  If we'd left this line, then we could only connect to the database from within the server itself (127.0.0.1 = local).
+
+### Monitoring System Resources
+I like using `htop` for this, but you've gotta build it from source on Centos
+```
+wget dl.fedoraproject.org/pub/epel/7/x86_64/Packages/e/epel-release-7-11.noarch.rpm
+sudo rpm -ihv epel-release-7-11.noarch.rpm
+sudo yum install -y htop
+```

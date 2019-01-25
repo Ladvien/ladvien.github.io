@@ -92,13 +92,19 @@ wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
 chmod +x Miniconda3-latest-Linux-x86_64.sh
 ./Miniconda3-latest-Linux-x86_64.sh
 source .bashrc
+```
+As of this writing Tensorflow only supports Python as late as 3.6, while Miniconda sets up your environment to use 3.7.  To rectify this we can set Python to 3.6 be using the Miniconda installer `conda`.
+```
 conda install python=3.6
+```
+Lastly, we need to install a few Python packages needed.
+```
 conda install tensorflow scikit-learn keras pandas
 ```
-Important Step. **Reboot and log back in.**
+Ok, one last important step: **Reboot and log back in.**
 
 ### Install MongoDB
-MongoDB has license with some strict redistribution clauses.  Most distros no longer include it in the package repos.  However, MongoDB has several distro repos of their own--luckily, REHL and Centos are included 
+MongoDB has license with some strict redistribution clauses.  Most distros no longer include it in the package repos.  However, MongoDB has several distro repos of their own--luckily, REHL and Centos are included.
 
 But not Arch Linux? Really? :|
 

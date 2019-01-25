@@ -194,7 +194,9 @@ The `test_prediction` was the following text sequence pre-encoded.
 So, the `toxic` and `obscene` label should definitely be close to `1` and they are.
 
 ### Create MongoDB Tokenizer Collection
-Here's where we get clever.  We are trying to fit our model into less than 1GB of RAM, to do this, we are going to need to find a way to access the word-embedding's `index2word` and `word2index` lookup objects without loading them in RAM, like we did in training.  Most likely, they simply will not fit into the available RAM.  To get around this, we are going to shove them into a database, to be loaded into RAM only when a specific word is needed.
+Here's where we get clever.  We are trying to fit our model into less than 1GB of RAM, to do this, we are going to need to find a way to access the word-embedding's `index2word` and `word2index` lookup objects without loading them in RAM, like we did in training.  To save our RAM, we are going to shove them into a database to be loaded into RAM only when a specific word is needed.
+
+Disk access is slower, but hey! I don't want to pay $40 a month for a hobby server, do you?
 
 #### Install MongoDB Locally
 You will need to install MongoDB locally.  This could vary based upon your OS.  I've used homebrew to install on the Mac.

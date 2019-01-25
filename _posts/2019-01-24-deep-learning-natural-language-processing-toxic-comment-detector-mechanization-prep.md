@@ -106,7 +106,7 @@ Ok, one last important step: **Reboot and log back in.**
 ### Install MongoDB
 MongoDB has license with some strict redistribution clauses.  Most distros no longer include it in the package repos.  However, MongoDB has several distro repos of their own--luckily, REHL and Centos are included. But not Arch Linux? Really? :|
 
-Ok, to install MongoDB from the private repo we need to add it to the repo addresses locally.
+Ok, to install MongoDB from the private repo we need to add it to the local repo addresses.
 
 >Create a /etc/yum.repos.d/mongodb-org-4.0.repo file so that you can install MongoDB directly using yum:
 

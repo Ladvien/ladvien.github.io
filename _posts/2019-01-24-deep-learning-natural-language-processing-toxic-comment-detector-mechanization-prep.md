@@ -183,7 +183,7 @@ If you get back something similar to:
 array([[0.97645617, 0.21598859, 0.92201746, 0.01897666, 0.7753273,
 0.11565485]], dtype=float32)
 ```
-We're in good shape.  These are the predictions for the 
+We're in good shape.  These are the predictions for the the following respectively:
 ```python
 ["toxic", "severe_toxic", "obscene", "threat", "insult", "identity_hate"]
 ```

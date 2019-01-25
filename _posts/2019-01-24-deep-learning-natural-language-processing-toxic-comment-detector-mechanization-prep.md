@@ -199,7 +199,7 @@ Here's where we get clever.  We are trying to fit our model into less than 1GB o
 Disk access is slower, but hey! I don't want to pay $40 a month for a hobby server, do you?
 
 #### Install MongoDB Locally
-You will need to install MongoDB locally.  This could vary based upon your OS.  I've used homebrew to install on the Mac.
+To create the word-embedding databases we will need to install MongoDB locally.  This could vary based upon your OS.  I've used homebrew to install on the Mac.
 
 * https://brew.sh/
 

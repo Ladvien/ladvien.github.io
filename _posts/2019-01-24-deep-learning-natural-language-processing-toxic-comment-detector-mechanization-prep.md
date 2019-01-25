@@ -61,7 +61,7 @@ my_user    ALL=(ALL)	ALL
 ```
 Now save the file and exit.
 
-Let's login as our new user.  Exit your shell and login back in as the `my_user`.  IIt should look something like this, typed on your local computer command line.
+Let's login as our new user.  Exit your shell and login back in as the `my_user`.  It should look something like this, typed on your local computer command line.
 ```
 ssh my_user@erver_ip_address
 ```

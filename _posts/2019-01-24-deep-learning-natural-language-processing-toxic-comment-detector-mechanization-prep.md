@@ -104,9 +104,7 @@ conda install tensorflow scikit-learn keras pandas
 Ok, one last important step: **Reboot and log back in.**
 
 ### Install MongoDB
-MongoDB has license with some strict redistribution clauses.  Most distros no longer include it in the package repos.  However, MongoDB has several distro repos of their own--luckily, REHL and Centos are included.
-
-But not Arch Linux? Really? :|
+MongoDB has license with some strict redistribution clauses.  Most distros no longer include it in the package repos.  However, MongoDB has several distro repos of their own--luckily, REHL and Centos are included. But not Arch Linux? Really? :|
 
 Ok, to install MongoDB from the private repo we need to add it to the repo addresses locally.
 

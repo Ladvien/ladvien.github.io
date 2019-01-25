@@ -87,15 +87,15 @@ Anaconda is a great package system for Python data analyst tools.  It takes care
 
 Install it by entering the following and agreeing to the terms.
 ```bash
-sudo yum install wget bzip2
+sudo yum install -y wget bzip2
 wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
 chmod +x Miniconda3-latest-Linux-x86_64.sh
 ./Miniconda3-latest-Linux-x86_64.sh
 source .bashrc
 ```
-As of this writing Tensorflow only supports Python as late as 3.6, while Miniconda sets up your environment to use 3.7.  To rectify this we can set Python to 3.6 by using the Miniconda installer `conda`.
+As of this writing Tensorflow only supports Python as late as 3.6, while Miniconda sets up your environment to use 3.7.  To rectify this we can set Python to 3.6.8 by using the Miniconda installer `conda`.
 ```
-conda install python=3.6
+conda install -vv python=3.6.8
 ```
 Also, we need to install a few Python packages.
 ```

@@ -83,7 +83,7 @@ Administrator. It usually boils down to these three things:
 Then task complete!  Otherwise, feel free to ask questions in the comments.
 
 ### Setup Miniconda on Centos
-Anaconda is a break package system for Python data analyst tools.  It takes care of a lot of silly stuff.  Miniconda is the commandline version fo Anaconda, which we will be using.
+Anaconda is a great package system for Python data analyst tools.  It takes care of a lot of silly stuff.  Miniconda is the commandline version fo Anaconda, which we will be using.
 
 Install it by entering the following and agreeing to the terms.
 ```bash

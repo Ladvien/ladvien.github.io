@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Deep Learning -- Mechanizing a CNN
-description: Preparing a small server to provide access to a convolutional neural network through a NodeJS REST API.
+description: Preparing a small server to provide access to a convolutional neural network through a Flask REST API.
 categories: neural-nets
 excerpt:
 series: Deep Learning Journal
@@ -16,7 +16,7 @@ custom_js:
 ## Mechanizing Toxic Text Detector
 Previously, I wrote about training a CNN to detect toxic comments from text alone.  But, I realized, even if one has a nice little NN to solve all the world's problems it doesn't help unless it is in production.
 
-This article is going to cover how to prepare a server and needed word embeddings to mechanize the NN in a Node REST API.
+This article is going to cover how to prepare a server and needed word embeddings to mechanize the NN in a Flask REST API.
 
 ### Server Setup: Preamble
 For this project I'm using a small server from Linode--called a "Nanode."  At the time of writing these servers are only $5 a month.  The catch? They only have 1GB of RAM.  It's definitely going to be tricky to deploy our CNN there, but let's see it through.
@@ -146,7 +146,7 @@ And reboot
 ```
 sudo reboot now
 ```
-I'll be setting up MongoDB to _only_ run locally on the server.  This enables it to be accessed by the NodeJS program, but not remotely.  This is a best practice, given the security benefits.  However, if you'd like to enable remote accesss to the MongoDB I've included instructions in the Appendix.
+I'll be setting up MongoDB to _only_ run locally on the server.  This enables it to be accessed by the Flask program, but not remotely.  This is a best practice, given the security benefits.  However, if you'd like to enable remote accesss to the MongoDB I've included instructions in the Appendix.
 
 
 ### Move the Model to Server
@@ -281,7 +281,7 @@ mongorestore --db word_embeddings /home/user_name/word_embeddings
 ```
 If you would like to enable access to the database remotely (see instructions in Appendix) you could use [Robo3T](https://robomongo.org/) to make sure everything is in place.  But if you didn't get any errors, we're probably good to go. 
 
-And now! Our server is ready to go.  In the next article I'll show how to create a NodeJS REST API to access the model.  Well, at least I hope...not sure how to do it yet.
+And now! Our server is ready to go.  In the next article I'll show how to create a Flask REST API to access the model.  Well, at least I hope...not sure how to do it yet.
 
 ### Appendix
 

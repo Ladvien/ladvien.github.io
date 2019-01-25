@@ -65,7 +65,7 @@ Let's login as our new user.  Exit your shell and login back in as the `my_user`
 ```
 ssh my_user@erver_ip_address
 ```
-And let's test the `my_user`'s sudo powers
+Once logged in, let's test the `my_user`'s sudo powers
 ```
 sudo ls
 ```

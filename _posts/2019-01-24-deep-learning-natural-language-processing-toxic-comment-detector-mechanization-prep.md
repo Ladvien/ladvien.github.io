@@ -108,8 +108,6 @@ MongoDB has license with some strict redistribution clauses.  Most distros no lo
 
 Ok, to install MongoDB from the private repo we need to add it to the local repo addresses.
 
->Create a /etc/yum.repos.d/mongodb-org-4.0.repo file so that you can install MongoDB directly using yum:
-
 We can create the file by typing:
 ```
 sudo nano /etc/yum.repos.d/mongodb-org-4.0.repo

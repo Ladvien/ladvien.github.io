@@ -97,7 +97,7 @@ As of this writing Tensorflow only supports Python as late as 3.6, while Minicon
 ```
 conda install python=3.6
 ```
-Lastly, we need to install a few Python packages.
+Also, we need to install a few Python packages.
 ```
 conda install tensorflow scikit-learn keras pandas
 ```

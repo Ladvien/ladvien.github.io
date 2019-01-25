@@ -279,6 +279,9 @@ Now, log in to your remote server and create a DB from the data dumps.
 ```
 mongorestore --db word_embeddings /home/user_name/word_embeddings
 ```
+If you would like to enable access to the database remotely (see instructions in Appendix) you could use [Robo3T](https://robomongo.org/) to make sure everything is in place.  But if you didn't get any errors, we're probably good to go. 
+
+And now! Our server is ready to go.  In the next article I'll show how to create a NodeJS REST API to access the model.  Well, at least I hope...not sure how to do it yet.
 
 ### Appendix
 

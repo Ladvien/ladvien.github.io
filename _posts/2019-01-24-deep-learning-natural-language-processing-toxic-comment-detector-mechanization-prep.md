@@ -29,7 +29,7 @@ As for setting up the server, I've written about it elsewhere:
 
 For this particular project, I decided to go with a CentOS 7 distribution.  
 
-For those of you who know me; I'm not betraying Arch Linxu, however, this project will by using MongoDB and there's a bit of drama going on.
+For those of you who know me; I'm not betraying Arch Linxu, however, this project will be using MongoDB and there's a bit of drama going on.
 
 * https://lists.archlinux.org/pipermail/arch-dev-public/2019-January/029430.html
 * https://techcrunch.com/2018/10/16/mongodb-switches-up-its-open-source-license/
@@ -93,11 +93,11 @@ chmod +x Miniconda3-latest-Linux-x86_64.sh
 ./Miniconda3-latest-Linux-x86_64.sh
 source .bashrc
 ```
-As of this writing Tensorflow only supports Python as late as 3.6, while Miniconda sets up your environment to use 3.7.  To rectify this we can set Python to 3.6 be using the Miniconda installer `conda`.
+As of this writing Tensorflow only supports Python as late as 3.6, while Miniconda sets up your environment to use 3.7.  To rectify this we can set Python to 3.6 by using the Miniconda installer `conda`.
 ```
 conda install python=3.6
 ```
-Lastly, we need to install a few Python packages needed.
+Lastly, we need to install a few Python packages.
 ```
 conda install tensorflow scikit-learn keras pandas
 ```

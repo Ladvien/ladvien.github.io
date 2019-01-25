@@ -29,7 +29,7 @@ As for setting up the server, I've written about it elsewhere:
 
 For this particular project, I decided to go with a CentOS 7 distribution.  
 
-For those of you who know me; I'm not betraying Arch Linxu, however, this project will be using MongoDB and there's a bit of drama going on.
+For those of you who know me; I'm not betraying Arch Linxu, however, this project will by using MongoDB and there's a bit of drama going on.
 
 * https://lists.archlinux.org/pipermail/arch-dev-public/2019-January/029430.html
 * https://techcrunch.com/2018/10/16/mongodb-switches-up-its-open-source-license/

@@ -150,7 +150,7 @@ I'll be setting up MongoDB to _only_ run locally on the server.  This enables it
 
 
 ### Move the Model to Server
-Since we traind the model locally, let's go ahead and move it to the server.  Open your terminal in the direct of where the model was stored.
+Since we traind the model locally, let's go ahead and move it to the server.  Open your terminal in the directory where the model was stored.
 
 ```
 scp toxic_comment_detector.h5 my_user@my_server_ip:/home/my_user

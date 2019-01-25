@@ -119,8 +119,7 @@ One word of caution, the following text was copied from the MongoDB website.
 
 It's probably best to copy the repo information directly from the link above, in case there is a newer version.
 
-Add the following to the file.  
-
+Or, here's what I put in the file:  
 ```bash
 [mongodb-org-4.0]
 name=MongoDB Repository

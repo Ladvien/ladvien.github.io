@@ -39,10 +39,14 @@ I will leave some Arch Linux instructions in the Appendix, in case it is ever re
 I chose CentOS because it is the distro flavor my work uses, and I figure it'd help to get some experience. 
 
 ### Setup User on Centos
-Login as root
+Login as root and update the system
+```
+yum update -y
+```
+Let's add another user; setting up the system as root is not a best practice.
 ```
 useradd my_user
-passwd my_user 
+passwd my_user
 ```
 Set the password for the `my_user`
 
@@ -52,12 +56,12 @@ EDITOR=nano visudo
 ```
 Find line with:
 ```
-root    ALL=(ALL)	ALL
+root    ALL=(ALL)    ALL
 ```
 And add the exact same entry for `my_user`.  It should look like this when done
 ```
-root    ALL=(ALL)	ALL
-my_user    ALL=(ALL)	ALL
+root    ALL=(ALL)    ALL
+my_user    ALL=(ALL)    ALL
 ```
 Now save the file and exit.
 
@@ -159,6 +163,161 @@ Since we traind the model locally, let's go ahead and move it to the server.  Op
 scp toxic_comment_detector.h5 my_user@my_server_ip:/home/my_user
 ```
 Replace `my_user` with the user name we created earlier and `my_server_ip` with the address of your server.  It should then prompt you to enter the server password, as if you were ssh'ing into the server.  Once entered, the model should be copied to the server.
+
+### Installing Nginx
+```
+sudo yum install epel-release
+sudo yum install nginx
+sudo systemctl start nginx
+sudo systemctl enable nginx
+```
+We need to allow `http` and `https` traffic through Centos' default firewall.
+```
+sudo firewall-cmd --permanent --zone=public --add-service=http 
+sudo firewall-cmd --permanent --zone=public --add-service=https
+sudo firewall-cmd --reload
+```
+
+```
+# For more information on configuration, see:
+#   * Official English Documentation: http://nginx.org/en/docs/
+#   * Official Russian Documentation: http://nginx.org/ru/docs/
+
+user nginx;
+worker_processes auto;
+error_log /var/log/nginx/error.log;
+pid /run/nginx.pid;
+
+# Load dynamic modules. See /usr/share/nginx/README.dynamic.
+#include /usr/share/nginx/modules/*.conf;
+
+events {
+    worker_connections 1024;
+}
+
+http {
+    server {
+            listen	 80;
+        server_name  maddatum.com;
+        root         /var/www/flask_app;
+
+        location / {
+             proxy_pass http://127.0.0.1:8000;      
+        }
+
+	error_page 404 /404.html;
+                location = /40x.html
+        }
+
+	error_page 500 502 503 504 /50x.html;
+                location = /50x.html
+        }
+    }
+}
+```
+
+
+```
+gunicorn server:application -b localhost:8000 &
+```
+
+### Why uWSGI and Gunicorn are needed
+https://ironboundsoftware.com/blog/2016/06/27/faster-flask-need-gunicorn/
+https://serverfault.com/questions/220046/why-is-setting-nginx-as-a-reverse-proxy-a-good-idea
+https://serverfault.com/questions/220046/why-is-setting-nginx-as-a-reverse-proxy-a-good-idea
+
+### Installing Flask
+http://josephmosby.com/2015/10/16/up-and-running-with-flask-on-a-brand-new-linode.html
+```
+yum install epel-release
+yum install -y nginx flask supervisor python-pip python-virtualenv
+sudo pip install flask gunicorn
+sudo nano /etc/nginx/nginx.conf
+```
+Add the following within the `http {}`
+```
+    server { 
+        listen    80;
+        server_name    maddatum.com;
+        root /home/ladvien/tox_com_det;
+    }
+```
+
+```
+mkdir tox_com_det_service
+cd tox_com_det_service
+nano server.py
+```
+
+Add the following to the `server.py` file:s
+```
+from flask import Flask
+application = Flask(__name__)
+
+@application.route("/")
+def hello():
+    return "<h1 style='color:blue'>Hello There!</h1>"
+
+if __name__ == "__main__":
+    application.run(host='0.0.0.0')
+```
+Also, create this file:
+```
+nano wsgi.py
+```
+Add the following
+```
+from server import application
+
+if __name__ == "__main__":
+    application.run()
+```
+Save the file and run:
+```
+uwsgi --socket 0.0.0.0:8000 --protocol=http --master
+```
+
+sudo nano /etc/systemd/system/myproject.service
+```
+[Unit]
+Description=uWSGI instance to serve tox_com_det_service
+After=network.target
+
+[Service]
+ladvien=ladvien
+Group=nginx
+WorkingDirectory=/home/ladvien/tox_com_det_service
+Environment="PATH=/home/ladvien/tox_com_det_service/tox_com_det_service/bin"
+ExecStart=/home/ladvien/tox_com_det_service/tox_com_det_serviceenv/bin/uwsgi --ini tox_com_det_service.ini
+
+[Install]
+WantedBy=multi-ladvien.target
+```
+
+```
+sudo systemctl start myproject
+sudo systemctl enable myproject
+```
+
+```
+sudo nano /etc/nginx/nginx.conf
+```
+
+```
+server {
+    listen 80;
+    server_name maddatum.com;
+
+    location / {
+        include uwsgi_params;
+        uwsgi_pass unix:/home/ladvien/tox_com_det_service/tox_com_det_service.sock;
+    }
+}
+```
+
+```
+sudo usermod -a -G ladvien nginx
+```
 
 ### Test the Model
 Log into your server.  We are going to test the model real quick, since it needs to fit in the RAM available.
@@ -350,4 +509,33 @@ I like using `htop` for this, but you've gotta build it from source on Centos
 wget dl.fedoraproject.org/pub/epel/7/x86_64/Packages/e/epel-release-7-11.noarch.rpm
 sudo rpm -ihv epel-release-7-11.noarch.rpm
 sudo yum install -y htop
+```
+
+
+## Flask Code
+```python
+from flask import Flask
+application = Flask(__name__)
+
+from keras.models import load_model
+import pymongo
+import json
+
+global model
+
+@application.route('/load-model')
+def load_model_in_mem():
+    model = load_model('/home/ladvien/tox_com_det.h5')
+    return json.dumps(model.to_json())
+
+@application.route('/test')
+def test():
+    response = {
+        'hello': 'there'
+    }
+    return json.dumps(response, ensure_ascii=False)
+
+if __name__ == '__main__':
+    application.run(host='0.0.0.0')
+
 ```

@@ -116,17 +116,21 @@ sudo reboot now
 
 
 ### Create MongoDB Tokenizer Collection
-Here's where we get clever.  We are trying to fit our model into less than 1GB of RAM, to do this, we are going to need to find a way to access the word-embedding's `index2word` and `word2index` lookup objects without loading them in RAM, like we did in training.  To save our RAM, we are going to shove them into a database to be loaded into RAM only when a specific word is needed.
+Here's where we get clever.  We are trying to fit our model into less than 1GB of RAM, to do this, we are going to need to find a way to access the word-embeddings' `index2word` and `word2index` lookup objects without loading them in RAM, like we did in training.  We are going to shove them into a database to be loaded into RAM only when a specific word is needed.
 
 Disk access is slower, but hey! I don't want to pay $40 a month for a hobby server, do you?
 
+To move the `word-embeddings` will take a few steps.  First, we'll run a Python script to save the embeddings matching the context of our original training.  Then, we will export those embeddings from our local MongoDB.  Next, we'll move them to the remote server and import them into the MongoDB there.  Simple!
+
 #### Install MongoDB Locally
-To create the word-embedding databases we will need to install MongoDB locally.  This could vary based upon your OS.  I've used homebrew to install on the Mac.
+To create the local word-embedding databases we will need to install MongoDB locally.  This could vary based upon your OS.  I've used homebrew to install on the Mac.
 
 * https://brew.sh/
 
 Here are instructions on installing MongoDB on the Mac:
 * [Install MongoDB](https://treehouse.github.io/installation-guides/mac/mongo-mac.html)
+
+Don't forget you'll need to start the MonogDB service before starting the next step.
 
 #### Create a Word Embedding Database
 Once you've installed it locally, here's the script I used to convert the `word_embeddings` into a MongoDB database.

@@ -29,14 +29,9 @@ As for setting up the server, I've written about it elsewhere:
 
 For this particular project, I decided to go with a CentOS 7 distribution.  
 
-For those of you who know me; I'm not betraying Arch Linxu, however, this project will be using MongoDB and there's a bit of drama going on.
+For those of you who know me; I'm not betraying Arch Linxu, however, this project will be using MongoDB and there's a bit of [drama going on](https://lists.archlinux.org/pipermail/arch-dev-public/2019-January/029430.html).  I will leave some Arch Linux instructions in the Appendix, in case it is ever resolved.
 
-* https://lists.archlinux.org/pipermail/arch-dev-public/2019-January/029430.html
-* https://techcrunch.com/2018/10/16/mongodb-switches-up-its-open-source-license/
-
-I will leave some Arch Linux instructions in the Appendix, in case it is ever resolved.
-
-I chose CentOS because it is the distro flavor my work uses, and I figure it'd help to get some experience. 
+I chose CentOS because it is the distro my work uses, and I figure it'd help to get some experience.
 
 ### Setup User on Centos
 Login as root and update the system
@@ -97,6 +92,15 @@ chmod +x Miniconda3-latest-Linux-x86_64.sh
 ./Miniconda3-latest-Linux-x86_64.sh
 source .bashrc
 ```
+Side note here, if you install Miniconda and can't have trouble executing `conda`, most likely it didn't add the executable path to your `PATH` variables.
+
+This should add the path for both your user and root:
+```
+echo "export PATH='/usr/local/miniconda/bin:$PATH'" &>> /home/my_user/.bashrc
+echo "export PATH='/usr/local/miniconda/bin:$PATH'" &>> /root/.bashrc
+```
+You will need to make sure to reload your shell (log out and back in or run `source .bashrc`) after adding the `conda` path.
+
 As of this writing Tensorflow only supports Python as late as 3.6, while Miniconda sets up your environment to use 3.7.  To rectify this we can set Python to 3.6.8 by using the Miniconda installer `conda`.
 ```
 conda install -y -vv python=3.6.8
@@ -109,6 +113,133 @@ Ok, one last important step: **Reboot and log back in.**
 ```
 sudo reboot now
 ```
+
+
+### Create MongoDB Tokenizer Collection
+Here's where we get clever.  We are trying to fit our model into less than 1GB of RAM, to do this, we are going to need to find a way to access the word-embedding's `index2word` and `word2index` lookup objects without loading them in RAM, like we did in training.  To save our RAM, we are going to shove them into a database to be loaded into RAM only when a specific word is needed.
+
+Disk access is slower, but hey! I don't want to pay $40 a month for a hobby server, do you?
+
+#### Install MongoDB Locally
+To create the word-embedding databases we will need to install MongoDB locally.  This could vary based upon your OS.  I've used homebrew to install on the Mac.
+
+* https://brew.sh/
+
+Here are instructions on installing MongoDB on the Mac:
+* [Install MongoDB](https://treehouse.github.io/installation-guides/mac/mongo-mac.html)
+
+#### Create a Word Embedding Database
+Once you've installed it locally, here's the script I used to convert the `word_embeddings` into a MongoDB database.
+```python
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Tue Jan 22 05:19:35 2019
+@author: cthomasbrittain
+"""
+import pymongo
+import gensim.downloader as api
+import pandas as pd
+from keras.preprocessing.text import Tokenizer
+
+############################
+# Convenience Macros
+############################
+word_embedding_name = "glove-wiki-gigaword-50"
+
+BASE_DIR = '/path/to/embeddings'
+TRAIN_TEXT_DATA_DIR = BASE_DIR + 'train.csv'
+MAX_NUM_WORDS = 20000
+
+##############################
+# Load Embeddings
+##############################
+
+print('Loading word vectors.')
+
+# Load embeddings
+info = api.info() # show info about available models/datasets
+embedding_model = api.load(word_embedding_name) # download the model and return as object ready for use
+
+vocab_size = len(embedding_model.vocab)
+
+index2word = embedding_model.index2word
+word2idx = {}
+for index in range(vocab_size):
+    word2idx[embedding_model.index2word[index]] = index
+    
+############################################
+# Get labels
+############################################
+
+print('Loading Toxic Comments data.')
+with open(TRAIN_TEXT_DATA_DIR) as f:
+    toxic_comments = pd.read_csv(TRAIN_TEXT_DATA_DIR)
+
+print('Getting Comment Labels.')
+prediction_labels = ["toxic", "severe_toxic", "obscene", "threat", "insult", "identity_hate"]
+labels = toxic_comments[prediction_labels].values
+
+############################################
+# Convert Toxic Comments to Sequences
+############################################
+
+print('Processing text dataset')
+
+tokenizer = Tokenizer(num_words=MAX_NUM_WORDS)
+tokenizer.fit_on_texts(toxic_comments['comment_text'].fillna("DUMMY_VALUE").values)
+sequences = tokenizer.texts_to_sequences(toxic_comments['comment_text'].fillna("DUMMY_VALUE").values)
+word_index = tokenizer.word_index
+
+##############################
+# Save Embeddings to MongoDB
+##############################
+
+# Connect to MongoDB
+mong = pymongo.MongoClient('127.0.0.1', 27017)
+
+# Create collection database
+mongdb = mong["word_embeddings"]
+
+# Create this word_embeddings 
+coll = mongdb[word_embedding_name]
+
+for i, word in enumerate(index2word):
+    if i % 1000 == 0:
+        print('Saved: ' + str(i) + ' out of ' + str(len(index2word)))
+    try:
+        embedding_vector = list(map(str, embedding_model.get_vector(word)))
+        post = {
+                'word': word,
+                'index': word_index[word],
+                'vector': list(embedding_vector)
+         }
+        posts = coll.posts
+        post_id = posts.insert_one(post).inserted_id
+    except:
+        continue
+```
+One note here, you _could_ set the database directly to your remote.  However, I found saving the >2 GB enteries one at a time across a 38.8bps SSH connection took most of the day.  So, I've opted to create them locally and then copy them in bulk.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ### Install MongoDB
 MongoDB has license with some strict redistribution clauses.  Most distros no longer include it in the package repos.  However, MongoDB has several distro repos of their own--luckily, REHL and Centos are included. But not Arch Linux? Really? :|
@@ -355,78 +486,7 @@ The `test_prediction` was the following text sequence pre-encoded.
 ```
 So, the `toxic` and `obscene` label should definitely be close to `1` and they are.
 
-### Create MongoDB Tokenizer Collection
-Here's where we get clever.  We are trying to fit our model into less than 1GB of RAM, to do this, we are going to need to find a way to access the word-embedding's `index2word` and `word2index` lookup objects without loading them in RAM, like we did in training.  To save our RAM, we are going to shove them into a database to be loaded into RAM only when a specific word is needed.
 
-Disk access is slower, but hey! I don't want to pay $40 a month for a hobby server, do you?
-
-#### Install MongoDB Locally
-To create the word-embedding databases we will need to install MongoDB locally.  This could vary based upon your OS.  I've used homebrew to install on the Mac.
-
-* https://brew.sh/
-
-Here are instructions on installing MongoDB on the Mac:
-* [Install MongoDB](https://treehouse.github.io/installation-guides/mac/mongo-mac.html)
-
-#### Create a Word Embedding Database
-Once you've installed it locally, here's the script I used to convert the `word_embeddings` into a MongoDB database.
-```python
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Created on Tue Jan 22 05:19:35 2019
-
-@author: cthomasbrittain
-"""
-
-##############################
-# Load Embeddings
-##############################
-
-word_embedding_name = "glove-wiki-gigaword-300"
-
-import pymongo
-import gensim.downloader as api
-print('Loading word vectors.')
-
-# Load embeddings
-info = api.info() # show info about available models/datasets
-embedding_model = api.load(word_embedding_name)
-vocab_size = len(embedding_model.vocab)
-
-index2word = embedding_model.index2word
-word2idx = {}
-for index in range(vocab_size):
-    word2idx[embedding_model.index2word[index]] = index
-
-##############################
-# Save Embeddings to MongoDB
-##############################
-
-# Create the word_embeddings DB.
-mong = pymongo.MongoClient("mongodb://localhost:27017/")
-mongdb = mong["word_embeddings"]
-
-# Create this word_embeddings 
-coll = mongdb[word_embedding_name]
-
-for i, word in enumerate(index2word):
-    if i % 1000 == 0:
-        print('Saved: ' + str(i) + ' out of ' + str(len(index2word)))
-    try:
-        embedding_vector = list(map(str, embedding_model.get_vector(word)))
-        post = {
-                'word': word,
-                'index': i,
-                'vector': list(embedding_vector)
-         }
-
-        posts = coll.posts
-        post_id = posts.insert_one(post).inserted_id
-    except:
-        continue
-```
-One note here, you _could_ set the database directly to your remote.  However, I found saving the >2 GB enteries one at a time across a 38.8bps SSH connection took most of the day.  So, I've opted to create them locally and then copy them in bulk.
 
 #### Copy Database to Server
 Once ou've created the local `word_embeddings` DB, at local the terminal type the following to make a copy:
@@ -442,6 +502,11 @@ Now, log in to your remote server and create a DB from the data dumps.
 mkdir /home/user_name/word_embeddings
 mongorestore --db word_embeddings /home/user_name/word_embeddings
 ```
+We also need to restart the MongoDB service
+```
+sudo systemctl restart mongod.service
+```
+
 If you would like to enable access to the database remotely (see instructions in Appendix) you could use [Robo3T](https://robomongo.org/) to make sure everything is in place.  But if you didn't get any errors, we're probably good to go. 
 
 And now! Our server is ready to go.  In the next article I'll show how to create a Flask REST API to access the model.  Well, at least I hope...not sure how to do it yet.
@@ -514,14 +579,55 @@ sudo yum install -y htop
 
 ## Flask Code
 ```python
-from flask import Flask
+from flask import Flask, request
 application = Flask(__name__)
 
 from keras.models import load_model
+from keras.preprocessing.sequence import pad_sequences
+import numpy as np
 import pymongo
 import json
 
-global model
+###############
+# Parameters
+###############
+mongo_port = 27017
+embedding_collection = 'word_embeddings'
+word_embedding_name = 'glove-wiki-gigaword-50'
+
+####################
+# Global
+####################
+global model, graph
+
+####################
+# Setup MongoDB
+####################
+# Connection to Mongo DB
+try:
+    mong = pymongo.MongoClient('127.0.0.1', mongo_port)
+    print('Connected successfully.')
+except pymongo.errors.ConnectionFailure:
+    print('Could not connect to MongoDB: ' + e)
+
+db = mong[embedding_collection]
+coll = db[word_embedding_name]
+
+with open('nn_service.log', 'w') as file:
+    file.write('Made it it here.')
+
+####################
+# Load Keras Model
+####################
+model = load_model('/home/ladvien/flask_app/models/tox_com_det.h5')
+model._make_predict_function()
+####################
+# Start Flask
+####################
+if __name__ == '__main__':
+    application.run(host='127.0.0.1')
+    with open('nn_service.log', 'w+') as file:
+        file.write('here')
 
 @application.route('/load-model')
 def load_model_in_mem():
@@ -530,12 +636,88 @@ def load_model_in_mem():
 
 @application.route('/test')
 def test():
-    response = {
-        'hello': 'there'
-    }
-    return json.dumps(response, ensure_ascii=False)
+    word = coll.find_one({'word': 'the'})
+    return json.dumps(word, ensure_ascii=False)
 
-if __name__ == '__main__':
-    application.run(host='0.0.0.0')
+@application.route('/detect-toxic', methods=['POST'])
+def sequence_to_indexes():
+    with open('nn_service.log', 'w+') as file:
+        file.write('here')
+    if request.method == 'POST':
+        try:
+            sequence = request.json['sequence']
+            pad_length = request.json['padding']
+        except:
+            return get_error('missing parameters')
+        response = {
+            'prediction': prediction_from_sequence(sequence, pad_length)
+        }
+        return str(response)
 
+@application.route('/word-index', methods=['GET'])
+def get_word_embedding():
+    if request.method == 'GET':
+        index = get_word_index(request.args.get('word'))
+    return index
+
+def get_word_index(word):
+    index = ''
+    try:
+        index = str(coll.posts.find_one({'word': word})['index'])
+    except:
+        pass
+    return index
+
+def get_error(message):
+    return json.dumps({'error': message})
+
+def prediction_from_sequence(sequence, pad_length):
+    sequence = sequence.lower()
+    sequence_indexes = []
+    for word in sequence.split():
+        try:
+            index = int(get_word_index(word.strip()))
+        except:
+            index = 0
+        if index is not None:
+            sequence_indexes.append(index)
+    # pad_sequences takes a list of lists.
+    sequence_indexes = pad_sequences([sequence_indexes], maxlen=pad_length)
+    sample = np.array(sequence_indexes)
+    prediction = model.predict(sample, verbose = 1)
+    prediction_labels = ['toxic', 'severe_toxic', 'obscene', 'threat', 'insult', 'identity_hate']
+    prediction_results = str({prediction_labels[0]: prediction[0][0],
+                              prediction_labels[1]: prediction[0][1],
+                              prediction_labels[2]: prediction[0][2],
+                              prediction_labels[3]: prediction[0][3],
+                              prediction_labels[4]: prediction[0][4],
+                              prediction_labels[5]: prediction[0][5]
+                            })
+    return prediction_results
+```
+
+```bash
+curl -X POST \
+  http://maddatum.com:5000/sequence-indexes \
+  -H 'Content-Type: application/json' \
+  -d '{"sequence":"im pretty sure you are a super nice guy.","padding": 100}'
+```
+
+
+### NodeJS Proxy
+
+##### nn_service.service
+```
+[Unit]
+Description=Flask instance to serve nn_service
+After=network.target
+
+[Service]
+User=ladvien
+Group=nginx
+WorkingDirectory=/usr/share/nginx/flask_app
+ExecStart=/usr/local/miniconda/bin/flask run
+
+[Install]
+WantedBy=multi-user.target
 ```

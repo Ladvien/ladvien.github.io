@@ -132,8 +132,13 @@ Here are instructions on installing MongoDB on the Mac:
 
 Don't forget you'll need to start the MonogDB service before starting the next step.
 
+On the Mac, using Homebrew, it can be started with:
+```
+brew services start mongodb
+```
+
 #### Create a Word Embedding Database
-Once you've installed it locally, here's the script I used to convert the `word_embeddings` into a MongoDB database.
+Once you've installed it locally, here's the script I used to convert the `word_embeddings` into a MongoDB database.  It loads the word-embeddings from using `gensim`, tokenizes the
 ```python
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
@@ -226,26 +231,7 @@ for i, word in enumerate(index2word):
 One note here, you _could_ set the database directly to your remote.  However, I found saving the >2 GB enteries one at a time across a 38.8bps SSH connection took most of the day.  So, I've opted to create them locally and then copy them in bulk.
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-### Install MongoDB
+### Install MongoDB Remote Server
 MongoDB has license with some strict redistribution clauses.  Most distros no longer include it in the package repos.  However, MongoDB has several distro repos of their own--luckily, REHL and Centos are included. But not Arch Linux? Really? :|
 
 Ok, to install MongoDB from the private repo we need to add it to the local repo addresses.
@@ -261,7 +247,7 @@ One word of caution, the following text was copied from the MongoDB website.
 
 It's probably best to copy the repo information directly from the link above, in case there is a newer version.
 
-Or, here's what I put in the file:  
+Or, here's what I put in the file:
 ```bash
 [mongodb-org-4.0]
 name=MongoDB Repository
@@ -292,170 +278,42 @@ I'll be setting up MongoDB to _only_ run locally on the server.  This enables it
 
 
 ### Move the Model to Server
-Since we traind the model locally, let's go ahead and move it to the server.  Open your terminal in the directory where the model was stored.
+Since we traind the model locally, let's move it to the server.  Open your terminal in the directory where the model was stored.
 
 ```
 scp toxic_comment_detector.h5 my_user@my_server_ip:/home/my_user
 ```
 Replace `my_user` with the user name we created earlier and `my_server_ip` with the address of your server.  It should then prompt you to enter the server password, as if you were ssh'ing into the server.  Once entered, the model should be copied to the server.
 
-### Installing Nginx
+
+#### Move word_embeddings Database to Server
+Once ou've created the local `word_embeddings` DB, at local the terminal type the following to make a copy:
 ```
-sudo yum install epel-release
-sudo yum install nginx
-sudo systemctl start nginx
-sudo systemctl enable nginx
+mongodump --out /directory_to_save
 ```
-We need to allow `http` and `https` traffic through Centos' default firewall.
+Now, copy this DB backup to your remote server
 ```
-sudo firewall-cmd --permanent --zone=public --add-service=http 
-sudo firewall-cmd --permanent --zone=public --add-service=https
-sudo firewall-cmd --reload
+scp -r /directory_to_save/name_of_output_folder user_name@remote_ip_address:/home/user_name/
+```
+Now, log in to your remote server and create a DB from the data dumps.
+```
+mkdir /home/user_name/word_embeddings
+mongorestore --db word_embeddings /home/user_name/word_embeddings
+```
+We also need to restart the MongoDB service
+```
+sudo systemctl restart mongod.service
 ```
 
-```
-# For more information on configuration, see:
-#   * Official English Documentation: http://nginx.org/en/docs/
-#   * Official Russian Documentation: http://nginx.org/ru/docs/
+If you would like to enable access to the database remotely (see instructions in Appendix) you could use [Robo3T](https://robomongo.org/) to make sure everything is in place.  But if you didn't get any errors, we're probably good to go. 
 
-user nginx;
-worker_processes auto;
-error_log /var/log/nginx/error.log;
-pid /run/nginx.pid;
+And now! Our server is ready to go.  In the next article I'll show how to create a Flask REST API to access the model.  Well, at least I hope...not sure how to do it yet.
 
-# Load dynamic modules. See /usr/share/nginx/README.dynamic.
-#include /usr/share/nginx/modules/*.conf;
-
-events {
-    worker_connections 1024;
-}
-
-http {
-    server {
-            listen	 80;
-        server_name  maddatum.com;
-        root         /var/www/flask_app;
-
-        location / {
-             proxy_pass http://127.0.0.1:8000;      
-        }
-
-	error_page 404 /404.html;
-                location = /40x.html
-        }
-
-	error_page 500 502 503 504 /50x.html;
-                location = /50x.html
-        }
-    }
-}
-```
-
-
-```
-gunicorn server:application -b localhost:8000 &
-```
-
-### Why uWSGI and Gunicorn are needed
-https://ironboundsoftware.com/blog/2016/06/27/faster-flask-need-gunicorn/
-https://serverfault.com/questions/220046/why-is-setting-nginx-as-a-reverse-proxy-a-good-idea
-https://serverfault.com/questions/220046/why-is-setting-nginx-as-a-reverse-proxy-a-good-idea
-
-### Installing Flask
-http://josephmosby.com/2015/10/16/up-and-running-with-flask-on-a-brand-new-linode.html
-```
-yum install epel-release
-yum install -y nginx flask supervisor python-pip python-virtualenv
-sudo pip install flask gunicorn
-sudo nano /etc/nginx/nginx.conf
-```
-Add the following within the `http {}`
-```
-    server { 
-        listen    80;
-        server_name    maddatum.com;
-        root /home/ladvien/tox_com_det;
-    }
-```
-
-```
-mkdir tox_com_det_service
-cd tox_com_det_service
-nano server.py
-```
-
-Add the following to the `server.py` file:s
-```
-from flask import Flask
-application = Flask(__name__)
-
-@application.route("/")
-def hello():
-    return "<h1 style='color:blue'>Hello There!</h1>"
-
-if __name__ == "__main__":
-    application.run(host='0.0.0.0')
-```
-Also, create this file:
-```
-nano wsgi.py
-```
-Add the following
-```
-from server import application
-
-if __name__ == "__main__":
-    application.run()
-```
-Save the file and run:
-```
-uwsgi --socket 0.0.0.0:8000 --protocol=http --master
-```
-
-sudo nano /etc/systemd/system/myproject.service
-```
-[Unit]
-Description=uWSGI instance to serve tox_com_det_service
-After=network.target
-
-[Service]
-ladvien=ladvien
-Group=nginx
-WorkingDirectory=/home/ladvien/tox_com_det_service
-Environment="PATH=/home/ladvien/tox_com_det_service/tox_com_det_service/bin"
-ExecStart=/home/ladvien/tox_com_det_service/tox_com_det_serviceenv/bin/uwsgi --ini tox_com_det_service.ini
-
-[Install]
-WantedBy=multi-ladvien.target
-```
-
-```
-sudo systemctl start myproject
-sudo systemctl enable myproject
-```
-
-```
-sudo nano /etc/nginx/nginx.conf
-```
-
-```
-server {
-    listen 80;
-    server_name maddatum.com;
-
-    location / {
-        include uwsgi_params;
-        uwsgi_pass unix:/home/ladvien/tox_com_det_service/tox_com_det_service.sock;
-    }
-}
-```
-
-```
-sudo usermod -a -G ladvien nginx
-```
 
 ### Test the Model
 Log into your server.  We are going to test the model real quick, since it needs to fit in the RAM available.
+
+Notice, the `my_user` in the script should be replaced with the user name you created while setting up your server and proejct.
 
 Type:
 ```
@@ -486,34 +344,11 @@ We're in good shape.  These are the predictions for the the following respective
 ```
 The `test_prediction` was the following text sequence pre-encoded.
 ```python
-"COCK`SUCKER BEFORE YOU PISS AROUND ON MY WORK"
+"C*#%`SUCKER BEFORE YOU PISS AROUND ON MY WORK"
 ```
 So, the `toxic` and `obscene` label should definitely be close to `1` and they are.
 
 
-
-#### Copy Database to Server
-Once ou've created the local `word_embeddings` DB, at local the terminal type the following to make a copy:
-```
-mongodump --out /directory_to_save
-```
-Now, copy this DB backup to your remote server
-```
-scp -r /directory_to_save/name_of_output_folder user_name@remote_ip_address:/home/user_name/
-```
-Now, log in to your remote server and create a DB from the data dumps.
-```
-mkdir /home/user_name/word_embeddings
-mongorestore --db word_embeddings /home/user_name/word_embeddings
-```
-We also need to restart the MongoDB service
-```
-sudo systemctl restart mongod.service
-```
-
-If you would like to enable access to the database remotely (see instructions in Appendix) you could use [Robo3T](https://robomongo.org/) to make sure everything is in place.  But if you didn't get any errors, we're probably good to go. 
-
-And now! Our server is ready to go.  In the next article I'll show how to create a Flask REST API to access the model.  Well, at least I hope...not sure how to do it yet.
 
 ### Appendix
 

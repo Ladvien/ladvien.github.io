@@ -348,6 +348,15 @@ The `test_prediction` was the following text sequence pre-encoded.
 ```
 So, the `toxic` and `obscene` label should definitely be close to `1` and they are.
 
+### NodeJS and node-http-proxy
+It gets a bit weird here.  Usually, one will setup a Flask server with `uwsgi` or `gunicorn` combined with `nginx`.  However, I found the `uwsgi` middle-ware was creating two instances of my project, which would not fit in the microserver's RAM.  
+
+I've opted to run Flask and serve it with a `nodejs` server as a proxy.  
+![neural-net-service-stack](https://ladvien.com/images/nn_service_stack.png)
+
+The `nodejs` is atypical, but I found it probably the most simple to setup.  So, eh.
+
+
 
 
 ### Appendix

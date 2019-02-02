@@ -31,7 +31,7 @@ For this particular project, I decided to go with a CentOS 7 distribution.
 
 For those of you who know me; I'm not betraying Arch Linxu, however, this project will be using MongoDB and there's a bit of [drama going on](https://lists.archlinux.org/pipermail/arch-dev-public/2019-January/029430.html).  I will leave some Arch Linux instructions in the Appendix, in case it is ever resolved.
 
-I chose CentOS because it is the distro my work uses, and I figure it'd help to get some experience.
+I chose CentOS because it is the distro we use at work and I hoped to get some experience using it.
 
 ### Setup User on Centos
 Login as root and update the system

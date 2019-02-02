@@ -138,7 +138,7 @@ brew services start mongodb
 ```
 
 #### Create a Word Embedding Database
-Once you've installed it locally, here's the script I used to convert the `word_embeddings` into a MongoDB database.  It loads the word-embeddings from using `gensim`, tokenizes the
+Once you've installed it locally, here's the script I used to convert the `word_embeddings` into a MongoDB database.  It loads the word-embeddings  using `gensim`, tokenizes the
 ```python
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-

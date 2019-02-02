@@ -58,7 +58,7 @@ And add the exact same entry for `my_user`.  It should look like this when done
 root    ALL=(ALL)    ALL
 my_user    ALL=(ALL)    ALL
 ```
-Now save the file and exit.
+Save the file and exit.
 
 Let's login as our new user.  Exit your shell and login back in as the `my_user`.  It should look something like this, typed on your local computer command line.
 ```

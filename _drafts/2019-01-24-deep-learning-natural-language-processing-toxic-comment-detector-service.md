@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Deep Learning -- Mechanizing a CNN
-description: Preparing a small server to provide access to a convolutional neural network through a Flask REST API.
+description: Creating a webservice to access a convolutional neural network.
 categories: neural-nets
 excerpt:
 series: Deep Learning Journal
@@ -12,6 +12,7 @@ comments: true
 custom_css: 
 custom_js: 
 ---
+We're almost done.  
 
 ### Prediction Service
 Let's turn the above code into an actual Flask service.  If you're not still there, navigate to your `flask_app` folder and create a file called `nn_service.py`.

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Deep Learning -- Preparing a Small Server to Serve a CNN
-description: Preparing a small server to provide access to a convolutional neural network through a Flask REST API.
+description: Preparing a small server to provide access to a convolutional neural network through a Flask webservice.
 categories: neural-nets
 excerpt:
 series: Deep Learning Journal
@@ -16,7 +16,7 @@ custom_js:
 ## Mechanizing Toxic Text Detector
 Previously, I wrote about training a CNN to detect toxic comments from text alone.  But, I realized, even if one has a nice little NN to solve all the world's problems it doesn't help unless it is in production.
 
-This article is going to cover how to prepare a server and needed word embeddings to mechanize the NN in a Flask REST API.
+This article is going to cover how to prepare a server and needed word embeddings to mechanize the NN in a Flask webservice.
 
 ### Server Setup: Preamble
 For this project I'm using a small server from Linode--called a "Nanode."  At the time of writing these servers are only $5 a month.  The catch? They only have 1GB of RAM.  It's definitely going to be tricky to deploy our CNN there, but let's see it through.
@@ -289,7 +289,7 @@ sudo systemctl restart mongod.service
 
 If you would like to enable access to the database remotely (see instructions in Appendix) you could use [Robo3T](https://robomongo.org/) to make sure everything is in place.  But if you didn't get any errors, we're probably good to go. 
 
-And now! Our server is ready to go.  In the next article I'll show how to create a Flask REST API to access the model.  Well, at least I hope...not sure how to do it yet.
+And now! Our server is ready to go.  In the next article I'll show how to create a Flask webservice to access the model.  Well, at least I hope...not sure how to do it yet.
 
 
 ### Test the Model

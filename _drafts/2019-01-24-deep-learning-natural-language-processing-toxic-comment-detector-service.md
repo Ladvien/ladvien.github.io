@@ -162,3 +162,12 @@ cd /home/my_user/flask_app/proxy
 node server.js
 ```
 Now, you should be able to make a call against the server.
+
+
+### CURL Test
+```bash
+curl -X POST \
+  http://maddatum.com:5000/sequence-indexes \
+  -H 'Content-Type: application/json' \
+  -d '{"sequence":"im pretty sure you are a super nice guy.","padding": 100}'
+```

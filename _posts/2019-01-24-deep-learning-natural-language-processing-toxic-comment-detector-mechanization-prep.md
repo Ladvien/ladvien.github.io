@@ -389,10 +389,3 @@ wget dl.fedoraproject.org/pub/epel/7/x86_64/Packages/e/epel-release-7-11.noarch.
 sudo rpm -ihv epel-release-7-11.noarch.rpm
 sudo yum install -y htop
 ```
-
-```bash
-curl -X POST \
-  http://maddatum.com:5000/sequence-indexes \
-  -H 'Content-Type: application/json' \
-  -d '{"sequence":"im pretty sure you are a super nice guy.","padding": 100}'
-```

@@ -76,7 +76,7 @@ def sequence_to_indexes():
 def get_word_index(word):
     index = ''
     try:
-        index = str(coll.posts.find_one({'word': word})['index'])
+        index = coll.posts.find_one({'word': word})['index']
     except:
         pass
     return index
@@ -109,9 +109,9 @@ def prediction_from_sequence(sequence, pad_length):
 ```
 What's going on?  Well, it's an extension of code I've detailed in earlier parts of this series.  However, there are a couple of new pieces.
 
-First, we are connecting to our MongoDB containing the contextual word-embeddings.  This database will be used to look up words which are sent to our service endpoint.
+First, we are connecting to our MongoDB databse containing the contextual word-embeddings.  This database is used to look up words which are sent to our service endpoint.
 
-Speaking of endpoints, the only route in this server is a `POST` service.  It takes one argument: `sequence`.  The sequence is the text the consumer would like to have analyzed for toxic content.  The endpoint calls the `prediction_from_sequence()`.  Inside the function, the word indexes are pulled from the `word_embeddings` database.  After, newly converted sequence is padding to the needed `100` dimensions. Then, this sequence is passed to our CNN, which makes the prediction. Lastly, the prediction is converted to JSON and returned to the user.  Simples!
+Speaking of endpoints, the only route in this server is a `POST` service.  It takes one argument: `sequence`.  The sequence is the text the consumer would like to have analyzed for toxic content.  The endpoint calls the `prediction_from_sequence()`.  Inside the function, the word indexes are pulled from the `word_embeddings` database.  After, newly converted sequence is padded to the needed `100` dimensions. Then, this sequence is passed to our CNN, which makes the prediction. Lastly, the prediction is converted to JSON and returned to the user.
 
 Before we go much further, let's test the script to make sure it actually works.  Still in the `flask_app`  directory type:
 ```
@@ -119,7 +119,9 @@ flask run  --host=0.0.0.0
 ```
 
 ### NodeJS and node-http-proxy
-It gets a bit weird here.  Usually, one will setup a Flask server with `uwsgi` or `gunicorn` combined with `nginx`.  However, I found the `uwsgi` middle-ware was creating two instances of my project, which would not fit in the microserver's RAM.  
+It gets a bit weird here.  Usually, one will setup a Flask server with `uwsgi` or `gunicorn` combined with `nginx`.  However, I found the `uwsgi` middle-ware was creating two instances of my project, which would not fit in the microserver's RAM.  I spent _a lot_ of time creating a server the `proper` only to be disheartened to find `uwsgi` was creating two instances of the `nn_service.py`, thereby attempting to load two of the CNNs into memory.  Our poor server.  I gave up on "proper" and went with what I describe below.  However, I've created a bash script to completely setup a server for you the "proper" way.  It's in the index.
+
+* Centos NN REST API
 
 I've opted to run Flask and serve it with a `nodejs` server as a proxy.  
 ![neural-net-service-stack](https://ladvien.com/images/nn_service_stack.png)

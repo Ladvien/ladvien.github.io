@@ -174,10 +174,6 @@ print('Loading Toxic Comments data.')
 with open(TRAIN_TEXT_DATA_DIR) as f:
     toxic_comments = pd.read_csv(TRAIN_TEXT_DATA_DIR)
 
-print('Getting Comment Labels.')
-prediction_labels = ["toxic", "severe_toxic", "obscene", "threat", "insult", "identity_hate"]
-labels = toxic_comments[prediction_labels].values
-
 # Convert Toxic Comments to Sequences
 print('Processing text dataset')
 

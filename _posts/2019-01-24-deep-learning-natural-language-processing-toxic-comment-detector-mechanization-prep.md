@@ -92,7 +92,7 @@ chmod +x Miniconda3-latest-Linux-x86_64.sh
 ./Miniconda3-latest-Linux-x86_64.sh
 source .bashrc
 ```
-Side note here, if you install Miniconda and can't have trouble executing `conda`, most likely it didn't add the executable path to your `PATH` variables.
+Side note here, if you install Miniconda and have trouble executing `conda`, most likely it didn't add the executable path to your `PATH` variables.
 
 This should add the path for both your user and root:
 ```

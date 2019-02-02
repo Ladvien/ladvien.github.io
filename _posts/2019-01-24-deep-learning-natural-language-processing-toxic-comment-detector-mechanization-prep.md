@@ -283,10 +283,7 @@ We also need to restart the MongoDB service
 sudo systemctl restart mongod.service
 ```
 
-If you would like to enable access to the database remotely (see instructions in Appendix) you could use [Robo3T](https://robomongo.org/) to make sure everything is in place.  But if you didn't get any errors, we're probably good to go. 
-
-And now! Our server is ready to go.  In the next article I'll show how to create a Flask webservice to access the model.  Well, at least I hope...not sure how to do it yet.
-
+If you would like to enable access to the database remotely (see instructions in Appendix) you could use [Robo3T](https://robomongo.org/) to make sure everything is in place.  But if you didn't get any errors, we're probably good to go.
 
 ### Test the Model
 Log into your server.  We are going to test the model real quick, since it needs to fit in the RAM available.
@@ -326,7 +323,7 @@ The `test_prediction` was the following text sequence pre-encoded.
 ```
 So, the `toxic` and `obscene` label should definitely be close to `1` and they are.
 
-Ok! Going to stop here, but in the last article I'll show how to wrap the prediction model in a web service.
+In the next article I'll show how to create a Flask webservice to access the model.  Well, at least I hope...not sure how to do it yet.
 
 ### Appendix
 

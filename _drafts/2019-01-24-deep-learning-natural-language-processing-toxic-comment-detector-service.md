@@ -113,15 +113,24 @@ First, we are connecting to our MongoDB databse containing the contextual word-e
 
 Speaking of endpoints, the only route in this server is a `POST` service.  It takes one argument: `sequence`.  The sequence is the text the consumer would like to have analyzed for toxic content.  The endpoint calls the `prediction_from_sequence()`.  Inside the function, the word indexes are pulled from the `word_embeddings` database.  After, newly converted sequence is padded to the needed `100` dimensions. Then, this sequence is passed to our CNN, which makes the prediction. Lastly, the prediction is converted to JSON and returned to the user.
 
+```
+# Add Flask variables to PATH
+echo "# Flask variables" &>> /home/"$USER"/.bashrc
+echo "export FLASK_APP='$FLASK_APP_NAME'.py" &>> /home/"$USER"/.bashrc
+
+sudo firewall-cmd --zone=public --add-port="$FLASK_PORT"/tcp --permanent
+sudo firewall-cmd --reload
+
+```
+
 Before we go much further, let's test the script to make sure it actually works.  Still in the `flask_app`  directory type:
 ```
 flask run  --host=0.0.0.0
 ```
 
 ### NodeJS and node-http-proxy
-It gets a bit weird here.  Usually, one will setup a Flask server with `uwsgi` or `gunicorn` combined with `nginx`.  However, I found the `uwsgi` middle-ware was creating two instances of my project, which would not fit in the microserver's RAM.  I spent _a lot_ of time creating a server the `proper` only to be disheartened to find `uwsgi` was creating two instances of the `nn_service.py`, thereby attempting to load two of the CNNs into memory.  Our poor server.  I gave up on "proper" and went with what I describe below.  However, I've created a bash script to completely setup a server for you the "proper" way.  It's in the index.
+It gets a bit weird here.  Usually, one will setup a Flask server with `uwsgi` or `gunicorn` combined with `nginx`.  However, I found the `uwsgi` middle-ware was creating two instances of my project, which would not fit in the microserver's RAM.  I spent _a lot_ of time creating a server the `proper` only to be disheartened to find `uwsgi` was creating two instances of the `nn_service.py`, thereby attempting to load two of the CNNs into memory.  Our poor server.  I gave up on "proper" and went with what I describe below.  However, I've created a bash script to completely setup a server for you the "proper" way. I've added it to the Appendix.
 
-* Centos NN REST API
 
 I've opted to run Flask and serve it with a `nodejs` server as a proxy.  
 ![neural-net-service-stack](https://ladvien.com/images/nn_service_stack.png)
@@ -165,6 +174,46 @@ node server.js
 ```
 Now, you should be able to make a call against the server.
 
+### Proper Flask Webservice Setup
+I've written a script to setup the webservice for you.  First, you will need to be logged into your Centos 7 server as root.
+
+Then type:
+```
+yum install -y wget
+wget http://ladvien.com/assets/centos_nn_webservice.sh
+chmod +x centos_nn_webservice.sh
+```
+What this script does:
+
+1. Sets up a new user
+2. Adds Miniconda to the PATH variable.
+3. Adds Flask environment variables (needed to run app).
+4. Updates the server.
+5. Creates the flask_app directories
+6. Opens the needed ports
+7. Installs `nginx`
+8. Creates a `nginx` .conf file with information to proxy `uwsgi` service.
+9. Installs `uwsgi` creates a .ini file for wrapping the Flask app.
+10. Creates and enables a `uwsgi` daemon.
+11. Creates and enables a `Flask` daemon.
+12. Installs Miniconda, tensorflow, and sets Python to 3.6.8.
+13. Installs MongoDB
+14. Enables remote editing from VSCode ([info](https://ladvien.com/visual-studio-code-raspberry-pi/))
+
+We're about to execute the script, **but there's a critical step I wanted to explain first.  The script is going to take several commandline arguments.  If these are wrong, it'll royally jake up your server.**
+
+```
+./centos_nn_webservice.sh user_name user_password flask_app_name flask_port
+```
+
+* **user_name** This will be the user who provides the webservice
+* **user_password** The user's password.  You'll need this to `ssh` into the server as this  user.
+* **flask_app_name** This is the name of your app.  Everything from the Python script to the daemon will be labeled with this name.
+* **flask_port** This is the port which will be exposed to the web.
+
+Ok, replace all of the above commandline arguments with the ones you prefer and execute it.  Cross your fingers or yell at me in the comments.
+
+
 
 ### CURL Test
 ```bash
@@ -173,3 +222,4 @@ curl -X POST \
   -H 'Content-Type: application/json' \
   -d '{"sequence":"im pretty sure you are a super nice guy.","padding": 100}'
 ```
+

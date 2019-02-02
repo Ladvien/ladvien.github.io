@@ -113,19 +113,17 @@ First, we are connecting to our MongoDB databse containing the contextual word-e
 
 Speaking of endpoints, the only route in this server is a `POST` service.  It takes one argument: `sequence`.  The sequence is the text the consumer would like to have analyzed for toxic content.  The endpoint calls the `prediction_from_sequence()`.  Inside the function, the word indexes are pulled from the `word_embeddings` database.  After, newly converted sequence is padded to the needed `100` dimensions. Then, this sequence is passed to our CNN, which makes the prediction. Lastly, the prediction is converted to JSON and returned to the user.
 
-```
-# Add Flask variables to PATH
-echo "# Flask variables" &>> /home/"$USER"/.bashrc
-echo "export FLASK_APP='$FLASK_APP_NAME'.py" &>> /home/"$USER"/.bashrc
 
-sudo firewall-cmd --zone=public --add-port="$FLASK_PORT"/tcp --permanent
-sudo firewall-cmd --reload
 
+Before we go much further, let's test the script to make sure it actually works.  Still in the `flask_app` directory type, replacing `my_user` with your user name:
+```bash
+echo "# Flask variables" &>> /home/my_user/.bashrc
+echo "export FLASK_APP='$FLASK_APP_NAME'.py" &>> /home/my_user/.bashrc
 ```
 
-Before we go much further, let's test the script to make sure it actually works.  Still in the `flask_app`  directory type:
-```
-flask run  --host=0.0.0.0
+
+```bash
+flask run
 ```
 
 ### NodeJS and node-http-proxy
@@ -160,6 +158,12 @@ Inside the server file place:
 var http = require('http'),
     httpProxy = require('http-proxy');
 httpProxy.createProxyServer({target:'http://localhost:5000'}).listen(8000);
+```
+
+Alright, before testing our Python script, there are a few 
+```
+sudo firewall-cmd --zone=public --add-port="$FLASK_PORT"/tcp --permanent
+sudo firewall-cmd --reload
 ```
 
 You can test the whole proxy setup by opening two terminals to your server.  In one, navigate to your Flask app and run it:

@@ -330,7 +330,7 @@ The `test_prediction` was the following text sequence pre-encoded.
 ```
 So, the `toxic` and `obscene` label should definitely be close to `1` and they are.
 
-Ok! Going to stop here, but in the last article I'll show to wrap the prediction model in a web service.
+Ok! Going to stop here, but in the last article I'll show how to wrap the prediction model in a web service.
 
 ### Appendix
 

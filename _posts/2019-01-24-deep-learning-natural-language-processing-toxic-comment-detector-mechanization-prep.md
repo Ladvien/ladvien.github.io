@@ -236,14 +236,14 @@ gpgkey=https://www.mongodb.org/static/pgp/server-4.0.asc
 ```
 Save the file.
 
-Now run 
+Run 
 ```
 sudo yum install -y mongodb-org
 ```
 Yum should now find the private repo and install MongoDB.
 
 #### Setup MongoDB
-Now, we need to enable the mongod.service.
+We need to enable the mongod.service.
 
 ```
 sudo systemctl enable mongod.service

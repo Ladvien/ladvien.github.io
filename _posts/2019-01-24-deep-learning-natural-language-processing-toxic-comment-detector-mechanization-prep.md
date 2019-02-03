@@ -284,9 +284,7 @@ sudo systemctl restart mongod.service
 If you would like to enable access to the database remotely (see instructions in Appendix) you could use [Robo3T](https://robomongo.org/) to make sure everything is in place.  But if you didn't get any errors, we're probably good to go.
 
 ### Test the Model
-Log into your server.  We are going to test the model real quick, since it needs to fit in the RAM available.
-
-Notice, the `my_user` in the script should be replaced with the user name you created while setting up your server and proejct.
+Log into your server.  We are going to test the model, since it needs to fit in the RAM available.  The `my_user` in the script should be replaced with the user name you created while setting up your server and proejct.
 
 Type:
 ```

@@ -319,7 +319,7 @@ The `test_prediction` was the following text sequence pre-encoded.
 ```
 So, the `toxic` and `obscene` label should definitely be close to `1`.  Looks like we're in good shape.
 
-In the next article I'll show how to create a Flask webservice to access the model.  Well, at least I hope...not sure how to do it yet.
+In the next article I'll show how to create a Flask webservice to access the model.  Well, at least I hope, not sure how to do that yet.
 
 ### Appendix
 

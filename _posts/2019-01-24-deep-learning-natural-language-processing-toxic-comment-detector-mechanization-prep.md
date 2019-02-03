@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Deep Learning -- Preparing a Small Server to for a Neural Net Webservice
+title: Preparing a Small Server for a Neural Network Webservice
 description: Preparing a small server to provide access to a convolutional neural network through a Flask webservice.
 categories: neural-nets
 excerpt:

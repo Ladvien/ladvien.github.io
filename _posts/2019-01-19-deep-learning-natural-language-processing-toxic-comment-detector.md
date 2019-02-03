@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Deep Learning -- Toxic Comment Detector
+title: Training a Toxic Comment Detector
 description: Explaining the pre-processing stages of creating a text classification neural network.
 categories: neural-nets
 excerpt:

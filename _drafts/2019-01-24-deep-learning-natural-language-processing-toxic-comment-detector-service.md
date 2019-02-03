@@ -12,10 +12,10 @@ comments: true
 custom_css: 
 custom_js: 
 ---
-We're almost done.  In the previous articles we've used a local machine to train a CNN to detect toxic sentiment in a text sequence.  Also, we prepared a small (1GB RAM) server to use this pre-trained network to make predictions.  Now, let's finish it out and create a webservice where anyone can access our awesome magical algorithm.
+We're almost done.  In the previous articles we've used a local machine to train a CNN to detect toxic sentiment in text.  Also, we prepared a small (1GB RAM) server to use this pre-trained network to make predictions.  Now, let's finish it and create a webservice where anyone can access our awesome magical algorithm.
 
 ### Prediction Service
-If you're not still there, navigate to your `flask_app` folder and create a file called `nn_service.py`. The following code creates an HTTP request endpoint `/detect-toxic` and it exposes to other programs running on the server.  A bit more explanation after the code.
+On your remote server, navigate to your `flask_app` folder and create a file called `nn_service.py`. The following code creates an HTTP request endpoint `/detect-toxic` and it exposes to other programs running on the server.  A bit more explanation after the code.
 
 ```
 cd /home/my_user/flask_app
@@ -52,7 +52,7 @@ db = mong[embedding_collection]
 coll = db[word_embedding_name]
 
 # Load Keras Model
-model = load_model('/home/ladvien/flask_app/models/tox_com_det.h5')
+model = load_model('/home/my_user/flask_app/models/tox_com_det.h5')
 model._make_predict_function()
 
 # Start flask
@@ -109,20 +109,44 @@ def prediction_from_sequence(sequence, pad_length):
 ```
 What's going on?  Well, it's an extension of code I've detailed in earlier parts of this series.  However, there are a couple of new pieces.
 
-First, we are connecting to our MongoDB databse containing the contextual word-embeddings.  This database is used to look up words which are sent to our service endpoint.
+First, we are connecting to our MongoDB database containing the contextual word-embeddings.  This database is used to look up words, which have been sent to our service endpoint.
 
-Speaking of endpoints, the only route in this server is a `POST` service.  It takes one argument: `sequence`.  The sequence is the text the consumer would like to have analyzed for toxic content.  The endpoint calls the `prediction_from_sequence()`.  Inside the function, the word indexes are pulled from the `word_embeddings` database.  After, newly converted sequence is padded to the needed `100` dimensions. Then, this sequence is passed to our CNN, which makes the prediction. Lastly, the prediction is converted to JSON and returned to the user.
+The only route in this server is a `POST` service.  It takes one argument: `sequence`.  The sequence is the text the webservice consumer would like to have analyzed for toxic content.  The endpoint calls the `prediction_from_sequence()`.  Inside the function, the word indexes are pulled from the `word_embeddings` database.  After, the newly converted sequence is padded to the needed `100` dimensions. Then, this sequence is passed to our CNN, which makes the prediction. Lastly, the prediction is converted to JSON and returned to the user.
 
-
-
-Before we go much further, let's test the script to make sure it actually works.  Still in the `flask_app` directory type, replacing `my_user` with your user name:
+Before we go much further, let's test the script to make sure it actually works.  Still in the `flask_app` directory type, replacing `my_user` with your user name and `name_of_flask_app.py` with the name of your Flask app:
 ```bash
 echo "# Flask variables" &>> /home/my_user/.bashrc
-echo "export FLASK_APP='$FLASK_APP_NAME'.py" &>> /home/my_user/.bashrc
+echo "export FLASK_APP=name_of_flask_app.py" &>> /home/my_user/.bashrc
 ```
+This sets `FLASK_APP` variable, which is used when executing the `Flask` webservice.
 
+Ok, we should be able to test the app fully now:
 ```bash
 flask run
+```
+You should be greeted with something similiar to:
+```
+ * Serving Flask app "nn_service.py"
+ * Environment: production
+   WARNING: Do not use the development server in a production environment.
+   Use a production WSGI server instead.
+ * Debug mode: off
+Using TensorFlow backend.
+Connected successfully.
+2019-02-03 15:53:26.391389: I tensorflow/core/platform/cpu_feature_guard.cc:141] Your CPU supports instructions that this TensorFlow binary was not compiled to use: SSE4.1 SSE4.2 AVX AVX2 FMA
+2019-02-03 15:53:26.398145: I tensorflow/core/common_runtime/process_util.cc:69] Creating new thread pool with default inter op setting: 2. Tune using inter_op_parallelism_threads for best performance.
+ * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+```
+Great! We're on the home stretch.  
+
+I've prepared a `curl` statement to test the server.  You will need to leave the Flask program running and open a second terminal to your server.  When the second terminal is up paste in the following, replacing the "sequence" with something nasty or nice.
+```
+curl -X POST \
+  http://localhost:5000/sequence-indexes \
+  -H 'Content-Type: application/json' \
+  -d '{"sequence":"im pretty sure you are a super nice guy.","padding": 100}'
+```
+
 ```
 
 ### NodeJS and node-http-proxy

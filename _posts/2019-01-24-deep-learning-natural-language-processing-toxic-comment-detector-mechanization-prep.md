@@ -250,11 +250,11 @@ And reboot
 ```
 sudo reboot now
 ```
-I'll be setting up MongoDB to _only_ run locally on the server.  This enables it to be accessed by the Flask program, but not remotely.  This is a best practice, given the security benefits.  However, if you'd like to enable remote accesss to the MongoDB I've included instructions in the Appendix.
+I'll be setting up MongoDB to _only_ for local access.  This enables it to be accessed by our Flask program, but not remotely.  This is a best practice in securing your server.  However, if you'd like to enable remote access to the MongoDB I've included instructions in the Appendix.
 
 
 ### Move the Model to Server
-Since we traind the model locally, let's move it to the server.  Open your terminal in the directory where the model was stored.
+Since we trained the model locally, let's move it to the server.  Open your terminal in the directory where the model was stored.
 
 ```
 scp toxic_comment_detector.h5 my_user@my_server_ip:/home/my_user

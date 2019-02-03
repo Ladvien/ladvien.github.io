@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Deep Learning -- Mechanizing a CNN
+title: Creating a Neural Network Webservice
 description: Creating a webservice to access a convolutional neural network.
 categories: neural-nets
 excerpt:
@@ -124,7 +124,7 @@ Ok, we should be able to test the app fully now:
 ```bash
 flask run
 ```
-You should be greeted with something similiar to:
+You should be greeted with something similar to:
 ```
  * Serving Flask app "nn_service.py"
  * Environment: production
@@ -142,16 +142,15 @@ Great! We're on the home stretch.
 I've prepared a `curl` statement to test the server.  You will need to leave the Flask program running and open a second terminal to your server.  When the second terminal is up paste in the following, replacing the "sequence" with something nasty or nice.
 ```
 curl -X POST \
-  http://localhost:5000/sequence-indexes \
+  http://localhost:5000/detect-toxic \
   -H 'Content-Type: application/json' \
   -d '{"sequence":"im pretty sure you are a super nice guy.","padding": 100}'
 ```
-
-```
+You _should_ get back an appropriate response:
+![local-curl-test-neural-net-webservice](https://ladvien.com/images/toxic-comment-detector-local-test.png)
 
 ### NodeJS and node-http-proxy
-It gets a bit weird here.  Usually, one will setup a Flask server with `uwsgi` or `gunicorn` combined with `nginx`.  However, I found the `uwsgi` middle-ware was creating two instances of my project, which would not fit in the microserver's RAM.  I spent _a lot_ of time creating a server the `proper` only to be disheartened to find `uwsgi` was creating two instances of the `nn_service.py`, thereby attempting to load two of the CNNs into memory.  Our poor server.  I gave up on "proper" and went with what I describe below.  However, I've created a bash script to completely setup a server for you the "proper" way. I've added it to the Appendix.
-
+It gets a bit weird here.  Usually, one will setup a Flask server with `uwsgi` or `gunicorn` combined with `nginx`.  However, I found the `uwsgi` middle-ware was creating two instances of my project, which would not fit in the microserver's RAM.  I spent _a lot_ of time creating a server the `proper` only to be disheartened when I discovered `uwsgi` was creating two instances of the `nn_service.py`, thereby attempting to load two of the CNNs into memory.  Our poor server.  I gave up on "proper" and went with what I describe below.  However, I've created a bash script to completely setup a server for you the "proper" way. I've added it to the Appendix.
 
 I've opted to run Flask and serve it with a `nodejs` server as a proxy.  
 ![neural-net-service-stack](https://ladvien.com/images/nn_service_stack.png)
@@ -167,9 +166,9 @@ Now move to the directory containing your flask_app and initialize a node projec
 cd /home/my_user/flask_app
 npm init
 ```
-You will be prompted to enter the project--take your time to fill it our or just skip it by hitting return repeatedly. 
+You will be prompted to enter the project--take your time to fill it out or skip it by hitting return repeatedly.
 
-Once the project has been setup, let's install the [node-http-proxy](https://github.com/nodejitsu/node-http-proxy) package.  It will allow use to create a proxy server sitting on top of our Flask service in a couple of lines of code.
+Once the project has been setup, let's install the [node-http-proxy](https://github.com/nodejitsu/node-http-proxy) package.  It will allow us to create a proxy server sitting on top of our Flask service in a couple of lines of code.
 
 Still in your project directory:
 ```
@@ -182,13 +181,13 @@ var http = require('http'),
     httpProxy = require('http-proxy');
 httpProxy.createProxyServer({target:'http://localhost:5000'}).listen(8000);
 ```
-
-Alright, before testing our Python script, there are a few 
+Alright, before testing our Flask webservice we need to allow `8000` port access and allow `HTTP / HTTPS` request on the firewall.
 ```
-sudo firewall-cmd --zone=public --add-port="$FLASK_PORT"/tcp --permanent
+firewall-cmd --permanent --zone=public --add-service=http
+firewall-cmd --permanent --zone=public --add-service=https
+sudo firewall-cmd --zone=public --add-port=8000/tcp --permanent
 sudo firewall-cmd --reload
 ```
-
 You can test the whole proxy setup by opening two terminals to your server.  In one, navigate to your Flask app and run it:
 ```
 cd /home/my_user/flask_app
@@ -199,9 +198,82 @@ In the other navigate to the `node` proxy file and run it:
 cd /home/my_user/flask_app/proxy
 node server.js
 ```
-Now, you should be able to make a call against the server.
+Now, you should be able to make a call against the server. _This time_, run the `curl` command from your local machine--replacing the `my_server_ip` with your server's IP address:
+```
+curl -X POST \
+  http://my_server_ip:8000/detect-toxic \
+  -H 'Content-Type: application/json' \
+  -d '{"sequence":"im pretty sure you are a super nice guy.","padding": 100}'
+```
+You should get a response exactly like we saw from running the `curl` command locally.
 
-### Proper Flask Webservice Setup
+### Daemonize It
+The last bit of work to do is create two daemons.  One will keep the Flask app running in the background.  The other, will keep the proxy between the web and the Flask app going.
+
+One caveat before starting, because daemons are loaded without the `PATH` variable all file references must use absolute paths.
+
+At the server's command prompt type:
+```
+sudo nano /etc/systemd/system/nn_service.service
+```
+And add the following replacing `my_user` with your user name:
+```
+[Unit]
+Description=Flask instance to serve nn_service
+After=network.target
+
+[Service]
+User=my_user
+Group=my_user
+WorkingDirectory=/home/my_user/flask_app
+ExecStart=/usr/local/miniconda/bin/flask run
+
+[Install]
+WantedBy=multi-user.target
+```
+This will create a service.  It will run the program pointed to by `ExecStart`, in our case `flask run`, inside the directory pointed by `WorkingDirectory`.
+
+Save and exit.
+
+Now, let's create the `nn_service_proxy.service` daemon:
+```
+sudo nano /etc/systemd/system/nn_service_proxy.service
+```
+And enter the following replacing `my_user` with your user name:
+```
+Description=Proxy to Flask instance to serve nn_service
+After=network.target
+
+[Service]
+User=my_user
+Group=my_user
+WorkingDirectory=/home/my_user/flask_app/node
+ExecStart=/usr/bin/node /home/my_user/flask_app/node/nn_service_proxy.js
+
+[Install]
+WantedBy=multi-user.target
+```
+Great! We're ready to enable and start them.
+```
+sudo systemctl enable nn_service.service
+sudo systemctl enable nn_service_proxy.service
+sudo systemctl start nn_service.service
+sudo systemctl start nn_service_proxy.service
+```
+Alright, you can now check the system journal to make sure they loaded correctly:
+```
+sudo journalctl -xe
+```
+But, it _should_ be good.  If something goes wrong, definitely ask questions in the comments.  Otherwise, we should be ready to test our full functioning toxic text detection webservice!
+```
+curl -X POST \
+  http://my_server_ip:8000/detect-toxic \
+  -H 'Content-Type: application/json' \
+  -d '{"sequence":"im pretty sure you are a super nice guy.","padding": 100}'
+```
+Wow! What a journey right.  But pretty damn cool.  We now have a webservice which can be called by anyone who wants to check text to see if it contains toxic sentiment.  I didn't have an application when starting this project, but I'm learning webscraping with a friend, and I think it'll be great to pass text off to this webservice and have it flagged if contains nasty content.
+
+### "Proper" Flask Webservice Setup
 I've written a script to setup the webservice for you.  First, you will need to be logged into your Centos 7 server as root.
 
 Then type:
@@ -239,14 +311,3 @@ We're about to execute the script, **but there's a critical step I wanted to exp
 * **flask_port** This is the port which will be exposed to the web.
 
 Ok, replace all of the above commandline arguments with the ones you prefer and execute it.  Cross your fingers or yell at me in the comments.
-
-
-
-### CURL Test
-```bash
-curl -X POST \
-  http://maddatum.com:5000/sequence-indexes \
-  -H 'Content-Type: application/json' \
-  -d '{"sequence":"im pretty sure you are a super nice guy.","padding": 100}'
-```
-

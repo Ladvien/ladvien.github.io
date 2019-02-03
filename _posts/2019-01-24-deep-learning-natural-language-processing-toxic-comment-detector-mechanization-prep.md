@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Deep Learning -- Preparing a Small Server to Serve a CNN
+title: Deep Learning -- Preparing a Small Server to for a Neural Net Webservice
 description: Preparing a small server to provide access to a convolutional neural network through a Flask webservice.
 categories: neural-nets
 excerpt:
@@ -12,8 +12,6 @@ comments: true
 custom_css: 
 custom_js: 
 ---
-
-## Mechanizing Toxic Text Detector
 Previously, I wrote about training a CNN to detect toxic comments from text alone.  But, I realized, even if one has a nice little NN to solve all the world's problems it doesn't help unless it is in production.
 
 This article is going to cover how to prepare a server and needed word embeddings to mechanize the NN in a Flask webservice.

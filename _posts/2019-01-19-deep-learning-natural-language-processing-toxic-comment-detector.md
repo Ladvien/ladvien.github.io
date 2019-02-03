@@ -12,8 +12,6 @@ comments: true
 custom_css: 
 custom_js: 
 ---
-
-## The Plan
 I'm writing learning-notes from implementing a "toxic comment" detector using a convolutional neural network (CNN).  This is a common project across the interwebs, however, the articles I've seen on the matter leave a few bits out.  So, I'm attempting to augment public knowledge--not write a comprehensive tutorial.
 
 A common omission is what the data look like as they travel through pre-processing.  I'll try to show how the data look before falling into the neural-net black-hole.  However, I'll stop short before reviewing the CNN setup, as this is explained much better elsewhere.  Though, I've put all the original code, relevant project links, tutorial links, and other resources towards the bottom.

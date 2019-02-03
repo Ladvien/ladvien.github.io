@@ -10,3 +10,4 @@ Gemfile.lock
 lad-u
 images/*.sketch
 /raw_images
+/images/*.zip

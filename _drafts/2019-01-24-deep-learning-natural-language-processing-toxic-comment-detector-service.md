@@ -121,7 +121,6 @@ echo "# Flask variables" &>> /home/my_user/.bashrc
 echo "export FLASK_APP='$FLASK_APP_NAME'.py" &>> /home/my_user/.bashrc
 ```
 
-
 ```bash
 flask run
 ```

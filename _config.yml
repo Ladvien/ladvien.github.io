@@ -68,7 +68,6 @@ paginate: 5
 
 plugins_dir: ./_plugins
 
-
 kramdown:
   input: GFM
   auto_ids: true

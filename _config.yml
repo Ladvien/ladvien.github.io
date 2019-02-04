@@ -100,15 +100,15 @@ exclude:
   - spec
   - tmp
 
-# assets:
-#  compress:
-#      js: true
-#      css: true
-#  sources:
-#      - assets/css
-#      - assets/js
-#      - images
-#  js_compressor: uglifier
-#  css_compressor: scss
-#  features:
-#    liquid: true
+assets:
+ compress:
+     js: true
+     css: true
+ sources:
+     - assets/css
+     - assets/js
+     - images
+ js_compressor: uglifier
+ css_compressor: scss
+ features:
+   liquid: true

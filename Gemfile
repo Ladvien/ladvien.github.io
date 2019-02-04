@@ -13,3 +13,4 @@ gem "jekyll-series"
 gem "jekyll-watch", "1.1"
 gem "liquid", "3.0.6"
 gem "jekyll-minifier"
+gem 'jekyll-compress-images'

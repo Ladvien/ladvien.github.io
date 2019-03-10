@@ -1,7 +1,7 @@
 #!/bin/sh
 
 PASSWORD=("$(keyring get system ladvien.com)")
-echo "$PASSWORD"
+
 ECHO ""
 ECHO "*******************************************************"
 ECHO "* Syncing files to Ladvien.com Jekyll build directory *"

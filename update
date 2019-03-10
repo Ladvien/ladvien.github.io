@@ -6,27 +6,27 @@ ECHO ""
 ECHO "*******************************************************"
 ECHO "* Syncing files to Ladvien.com Jekyll build directory *"
 ECHO "*******************************************************"
-bundle exec jekyll build --source /Users/cthomasbrittain/Documents/ladvien.github.io --destination /Users/cthomasbrittain/Documents/ladvien.github.io/_site
+bundle exec jekyll build --source /Users/caseybrittain/Documents/ladvien.github.io --destination /Users/caseybrittain/Documents/ladvien.github.io/_site
 
 ECHO ""
 ECHO "*******************************************************"
 ECHO "* Moving raw_images into images                       *"
 ECHO "*******************************************************"
-rsync -h -v -r -P -t --ignore-existing /Users/cthomasbrittain/Documents/ladvien.github.io/raw_images/* /Users/cthomasbrittain/Documents/ladvien.github.io/images
-# sips -Z 1080 /Users/cthomasbrittain/Documents/ladvien.github.io/images/*.jpg
-# sips -Z 1080 /Users/cthomasbrittain/Documents/ladvien.github.io/images/*.png
-# sips -Z 1080 /Users/cthomasbrittain/Documents/ladvien.github.io/images/*.PNG
-# sips -Z 1080 /Users/cthomasbrittain/Documents/ladvien.github.io/images/*.JPG
+rsync -h -v -r -P -t --ignore-existing /Users/caseybrittain/Documents/ladvien.github.io/raw_images/* /Users/caseybrittain/Documents/ladvien.github.io/images
+# sips -Z 1080 /Users/caseybrittain/Documents/ladvien.github.io/images/*.jpg
+# sips -Z 1080 /Users/caseybrittain/Documents/ladvien.github.io/images/*.png
+# sips -Z 1080 /Users/caseybrittain/Documents/ladvien.github.io/images/*.PNG
+# sips -Z 1080 /Users/caseybrittain/Documents/ladvien.github.io/images/*.JPG
 
 ECHO ""
 ECHO "****************************"
 ECHO "* Updating Jekyll includes *"
 ECHO "****************************"
 
-sshpass -p "$PASSWORD" rsync -avzu /Users/cthomasbrittain/Documents/ladvien.github.io/_site/* root@ladvien.com:/usr/share/nginx/html
+sshpass -p "$PASSWORD" rsync -avzu /Users/caseybrittain/Documents/ladvien.github.io/_site/* root@ladvien.com:/usr/share/nginx/html
 
 
-cd /Users/cthomasbrittain/Documents/ladvien.github.io
+cd /Users/caseybrittain/Documents/ladvien.github.io
 git add .
 ECHO ""
 ECHO "****************************"

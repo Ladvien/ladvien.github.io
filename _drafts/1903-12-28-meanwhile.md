@@ -1,10 +1,10 @@
 ---
 layout: post
-title: Template
+title: Meanwhile -- Kossel Mini Build
 categories: robot
-series: 
+series: Meanwhile
 excerpt:
-tags: [stm32f030fpx, visual studio code, stlink]
+tags: [kossel mini, 3d-printer]
 image: 
     feature: 
 comments: true

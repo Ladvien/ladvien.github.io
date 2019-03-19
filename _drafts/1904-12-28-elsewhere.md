@@ -1,10 +1,10 @@
 ---
 layout: post
-title: Template
+title: Elsewhere -- iPrusa 3 Steel
 categories: robot
-series: 
+series: Elsewhere
 excerpt:
-tags: [stm32f030fpx, visual studio code, stlink]
+tags: [prussa, 3d-printer]
 image: 
     feature: 
 comments: true

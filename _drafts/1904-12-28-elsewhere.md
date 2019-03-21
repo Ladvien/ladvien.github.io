@@ -38,6 +38,16 @@ The retraction speed and length was the issue.  I think it was retracting the fi
 One other note, it appears the Octoprint actually has an extruder default feedrate setting.  This as causing my extruder to go too fast and miss steps.  Changed it from 300 to 150.  It is is found in "Settings" -> Printer Profile -> Edit Printer (Wrench icon) -> Axes
 
 
+### Retraction Calibration
+Now I've solved the issue with the halfway-stop, I'm seeing a lot of stringing.  I'm going to attempt to increase the retraction speed and legnth.  I'm hoping to find a happy medium between the halfway-stop issue and stringing.  Here goes.
+
+I've changed from:
+M207 S0.8000 F350 Z0.5000 Q6000.000
+To
+M207 S1.2000 F700 Z0.5000 Q6000.000
+No improvement -- Then to
+M207 S1.4000 F1500 Z0.000 Q6000.000
+
 https://plus.google.com/107980634858406533725/posts/hgoqWhEVWTL
 ```
 I have been running BLTouch with my MKS SBase board for a while, and this is the probing script I use. This script takes into account a calibrated Z offset of 3.2mm for my mounting. I have a cartesian machine, but that is irrelevant to the operation of the BLTouch.

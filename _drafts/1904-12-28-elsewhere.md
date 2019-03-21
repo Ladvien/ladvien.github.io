@@ -13,6 +13,31 @@ custom_js:
 ---
 
 
+### Fixing Hotend stops Printing Halfway into Print
+
+Tried:
+1. Changing extruder motor -- no change
+2. Reducing retract length and speed -- no change
+3. Cold pulling the hotend -- no change
+4. Cleaning hotend gears -- no change
+5. Reducing print speed by half -- no change
+6. Tighting extruder tensioner way down -- no change
+7. Check filament-spool tension while printing
+8. Clean between guide and tungsten-screw-thing (see image) -- no change
+9. Switched temperature_control.hotend.thermistor to Semitec from RRRF100K
+10. Recalibrated extruder -- no change
+```
+M92 Exxx
+Formula:Input measurement/Actual measurement * Old M92 value = New M92 value
+```
+11. Changed Cura's nozzel size from 2.85 to 1.75 
+12. M207 S3.0000 F2700.0000 Z0.0000 Q6000.0000 P57988 to M207 S0.8000 F350 Z0.5000 Q6000.000 -- print worked
+https://e3d-online.dozuki.com/Answers/View/136/Retraction+speed+and+acceleration+settings
+The retraction speed and length was the issue.  I think it was retracting the filament too far and fast.  This would result in a jam as the extruder tried to shove it back in.  The prints are looking clean.
+
+One other note, it appears the Octoprint actually has an extruder default feedrate setting.  This as causing my extruder to go too fast and miss steps.  Changed it from 300 to 150.  It is is found in "Settings" -> Printer Profile -> Edit Printer (Wrench icon) -> Axes
+
+
 https://plus.google.com/107980634858406533725/posts/hgoqWhEVWTL
 ```
 I have been running BLTouch with my MKS SBase board for a while, and this is the probing script I use. This script takes into account a calibrated Z offset of 3.2mm for my mounting. I have a cartesian machine, but that is irrelevant to the operation of the BLTouch.

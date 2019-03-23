@@ -58,3 +58,11 @@ https://github.com/pbugalski/wemos_motor_shield/issues/3
 * [Address 0x2E](http://ladvien.com/images/files/motor_shield_2E.bin)
 * [Address 0x2F](http://ladvien.com/images/files/motor_shield_2F.bin)
 * [Address 30](http://ladvien.com/images/files/motor_shield_30.bin)
+
+Wemos Motor (v1) Schematic
+https://wiki.wemos.cc/_media/products:d1_mini_shields:mini_motor.pdf
+
+TB6612FNG Datasheet
+https://www.sparkfun.com/datasheets/Robotics/TB6612FNG.pdf
+
+![](https://ladvien/images/labeled_wemos.png)

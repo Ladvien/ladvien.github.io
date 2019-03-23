@@ -65,4 +65,4 @@ https://wiki.wemos.cc/_media/products:d1_mini_shields:mini_motor.pdf
 TB6612FNG Datasheet
 https://www.sparkfun.com/datasheets/Robotics/TB6612FNG.pdf
 
-![](https://ladvien/images/labeled_wemos.png)
+![](https://ladvien.com/images/wemos_motor_1.png)

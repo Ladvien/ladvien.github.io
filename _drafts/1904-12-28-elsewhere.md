@@ -112,3 +112,12 @@ zprobe.slow_feedrate                         10
 zprobe.fast_feedrate                         100  
 gamma_min_endstop                           nc    
 ```
+
+### The Ooze
+
+The new thermistors are HT100K
+https://www.amazon.com/gp/product/B07D9LSKWK/ref=ppx_yo_dt_b_asin_title_o00_s00?ie=UTF8&psc=1
+
+```
+temperature_control.hotend.thermistor        HT100K	      # see http://smoothieware.org/temperaturecontrol#toc5
+```

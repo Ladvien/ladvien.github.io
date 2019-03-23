@@ -82,7 +82,7 @@ Then manually drop the Z in 0.1 increments until the nozzle grabs paper. For me,
 
 The BLTouch has a behavior that after probing, it pushes the pin down again pretty quickly, so once you issue the G30, you should immediately retract the probe (via script). It's a pain to do line-by-line in a terminal.
 ```
-Now, at this point, I've moved the value I got to a the script in place of `G30 Z3.2`.  Using octoprint I've put this script into `.octoprint/scripts/gcode/bed_level` and made a button 
+Now, at this point, I've moved the value I got to a the script in place of `G30 Z3.2`.  Using octoprint I've put this script into `.octoprint/scripts/gcode/bed_level` and made a button.  `Note, if you need to fine tune it, the higher the G30 Z value the closer the hotend will be to the bed.
 ```
 
 -----------------------------------------------

@@ -8,10 +8,10 @@ echo "* Syncing files to Ladvien.com Jekyll build directory *"
 echo "*******************************************************"
 bundle exec jekyll build --source /home/ladvien/ladvien.github.io --destination /home/ladvien/ladvien.github.io/_site
 
-ECHO ""
-ECHO "*******************************************************"
-ECHO "* Moving raw_images into images                       *"
-ECHO "*******************************************************"
+echo ""
+echo "*******************************************************"
+echo "* Moving raw_images into images                       *"
+echo "*******************************************************"
 rsync -h -v -r -P -t --ignore-existing /home/ladvien/ladvien.github.io/raw_images/* /home/ladvien/ladvien.github.io/images
 
 echo ""

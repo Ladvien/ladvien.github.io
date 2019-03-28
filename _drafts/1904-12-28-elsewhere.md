@@ -82,7 +82,7 @@ Then manually drop the Z in 0.1 increments until the nozzle grabs paper. For me,
 
 The BLTouch has a behavior that after probing, it pushes the pin down again pretty quickly, so once you issue the G30, you should immediately retract the probe (via script). It's a pain to do line-by-line in a terminal.
 ```
-Now, at this point, I've moved the value I got to a the script in place of `G30 Z3.2`.  Using octoprint I've put this script into `.octoprint/scripts/gcode/bed_level` and made a button.  `Note, if you need to fine tune it, the higher the G30 Z value the closer the hotend will be to the bed.
+Now, at this point, I've moved the value I got to a the script in place of `G30 Z3.2`.  Using octoprint I've put this script into `.octoprint/scripts/gcode/bed_level` and made a button.  **Note, if you need to fine tune it, the higher the G30 Z value the closer the hotend will be to the bed.**
 ```
 
 -----------------------------------------------
@@ -115,9 +115,29 @@ gamma_min_endstop                           nc
 
 ### The Ooze
 
+### The Thermistor
+
+When I went to reassemble the thermistor on the Titan Areo head, the it wouldn't fit.  Note, if I did it again, I would have used a cigarette lighter or heatgun to heat the block up a whole lot first.  I think the trouble was a little bit of solid plastic from the ooze incident mentioned above.
+
+Anyway, the f'er broke.
+
+I had to buy some new ones.  But only 1 out of 3 worked. (So far.)
+
 The new thermistors are HT100K
 https://www.amazon.com/gp/product/B07D9LSKWK/ref=ppx_yo_dt_b_asin_title_o00_s00?ie=UTF8&psc=1
 
 ```
 temperature_control.hotend.thermistor        HT100K	      # see http://smoothieware.org/temperaturecontrol#toc5
 ```
+
+
+### The Tangled Filament
+
+
+### Elsewhere parts
+
+Extruder carraige.
+https://www.thingiverse.com/thing:2567051
+
+### Switched Extruder
+https://www.thingiverse.com/thing:3162291

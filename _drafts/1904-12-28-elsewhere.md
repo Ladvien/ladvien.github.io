@@ -28,7 +28,7 @@ Tried:
 10. Recalibrated extruder -- no change
 ```
 M92 Exxx
-Formula:Input measurement/Actual measurement * Old M92 value = New M92 value
+Formula:Input measurement/Actual **measurement** * Old M92 value = New M92 value
 ```
 11. Changed Cura's nozzel size from 2.85 to 1.75 
 12. M207 S3.0000 F2700.0000 Z0.0000 Q6000.0000 P57988 to M207 S0.8000 F350 Z0.5000 Q6000.000 -- print worked
@@ -47,6 +47,9 @@ To
 M207 S1.2000 F700 Z0.5000 Q6000.000
 No improvement -- Then to
 M207 S1.4000 F1500 Z0.000 Q6000.000
+Had the Oozer issue
+Little improbment -- Then to
+M207 S1.4000 F5000.0000 Z0.0000 
 
 https://plus.google.com/107980634858406533725/posts/hgoqWhEVWTL
 ```
@@ -136,7 +139,7 @@ temperature_control.hotend.thermistor        HT100K	      # see http://smoothiew
 
 ### Elsewhere parts
 
-Extruder carraige.
+Extruder carriage.
 https://www.thingiverse.com/thing:2567051
 
 ### Switched Extruder
@@ -144,3 +147,30 @@ https://www.thingiverse.com/thing:3162291
 
 ### X-Carraige I used 
 https://www.thingiverse.com/thing:2088585
+
+### M502 Sucks
+It deletes everything.
+
+#### Calibration from **Scratch**
+
+#### Acceleration
+Calibrate acceleration.  It was set to `500`, but this caused extremely slow acceleration.  The point of the steel is to increase rigidity and allow for a faster extruder acceleration.
+
+I started by increasing it to 1000
+```
+M204 S1000
+```
+But the acceleration delay was still noticable.  I increased it again:
+```
+M204 S3000
+```
+And there was no visible delay when moving 100 mm on the X axis.
+
+
+### Calibration of Extruder
+
+
+#### New Y-Endstop
+Easy to make.  
+
+Adjustments to the endstop can be made with `M306 Yxxx Xxxx Zxxx`.  And adjustments to the probe offset made with `M565 Yxxx Xxxx Zxxx`

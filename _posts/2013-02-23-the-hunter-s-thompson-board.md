@@ -37,7 +37,7 @@ Little did I know, there was no Andy Dick, but the other was definitely ahead of
 
 I began Goog-searching any information I could find on etching homemade boards (I'll provide my fairly comprehensive link list at bottom).  After trying all the different methods, I landed on  the fact that the lithography method combined with MG Chemicals was probably going to be my best bet. I began collecting everything I needed.
 
-![Homemad PCBs via Lithography](https://ladvien.com/images/Making_Mega_Mini.jpg){:class="ll-image-fl"}
+![Homemad PCBs via Lithography](../images/Making_Mega_Mini.jpg){:class="ll-image-fl"}
 
 ![](https://ladvien.com/images/Making_Mega_Mini__15_.jpg){:class="ll-image-fr"}
 

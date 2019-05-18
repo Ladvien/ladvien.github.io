@@ -16,6 +16,7 @@ custom_js:
 
 # Writing Style
 
+
 # MySQL
 ## MySQL
 Server / Desktop
@@ -23,6 +24,8 @@ MySQL Program
 Databases
 Tables
 Fields
+![connecting-to-mysql-server](../images/data-analytics-series/connecting_to_server.gif)
+
 ## Downloading MySQL Workbench
 Prerequisties:
 https://www.microsoft.com/en-us/download/details.aspx?id=30653

@@ -15,13 +15,13 @@ comments: true
 
 Originally posted on [www.letsmakerobots.com](www.letsmakerobots.com)
 
-![](https://ladvien.com/images/IMG_0494.jpg){:class="ll-image-fl"}
+![](../images/IMG_0494.jpg){:class="ll-image-fl"}
 
 Six months ago I bought my first Arduino.  Bought it at the Shack.  I'd never worked with electronics, but I had to replace a momentary switch on my computer and wanted more.  I quickly woke to the Open Hardware community.
 
 A month later, I was reading about making your own PCBs at home.  I made my first home board a few days later.  It was a motor driver board, and well, it was a mixed success.  Definitely not a looker (http://wp.me/p37cuD-3q).  But I was hooked.  I wanted to do something more sophisticated.  And I was spurred on by a story I once heard about Hunter S. Thompson.  It was said that he'd often copy pages out of the Great Gastby because he, "wanted to feel for the music of such great words."  That's a paraphrase but only cause I didn't want to reread the forward of _Fear and Loathing on the Campaign Trail '72 (_once was enough, thanks)_._  Still, the logic seemed sound.  So, I thought of how to apply it to electronics.
 
-Later, I came across Lady Ada's article on requesting [samples from chip makers](http://www.ladyada.net/library/procure/samples.html) and I quickly ordered a dozen ICs; I had no clue about any of them--but their names sounded cool.  Two weeks later, I had all sorts of random chips sitting around.  I thought on what to do with them; when I came across one of the chips I had ordered: [Atmega 2560-16UA](http://www.atmel.comhttps://ladvien.com/images/doc2549.pdf).  It was a nice little [TFQP-100 pin chip](http://www.chipsetc.com/uploads/1/2/4/4/1244189/3559664.jpg?531), um, the size of a quarter.  My mind was reeling.  "This was the heart of the biggest bad ass Arduino."
+Later, I came across Lady Ada's article on requesting [samples from chip makers](http://www.ladyada.net/library/procure/samples.html) and I quickly ordered a dozen ICs; I had no clue about any of them--but their names sounded cool.  Two weeks later, I had all sorts of random chips sitting around.  I thought on what to do with them; when I came across one of the chips I had ordered: [Atmega 2560-16UA](http://www.atmel.com../images/doc2549.pdf).  It was a nice little [TFQP-100 pin chip](http://www.chipsetc.com/uploads/1/2/4/4/1244189/3559664.jpg?531), um, the size of a quarter.  My mind was reeling.  "This was the heart of the biggest bad ass Arduino."
 
 I quickly pulled up Arduino.cc to download Eagle's PCB layout for the [Arduino Mega](http://arduino.cc/en/uploads/Main/arduino-mega2560_R3-reference-design.zip).  This is where I hit my first snag--um, all that copper board, etchant, and components.  Even though I had the main chip it was going to cost a lot to finish Arduino Mega board.  And that was _if_ I could.  I'd never actually etched a two-sided circuit board.  Up to now, I'd only etched one sided and not very well.
 
@@ -39,7 +39,7 @@ I began Goog-searching any information I could find on etching homemade boards (
 
 ![Homemad PCBs via Lithography](../images/Making_Mega_Mini.jpg){:class="ll-image-fl"}
 
-![](https://ladvien.com/images/Making_Mega_Mini__15_.jpg){:class="ll-image-fr"}
+![](../images/Making_Mega_Mini__15_.jpg){:class="ll-image-fr"}
 
 This isn't going to be a guide on homemade PCBs for three reasons: (1) I don't _ever_ want to talk about it, (2) others have already done a much better job than I could, (3) there is a better and cheaper way.  Stick with me, there is an exciting cost analysis coming.
 
@@ -52,8 +52,8 @@ Cost of materials to attempt etching a Mega Mini:
 
 Total per attempt at etching a Mega Mini: **$2.65**
 
-![Last few attempts](https://ladvien.com/images/Making_Mega_Mini__25_.jpg){:class="ll-image-fl"}
-I came to these numbers after 16 attempts.  I priced my materials across America, included shipping, cut many boards, and then averaged the costs to come to that final figure.  Per attempt, $2.65 was the best I could manage.  My problem was several fold.  First, I didn't know what I was doing.  I understand this will happen: prototyping is more expensive than production units.  Second, I picked a mother-of-some-puppies kinda board to etch.  The traces are most commonly 8mil, so, it took me about 14 attempts to get to the point where I knew how to etch such small traces.  But attempts 15 and 16 revealed to me a hurdle I simply couldn't overcome.  I had been relying on FedEx-Kinkos and Staples to print my transparencies and I discovered their print size was off.  ![Best one (16)](https://ladvien.com/images/Making_Mega_Mini__25_.jpg){:class="ll-image-fr"}I had learned that you can compensate for this in Eagle by changing the "Scale" of your print size, sadly, it only lets you change units to the hundredths place.  Any thousandths it will round down.  My MegaMini PCB needed to be around 1.025\.  Of course, this would be rounded to 1.02\.  **Suck**
+![Last few attempts](../images/Making_Mega_Mini__25_.jpg){:class="ll-image-fl"}
+I came to these numbers after 16 attempts.  I priced my materials across America, included shipping, cut many boards, and then averaged the costs to come to that final figure.  Per attempt, $2.65 was the best I could manage.  My problem was several fold.  First, I didn't know what I was doing.  I understand this will happen: prototyping is more expensive than production units.  Second, I picked a mother-of-some-puppies kinda board to etch.  The traces are most commonly 8mil, so, it took me about 14 attempts to get to the point where I knew how to etch such small traces.  But attempts 15 and 16 revealed to me a hurdle I simply couldn't overcome.  I had been relying on FedEx-Kinkos and Staples to print my transparencies and I discovered their print size was off.  ![Best one (16)](../images/Making_Mega_Mini__25_.jpg){:class="ll-image-fr"}I had learned that you can compensate for this in Eagle by changing the "Scale" of your print size, sadly, it only lets you change units to the hundredths place.  Any thousandths it will round down.  My MegaMini PCB needed to be around 1.025\.  Of course, this would be rounded to 1.02\.  **Suck**
 
 Not going to lie.  I got depressed.  I had sunk much time, money, and passion into etching.
 
@@ -61,7 +61,7 @@ I put the projects on the shelf for awhile.  I started working on my bot some.  
 
 Two weeks later--these amazing little purple boards came in.
 
-![](https://ladvien.com/images/Making_Mega_Mini__47_.jpg){:class="ll-image-fl"}
+![](../images/Making_Mega_Mini__47_.jpg){:class="ll-image-fl"}
 
 Costs for OSHPark Board: **$3.60**
 
@@ -81,13 +81,13 @@ My conclusion: **OSHPark is awesome.**
 
 **2\. Populating**
 
-![](https://ladvien.com/images/Making_Mega_Mini__49_.jpg){:class="ll-image-fl"}
+![](../images/Making_Mega_Mini__49_.jpg){:class="ll-image-fl"}
 
 Actually putting the pieces on the board turned out to be the easiest step.  I had anticipated this was going to be the hardest, therefore, I had devoted must of my study time to learning how to solder fine SMDs.  I knew right away that I wouldn't be able to use my $7 Shack iron on this board.  My wife and I allow ourselves $100 a month for entertainment, so I blew one month's on a [Hakko FX-888](http://www.ebay.com/itm/270842901473?ssPageName=STRK:MEWNX:IT&_trksid=p3984.m1439.l2648) from eBay.  I also bought a [T18 CF1 tip](http://www.ebay.com/itm/380320904716?ssPageName=STRK:MEWNX:IT&_trksid=p3984.m1439.l2649).  **I love this iron.** Sturdy and a nifty blue.  I felt professional with it.
 
 I had read somewhere when populating a SMD you should start with the largest component and work down to the smallest.  That's what I did.  I started by trying to pin the Atmega chip to its pads.  In the end, I used the dragging tip method with plenty of solder flux.
 
-![](https://ladvien.com/images/Making_Mega_Mini__50_2_0.jpg){:class="ll-image-fr"}
+![](../images/Making_Mega_Mini__50_2_0.jpg){:class="ll-image-fr"}
 
 I had also invested in one of these [do-hickies](http://www.ebay.com/itm/130722791217?ssPageName=STRK:MEWNX:IT&_trksid=p3984.m1439.l2649) so I could check all my pins.  I hate the way it looks, but it saved me so many times I don't care.
 
@@ -95,9 +95,9 @@ I put the board on my helping hands and after a lot of flux and around 45 minute
 
 Once I got the Atmega in place it only took another 20 minutes to get all the other pieces on the board.  No hurdles worth mentioning.  Well, the heat slug on the voltage regulator was a little tricky.  But I ended up putting solder down on the pad, keeping my iron tip in it, I used tweezers to press the back of the regulator down against it and slide my solder tip out as I did.  Not beautiful, but it worked.
 
-![](https://ladvien.com/images/Making_Mega_Mini__58_.jpg)![](https://ladvien.com/images/Making_Mega_Mini__81_.jpg)![](https://ladvien.com/images/Making_Mega_Mini__82_.jpg)
+![](../images/Making_Mega_Mini__58_.jpg)![](../images/Making_Mega_Mini__81_.jpg)![](../images/Making_Mega_Mini__82_.jpg)
 
-![](https://ladvien.com/images/Making_Mega_Mini__61_.jpg)![](https://ladvien.com/images/Making_Mega_Mini__86_.jpg)
+![](../images/Making_Mega_Mini__61_.jpg)![](../images/Making_Mega_Mini__86_.jpg)
 
 The complete parts list for the Mega Mini is follows:
 
@@ -120,7 +120,7 @@ Last piece soldered! Now I'll I needed to do was plug it in and then it worked, 
 
 I ran to the computer and plugged my board in.  I was thrilled to hear a "Doo-dooh!" USB connection sound and then this pop on my screen.
 
-![](https://ladvien.com/images/Making_Mega_Mini__90_.jpg)
+![](../images/Making_Mega_Mini__90_.jpg)
 
 "Your devices are ready to use"
 
@@ -128,11 +128,11 @@ I ran to the computer and plugged my board in.  I was thrilled to hear a "Doo-do
 
 This is where my second hell began.  I  had bought my [AVR ISP MKII](http://store.atmel.com/PartDetail.aspx?q=p:10500054#tc:description) to do the programming.  After about twenty minutes of going through the pinout I had my interface setup.
 
-![](https://ladvien.com/images/Making_Mega_Mini__63_2.jpg)
+![](../images/Making_Mega_Mini__63_2.jpg)
 
-![](https://ladvien.com/images/avrispmkii-pin-out.png)
+![](../images/avrispmkii-pin-out.png)
 
-![](https://ladvien.com/images/Making_Mega_Mini__95_.jpg)Now that I had it connected.  I brought up my Atmel Studio 6\.  I switched over to the "Device Programmer"  selected my programmer, then I selected my chip as "Atmega 2560" (this covers all variants of the 2560).  I then hit the "Read" under Device Signature.  It shot back telling me there wasn't anything there.  I read the voltage, it was fine at 5.1v.  I then took the board over and used my hideous spectacles to scoured the board for mistakes I made.  One thing I should mention: **I had to guess at a few resistors on the board**.  The designer hadn't put their values in schematic.  So, I felt for sure that was what it was.  Then I looked down to my helping hand clipped to the board--I thought, "Huh.  I wonder if something is shorting out on the unhelping hand."  Moved the hand.  Hit "Read" again.  Guess what?  If you buy a metal Helping Hands, make sure it's not shorting you board.  My board signature was reading.  Now, I just had to figure out how to program it.  I ran all over Arduino.cc, AVRfreaks, and Lady Ada's forums looking for how to program an Atmega 2560\.  I found a few posts, but it seemed everyone was more interested in programming Atmega 328 DIP packages.  Pfft.
+![](../images/Making_Mega_Mini__95_.jpg)Now that I had it connected.  I brought up my Atmel Studio 6\.  I switched over to the "Device Programmer"  selected my programmer, then I selected my chip as "Atmega 2560" (this covers all variants of the 2560).  I then hit the "Read" under Device Signature.  It shot back telling me there wasn't anything there.  I read the voltage, it was fine at 5.1v.  I then took the board over and used my hideous spectacles to scoured the board for mistakes I made.  One thing I should mention: **I had to guess at a few resistors on the board**.  The designer hadn't put their values in schematic.  So, I felt for sure that was what it was.  Then I looked down to my helping hand clipped to the board--I thought, "Huh.  I wonder if something is shorting out on the unhelping hand."  Moved the hand.  Hit "Read" again.  Guess what?  If you buy a metal Helping Hands, make sure it's not shorting you board.  My board signature was reading.  Now, I just had to figure out how to program it.  I ran all over Arduino.cc, AVRfreaks, and Lady Ada's forums looking for how to program an Atmega 2560\.  I found a few posts, but it seemed everyone was more interested in programming Atmega 328 DIP packages.  Pfft.
 
 Therefore, out of lack of patience I made a mistake I'll wear to remind me to think three times before acting once.  **I messed with the fuses.  **Mind you, I did according to a rather knowledgeable sounding post on Arduino.cc.  However, it bricked my board.
 
@@ -158,7 +158,7 @@ In the end, I solved my problem the American way! Gut feelings and dumb luck.
 
  I noticed that I could write the Arduino Atmega 2560 bootloader to the board using Atmel Studio.  But I couldn't write it using Arduino's IDE due to the driver conflict.  I tried the family's computer.  I noticed that the Arduino IDE would act like it was writing the bootloader but would sit with the orange light (meaning it was "programming") on for hours.  Then, I noticed something strange after I tried the Arduino IDE to program it on the garage computer running Linux.  When I pulled up the fuses page for the board in Atmel studio the fuses had changed.  It hit me...maybe the Arduino IDE was successful in writing the fuses but not the bootloader...oh wait! I can write the bootloader from Atmel studio.  I ran back to the computer running studio, plugged up the board, and uploaded the bootloader.  I said a prayer and plugged just the Mega Mini.  I brought up the Arduino IDE and selected the correct COM.  I hit "Upload."
 
-![](https://ladvien.com/images/Making_Mega_Mini__104_.jpg)
+![](../images/Making_Mega_Mini__104_.jpg)
 
 The sketch uploaded.  I would have cried but I didn't want to short the board, or, yanno, seem weak and unmanly.
 
@@ -185,7 +185,7 @@ Plans for future:
 
 **Breakeven analysis:**
 
-![](https://ladvien.com/images/Break_Even_Analysis_of_MegaMini_2.png)
+![](../images/Break_Even_Analysis_of_MegaMini_2.png)
 
 Links to making homemade PCBs:
 

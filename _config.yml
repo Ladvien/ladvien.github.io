@@ -110,7 +110,7 @@ assets:
  sources:
      - assets/css
      - assets/js
-    #  - images
+     - images
  js_compressor: uglifier
  css_compressor: scss
  features:

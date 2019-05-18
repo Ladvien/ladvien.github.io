@@ -8,6 +8,5 @@ Gemfile.lock
 .sass-cache
 .jekyll-metadata
 lad-u
-images/*.sketch
-/raw_images
+/images/*.sketch
 /images/*.zip

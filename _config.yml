@@ -50,7 +50,7 @@ plugins:
   - jekyll-seo-tag
   - jekyll-minifier
   - jekyll-redirect-from
-  - jekyll-compress-images
+  # - jekyll-compress-images
 
 jekyll-press:
   exclude: 'atom.xml' # Exclude files from processing - file name, glob pattern or array of file names and glob patterns
@@ -77,6 +77,31 @@ kramdown:
   toc_levels: 1..6
   enable_coderay: false
 
+
+assets:
+ compress:
+     js: true
+     css: true
+ sources:
+     - assets/css
+     - assets/js
+     - images
+ js_compressor: uglifier
+ css_compressor: scss
+ features:
+   liquid: true
+
+# compress_images:
+#   images_path: "images/**/*.{gif,png,jpg,jpeg,svg}"
+#   strategy: 3
+
+# imageoptim:
+#   nice: 20
+#   pngout: true
+#   jpegoptim: true
+#   verbose: true
+#   threads: 10
+
 include: 
   - .htaccess
 exclude: 
@@ -102,17 +127,3 @@ exclude:
   - package.json
   - spec
   - tmp
-
-assets:
- compress:
-     js: true
-     css: true
- sources:
-     - assets/css
-     - assets/js
-     - images
- js_compressor: uglifier
- css_compressor: scss
- features:
-   liquid: true
-

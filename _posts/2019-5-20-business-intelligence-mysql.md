@@ -65,6 +65,7 @@ Well, we have to start somewhere.  I've picked [MySQL](https://www.mysql.com/) b
 | SQLite        | 19.7%         | 
 | Redis         | 18.0%         | 
 | Elasticsearch | 14.1%         | 
+
 *[Source: Stackoverflow 2018 Developer Survey.](https://insights.stackoverflow.com/survey/2018/#technology-_-databases)*
 
 At this point you might be saying, "That's great? I've no idea what any of this means."  No worries! Bookmark this page and come back later.  For now, let's move into setting up a practice MySQL environment.  

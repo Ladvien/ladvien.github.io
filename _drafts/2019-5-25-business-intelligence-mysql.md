@@ -83,26 +83,55 @@ If you are using Windows you need to install software MySQL Workbench uses on Wi
 
 * [Visual C++ Redistributable for Visual Studio 2015](https://www.microsoft.com/en-us/download/details.aspx?id=48145)
 
+![connecting-to-mysql-server](../images/data-analytics-series/downloading_prereqs.gif)
+
+Click on the link above.  Select the `vc_redist_x64.exe` file and click "Download."  Once the file has finished downloading, install it.
+
+![install-vcpp-restributable](../images/data-analytics-series/mysql_setup_9.PNG)
 
 ## MySQL Workbench
+Ok! Now we are ready to download and install MySQL.  Visit the link below, select your operating system, and choose "Download."
 
 * [MySQL Workbench Download](https://dev.mysql.com/downloads/workbench/)
-
-
 
 Select your operating system and hit "Download"
 ![download-mysql-workbench](../images/data-analytics-series/mysql_setup_1.png)
 
-
-![connecting-to-mysql-server](../images/data-analytics-series/connecting_to_server.gif)
-
-## Downloading MySQL Workbench
-Prerequisties:
-
-
+Once the file has finished downloading, run it and follow the install prompts.  All choices are fine left on default.
 
 ## Connecting to the Server
+Once you've installed MySQL Workbench, open it.  When it comes up you should see the main screen, which looks something like:
+![mysql-workbench-welcome-screen](../images/data-analytics-series/mysql_setup_12.PNG)
+
+Before we can start querying a database we need to create a database connection.  A "connection" here is all the information MySQL Workbench needs to find the database and what permissions you have regarding data access.
+
+![connect-mysql-workbench](../images/data-analytics-series/connecting_to_server.gif)
+
+We will be connecting to a database I've setup on a remote computer (connecting to a remote computers is the most common way to interact with a SQL database, however, later I'll show you how to build your own database using CSVs.  This will be hosted on your local PC.
+
+Ok, back to setting up the remote connection.  Click on the circle and plus icon next to "MySQL Connections."  This will cause a screen to pop where you can enter a connection information.  
+
+Enter the following:
+```
+Connection name: maddatum.com
+Hostname: maddatum.com
+Username: the username I've provided you
+```
+Please don't be shy, if you need a username email me at cthomasbrittain at yahoo dot com.  I'll gladly make you one.
+
+Once you've entered the connection information hit "Ok".  You should be brought back to the "Welcome" screen, but now, there will be a connection listed called "maddatum.com".
+![our-sql-connection](../images/data-analytics-series/mysql_setup_17.PNG)
+
+Double click on it.  You will most likely get the following warning.
+![sql-connection-warning]](../images/data-analytics-series/mysql_setup_15.PNG)
+Click "Continue Anyway" (and if there's an option, check "Dont Show this Message Again").
+
+If the connect was successful you should see a screen like:
+![our-sql-connection](../images/data-analytics-series/mysql_setup_18.PNG)
+
 ## Show / Use Databases
+Alright! Let's get into the action.  Before we start executing queries let me point out a few things in the user interface:
+
 ## Tables
 ## Fields
 

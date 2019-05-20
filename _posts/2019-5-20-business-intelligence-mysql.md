@@ -40,8 +40,9 @@ Though!  We're not going to go into those details yet.  Right now, let's setup a
 I'd love to tell you SQL is simple. It's not, well, at least not to master.  It's complex--every day I learn something new (one reason I enjoy it).  One of its complexities is there are different versions of SQL dialects.  Here, we refer to "dialect" as slightly different ways of coding the same thing.
 
 Some of the most common are:
+
 | Source / Vendor    | Common name (Dialectic)     | 
-|----+----|
+|:--------------------------------|:---------|
 | ANSI/ISO Standard  | SQL/PSM         | 
 | MariaDB            | SQL/PSM, PL/SQL | 
 | Microsoft / Sybase | T-SQL           | 
@@ -56,7 +57,7 @@ So which one do you focus on?
 Well, we have to start somewhere.  I've picked [MySQL](https://www.mysql.com/) because I use it's identical twin, MariaDB, at work.  It's a great SQL dialect to begin with, as it's used by many potential employers.
 
 | Source        | Companies Use | 
-|---------------|---------------| 
+|:-------------------|:---------|
 | MySQL         | 58.7%         | 
 | SQL Server    | 41.2%         | 
 | PostgreSQL    | 32.9%         | 

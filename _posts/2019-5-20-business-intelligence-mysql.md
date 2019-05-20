@@ -5,8 +5,8 @@ categories: data
 series: On the Job Training for Data Analysts
 excerpt:
 tags: [mysql, business intelligence, data analytics]
-image: data-analytics-series/wood-files-jan-antonin-kolar.jpeg
-    feature: 
+image: 
+    feature: data-analytics-series/wood-files-jan-antonin-kolar.jpeg
 comments: true
 custom_css:
 custom_js: 
@@ -131,13 +131,79 @@ If the connect was successful you should see a screen like:
 
 ## Show / Use Databases
 Alright! Let's get into the action.  Before we start executing queries let me point out a few things in the user interface:
+![mysql-workbench-interface](../images/data-analytics-series/mysql_setup_26.PNG)
 
-## Tables
-## Fields
+### Write Query
+This area is where you will write queries.  Each query should end with a `;`, or the MySQL Workbench will get confused and try to jumble two queries together.
 
-# Next Article
-Server / Desktop
-MySQL Program
-Databases
-Tables
-Fields
+### View Results
+This is the area where the result of whatever command you send the SQL will server will be shown.  Often, it will be a table containing data you requested in your query
+
+### Database Messages
+Here is where you can spot if you written a query incorrectly, as the database will send a message letting you know.  Also, the database will tell you when it has successfully returned results from a query, how many results, and how long they took to retrieve.  Useful for when you are trying to make a query _fast_.
+
+# Getting Around in MySQL
+Lets send a query to the database.  In the query area type:
+```sql
+SHOW databases;
+```
+Now, select those text with your mouse and hit the lighting (execute) icon above it.
+![show-databases-command](../images/data-analytics-series/mysql_setup_27.PNG)
+
+This will return a list of all the databases found on this server.  You should see this in the `View Results` area.  Each SQL server can have multiple databases on it, and they often do.  For right now we want to focus on the `employees` database.
+![show-databases-command](../images/data-analytics-series/mysql_setup_28.PNG)
+
+To select a database type `USE` and then the name of the database.  In our case it will be:
+```sql
+USE employees;
+```
+Now, highlight the text and hit the execute button.
+
+![show-databases-command](../images/data-analytics-series/mysql_setup_29.PNG)
+
+This will show the following in the database messages:
+
+```
+13:21:55	USE employees	0 row(s) affected	0.0031 sec
+13:21:55	Error loading schema content	Error Code: 1146 Table 'performance_schema.user_variables_by_thread' doesn't exist	
+```
+Don't worry about the error, that's a product of my hasty setup.  The important message is the `USE employees` message.  This means you are now connected to the `employees` database.  Any query you write in this session will not be sent to this specific database.
+
+But, now what?  We've no idea of what's on the database.  No worries, we've a command to see the tables found on this database.  If you are not familiar with the term "table," don't worry.  Just think of a table as a single spreadsheet.  It's a bit more complicated and we will investigate their structure further in a bit.  But, right now, the spreadsheet analogy works.
+
+To see all the tables this database contains execute the command:
+```sql
+SHOW tables;
+```
+This should return the following table names
+![show-databases-command](../images/data-analytics-series/mysql_setup_30.PNG)
+
+By now, you know the next question, "But how do I know what's in a table?"
+
+You can use the `DESCRIBE` command to get more information about a table.  Let's take a look at the `departments` tables.
+
+Type and execute:
+```sql
+DESCRIBE departments;
+```
+This should return:
+
+![show-databases-command](../images/data-analytics-series/mysql_setup_31.PNG)
+The `Field` column here gives you the names of all the `fields` in the `departments` table.  What's a field?  As with table, we will go into them with more depth later.  But for now, think of a field as a named column in a spreadsheet.
+
+
+# Our First Query!
+Now we know the database, table, and field names, let's write our first query!
+
+Still in the query area type and execute:
+```sql
+SELECT departments.dept_no, departments.dept_name
+FROM departments
+```
+This will return all the entries for the fields (columns) `dept_no` and `dept_name` for the table (spreadsheet) called `departments`.  You did it! You're a SQL'er. 
+![show-databases-command](../images/data-analytics-series/mysql_setup_32.PNG)
+
+# What Comes Next?
+Lot's to come! We will learn a bit more about SQL, it's parts, their proper names.  We'll also dive into the "proper" SQL names for different data parts.  And we'll write tons more queries.
+
+Please feel free to ask any questions in the comments.  I'll answer them ASAP.

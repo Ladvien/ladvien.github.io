@@ -57,7 +57,7 @@ So which one do you focus on?
 Well, we have to start somewhere.  I've picked [MySQL](https://www.mysql.com/) because I use it's identical twin, MariaDB, at work.  It's a great SQL dialect to begin with, as it's used by many potential employers.
 
 | Source        | Companies Use | 
-|:-------------------|:---------|
+|:--------------|:--------------|
 | MySQL         | 58.7%         | 
 | SQL Server    | 41.2%         | 
 | PostgreSQL    | 32.9%         | 

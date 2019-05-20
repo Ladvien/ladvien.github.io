@@ -11,9 +11,9 @@ comments: true
 custom_css:
 custom_js: 
 ---
-I'm usually writing about hacking, robotics, or machine learning, but I thought I'd start journaling thoughts on data analytics, which is how I'm paying the bills now days.  I wanted to begin with a series on MySQL, as I've some friends I feel it'd help enter the field.  But, I'll eventually expand the series to include visualizations, analysis, and maybe machine learning.  And, ultimately, I hope these articles help anyone who wants to move from manually grinding out reports in Excel to writing queries to automate almost everything.  As I often say, "knowing to code gives you data superpowers!"
+I'm usually writing about hacking, robotics, or machine learning, but I thought I'd start journaling thoughts on data analytics, which is how I'm paying the bills now days.  I wanted to begin with a series on MySQL, as I've some friends I feel it'd help enter the field.  But, I'll eventually expand the series to include visualizations, analysis, and maybe machine learning.  And I hope these articles help anyone move from manually generating reports in Excel to writing scripts to automate everything.  As I like to say, "knowing to code gives you data superpowers!"
 
-I'll state up front, I'm a professional data analyst, but, if I'm confident of anything, it's there are holes in my understanding.  That stated, these articles may contain mistakes.  If you spot one, let me know in the comments and I'll get it fixed quick.
+I'm a professional data analyst, but, if I'm confident of anything, it's I've holes in my understanding.  That stated, these articles may contain mistakes.  If you spot one, let me know in the comments and I'll get it fixed quick.
 
 Also, I'm pretty opinionated.  I'm sure these opinions will find their way into my writings.  When notice them, I'll provide a caveat and reasoning for why I hold the opinion.  
 

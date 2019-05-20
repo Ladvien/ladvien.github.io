@@ -41,7 +41,7 @@ I'd love to tell you SQL is simple. It's not, well, at least not to master.  It'
 
 Some of the most common are:
 | Source / Vendor    | Common name (Dialectic)     | 
-|--------------------|-----------------| 
+|----+----|
 | ANSI/ISO Standard  | SQL/PSM         | 
 | MariaDB            | SQL/PSM, PL/SQL | 
 | Microsoft / Sybase | T-SQL           | 

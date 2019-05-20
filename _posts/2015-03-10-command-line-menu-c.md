@@ -24,7 +24,7 @@ I thought I'd take some time away from coding my [LPC1114 Uploader](http://letsm
 
 This post will be a series of post leading up to the large post I'll make on writing the uploader.  All posts will rely on the GCC compiler.
 
-![](https://ladvien.com/images/GCCLogo.png)Setting Up the GCC Compiler
+![](../images/GCCLogo.png)Setting Up the GCC Compiler
 
 I setup a C environment as basic I could.  There may be easier ways to go about this, but I wanted to use GCC to compile.  
 
@@ -57,7 +57,7 @@ As for editing, I've really grown to love [Sublime Text 2](http://www.sublimetex
 
 If you have issues**, make sure directory containing your files is in your PATH environment variable** (I go over how to add the directory to your environment variables in this [post](http://letsmakerobots.com/content/lpc1114-setup-bare-metal-arm)).
 
-![](https://ladvien.com/images/Command_line_menu.png)
+![](../images/Command_line_menu.png)
 
 **How to Write a Command Line Menu**
 

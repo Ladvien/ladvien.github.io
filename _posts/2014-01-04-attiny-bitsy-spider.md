@@ -54,9 +54,9 @@ There are lots of solder-jumpers on this board, given it is meant to be versatil
 
 Here is the programming pinout to use an Arduino as ISP
 
-![](https://ladvien.com/images/Incy_Blue.jpg)
+![](../images/Incy_Blue.jpg)
 
-![](https://ladvien.com/images/Attiny_Bitsy_Spider_--_Solder_Jumpers_for_TX-RX.jpg)The board is intended to harness the serial connection of the HM-10\.  In this version I made it straight forward, you leave the jumpers between the RX/TX line of the HM-10 and the ATtiny unsoldered, program the ATtiny as many times as you like.  To test your serial connection between the ATtiny and the HM-10 simply breadboard the PCB and put jumpers like so:
+![](../images/Attiny_Bitsy_Spider_--_Solder_Jumpers_for_TX-RX.jpg)The board is intended to harness the serial connection of the HM-10\.  In this version I made it straight forward, you leave the jumpers between the RX/TX line of the HM-10 and the ATtiny unsoldered, program the ATtiny as many times as you like.  To test your serial connection between the ATtiny and the HM-10 simply breadboard the PCB and put jumpers like so:
 
 **PB0 <---> TX**
 
@@ -64,18 +64,18 @@ Here is the programming pinout to use an Arduino as ISP
 
 This will allow you to test your code, without having to solder and unsolder.  Then, after your code is perfectish, solder the jumpers marked "PB1 & HM10 RX" and "PB0 & HM10 TX," then embed the Bitsy Spider.
 
-![](https://ladvien.com/images/Attiny_Bitsy_Spider_--_Solder_Jumpers_for_Always_On.jpg)This is an option that'll probably continue throughout different versions of the board.  I ran the GND connection of the ATtiny through a N-Chan MOSFET, and tied the gate of the FET to the PIO1\.  The PIO1 pin of the HM-10's function is for a Connection Status LED.  But one of the options one can set on the HM-10 is for the PIO1 to stay low unless the HM-10 has a connection.  This can be set on the HM-10 when it's in AT mode by typing:
+![](../images/Attiny_Bitsy_Spider_--_Solder_Jumpers_for_Always_On.jpg)This is an option that'll probably continue throughout different versions of the board.  I ran the GND connection of the ATtiny through a N-Chan MOSFET, and tied the gate of the FET to the PIO1\.  The PIO1 pin of the HM-10's function is for a Connection Status LED.  But one of the options one can set on the HM-10 is for the PIO1 to stay low unless the HM-10 has a connection.  This can be set on the HM-10 when it's in AT mode by typing:
 
 1.  Type: **AT+PIO11**
 2.  Response: OK+PIO11
 
 When done, the ATtiny 85 will only power-up if the HM-10 has a connection.  Of course, the solder-jumper is meant to bypass this feature.
 
-![](https://ladvien.com/images/Attiny_Bitsy_Spider_--_Solder_Jumpers_for_ATtiny_Reset_Control.jpg)The last solder jumper controls the HM-10's reset.  If soldered, the ATtiny 85 can reset the HM-10 by sending PB4 high for ~100mS.  I added this as I hope to create a star-network with the ATtiny Bitsy Spider.  
+![](../images/Attiny_Bitsy_Spider_--_Solder_Jumpers_for_ATtiny_Reset_Control.jpg)The last solder jumper controls the HM-10's reset.  If soldered, the ATtiny 85 can reset the HM-10 by sending PB4 high for ~100mS.  I added this as I hope to create a star-network with the ATtiny Bitsy Spider.  
 
 Here's a summary explanation; the HM-10 has a time out feature after it losses connection from one HM-10 that prevents it from connecting to another for approximately 10 seconds.  So far, there is no option to bypass this "lost connection" time-out.  But resetting the HM-10 (<150mS power-cycle) bypasses this time-out.  I'll update more on this setup when I've completely tested it.  If there are questions, I've written a lot in the comments of my original [HM-10 post](http://letsmakerobots.com/node/38009).  But also feel fre to contact me.
 
-![](https://ladvien.com/images/ATtiny_Bitsy_Spider_--_No_Decoupling.jpg)
+![](../images/ATtiny_Bitsy_Spider_--_No_Decoupling.jpg)
 
 One last thing I should mention.  
 

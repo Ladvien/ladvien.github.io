@@ -13,7 +13,7 @@ custom_css:
 custom_js: 
 ---
 
-![](https://ladvien.com/images/attiny-hm-10-prep-tsb-1.jpg)
+![](../images/attiny-hm-10-prep-tsb-1.jpg)
 ## Lumi5 -- AVR / Arduino Wireless Uploader
 This article will focus on setting up the Bluetooth 4.0 module, preparing the uploader, and uploading sketches over Bluetooth 4.0
 
@@ -45,7 +45,7 @@ Likewise, the Arduino phenomenon probably needs little explanation in this venue
 
 ## Overview:
 
-![](https://ladvien.com/images/attiny-hm-10-prep-tsb-2.jpg)
+![](../images/attiny-hm-10-prep-tsb-2.jpg)
 
 This is simply for those who are curious on how this works, it may be skipped.
 
@@ -61,7 +61,7 @@ To the point, we will wire up an HM-10 and an ATtiny with the TSB bootloader. On
 
 ### Select a Pin
 You will need to select a IO pin on the HM-10 to connect the 1k resistor. Any of the pins listed above should be supported.
-![](https://ladvien.com/images/attiny-hm-10-prep-tsb-3.jpg)
+![](../images/attiny-hm-10-prep-tsb-3.jpg)
 
 ### Solder the 1k Resistor
 
@@ -78,12 +78,12 @@ Tweezers allow you to work angles.
 <iframe width="560" height="315" src="https://www.youtube.com/embed/BqkU3-iWdIU" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 </div>
 
-![](https://ladvien.com/images/attiny-hm-10-prep-tsb-4.jpg)
-![](https://ladvien.com/images/attiny-hm-10-prep-tsb-9.jpg)
+![](../images/attiny-hm-10-prep-tsb-4.jpg)
+![](../images/attiny-hm-10-prep-tsb-9.jpg)
 
 
 ### Configure the HM-10 Firmware for Remote Uploading
-![](https://ladvien.com/images/attiny-hm-10-prep-tsb-6.jpg)
+![](../images/attiny-hm-10-prep-tsb-6.jpg)
 
 Before the uploader will work, the HM-10 must be set as a peripheral device and remote transmission mode.
 
@@ -96,7 +96,7 @@ Before the uploader will work, the HM-10 must be set as a peripheral device and 
 7. Now, type AT+MODE2 and hit "Send. The response should be "OK+Set:2".
 
 
-![](https://ladvien.com/images/attiny-hm-10-prep-tsb-7.jpg)
+![](../images/attiny-hm-10-prep-tsb-7.jpg)
 
 Optional:
 
@@ -111,7 +111,7 @@ Optional:
 
 ### Wire It Up
 
-![](https://ladvien.com/images/attiny-hm-10-prep-tsb-8.jpg)
+![](../images/attiny-hm-10-prep-tsb-8.jpg)
 
 The following connections will need to be made:
 
@@ -145,7 +145,7 @@ Turn on your HM-10.  Select *Bluetooth* from the dropdown box and hit *Search*. 
 
 Now, in the *Pin #* box, type the pin number corresponding with the pin on your HM-10 which you are using to reset the TinySafeBootloader.
 
-![](https://ladvien.com/images/attiny-hm-10-prep-tsb-9.png)
+![](../images/attiny-hm-10-prep-tsb-9.png)
 
 Select the multi-gear button.  This should give you a bootloader handshake button.  Try it.  It may take a couple of tries, but you should see the bootloader respond with the device signature and memory information.
 

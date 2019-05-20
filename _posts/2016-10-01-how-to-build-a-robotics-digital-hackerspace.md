@@ -15,7 +15,7 @@ custom_js:
 
 <u>Why the Hell?</u>
 
-![LeavingLMR.jpg](/https://ladvien.com/images/LeavingLMR.jpg)Wow, it's been awhile since I've actually written anything in Drupal based text editor.  Feels like home.
+![LeavingLMR.jpg](/../images/LeavingLMR.jpg)Wow, it's been awhile since I've actually written anything in Drupal based text editor.  Feels like home.
 
 Honestly, I'm not going to go into the "Why" of building this site.  Maybe I'll do that later.  Let's just say, there was an impetus to recreate the home we were forced to leave.
 
@@ -54,7 +54,7 @@ The last thing to do was relocate the Drupal 7 files to the directory where Apac
 
 If all the script-blogs are followed correctly, then when entering the web IP of the site in the browser you should see the following:
 
-![Drupal_On_Linode.PNG](/https://ladvien.com/images/Drupal_On_Linode.PNG)
+![Drupal_On_Linode.PNG](/../images/Drupal_On_Linode.PNG)
 
 Design Goals:
 
@@ -88,7 +88,7 @@ There are three layers to the theme: 
 3.  [FooTheme](https://www.drupal.org/project/footheme) went over it.
 
 In the /var/www/html/sites/all/themes/corolla/ directory there is a file called corolla.info inside a referenced was added for css/corolla_overrides.css.  
-![Screenshot 2016-10-10 18.59.30.png](/https://ladvien.com/images/Screenshot%202016-10-10%2018.59.30.png)  
+![Screenshot 2016-10-10 18.59.30.png](/../images/Screenshot%202016-10-10%2018.59.30.png)  
 Then, in the /var/www/html/sites/all/themes/corolla/css directory the corolla_override.css file was made which includes several hackish css snippets:  
 
 
@@ -144,7 +144,7 @@ Allows a block design of the UI.
 
 This is a dependency for other modules (a lot of others).
 
-[CKEditor](https://www.drupal.org/project/ckeditor)![Screenshot 2016-09-24 20.49.03.png](/https://ladvien.com/images/Screenshot%202016-09-24%2020.49.03.png)
+[CKEditor](https://www.drupal.org/project/ckeditor)![Screenshot 2016-09-24 20.49.03.png](/../images/Screenshot%202016-09-24%2020.49.03.png)
 
 The CKEditor is the core of the Drupal blogging package.  It is the editor used to create this post.  However, it put up the most fight when trying to install.  Actually, that's not fair.  It wasn't the CKEditor it was the code highlighting which was such a pain.  The code highlighting allows this:  
 
@@ -163,7 +163,7 @@ Steps to Setup CKEditor with CodeSnippets and HighlightingJS:
 3.  Go to Configuration-->CKEditor-->Edit CKEditor Global Profile
 4.  Set the "Path to CKEditor" to //cdn.ckeditor.com/4.5.4/full-all. This will use the content delivery network to serve up the CKEditor JavaScript.  It also lets you access a lot of plugins without having to manage them.  The other option is to pull a copy on the local server--it's a lot more hassle managing.
 5.  Go to Configuration-->CKEditor-->Profile X-->Edit (note, X = Text Editing profiles users will be able to select when blogging.  These can be managed under content Content Authoring --> Text Formats).
-6.  Go to Basic Setup.  Here, add all the Text Formats this particular CKEditor profile should affect.![Screenshot 2016-10-02 10.43.11.png](/https://ladvien.com/images/Screenshot%202016-10-02%2010.43.11.png)
+6.  Go to Basic Setup.  Here, add all the Text Formats this particular CKEditor profile should affect.![Screenshot 2016-10-02 10.43.11.png](/../images/Screenshot%202016-10-02%2010.43.11.png)
 7.  Under Security make sure "Always run security filters for CKEditor" is Enabled (should default).
 8.  Under Editor Appearance go straight to the check-box title "Plugin for inserting Code Snippets" and enable it.
 9.  Also, enable what other CKEditor Plugins needed.  Note, there are more plugins then this, but these are the ones provided through the Content Delivery Network.
@@ -190,7 +190,7 @@ Steps to Setup CKEditor with CodeSnippets and HighlightingJS:
         };
 {% endhighlight %}
 
-23.  ![Overflow.png](/https://ladvien.com/images/Overflow.png)There is an issue with the HighlightJS module where the text escapes the divs.  It took a long time to find the culprit.  Apparently, the HighlightJS modules causes this whenever it renders HTML produced by CKEditor.  
+23.  ![Overflow.png](/../images/Overflow.png)There is an issue with the HighlightJS module where the text escapes the divs.  It took a long time to find the culprit.  Apparently, the HighlightJS modules causes this whenever it renders HTML produced by CKEditor.  
 24.  Go to /var/www/html/sites/all/modules/highlightjs
 25.  Type sudo nano highlight_js.css
 26.  Enter the following style and save:

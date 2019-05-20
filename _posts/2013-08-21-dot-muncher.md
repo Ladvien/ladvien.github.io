@@ -50,14 +50,14 @@ I vaguely remembered this was a key component of systems theory, but it was one 
 
 At the local hardware store I bought some 4-40 bolts and nuts, and started revamping the little bot.
 
-![](https://ladvien.com/images/Silas_Bot.jpg)In the end, I really didn't do anything fancy, as apparent.  I drilled holes into the battery plastic-case, that aligned with holes in the robot base, and bolted it together.  I, for the first time, used the mounting holes in the Arduino Uno, bolting it to the base.  I then "designed" a hood (bonnet) for the little guy. from match HDPE, making sure to bolt it down as well.  Lastly, I sealed the motor-gears with electrical tape and put a few drops of oil in them.  I noticed this regarding geared mini-motors, they collect hair and _will_ strip out the gears.  
+![](../images/Silas_Bot.jpg)In the end, I really didn't do anything fancy, as apparent.  I drilled holes into the battery plastic-case, that aligned with holes in the robot base, and bolted it together.  I, for the first time, used the mounting holes in the Arduino Uno, bolting it to the base.  I then "designed" a hood (bonnet) for the little guy. from match HDPE, making sure to bolt it down as well.  Lastly, I sealed the motor-gears with electrical tape and put a few drops of oil in them.  I noticed this regarding geared mini-motors, they collect hair and _will_ strip out the gears.  
 
 In the end, I did nothing a second grader would be proud of, but I did force myself to drop it from hip heigt five times to make sure I was over the "Oh Shiii-nobi Ninja!" feeling. In psychology we call that [systematic desensitization](http://en.wikipedia.org/wiki/Systematic_desensitization). Or something as equally important sounding.
 
-![](https://ladvien.com/images/IMG_0075.jpg)
+![](../images/IMG_0075.jpg)
 
 It collected so much hair the tires poped off.
 
 Bleh.
 
-![](https://ladvien.com/images/IMG_0048_2.jpg)I was careful not to wrap too much of the motor, since I had the thought it might decrease thermal exchange.
+![](../images/IMG_0048_2.jpg)I was careful not to wrap too much of the motor, since I had the thought it might decrease thermal exchange.

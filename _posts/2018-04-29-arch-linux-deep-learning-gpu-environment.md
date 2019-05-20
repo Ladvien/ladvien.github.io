@@ -83,7 +83,7 @@ I use Etcher as it makes it painless to create boot media.
 
 After Etcher does its thing, insert the jumpdrive, open Etcher, and then select the Antergos iso file.  *Here's the usual warning, if you have anything on your jumpdrive it's about to get deleted forever.*
 
-![](https://ladvien.com/images/etcher_antergos.png)
+![](../images/etcher_antergos.png)
 
 Insert the media into the machine you want to install Arch on and boot from the jumpdrive.
 
@@ -102,7 +102,7 @@ And then shows an Antergos boot menu.  Select boot Antergos Live.
 
 Once the boot sequence is finished you should see the Antergos desktop environment start and shortly after `cnchi`, which is Antergos' GUI installer
 
-![](https://ladvien.com/images/cnchi.png)
+![](../images/cnchi.png)
 
 Select `Install It`.  The installer is fairly self explantory.  But, if you run in to any issues, please feel free to ask me questions in the comments.  I'm glad to help.
 
@@ -148,10 +148,10 @@ We will be using it to prepare our system to support deep-learning projects.
 * [Download Anaconda](https://www.anaconda.com/what-is-anaconda/)
 
 Download the Linux version suited for your computer.
-![](https://ladvien.com/images/anaconda_download.png)
+![](../images/anaconda_download.png)
 
 Once the file is downloaded right click on the file and select `Show In Folder`.  Once there, right-click in the open space and select `Open in Terminal`.
-![](https://ladvien.com/images/anaconda_download_box.png)
+![](../images/anaconda_download_box.png)
 
 Make Anaconda executable and then run it.
 ```
@@ -245,7 +245,7 @@ cd rstudio-desktop-bin
 makepkg -i
 ``` 
 After, you should find RStudio in the Antergos Menu.
-![](https://ladvien.com/images/rstudio_antergos.png)
+![](../images/rstudio_antergos.png)
 
 You can right click on the icon and click `Add to Panel` to make a shortcut.
 

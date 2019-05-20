@@ -175,11 +175,11 @@ Anything else, leave me a comment and I'll help troubleshoot.
 Ok! That's it.  Now, put the SD card into the rp0w and fire it up.  The green light should begin flashing.  
 
 The last tricky part is knowing what IP address has been assigned to the rp0w on boot.  After waiting a few minutes for it to connect to the wifi, visit your router's admin page.  It's usually [192.168.1.1](192.168.1.1).  
-[![](https://ladvien.com/images/router_admin.png)](https://ladvien.com/raw_images/router_admin.png)
+[![](../images/router_admin.png)](https://ladvien.com/raw_images/router_admin.png)
 
 You'll need the router login information.  But once in there should ba a section like "Attached Devices".  In there you should see an entry for "alarm" (which stands for Arch Linux ARM).  This your rp0w.
 
-[![](https://ladvien.com/images/arch_pi_address.png)](https://ladvien.com/raw_images/arch_pi_address.png)
+[![](../images/arch_pi_address.png)](https://ladvien.com/raw_images/arch_pi_address.png)
 
 Now, at the command line type:
 ```

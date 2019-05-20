@@ -204,9 +204,9 @@ Also, **don't tighten any bolts down until all your bolts are started _correctly
 
 
 
-![](https://ladvien.com/images/IMG_0510.jpg)Oh, one more bit, **purchase a long 2mm Balled Allen Key** for this process.  As you may notice at the beginning of my video I tried with a short, balless Allen key to no avail.
+![](../images/IMG_0510.jpg)Oh, one more bit, **purchase a long 2mm Balled Allen Key** for this process.  As you may notice at the beginning of my video I tried with a short, balless Allen key to no avail.
 
-![](https://ladvien.com/images/IMG_0513.jpg)
+![](../images/IMG_0513.jpg)
 
 **6. [Carriage Arms and Effector Assembly](http://youtu.be/URMOpAK5ZWI)**
 
@@ -230,17 +230,17 @@ Now, I need to state, in my original blog I was a little unfair to B3DP.  I bitc
 
 **Arm and Button**
 
-![](https://ladvien.com/images/IMG_0600.jpg)
+![](../images/IMG_0600.jpg)
 
 **Button Switch**
 
-![](https://ladvien.com/images/IMG_0573.jpg)
+![](../images/IMG_0573.jpg)
 
 This should not have bothered me too much, since the three end-stops worked.  But when it came to the auto-level, the Allen-key crook was supposed to catch the metal arm of the above shown switches, guiding it down to the button.  Well, I found when the Allen-key came to sit on the button, instead of pressing it down it would slide either to the left or right.  And it didn't seem to matter how much tweaking I did, I couldn't get it to sit right.  In the end, I bought the "appropriate" switch at Radio Shack for $3.
 
 Here is what my auto-level looked like after tweaking.  When I tested it unmounted it worked.
 
-![](https://ladvien.com/images/IMG_0652.jpg)
+![](../images/IMG_0652.jpg)
 
 **But,** when I mounted the auto-probe and started using it, I found the arm would catch underneath the safety-pin bolt.  Hmm.  
 
@@ -250,7 +250,7 @@ I ended up using the switch I was sent, effectively, and I apologize for bitchin
 
 Regarding the power-supply.
 
-![](https://ladvien.com/images/IMG_0603.jpg)
+![](../images/IMG_0603.jpg)
 
 I tried buying a cheap computer-power cord from eBay.  But after I sliced the end off and found less copper than in telephone wire. I sacrificed one of my old computer power cords.  The powercord wasn't as long as I'd like, but it had enough copper to pull the possible 30A the PSU could source.
 
@@ -267,17 +267,17 @@ After wiring my PSU to the Ramps I turned it on and looked for blue-smoke.  Noth
 
 
 
-![](https://ladvien.com/images/IMG_0604_0.jpg)
+![](../images/IMG_0604_0.jpg)
 
 But I had another problem.  The Mega underneath wasn't getting power.  Well, I scratched my head for a bit and then actually read the [Ramps](http://reprap.org/wiki/RAMPS_1.4) manual. Apparently the diode that had been taped to the underbelly of my Ramps is what enabled it to be powered from a 12V PSU.  I soldered it in place.
 
 After soldering the diode everything _appeared_ to be working.  I continued to wire everything else up like proper.
 
-![](https://ladvien.com/images/IMG_0607.png)
+![](../images/IMG_0607.png)
 
 12V to Arduino Mega Diode placement
 
-![](https://ladvien.com/images/IMG_0653_-_Copy.jpg)
+![](../images/IMG_0653_-_Copy.jpg)
 
 Here, I switched gears and put the top Triforce together.  
 
@@ -285,11 +285,11 @@ One note I'll make.  Again, the top Triforce has a "bottom" and a "top."  It has
 
 After, I got a hankering to actually put the top on and the belts in place.  It took a little courage, since B3DP sent my timing belts in one role.  I had to make cuts and was worried they had given me _just_ enough belt and if I made a cut that was a little off would have to wait on another belt.  But it was in vain, I had enough.  
 
-![](https://ladvien.com/images/IMG_0588.jpg)
+![](../images/IMG_0588.jpg)
 
 To cut the belts I just strung them up as shown and left about four rubber-teeth past the end of the linker groove.  The little extra room can be adjusted when the top Triforce is put on.  There are three tension bolts for this purpose.
 
-![](https://ladvien.com/images/IMG_05792.jpg)
+![](../images/IMG_05792.jpg)
 
 This is what the belt should look like in place, **_except_ the should go below the carriage or it will knock into the end-stops before carriage.**
 
@@ -299,7 +299,7 @@ I then tightened the top Triforce and quickly hooked up the Ramps.  I uploaded t
 
 Apparently, the power control [FETs on the Ramps were bad](http://letsmakerobots.com/node/40734)?
 
-![](http://letsmakerobots.comhttps://ladvien.com/images/800px-RAMPS1-3_mosfet.jpg)I found out later (Brassfly and Bdk6 actually figured it out) that it was not bad FETs.  It was a trace-short somewhere on the first 12V power rail.  Oh well.  I ordered another Ramps board for $14 and took a break from the build for 18 days while it found its way to me.
+![](http://letsmakerobots.com../images/800px-RAMPS1-3_mosfet.jpg)I found out later (Brassfly and Bdk6 actually figured it out) that it was not bad FETs.  It was a trace-short somewhere on the first 12V power rail.  Oh well.  I ordered another Ramps board for $14 and took a break from the build for 18 days while it found its way to me.
 
 8\. [It's Alive!](http://youtu.be/z67Q4nY6NBk)
 

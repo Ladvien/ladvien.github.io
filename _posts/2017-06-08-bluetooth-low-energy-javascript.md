@@ -25,7 +25,7 @@ It's pretty amazing.  It allows a developer to write asynchronous JavaScript usi
 Now, this might sound like it open for security issues--and perhaps it will be.  But there are two requirements Google has put in place which hopefully gets around any issues.  First, the API can only be called by action.  Secondly, the API can only be called from a secured connection (HTTP over SSL).  
 
 
-![](https://ladvien.com/images/2017-06-08-bluetooth-low-energy-javascript/BLE_scan.png)
+![](../images/2017-06-08-bluetooth-low-energy-javascript/BLE_scan.png)
 
 Ok, there are few other downers to talk about.  First this only works in Chrome--but given this is a Google API, well, _duh_.  The other is not all OSes are currently supported.  The following I've tested and work right out of the box:
 

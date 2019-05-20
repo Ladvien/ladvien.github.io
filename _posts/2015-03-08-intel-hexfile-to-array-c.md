@@ -21,7 +21,7 @@ I thought I'd take some time away from coding my [LPC1114 Uploader](http://letsm
 
 This post will be a series of post leading up to the large post I'll make on writing the uploader.  All posts will rely on the GCC compiler.
 
-**![](https://ladvien.com/images/GCCLogo.png)Setting Up the GCC Compiler**
+**![](../images/GCCLogo.png)Setting Up the GCC Compiler**
 
 I setup a C environment as basic I could.  There may be easier ways to go about this, but I wanted to use GCC to compile.  
 
@@ -58,7 +58,7 @@ If you have issues**, make sure directory containing your files is in your PATH 
 
 To load data from an [Intel HEX format file](http://en.wikipedia.org/wiki/Intel_HEX) I used several functions, open_file() to create a data stream, more commonly know as a [file pointer](http://www.gnu.org/software/libc/manual/html_node/Streams.html#Streams), from the file I wanted to read.  And hex_file_to_array(), to parse the hex file and extract the data.
 
-![](https://ladvien.com/images/hexfile2.png)
+![](../images/hexfile2.png)
 
 
 **main.c**
@@ -239,7 +239,7 @@ if (c >= 97 && c <= 102)
 {% endhighlight %}
 
 
-You can use an [ASCII reference table](http://www.bibase.comhttps://ladvien.com/images/ascii.gif) to determine how a character read will be interpreted.  For instance, 'D' or 'd' would be 68 or 100\.  68 - 65 + 10 = 13\.  We know D is hexadecimal for 13 (0 = 0, 1 = 1, 1 = 2, etc... A = 10, B, = 11, C = 12, **D = 13**, E = 14, F = 15).
+You can use an [ASCII reference table](http://www.bibase.com../images/ascii.gif) to determine how a character read will be interpreted.  For instance, 'D' or 'd' would be 68 or 100\.  68 - 65 + 10 = 13\.  We know D is hexadecimal for 13 (0 = 0, 1 = 1, 1 = 2, etc... A = 10, B, = 11, C = 12, **D = 13**, E = 14, F = 15).
 
 This brings us to the main function,
 
@@ -421,4 +421,4 @@ int hex_file_to_array(FILE * file, uint8_t hex_data[])
 
 And that's it.  **Note, 49-64 is meant to demonstrate the data is properly extracted.  These lines could be moved to another function where the data may be used as needed.**
 
-![](https://ladvien.com/images/Hex_file_data_dump1.png)
+![](../images/Hex_file_data_dump1.png)

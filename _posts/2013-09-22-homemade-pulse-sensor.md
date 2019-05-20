@@ -31,7 +31,7 @@ I believe there were three problems:
 </div>
 
 
-**[![](https://ladvien.com/images/Pulse_Sensor_Play_Button.jpg)](http://www.youtube.com/watch?v=llYuknlc3uk&feature=share&list=UUKodYd0Fj3TSHzXg7aOJYYQ)
+**[![](../images/Pulse_Sensor_Play_Button.jpg)](http://www.youtube.com/watch?v=llYuknlc3uk&feature=share&list=UUKodYd0Fj3TSHzXg7aOJYYQ)
 **
 
 I've already detailed how I [went about making it](http://letsmakerobots.com/node/37815); so, I'll try to stick to repeatability.
@@ -60,11 +60,11 @@ I've already detailed how I [went about making it](http://letsmakerobots.com/nod
 
 The light sensor is the hardest bit, so take your time.  I put a little bit of solder on each pad with my soldering-iron, then, cover the soldered pads in flux.  Next, I attempt to align the light-sensor with the pads as close as possible.  After, I put the board with the backside on an over-turned clothes iron.  Let the iron heat up until the solder reflows and the sensor is attached.
 
-![](https://ladvien.com/images/IMG_0673.jpg)
+![](../images/IMG_0673.jpg)
 
 4. Flip the sensor and lock it to your surface with tacky-putty to solder the LED, passives, and op-amp.  I won't detail this, since my [video](http://www.youtube.com/watch?v=llYuknlc3uk&feature=share&list=UUKodYd0Fj3TSHzXg7aOJYYQ) shows the entire process.
 
-![](https://ladvien.com/images/Overlays_on_HR.jpg)
+![](../images/Overlays_on_HR.jpg)
 
 5. **Wrap it with tape, cutting a small hole for the LED and light-sensor.**  (I'll come up with a better solution, and a way it to clip it to your body, on the next iteration).
 

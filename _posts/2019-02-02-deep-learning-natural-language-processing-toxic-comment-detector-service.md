@@ -147,13 +147,13 @@ curl -X POST \
   -d '{"sequence":"im pretty sure you are a super nice guy.","padding": 100}'
 ```
 You _should_ get back an appropriate response:
-![local-curl-test-neural-net-webservice](https://ladvien.com/images/toxic-comment-detector-local-test.png)
+![local-curl-test-neural-net-webservice](../images/toxic-comment-detector-local-test.png)
 
 ### NodeJS and node-http-proxy
 It gets a bit weird here.  Usually, one will setup a Flask server with `uwsgi` or `gunicorn` combined with `nginx`.  However, I found the `uwsgi` middle-ware was creating two instances of my project, which would not fit in the microserver's RAM.  I spent _a lot_ of time creating a server the `proper` only to be disheartened when I discovered `uwsgi` was creating two instances of the `nn_service.py`, thereby attempting to load two of the CNNs into memory.  Our poor server.  I gave up on "proper" and went with what I describe below.  However, I've created a bash script to completely setup a server for you the "proper" way. I've added it to the Appendix.
 
 I've opted to run Flask and serve it with a `nodejs` server as a proxy.  
-![neural-net-service-stack](https://ladvien.com/images/nn_service_stack.png)
+![neural-net-service-stack](../images/nn_service_stack.png)
 
 The `nodejs` is atypical, but I found it probably the most simple to setup.  So, eh.
 

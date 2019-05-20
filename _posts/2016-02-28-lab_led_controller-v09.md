@@ -29,7 +29,7 @@ There is also an ESP8266 on the board.  I decided it was a better option for con
 
 I have also added a CH340G for USB-to-UART.  The CH340G SOIC chips were ordered awhile back, but before I put them into this board I threw it on an ATTiny84 breakout and tested it.  I didn't hold much hope for it, but it worked like a charm.  Huh.
 
-![](https://ladvien.com/images/CH340G_test.jpg)
+![](../images/CH340G_test.jpg)
 
 These little chips only cost me like $.65
 
@@ -39,11 +39,11 @@ These little chips only cost me like $.65
 
 The last piece of interest added to this board was a DS18B20.  This is a one wire temperature probe, which I plan to thermal-paste on the heatsink as an auto-shutdown measure.  Or perhaps, to reduce the amount of time a fan makes noise by kicking it on-and-off.
 
-![](https://ladvien.com/images/ds18b20.jpg)
+![](../images/ds18b20.jpg)
 
-<a href="https://ladvien.com/images/LED_lab_Controller_2.pdf"><img height="735" width="630" style="margin: 10px;" src="https://ladvien.com/images/led-lab-controller-schematic-v09-drivers.png"></a>
+<a href="../images/LED_lab_Controller_2.pdf"><img height="735" width="630" style="margin: 10px;" src="../images/led-lab-controller-schematic-v09-drivers.png"></a>
 
-<a href="https://ladvien.com/images/LAB_LED_Controller_schematic_v09.pdf"><img height="700" width="617" style="margin: 10px;" src="https://ladvien.com/images/led-lab-controller-schematic-v09-main.png"></a>
+<a href="../images/LAB_LED_Controller_schematic_v09.pdf"><img height="700" width="617" style="margin: 10px;" src="../images/led-lab-controller-schematic-v09-main.png"></a>
 
 <div class="flex-video">
 <iframe width="560" height="315" src="https://www.youtube.com/embed/KYiagQ0kjwc" frameborder="0" allowfullscreen></iframe>

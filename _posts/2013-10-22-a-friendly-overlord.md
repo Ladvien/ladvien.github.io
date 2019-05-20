@@ -66,7 +66,7 @@ def compass(headingDegrees):
 
 Basically, this function takes the very first compass reading and adjusts all other readings.  So, all you have to do is put your robot in the direction you want it to consider "North," start your code, and this function will convert all other readings.
 
-![](https://ladvien.com/images/Friendly_Overlord_--_Color_Selector.jpg)
+![](../images/Friendly_Overlord_--_Color_Selector.jpg)
 
 The second issue took me a little longer to deal with: easy color selection.  In short, I rewrote most of the color detection parts of the code to take advantage of the OpenCV's [CamShift](http://docs.opencv.org/trunk/doc/py_tutorials/py_video/py_meanshift/py_meanshift.html) algorithm.  This function is more resilient to lighting changes or other near color objects, but it is also more CPU intensive.  At some point, I'll probably go back and write a variant that sticks with the old largest-target-color-mass method.  
 

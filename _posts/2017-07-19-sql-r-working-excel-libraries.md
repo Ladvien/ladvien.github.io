@@ -44,7 +44,7 @@ Loading data using XLConnect is a little different than using the `read.csv` fun
 
 Unlike `CSVs` a single Excel document can contain multiple spreadsheets.  Each of these sheets will be broken out in tabs when you open an Excel document
 
-![](https://ladvien.com/images/excel_sheets.png)
+![](../images/excel_sheets.png)
 
 XLConnect doesn't make any assumptions, it wants you to tell it which sheet you'd like to load.  
 
@@ -61,7 +61,7 @@ Also, there are two other parameters.  The first, `sheet = 1` is telling XLConne
 
 The second parameter is `startRow = 1`.  This allows you to tell R where to start the dataframe.  For example, if you had a header in your Excel document which didn't contain data.
 
-![](https://ladvien.com/images/excel_robot_budget.png)
+![](../images/excel_robot_budget.png)
 
 We could skip down to row three, where the column headers are, by telling XLConnect `startRow = 3`.
 
@@ -90,7 +90,7 @@ writeWorksheetToFile("People.xlsx", data = peopleDf, sheet = "My People")
 
 After running this code you should have a file called `People.xlsx` in your working directory (remember, `getwd()` will tell provide the working directory).  If you open this file, it should look something like this:
 
-![](https://ladvien.com/images/xlconnect_written_workbook.png)
+![](../images/xlconnect_written_workbook.png)
 
 This looks a little complex, but it's just because XLConnect makes it look complex.  Here's what it is is doing:
 

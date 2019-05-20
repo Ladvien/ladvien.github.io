@@ -205,7 +205,7 @@ Another fun RSSI function is,
 
     func getSortedArraysBasedOnRSSI()-> (nsuuids: Array<NSUUID>, rssies: Array<NSNumber>)
 
-![](/https://ladvien.com/images//users/Ladvienhttps://ladvien.com/images/RSSI_Mapping_Table.png)This function takes no variables and returns two objects.  One is is an array of discovered NSUUIDs in ascending order of their RSSI (i.e., the closer they are the closer they are to 0-indexed).  The other is an array of NSNumbers representing the RSSI values of the corresponding NSUUID in the NSUUID array.
+![](/../images//users/Ladvien../images/RSSI_Mapping_Table.png)This function takes no variables and returns two objects.  One is is an array of discovered NSUUIDs in ascending order of their RSSI (i.e., the closer they are the closer they are to 0-indexed).  The other is an array of NSNumbers representing the RSSI values of the corresponding NSUUID in the NSUUID array.
 
 This method is meant for you to do neat things like shown in the image.  Here, I used an range mapping function to map the RSSI values onto a simple color scheme (red = -127 and green = -20).
 

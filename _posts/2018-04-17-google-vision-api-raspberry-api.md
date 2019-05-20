@@ -28,20 +28,20 @@ And sign-in with an existing Google account or create one.
 ## 2. Enter Billing Information
 Now, here's the scary part, you've must enter your billing information before getting going.  **Remember, you will be charged if you go over 1000 calls.**
 
-![](https://ladvien.com/images/google-vision-billing.png)
+![](../images/google-vision-billing.png)
 
 Again, if you exceed your 1,000 free calls you will be charged. (What? I said that already? Oh.)
 
 ## 2. Enable Cloud Vision API
 After setting up billing information we still need to enable the Cloud Vision API.  This is a security feature, essentially, all Google APIs are disabled by default so if someone accidentally gets access they don't unleash hell everywhere.
 
-![](https://ladvien.com/images/enable-cloud-vision.png)
+![](../images/enable-cloud-vision.png)
 
 
 Now search for `Vision` and click the button.  Here there should be a glaring `Enable` button.  Press it.
 
 
-![](https://ladvien.com/images/cloud-vision-enable-button.png)
+![](../images/cloud-vision-enable-button.png)
 
 The last thing we need to do is get the API key.  This needs to be included in the API call headers for authentication. 
 
@@ -58,11 +58,11 @@ Let's go get your API Key.  Find the `Credentials` section
 You probably wont see any credentials created, as you've probably have not created any yet.
 
 Let's create a new API Key.
-![](https://ladvien.com/images/google-vision-create-credentials.png)
+![](../images/google-vision-create-credentials.png)
 
 I'd name the key something meaningful and limit it to only the Google Cloud API.
 
-![](https://ladvien.com/images/cloud-vision-create-api-key.png)
+![](../images/cloud-vision-create-api-key.png)
 
 Go ahead and copy your API key, as we will need it in the next step.
 
@@ -124,14 +124,14 @@ Let's add the needed Node libraries.  It's one.  The [axios](https://www.npmjs.c
 npm axios
 ```
 
-![](https://ladvien.com/images/hepburn.png){: .float-left}
+![](../images/hepburn.png){: .float-left}
 Also, let's create a resource directory and download our lovely test image.  Ah, miss Hepburn!
 <div style="clear: both;"></div>
 Make sure you are in the `google-vis/resources` project directory when downloading the image.
 ```
 mkdir resources
 cd resources
-wget https://ladvien.com/images/hepburn.png
+wget ../images/hepburn.png
 ```
 
 

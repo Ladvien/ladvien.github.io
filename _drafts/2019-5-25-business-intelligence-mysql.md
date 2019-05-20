@@ -41,7 +41,7 @@ That's really what SQL's about.  Writing out a question and getting an answer fr
 
 Though!  We're not going to go into those details yet.  Right now, let's setup a practice environment where we can learn to *apply* concepts along with the concepts themselves.
 
-# MySQL
+# Sooo Many SQLs
 I'd love to tell you SQL is simple. It's not, well, at least not to master.  It's complex--every day I learn something new (one reason I enjoy it).  One of its complexities is there are different versions of SQL dialects.
 
 Some of the most common are:
@@ -76,7 +76,12 @@ Ok, that should get you a rough idea of the marketibility of having some MySQL s
 ![sql-pronunciation](../images/pronounce-sq-camps.png)
 https://english.stackexchange.com/a/106957
 
-# MySQL
+# Setting up MySQL
+These instructions assume you are using Windows.  If not, don't worry, most of them still apply, but you get to skip some steps!
+
+## MySQL Workbench
+Ok, first thing to do is download MySQL Workbench.  This is a program which will allow you to connect to a MySQL database, regardless if it lives on a remote machine or on your PC.
+
 Server / Desktop
 MySQL Program
 Databases

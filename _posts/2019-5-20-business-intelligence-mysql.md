@@ -70,7 +70,7 @@ Well, we have to start somewhere.  I've picked [MySQL](https://www.mysql.com/) b
 
 At this point you might be saying, "That's great? I've no idea what any of this means."  No worries! Bookmark this page and come back later.  For now, let's move into setting up a practice MySQL environment.  
 
-* **One last note**, if you're going into a job interview it's a good trick to wait until you hear how they pronounce "SQL" and then say how they do.  As, the "correct" pronunciation is "Ess-cue-ell," however, most professionals I know pronounce it "sequel" (as do I).
+* **One last note**, if you're going into a job interview it's a good trick to wait until you hear how they pronounce "SQL" and then say how they do.  As the "correct" pronunciation is "Ess-cue-ell," however, most professionals I know pronounce it "sequel" (as do I).
 
 ![sql-pronunciation](../images/pronounce-sq-camps.png)
 https://english.stackexchange.com/a/106957

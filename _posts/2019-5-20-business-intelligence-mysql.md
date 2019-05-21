@@ -73,7 +73,7 @@ At this point you might be saying, "That's great? I've no idea what any of this 
 * **One last note**, if you're going into a job interview it's a good trick to wait until you hear how they pronounce "SQL" and then say how they do.  As the "correct" pronunciation is "Ess-cue-ell," however, most professionals I know pronounce it "sequel" (as do I).
 
 ![sql-pronunciation](../images/pronounce-sq-camps.png)
-https://english.stackexchange.com/a/106957
+
 
 # Setting up MySQL
 These instructions assume you are using Windows.  If not, don't worry, most of them still apply, but you get to skip some steps!  

@@ -21,7 +21,8 @@ Here's a common SQL query:
       FROM employees AS e
  LEFT JOIN titles 	 AS t
         ON e.emp_no = t.emp_no
-WHERE e.hire_date > '1999-12-31';
+     WHERE e.hire_date > '1999-12-31'
+  ORDER BY e.last_name DESC;
 ```
 This query produces the following table when run on our `employees` database.
 

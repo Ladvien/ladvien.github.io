@@ -2,8 +2,7 @@
 layout: post
 title: MySQL Functions
 categories: data
-series: On the Job Training for Data Analysts
-excerpt:
+series: 
 tags: [mysql, business intelligence, data analytics]
 image: 
     feature: data-analytics-series/wood-files-jan-antonin-kolar.jpeg

@@ -2,7 +2,7 @@
 layout: post
 title: MySQL -- JOINS!
 categories: data
-series: On the Job Training for Data Analysts
+series: 
 excerpt:
 tags: [mysql, business intelligence, data analytics]
 image: 

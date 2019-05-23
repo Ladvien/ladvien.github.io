@@ -104,13 +104,30 @@ This should return the following:
 
 # FIELD
 A field in SQL is similar to the column in a spreadsheet.  It contains data of the same type on every row (more on datatypes later).  Fields may be referenced throughout a SQL query, but for them to show in the query results they must be included in the `SELECT` area--as we went over in the SELECT section above.
-```
+```sql
 SELECT emp_no,
        first_name,
        last_name
 FROM employees
 ```
-Good SQL coders will prepend the table name to the front of the query like this:
+The above query works fine.  However, try running the following query, which includes two tables.
+```sql
+SELECT emp_no,
+       first_name,
+       last_name
+FROM employees
+LEFT JOIN titles
+    ON employees.emp_no = titles.emp_no
+```
+You will not get any results, only a error message from the database which states something like:
+```
+Error Code: 1052. Column 'emp_no' in field list is ambiguous	
+```
+This is because both the `employees` and `titles` table have a field named `emp_no` and the SQL program can't figure out which one you want.
+
+To solve this, we add the table name plus `.` to the front of each field name.  This will tell the SQL program from which tables we would like to field--leaving no ambiguity.
+
+Good SQL coders will _always_ prepend the table name to the front of the query like this:
  ```
 SELECT  employees.emp_no,
         employees.first_name,

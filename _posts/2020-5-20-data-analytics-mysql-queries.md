@@ -41,27 +41,89 @@ This query produces the following table when run on our `employees` database.
 | 10 |   428377 | Gerlach     | Engineer        |
 | 11 |   463807 | Covnot      | Engineer        |
 | 12 |   499553 | Delgrande   | Engineer        |
-When the data are presented like this, it appear similar to our traditional Excel spreadsheet, right?  Let's compare the SQL query and a spreasheet.
 
-[img] 
+When the data are presented like this, it appear similar to our traditional Excel spreadsheet, right?  
+
+Let's go ahead and compare the SQL query and a spreadsheet.
+
+![compare-excel-and-sql](../images/data-analytics-series/sql_to_excel_compare.png)
+
+Now, here in a few weeks when you are SQL writing machine you'll notice this analogy between Excel and a SQL query breaks down.  But for now, let the above image comfort you in knowing the core functions of SQL are similar to those of a spreadsheet
+
+* Selecting columns
+* Filtering columns and rows
+* Ordering rows
+* Combining data sets
+
+However, SQL has a lot of superpowers an Excel spreadsheets doesn't.  Of course, the tradeoff is you must leave behind the comfort of a graphical user interface.  But don't let it scare you off--it only takes a 3-4 months to get used to, but then you'll realize how much those graphical interfaces have been chaining you down.
+
+Alright, but to the queries.  Let's take a look at the different parts of the query above.
 
 # SELECT
+The `SELECT` statement is how you choose what turns up in the results section.  If don't put something in the `SELECT` area, then you will not get anything.  It is most often used to retrieve data, called fields, from specific table within a database.
+
+### Select Area
+You may ask, what is the "SELECT area."  It is everything between the word `SELECT` until `FROM`.
 ```sql
-SELECT 1=1
+SELECT -------------------------------
+       -- ALL THIS IS THE SELECT AREA
+       -------------------------------
+FROM
 ```
 
-# FROM
+### Select Fields
+Each item you put in the `SELECT` area should be followed by a comma.  
+
+For example:
 ```sql
-SELECT *
-FROM employees
+    SELECT  emp_no,
+            last_name,
+            title
+...
 ```
+The code above requests three different fields be returned in the result set: `emp_no`, `last_name`, and `title`. 
+
+I should point out, if you forget a comma it can get messy.  Often, the SQL server will send an error message, **but not always**.  As we will see later in this series.
+
+### Select Calculations
+The `SELECT` does more than retrieve data from tables within a database.  It can also perform on-the-fly calculations, such as
+
+```sql
+SELECT 1 + 1,
+       2 *25,
+       55 / 75,
+```
+This should return the following:
+
+|    |   1 + 1 |   2 *25 |   55 / 75 |
+|---:|--------:|--------:|----------:|
+|  0 |       2 |      50 |    0.7333 |
+
+
+
+
 # FIELD
+
+Field is column
+Table names
+Fail query
+Style guides
+
+
 ```
 SELECT employees.emp_no,
        employees.first_name,
        employees.last_name
 FROM employees
 ```
+
+
+# FROM
+```sql
+SELECT *
+FROM employees
+```
+
 
 # ORDER BY
 ```

@@ -127,8 +127,40 @@ This is because both the `employees` and `titles` table have a field named `emp_
 
 To solve this, we add the table name plus `.` to the front of each field name.  This will tell the SQL program from which tables we would like to field--leaving no ambiguity.
 
-Good SQL coders will _always_ prepend the table name to the front of the query like this:
- ```
+Let's run the query again with table names.
+```sql
+SELECT employees.emp_no,
+       employees.first_name,
+       employees.last_name
+FROM employees
+LEFT JOIN titles
+    ON employees.emp_no = titles.emp_no
+```
+This time we get the results we expected, without error.
+
+Building on this, a good SQL coders will _always_ prepend the table name to the front of the query, whether it's required or not.  This prevents future mistakes.  
+
+For example, let's say you wrote this code:
+```sql
+SELECT emp_no,
+       salary
+FROM salaries
+```
+And your code was put into production (a term meaning put to use by your business) then a year later another coder added a second table to the query without critically looking at the query as a whole (something a bad SQL coder forgets to do).  
+
+The new query looks like this:
+```sql
+SELECT emp_no,
+       salary,
+       departments.name
+FROM salaries
+LEFT JOIN departments
+    ON departments.emp_no = salaries.emp_no
+```
+Try to run this query.  You will find the same `field list is ambigous` error as we saw earlier.
+
+The deeper lesson here is: **Treat coding like defensive driving.  Code in such a way your expect someone else to be reckless.**
+
 SELECT  employees.emp_no,
         employees.first_name,
         employees.last_name

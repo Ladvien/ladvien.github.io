@@ -103,19 +103,28 @@ This should return the following:
 
 
 # FIELD
+A field in SQL is similar to the column in a spreadsheet.  It contains data of the same type on every row (more on datatypes later).  Fields may be referenced throughout a SQL query, but for them to show in the query results they must be included in the `SELECT` area--as we went over in the SELECT section above.
+```
+SELECT emp_no,
+       first_name,
+       last_name
+FROM employees
+```
+Good SQL coders will prepend the table name to the front of the query like this:
+ ```
+SELECT  employees.emp_no,
+        employees.first_name,
+        employees.last_name
+FROM employees
+```
 
-Field is column
+
 Table names
 Fail query
 Style guides
 
 
-```
-SELECT employees.emp_no,
-       employees.first_name,
-       employees.last_name
-FROM employees
-```
+
 
 
 # FROM

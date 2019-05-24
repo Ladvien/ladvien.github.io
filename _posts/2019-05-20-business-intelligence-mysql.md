@@ -11,13 +11,13 @@ comments: true
 custom_css:
 custom_js: 
 ---
-I'm usually writing about hacking, robotics, or machine learning, but I thought I'd start journaling thoughts on data analytics, which is how I'm paying the bills now days.  I wanted to begin with a series on MySQL, as I've some friends I feel it'd help enter the field.  But, I'll eventually expand the series to include visualizations, analysis, and maybe machine learning.  And I hope these articles help someone move from manually generating reports in Excel to writing scripts that'll automate the boring stuff.  As I like to say, "knowing to code gives you data superpowers!"
+I'm usually writing about hacking, robotics, or machine learning, but I thought I'd start journaling thoughts on data analytics, which is how I pay the bills these days.  I wanted to begin with a series on MySQL, as I've some friends I feel it'd help enter the field.  But, I'll eventually expand the series to include visualizations, analysis, and maybe machine learning.  And I hope these articles help someone move from manually generating reports in Excel to writing scripts that'll automate the boring stuff.  As I like to say, "knowing to code gives you data superpowers!"
 
 I'm a professional data analyst, but, if I'm confident of anything, it's I've holes in my understanding.  That stated, these articles may contain mistakes.  If you spot one, let me know in the comments and I'll get it fixed quick.
 
-Also, I'm pretty opinionated.  I'm sure these opinions will find their way into my writings.  When notice them, I'll provide a caveat and reasoning for why I hold the opinion.  
+Also, I'm pretty opinionated.  I'm sure these opinions will find their way into my writings.  When notice I them, I'll provide a caveat and reasoning for why I hold the opinion.  
 
-One last thing, these articles will focus on **immediately usable techniques**.  I believe I failed my reader if he or she finishes one of my articles and doesn't walk away with a new skill.  I'm not stating I'll skip deep-dives into needed skills, but I believe those are only useful if you have a mental framework on which to hang them.
+One last thing, these articles will focus on **immediately usable techniques**.  Honestly, I believe I've failed you if you finish an article without a new skill--or, at least an affirmation of existing skill.  Don't get me wrong, I plan to do deep-dives into needed skills, but I believe those are only useful if you have a mental framework to hang them on.
 
 Ok! Let's do this!
 

@@ -288,8 +288,12 @@ It is also easier for the human brain to comprehend--at least, once you've been 
 
 In short, good coders use table aliases.
 
-
 # ORDER BY
+In spreadsheets there will usually be a way to sort your data.  Often your options will be based on a column's contextual order.  
+
+If the data are numbers it will be low-to-high, or high-to-low.  If it's text then your choice will probably be alphabetical, either A-Z to Z-A.  And if it's a date, then it will be first-to-last, or last-to-first.  Each of these order types share a commonality, they value either goes to a low-values to high-values, or high-values to low-values.  These types of ordering are known as ascending and descending, respectively. 
+
+
 ```
 SELECT employees.emp_no,
        employees.first_name,

@@ -206,7 +206,14 @@ You've probably noticed the first two aliases are written without quotation mark
 
 A more technical term for someone inside quotations marks is a **literal constant.**
 
-#### Don't Lose your AS
+### Don't Lose your AS
+Before we move on, run this exact query for me:
+```sql
+SELECT emp_no
+	   from_date,
+       salary
+FROM salaries;
+```
 
 # FROM
 As you've already seen, the `FROM` command tells SQL what areas on the database you want it to look for data.  If you don't specify a table in the `FROM` clause, then the SQL program acts if it doesn't exist.
@@ -299,5 +306,3 @@ FROM employees
 WHERE employees.emp_no = 10006
 ORDER BY employees.emp_no, employees.first_name
 ```
-
-# JOIN

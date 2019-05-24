@@ -206,14 +206,39 @@ You've probably noticed the first two aliases are written without quotation mark
 
 A more technical term for someone inside quotations marks is a **literal constant.**
 
-### Don't Lose your AS
-Before we move on, run this exact query for me:
+#### Don't Lose Your AS
+Go ahead and try to run this query:
 ```sql
 SELECT emp_no
-	   from_date,
-       salary
-FROM salaries;
+	   first_name,
+       employees.last_name
+FROM employees;
 ```
+Did you run it?  Anything jump out as weird?  You don't really run it did you?  Go run it, I'll wait.
+
+Ok, you'll see something like this:
+| first_name | last_name | 
+|:-----------|:----------| 
+| 10001      | Facello   | 
+| 10002      | Simmel    | 
+| 10003      | Bamford   | 
+| ...        | ...       | 
+Super weird right?  There are only two columns and it seems like the column names are jumbled up.  That's exactly what's happened.  It's due to a missing `,` right after the `emp_no`.  This is a result of something in SQL I think is silly--you can omit the `AS` keyword between a field and its alias.
+
+Meaning, we could rewrite the query from earlier where we showed alias use like this:
+```sql
+SELECT salaries.emp_no 		Id,
+       salaries.salary		Salary,
+       employees.first_name	"First Name",
+       employees.last_name	"Last Name"
+
+FROM salaries
+LEFT JOIN employees
+    ON salaries.emp_no = employees.emp_no;
+```
+But, the first time you miss a comma you'll be asking, "Why!? Why does SQL allow this."  I'm not sure, but we have to deal with it.
+
+This is why I ask you _always_ include the `AS` keyword.  Again, you are helping prevent bugs before they happen.
 
 # FROM
 As you've already seen, the `FROM` command tells SQL what areas on the database you want it to look for data.  If you don't specify a table in the `FROM` clause, then the SQL program acts if it doesn't exist.
@@ -306,3 +331,5 @@ FROM employees
 WHERE employees.emp_no = 10006
 ORDER BY employees.emp_no, employees.first_name
 ```
+
+# JOIN

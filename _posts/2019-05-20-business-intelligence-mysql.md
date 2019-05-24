@@ -125,10 +125,10 @@ Once you've entered the connection information hit "Ok".  You should be brought 
 ![our-sql-connection](../images/data-analytics-series/mysql_setup_17.PNG)
 
 Double click on it.  You will most likely get the following warning.
-![sql-connection-warning]](../images/data-analytics-series/mysql_setup_15.PNG)
+![sql-connection-warning](../images/data-analytics-series/mysql_setup_15.PNG)
 Click "Continue Anyway" (and if there's an option, check "Dont Show this Message Again").
 
-If the connect was successful you should see a screen like:
+If the connection was successful you should see a screen like:
 ![our-sql-connection](../images/data-analytics-series/mysql_setup_18.PNG)
 
 ## Show / Use Databases

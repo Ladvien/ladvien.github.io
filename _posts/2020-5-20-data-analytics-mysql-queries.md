@@ -155,35 +155,106 @@ The new query looks like this:
 ```sql
 SELECT emp_no,
        salary,
-       departments.name
+       first_name,
+       last_name
+
 FROM salaries
-LEFT JOIN departments
-    ON departments.emp_no = salaries.emp_no
+LEFT JOIN employees
+    ON salaries.emp_no = employees.emp_no;
 ```
-Try to run this query.  You will find the same `field list is ambigous` error as we saw earlier.
+Try to run this query.  You will find the same `field list is ambiguous` error as we saw earlier.
 
-The deeper lesson here is: **Treat coding like defensive driving.  Code in such a way your expect someone else to be reckless.**
+The deeper lesson here is: **A good coder is like a defensive driver; you code in a way you expect others to be reckless.**
 
-SELECT  employees.emp_no,
-        employees.first_name,
-        employees.last_name
-FROM employees
+Back to the example above, if we include the table in the field names, then it doesn't matter if a reckless coworker adds another table.
+
+```sql
+SELECT salaries.emp_no,
+       salaries.salary,
+       employees.first_name,
+       employees.last_name
+
+FROM salaries
+LEFT JOIN employees
+    ON salaries.emp_no = employees.emp_no;
 ```
 
+### Field Aliases
+Often you will want to export your results into a CSV to send to someone.  You may have noticed when you execute a query SQL returns the results in a neat spreadsheet.  I don't know if I've mentioned it, but you can export these results in a CSV by hitting the little disk button above the results.
 
-Table names
-Fail query
-Style guides
+![mysql-workbench-export-to-csv](../images/data-analytics-series/mysql_setup_33.PNG)
 
+However, you may not like the machine formatted column names.  I mean, don't get us wrong, we're nerds! We read machine friendly words fine, but our bosses don't.
 
+Well, my SQL has a built in command allowing you to rename fields (and more) on the fly.  This command is `AS` and is seen in the query above written to rename the column names.
+```sql
+SELECT salaries.emp_no 		AS Id,
+       salaries.salary		AS Salary,
+       employees.first_name	AS "First Name",
+       employees.last_name	AS "Last Name"
 
+FROM salaries
+LEFT JOIN employees
+    ON salaries.emp_no = employees.emp_no;
+```
 
+Now the column headers have "boss-friendly" names.
+
+![mysql-workbench-export-to-csv](../images/data-analytics-series/mysql_setup_34.PNG)
+
+You've probably noticed the first two aliases are written without quotation marks and the second two are surrounded by them.  The SQL program can get confused by spaces, so when wrap the new name in `"` marks.  When the SQL program sees these marks, it says to itself, "Oh, I bet the user is going to have one of those fancy human names, I'm going to assume everything between the first quotation mark and the next one I find is all one fancy human words.  Silly humans."
+
+A more technical term for someone inside quotations marks is a **literal constant.**
+
+#### Don't Lose your AS
 
 # FROM
+As you've already seen, the `FROM` command tells SQL what areas on the database you want it to look for data.  If you don't specify a table in the `FROM` clause, then the SQL program acts if it doesn't exist.
+
 ```sql
 SELECT *
 FROM employees
+LEFT JOIN departments
+    ON employees.emp_no = departments.emp_no
 ```
+
+In the next article we are going to talk about `JOINS`, they are an extension to the `FROM` clause of a query, but, they deserve their own article.  Right now, just look at the `LEFT JOIN` as an extension of the `FROM` clause.  A join tells the SQL program, "First look in the employees table, then, check in the departments table, _if_ there is a relationship with the employees table."
+
+Like I said, we will review `JOINS` thoroughly in the next article.
+
+### Table Aliases
+Like we could give fields nicknames, called aliases, we can do the same with table names.  However, this is usually done for a different reason: To save on typing.  
+
+One of the primary reason bad coders don't write out the table names (not _you_, you're going to be a good coder) is it adds _a lot_ more to type out.  You may say, "Well, that's just lazy."  It is, but it's smart-lazy--also know as efficient.  And efficiency is something you want to strive for in your code and _coding_.
+
+Let's look at an example from earlier.
+```sql
+SELECT salaries.emp_no 		AS Id,
+       salaries.salary		AS Salary,
+       employees.first_name	AS "First Name",
+       employees.last_name	AS "Last Name"
+
+FROM salaries
+LEFT JOIN employees
+    ON salaries.emp_no = employees.emp_no;
+```
+This query could be rewritten by using table aliases and save a lot of typing.  It's probably best to show you.
+
+```sql
+SELECT s.emp_no 	AS Id,
+       s.salary		AS Salary,
+       e.first_name	AS "First Name",
+       e.last_name	AS "Last Name"
+
+FROM salaries       AS s
+LEFT JOIN employees AS e
+    ON s.emp_no = e.emp_no;
+```
+Execute this query and compare its results to the query without table aliases.  You will find the results are exactly the same.  Moreover, this rewrite has saved 45 keystrokes.  You may think, "Eh, not much."  Well, this is a small query.  Imagine writing queries twice this size all day long.  Your savings are in the millions.
+
+It is also easier for the human brain to comprehend--at least, once you've been writing SQL for awhile.  Your brain understands `e` and `employees` exactly the same, but it doesn't have to work as hard to understand `e`.
+
+In short, good coders use table aliases.
 
 
 # ORDER BY

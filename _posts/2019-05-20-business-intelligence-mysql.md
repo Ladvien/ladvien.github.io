@@ -15,14 +15,14 @@ I'm usually writing about hacking, robotics, or machine learning, but I thought 
 
 I'm a professional data analyst, but, if I'm confident of anything, it's I've holes in my understanding.  That stated, these articles may contain mistakes.  If you spot one, let me know in the comments and I'll get it fixed quick.
 
-Also, I'm pretty opinionated.  I'm sure these opinions will find their way into my writings.  When notice I them, I'll provide a caveat and reasoning for why I hold the opinion.  
+Also, I'm pretty opinionated.  I'm sure these opinions will find their way into my writings.  When I notice them, I'll provide a caveat and reasoning for why I hold the opinion.  
 
 One last thing, these articles will focus on **immediately usable techniques**.  Honestly, I believe I've failed you if you finish an article without a new skill--or, at least an affirmation of existing skill.  Don't get me wrong, I plan to do deep-dives into needed skills, but I believe those are only useful if you have a mental framework to hang them on.
 
 Ok! Let's do this!
 
 # SQL
-When getting started in data analytics Structured Query Language (SQL) is a great place to start.  It is a _well_ established data language, [having been around since the 70s](https://en.wikipedia.org/wiki/SQL).  The intent of SQL is to empower an individual to retrieve data from a database in an efficient and predictable manner.  However, nowadays SQL is used for lots more, such as abstraction, analysis, and semantic changes. 
+When getting started in data analytics Structured Query Language (SQL) is a great place to begin.  It is a _well_ established data language, [having been around since the 70s](https://en.wikipedia.org/wiki/SQL).  The intent of SQL is to empower an individual to retrieve data from a database in an efficient and predictable manner.  However, nowadays SQL is used for lots more, such as abstraction, analysis, and semantic changes. 
 
 What does it look like?  Here's a example of a SQL query:
 ```sql
@@ -37,7 +37,7 @@ The above code is referred to as a query.  It's a question we'd like to get an a
 Though!  We're not going to go into those details yet.  Right now, let's setup a practice environment where we can learn to *apply* concepts along with the concepts themselves.
 
 # Sooo Many SQLs
-I'd love to tell you SQL is simple. It's not, well, at least not to master.  It's complex--every day I learn something new (one reason I enjoy it).  One of its complexities is there are different versions of SQL dialects.  Here, we refer to "dialect" as slightly different ways of coding the same thing.
+I'd love to tell you SQL is simple. It's not, well, at least not simple to master.  It's complex--every day I learn something new (one reason I enjoy it).  One of its complexities is there are different versions of SQL dialects.  Here, we refer to "dialect" as slightly different ways of coding the same thing.
 
 Some of the most common are:
 
@@ -70,7 +70,7 @@ Well, we have to start somewhere.  I've picked [MySQL](https://www.mysql.com/) b
 
 At this point you might be saying, "That's great? I've no idea what any of this means."  No worries! Bookmark this page and come back later.  For now, let's move into setting up a practice MySQL environment.  
 
-* **One last note**, if you're going into a job interview it's a good trick to wait until you hear how they pronounce "SQL" and then say how they do.  As the "correct" pronunciation is "Ess-cue-ell," however, most professionals I know pronounce it "sequel" (as do I).
+* **One last note**, if you're going into a job interview it's a good trick to wait until you hear how they pronounce "SQL" and then say it how they do.  As the "correct" pronunciation is "Ess-cue-ell," however, most professionals I know pronounce it "sequel" (as do I).
 
 ![sql-pronunciation](../images/pronounce-sq-camps.png)
 
@@ -109,9 +109,9 @@ Before we can start querying a database we need to create a database connection.
 
 ![connect-mysql-workbench](../images/data-analytics-series/connecting_to_server.gif)
 
-We will be connecting to a database I've setup on a remote computer (connecting to a remote computers is the most common way to interact with a SQL database, however, later I'll show you how to build your own database using CSVs.  This will be hosted on your local PC.
+We will be connecting to a database I've setup on a remote computer.  Connecting to a remote computers is the most common way to interact with a SQL database, however, later I'll show you how to build your own database using CSVs.  This will be hosted on your local PC.
 
-Ok, back to setting up the remote connection.  Click on the circle and plus icon next to "MySQL Connections."  This will cause a screen to pop where you can enter a connection information.  
+Ok, back to setting up the remote connection.  Click on the circle and plus icon next to "MySQL Connections."  This will cause a screen to pop up for connection information.  
 
 Enter the following:
 ```
@@ -145,7 +145,7 @@ This is the area where the result of whatever command you send the SQL will serv
 Here is where you can spot if you written a query incorrectly, as the database will send a message letting you know.  Also, the database will tell you when it has successfully returned results from a query, how many results, and how long they took to retrieve.  Useful for when you are trying to make a query _fast_.
 
 # Getting Around in MySQL
-Lets send a query to the database.  In the query area type:
+Let's send a query to the database.  In the query area type:
 ```sql
 SHOW databases;
 ```
@@ -169,7 +169,7 @@ This will show the following in the database messages:
 13:21:55	USE employees	0 row(s) affected	0.0031 sec
 13:21:55	Error loading schema content	Error Code: 1146 Table 'performance_schema.user_variables_by_thread' doesn't exist	
 ```
-Don't worry about the error, that's a product of my hasty setup.  The important message is the `USE employees` message.  This means you are now connected to the `employees` database.  Any query you write in this session will not be sent to this specific database.
+Don't worry about the error, that's a product of my hasty setup.  The important message is the `USE employees` message.  This means you are now connected to the `employees` database.  Any query you write in this session will now be sent to this specific database.
 
 But, now what?  We've no idea of what's on the database.  No worries, we've a command to see the tables found on this database.  If you are not familiar with the term "table," don't worry.  Just think of a table as a single spreadsheet.  It's a bit more complicated and we will investigate their structure further in a bit.  But, right now, the spreadsheet analogy works.
 

@@ -217,12 +217,14 @@ FROM employees;
 Did you run it?  Anything jump out as weird?  You don't really run it did you?  Go run it, I'll wait.
 
 Ok, you'll see something like this:
+
 | first_name | last_name | 
 |:-----------|:----------| 
 | 10001      | Facello   | 
 | 10002      | Simmel    | 
 | 10003      | Bamford   | 
 | ...        | ...       | 
+
 Super weird right?  There are only two columns and it seems like the column names are jumbled up.  That's exactly what's happened.  It's due to a missing `,` right after the `emp_no`.  This is a result of something in SQL I think is silly--you can omit the `AS` keyword between a field and its alias.
 
 Meaning, we could rewrite the query from earlier where we showed alias use like this:
@@ -373,6 +375,7 @@ This returns a single record, which makes sense.  We told the SQL program we wan
 ![mysql-workbench-export-to-csv](../images/data-analytics-series/mysql_setup_39.PNG)
 
 But, let's also look at the `Database Message`
+
 | Time     | Action | Message              | Duration / Fetch           | 
 |:---------|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:---------------------|:---------------------------| 
 | 07:35:17 | SELECT employees.emp_no,        employees.first_name,        employees.last_name FROM employees ORDER BY employees.last_name ASC, employees.emp_no DESC LIMIT 0, 1000                                                                              | 1000 row(s) returned | 0.152 sec / 0.0035 sec     | 

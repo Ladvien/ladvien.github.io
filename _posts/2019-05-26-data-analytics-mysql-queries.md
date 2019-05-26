@@ -441,6 +441,6 @@ If you aren't familiar with the equalities, here's a breakdown.
 **Closing**
 Whew, these are the basic of a SQL query, but, it's just the beginning.  There are many more parts to SQL queries, such as `AND`, `OR`, `<>`, `!=`, `JOIN`, functions, `UNION`, `DISTINCT`--we've got a lot more to do.  But! No worries, you've totally got this.
 
-Don't believe?  Don't worry, I'm going to let you prove it to yourself.  Let's do some homework! :)
+Don't believe me?  Don't worry, I'm going to let you prove it to yourself.  Let's do some homework! :)
 
 # Homework

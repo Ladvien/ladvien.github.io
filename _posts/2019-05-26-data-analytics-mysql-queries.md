@@ -302,7 +302,7 @@ FROM employees
 ORDER BY employees.emp_no DESC
 ```
 
-RESULTS
+![mysql-workbench-export-to-csv](../images/data-analytics-series/mysql_setup_35.PNG)
 
 #### ASC
 ```sql
@@ -313,7 +313,7 @@ FROM employees
 ORDER BY employees.emp_no ASC
 ```
 
-RESULTS
+![mysql-workbench-export-to-csv](../images/data-analytics-series/mysql_setup_36.PNG)
 
 One note about `ASC`, if you do not specifcy what type of `ORDER BY` then it will default to `ASC`.
 
@@ -329,43 +329,115 @@ ORDER BY employees.emp_no
 
 Most of `ORDER BY` is used for humans, making it easier to find whether your data were returned correctly.  However, there are instances where `ORDER BY` will actually change the results of your queries, but it will be awhile before we get into those sorts of queries.
 
-Later, we're going to start working on making our queries efficient and fast, but I'm going to state now: **Make sure you need your results ordered before you `ORDER BY`**.  It can  be hardwork for SQL program to order your results, which translates to longer execution times.  Something you will want to avoid if you are trying to write a query for speed (which you will when writing code to be included in production software).
+Later, we're going to start working on making our queries efficient and fast, but now I'll state: **Make sure you need your results ordered before you `ORDER BY`**.  
+
+It can  be hard work for SQL program to order your results, which translates to longer execution times.  Something you will want to avoid if you are trying to write a query for speed (which you will when writing code to be included in production software).
 
 #### Multiple Column Sort
+SQL can also do multiple-field sorts.  This works by sorting by the first field in the `ORDER BY` and where there are ties, then sort by the second field
 
-
-```
+For example:
+```sql
 SELECT employees.emp_no,
        employees.first_name,
        employees.last_name
 FROM employees
-ORDER BY employees.emp_no DESC
+ORDER BY employees.last_name ASC, employees.emp_no DESC 
 ```
 
-```
-SELECT employees.emp_no,
-       employees.first_name,
-       employees.last_name
-FROM employees
-ORDER BY employees.emp_no ASC
-```
+![mysql-workbench-export-to-csv](../images/data-analytics-series/mysql_setup_37.PNG)
 
-```
-SELECT employees.emp_no,
-       employees.first_name,
-       employees.last_name
-FROM employees
-ORDER BY employees.emp_no, employees.first_name
-```
+"Aamodt" is the first name in the `last_name` field when the `ORDER BY` is set to `ASC`, however, there are many "Aamodt"s in this table.  This is where the second `ORDER BY` comes in.  The second `ORDER BY` is set on the `emp_no` field and is `DESC`, this is why all the numbers start at the highest values and move towards the lowest.  Of course, when the the `last_name` value changes the `emp_no` order will restart, still moving from highest to lowest.
+
+![mysql-workbench-export-to-csv](../images/data-analytics-series/mysql_setup_38.PNG)
+
+Alright, let's move on.  Just remember, `ORDER BY` is extremely useful for humans, but it makes it slower for computers to process.  Therefore, when you write a query, consider your audience.
 
 # WHERE
-```
-SELECT employees.emp_no,
-       employees.first_name,
-       employees.last_name
+The `WHERE` clause of a SQL query is a filter.  Simple as that.  It further limits your results.  And it is probably the second most important portion of a query, next to the `FROM` clause.  
+
+Reducing your results not only help you find what you need, it also makes it easier on the computer to find the results.  
+
+Though, before we get into more detail let's take a look at an example:
+```sql
+SELECT employees.emp_no         AS Id,
+       employees.first_name     AS "First Name",
+       employees.last_name      AS "Last Name"
 FROM employees
 WHERE employees.emp_no = 10006
 ORDER BY employees.emp_no, employees.first_name
 ```
+This returns a single record, which makes sense.  We told the SQL program we want `emp_no`, `first_name`, `last_name` from the `employees` table where the `emp_no` is equal to `10006`.
 
-# JOIN
+
+![mysql-workbench-export-to-csv](../images/data-analytics-series/mysql_setup_39.PNG)
+
+But, let's also look at the `Database Message`
+| Time     | Action | Message              | Duration / Fetch           | 
+|:---------|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:---------------------|:---------------------------| 
+| 07:35:17 | SELECT employees.emp_no,        employees.first_name,        employees.last_name FROM employees ORDER BY employees.last_name ASC, employees.emp_no DESC LIMIT 0, 1000                                                                              | 1000 row(s) returned | 0.152 sec / 0.0035 sec     | 
+| 07:48:56 | SELECT employees.emp_no         AS Id,        employees.first_name     AS "First Name",        employees.last_name      AS "Last Name" FROM employees WHERE employees.emp_no = 10006 ORDER BY employees.emp_no, employees.first_name LIMIT 0, 1000 | 1 row(s) returned    | 0.0036 sec / 0.0000072 sec | 
+
+Notice how our query for one result took _much_ less time than the query for a 1,000 results?  I'll cover this more later, but felt it was import to point out now.  Using the `WHERE` clause to limit the data to only what you need will greatly increase the efficiency of your query.
+
+But, for now, let's focus on how the `WHERE` clause will allow you to get the results you are after.
+
+In queries we've written earlier, we've received every row on the database, from every table included in the `FROM` clause.  Now, we are narrowing the results down to one specific result we are interested in.  
+
+This can also be done with strings (text inside of `"` marks).
+```sql
+SELECT employees.emp_no         AS Id,
+       employees.first_name     AS "First Name",
+       employees.last_name      AS "Last Name"
+FROM employees
+WHERE employees.first_name = "Ramzi"
+ORDER BY employees.emp_no, employees.first_name
+```
+
+![mysql-workbench-export-to-csv](../images/data-analytics-series/mysql_setup_40.PNG)
+
+But what if we want to include multiple different employees, but not all?
+
+#### IN
+The `WHERE` clause can be followed by the `IN` keyword, which is immediately followed by a set of parentheses; inside the parentheses you may put list of values you want to filter on.  Each value must be separated by a comma.
+
+For example:
+```sql
+SELECT employees.emp_no         AS Id,
+       employees.first_name     AS "First Name",
+       employees.last_name      AS "Last Name"
+FROM employees
+WHERE employees.last_name IN ("Bamford", "Casley", "Benveniste")
+ORDER BY employees.last_name ASC, employees.first_name ASC;
+```
+![mysql-workbench-export-to-csv](../images/data-analytics-series/mysql_setup_41.PNG)
+
+
+#### Greater and Less Than
+If the field you are using is numeric data, then you can also use the `>`, `<`, `<=`, and `>=` comparisons.
+
+```sql
+SELECT employees.emp_no         AS Id,
+       employees.first_name     AS "First Name",
+       employees.last_name      AS "Last Name"
+FROM employees
+WHERE employees.emp_no > 40000
+ORDER BY employees.emp_no, employees.first_name;
+```
+
+![mysql-workbench-export-to-csv](../images/data-analytics-series/mysql_setup_42.PNG)
+
+If you aren't familiar with the equalities, here's a breakdown.
+
+* "> 5000" will find all values which come **after** 5000, but **does not include** 5000 itself
+* "< 5000" will find all values which come **before** 5000, but **does not include** 5000 itself
+* ">= 5000" will find all values which come **after** 5000 **including** 5000 itself
+* "<= 5000" will find all values which come **before** 5000 **including** 5000 itself 
+
+
+**Closing**
+Whew, these are the basic of a SQL query, but, it's just the beginning.  There are many more parts to SQL queries, such as `AND`, `OR`, `<>`, `!=`, `JOIN`, functions, `UNION`, `DISTINCT`--we've got a lot more to do.  But! No worries, you've totally got this.
+
+Don't believe?  Don't worry, I'm going to let you prove it to yourself.  Let's do some homework! :)
+
+# Homework

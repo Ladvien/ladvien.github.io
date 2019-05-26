@@ -13,3 +13,5 @@ custom_js:
 ---
 
 #
+
+# How Where Affects JOINs

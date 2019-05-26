@@ -236,9 +236,7 @@ FROM salaries
 LEFT JOIN employees
     ON salaries.emp_no = employees.emp_no;
 ```
-But, the first time you miss a comma you'll be asking, "Why!? Why does SQL allow this."  I'm not sure, but we have to deal with it.
-
-This is why I ask you _always_ include the `AS` keyword.  Again, you are helping prevent bugs before they happen.
+But, the first time you miss a comma you'll be asking, "Why!? Why does SQL allow this!"  I'm not sure, but we have to deal with it.  This is why I ask you _always_ include the `AS` keyword.  Again, you are helping prevent bugs before they happen.
 
 # FROM
 As you've already seen, the `FROM` command tells SQL what areas on the database you want it to look for data.  If you don't specify a table in the `FROM` clause, then the SQL program acts if it doesn't exist.
@@ -289,18 +287,52 @@ It is also easier for the human brain to comprehend--at least, once you've been 
 In short, good coders use table aliases.
 
 # ORDER BY
-In spreadsheets there will usually be a way to sort your data.  Often your options will be based on a column's contextual order.  
+In spreadsheets there will usually be a way to sort your data.  Often your options will be based on a column's contextual order.  If the data are numbers it will be low-to-high, or high-to-low, respectively. If it's text then your choice will probably be alphabetical, either A-Z to Z-A.  And if it's a date, then it will be first-to-last, or last-to-first.  Each of these order types share a commonality, they value either goes to a low-values to high-values, or high-values to low-values.  These types of ordering are known as ascending and descending, respectively. 
 
-If the data are numbers it will be low-to-high, or high-to-low.  If it's text then your choice will probably be alphabetical, either A-Z to Z-A.  And if it's a date, then it will be first-to-last, or last-to-first.  Each of these order types share a commonality, they value either goes to a low-values to high-values, or high-values to low-values.  These types of ordering are known as ascending and descending, respectively. 
+In SQL, there are two types of `ORDER BY`s, `ASC` and `DESC`, for ascending and descending.  They operate a bit different than most spreadsheet applications.  They still order data by low-to-high or high-to-low, however, when you apply an `ORDER BY` it affects the entire result set.  When a field is targeted by an `ORDER BY` all other fields on the same row are ordered along with the targeted field.
 
+Enough words.  Let's take a look at some examples:
 
+#### DESC
+```sql
+SELECT employees.emp_no,
+       employees.first_name,
+       employees.last_name
+FROM employees
+ORDER BY employees.emp_no DESC
 ```
+
+RESULTS
+
+#### ASC
+```sql
+SELECT employees.emp_no,
+       employees.first_name,
+       employees.last_name
+FROM employees
+ORDER BY employees.emp_no ASC
+```
+
+RESULTS
+
+One note about `ASC`, if you do not specifcy what type of `ORDER BY` then it will default to `ASC`.
+
+For example, this query will provide the exact same results as the one above:
+```sql
 SELECT employees.emp_no,
        employees.first_name,
        employees.last_name
 FROM employees
 ORDER BY employees.emp_no
 ```
+
+
+Most of `ORDER BY` is used for humans, making it easier to find whether your data were returned correctly.  However, there are instances where `ORDER BY` will actually change the results of your queries, but it will be awhile before we get into those sorts of queries.
+
+Later, we're going to start working on making our queries efficient and fast, but I'm going to state now: **Make sure you need your results ordered before you `ORDER BY`**.  It can  be hardwork for SQL program to order your results, which translates to longer execution times.  Something you will want to avoid if you are trying to write a query for speed (which you will when writing code to be included in production software).
+
+#### Multiple Column Sort
+
 
 ```
 SELECT employees.emp_no,

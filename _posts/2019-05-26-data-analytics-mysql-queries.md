@@ -2,7 +2,7 @@
 layout: post
 title: Understanding the MySQL Query
 categories: data
-series: 
+series: On the Job Training for Data Analysts
 excerpt:
 tags: [mysql, business intelligence, data analytics]
 image: 

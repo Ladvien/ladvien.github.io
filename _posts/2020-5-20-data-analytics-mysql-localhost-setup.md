@@ -61,7 +61,25 @@ On the "Accounts and Roles" section you will need to decide on your password for
 Execute the installer and let it finish.
 ![mysql-windows-installer-download](../images/data-analytics-series/mysql_setup_51.PNG)
 
-Once it finishes you should now have MySQL Server installed on your local PC.  Go ahead and open MySQL Workbench and let's connect to this new local server.
+Once it finishes you should now have MySQL Server installed on your local PC. Skip to the last section to test it out.
+
+## Mac
+Mac's a bit simpler.
+
+Download the `.dmg` installer.
+![mysql-windows-installer-download](../images/data-analytics-series/mysql_setup_56.PNG)
+
+Click on "No thanks, just start my download" and when the download is finished, double click on it.
+![mysql-windows-installer-download](../images/data-analytics-series/mysql_setup_57.PNG)
+
+Double click on the installer.  You will need to enter your system password for the installer to setup MySQL Server, but you will also need to provide the MySQL Server `root` user a password.  Don't consfuse the two, unless you plan for them to be the same.
+
+![mysql-windows-installer-download](../images/data-analytics-series/mysql-server-install-mac.gif)
+
+Once it finishes you should now have MySQL Server installed on your Mac. Skip to the last section to test it out.
+
+# Testing your Local SQL Server
+Go ahead and open MySQL Workbench and let's connect to this new local server.
 
 Click on the "New Connection" icon and leave everything default, except the "Connection Name," here enter `localhost`.
 ![mysql-windows-installer-download](../images/data-analytics-series/mysql_setup_52.PNG)
@@ -74,9 +92,3 @@ SHOW databases;
 ```
 You should see:
 ![mysql-windows-installer-download](../images/data-analytics-series/mysql_setup_53.PNG)
-
-## Mac
-Mac's a bit simpler.
-![mysql-windows-installer-download](../images/data-analytics-series/mysql_setup_56.PNG)
-
-## Linux

@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Setup Local MySQL Database
+title: Setup a Local MySQL Database
 categories: data
 series: On the Job Training for Data Analysts
 excerpt:

@@ -13,7 +13,7 @@ ECHO "*******************************************************"
 ECHO "* Moving raw_images into images                       *"
 ECHO "*******************************************************"
 rsync -h -v -r -P -t --ignore-existing /Users/caseybrittain/ladvien.github.io/raw_images/* /Users/caseybrittain/ladvien.github.io/images
-rake
+
 
 ECHO ""
 ECHO "****************************"

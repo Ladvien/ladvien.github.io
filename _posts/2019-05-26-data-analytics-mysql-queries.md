@@ -72,7 +72,7 @@ FROM
 ```
 
 ### Select Fields
-Each item you put in the `SELECT` area should be followed by a comma.  
+There are two different ways to `SELECT` fields you want to get results from.  You can use the `*`, which means "everything." Or you can list the field names you want returned.  Each item you put in the `SELECT` area should be followed by a comma, unless it is the last item.
 
 For example:
 ```sql
@@ -82,6 +82,13 @@ For example:
 ...
 ```
 The code above requests three different fields be returned in the result set: `emp_no`, `last_name`, and `title`. 
+
+Or 
+```sql
+    SELECT  *
+...
+```
+Returns every field, in every table listed.
 
 I should point out, if you forget a comma it can get messy.  Often, the SQL server will send an error message, **but not always**.  As we will see in a moment.
 
@@ -98,9 +105,6 @@ This should return the following:
 |    |   1 + 1 |   2 *25 |   55 / 75 |
 |---:|--------:|--------:|----------:|
 |  0 |       2 |      50 |    0.7333 |
-
-
-
 
 # FIELD
 
@@ -206,7 +210,7 @@ You've probably noticed the first two aliases are written without quotation mark
 
 A more technical term for someone inside quotations marks is a **literal constant.**  However, programmers know them as "strings."  It's probably b
 
-#### Don't Lose Your AS
+### Don't Lose Your AS
 Go ahead and try to run this query:
 ```sql
 SELECT emp_no
@@ -293,7 +297,7 @@ In SQL, there are two types of `ORDER BY`s, `ASC` and `DESC`, for ascending and 
 
 Enough words.  Let's take a look at some examples:
 
-#### DESC
+### DESC
 ```sql
 SELECT employees.emp_no,
        employees.first_name,
@@ -304,7 +308,7 @@ ORDER BY employees.emp_no DESC
 
 ![mysql-workbench-export-to-csv](../images/data-analytics-series/mysql_setup_35.PNG)
 
-#### ASC
+### ASC
 ```sql
 SELECT employees.emp_no,
        employees.first_name,
@@ -333,7 +337,7 @@ Later, we're going to start working on making our queries efficient and fast, bu
 
 It can  be hard work for SQL program to order your results, which translates to longer execution times.  Something you will want to avoid if you are trying to write a query for speed (which you will when writing code for production software).
 
-#### Multiple Column Sort
+### Multiple Column Sort
 SQL can also do multiple-field sorts.  This works by sorting by the first field in the `ORDER BY` and where there are ties, then sort by the second field.
 
 For example:
@@ -399,7 +403,7 @@ ORDER BY employees.emp_no, employees.first_name
 
 But what if we want to include multiple different employees, but not all? That's where `IN` comes...in.
 
-#### IN
+### IN
 The `WHERE` clause can be followed by the `IN` keyword, which is immediately followed by a set of parentheses; inside the parentheses you may put list of values you want to filter on.  Each value must be separated by a comma.
 
 For example:
@@ -423,7 +427,7 @@ WHERE employees.emp_no IN (422990, 428377)
 ORDER BY employees.last_name ASC, employees.first_name ASC;
 ```
 
-#### Greater and Less Than
+### Greater and Less Than
 If the field you are using is numeric data, then you can also use the `>`, `<`, `<=`, and `>=` comparisons.
 
 ```sql

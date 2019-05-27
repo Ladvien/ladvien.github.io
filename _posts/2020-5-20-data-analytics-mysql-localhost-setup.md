@@ -2,7 +2,7 @@
 layout: post
 title: Setup Local MySQL Database
 categories: data
-series: 
+series: On the Job Training for Data Analysts
 excerpt:
 tags: [mysql, business intelligence, data analytics]
 image: 
@@ -76,5 +76,7 @@ You should see:
 ![mysql-windows-installer-download](../images/data-analytics-series/mysql_setup_53.PNG)
 
 ## Mac
+Mac's a bit simpler.
+![mysql-windows-installer-download](../images/data-analytics-series/mysql_setup_56.PNG)
 
 ## Linux

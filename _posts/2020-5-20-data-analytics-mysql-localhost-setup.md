@@ -36,9 +36,44 @@ After you've downloaded it, open the the file.
 
 If you are prompted to "Upgrade" go ahead and say "Yes"
 
-![mysql-windows-installer-download](../images/data-analytics-series/mysql_setup_44.PNG)
+![mysql-windows-installer-download](../images/data-analytics-series/mysql_setup_45.PNG)
 
+The installer is a bit confusing, but don't worry, most everything is fine left on its default.
 
+Click on MySQL Server then the Add button.  Add "MySQL Server" and "Connector/OBDC x64."  Then click "Next."  You will see a Installation summary, click on "Execute" and wait for the download to finish and then install wizard to begin.
+
+As I stated, most of the install wizard questions we will leave as default.
+
+![mysql-windows-installer-download](../images/data-analytics-series/mysql-server-install.gif)
+
+![mysql-windows-installer-download](../images/data-analytics-series/mysql_setup_46.PNG)
+
+![mysql-windows-installer-download](../images/data-analytics-series/mysql_setup_47.PNG)
+
+![mysql-windows-installer-download](../images/data-analytics-series/mysql_setup_48.PNG)
+
+On the "Accounts and Roles" section you will need to decide on your password for the SQL Server on your local PC.  I obviously didn't pick a great one.  MySQL Server will automatically setup a user with the name of `root` and a password you set here.  This `root` user will permissions to do anything to the server.
+
+![mysql-windows-installer-download](../images/data-analytics-series/mysql_setup_49.PNG)
+
+![mysql-windows-installer-download](../images/data-analytics-series/mysql_setup_50.PNG)
+
+Execute the installer and let it finish.
+![mysql-windows-installer-download](../images/data-analytics-series/mysql_setup_51.PNG)
+
+Once it finishes you should now have MySQL Server installed on your local PC.  Go ahead and open MySQL Workbench and let's connect to this new local server.
+
+Click on the "New Connection" icon and leave everything default, except the "Connection Name," here enter `localhost`.
+![mysql-windows-installer-download](../images/data-analytics-series/mysql_setup_52.PNG)
+
+Double click on the new connection and enter the password you created during installation.  *Voila!*
+
+Let's run a command to make sure everything is working.
+```sql
+SHOW databases;
+```
+You should see:
+![mysql-windows-installer-download](../images/data-analytics-series/mysql_setup_53.PNG)
 
 ## Mac
 

@@ -19,14 +19,13 @@ This article will show you how to setup a copy of MySQL Server on your PC, conne
 # Local MySQL Server Setup
 Each of the three operating systems are a little different on how you must go about setting up a local copy of MySQL Server.  Unfortunately, Windows is the most complex.  Anyway, feel free to skip to the appropriate section
 
-* Windows
-* Max
-* Linux
+* [Windows](https://ladvien.com/data-analytics-mysql-localhost-setup/#windows)
+* [Max](https://ladvien.com/data-analytics-mysql-localhost-setup/#mac)
 
 ## Windows
 First, download the MySQL MSI Installer.
 
-* [MySQL Windows Installer](https://dev.mysql.com/downloads/installer/)
+* [MySQL Server Windows Installer](https://dev.mysql.com/downloads/installer/)
 
 ![mysql-windows-installer-download](../images/data-analytics-series/mysql_setup_43.PNG)
 
@@ -65,6 +64,8 @@ Once it finishes you should now have MySQL Server installed on your local PC. Sk
 
 ## Mac
 Mac's a bit simpler.
+
+* [MySQL Server Mac Installer](https://dev.mysql.com/downloads/mysql/)
 
 Download the `.dmg` installer.
 ![mysql-windows-installer-download](../images/data-analytics-series/mysql_setup_56.PNG)

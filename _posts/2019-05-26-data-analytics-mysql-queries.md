@@ -491,6 +491,6 @@ LEFT JOIN salaries 		AS s
 	ON e.emp_no = s.emp_no
 ```
 * Question #7 -- Modify the above query to **only return results for those with the first name "Yishay", "Huan", or "Otmar"**
-* Question #8 -- Modify resulting query to **to show only their `first_name`, `last_name`, and `salary`.**  
-* Question #9 --Modify resulting query to **to show what departments they work in**.
-* Question #10 --Modify resulting query to **show their hire date**.
+* Question #8 -- Modify resulting query to **to also show only their `first_name`, `last_name`, and `salary`.**  
+* Question #9 -- Modify resulting query to **to also show what departments they work in**.
+* Question #10 -- Modify resulting query to **also show their hire date**.

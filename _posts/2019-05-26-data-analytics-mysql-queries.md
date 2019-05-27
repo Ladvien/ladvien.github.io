@@ -454,4 +454,43 @@ Whew, these are the basic of a SQL query, but, it's just the beginning.  There a
 
 Don't believe me?  Don't worry, I'm going to let you prove it to yourself.  Let's do some homework! :)
 
-# Homework
+# Homework #1
+The following homework will have you take the query provided and modify it to return the described result.  Once all queries are completed, fill free to email the queries to me and I'll "grade" them for you.
+
+For questions #1-6 use the following query:
+```sql
+SELECT *
+FROM employees
+LEFT JOIN dept_emp
+	ON employees.emp_no = dept_emp.emp_no
+LEFT JOIN departments
+	ON dept_emp.dept_no = departments.dept_no
+LEFT JOIN titles
+	ON employees.emp_no = titles.emp_no
+LEFT JOIN salaries
+	ON employees.emp_no = salaries.emp_no;
+```
+* Question #1 -- Modify the above query to **use table aliases instead of full table names.**
+* Question #2 -- Modify resulting query to **only return results for `emp_no`, `first_name`, `last_name`, `dept_name`, `salary`.**  
+* Question #3 --Modify resulting query to *rename the fields to the following "Employee #", "First Name", "Last Name", "Department #", and "Salary".
+* Question #4 --Modify resulting query to list employees **by their salaries; order them lowest salary to the highest.**
+* Question #5 --While keeping the lowest-to-highest salary order, modify resulting query to **list the employees in alphabetical order by their last name** where their salaries are tied.
+* Question #6 -- Modify resulting query to **only provide clients who have make over 50,000**
+
+For questions #7-10 use the following query:
+```sql
+SELECT *
+FROM employees 			AS e
+LEFT JOIN dept_emp		AS de
+	ON e.emp_no = de.emp_no
+LEFT JOIN departments	AS d
+	ON de.dept_no = d.dept_no
+LEFT JOIN titles 		AS t
+	ON e.emp_no = t.emp_no
+LEFT JOIN salaries 		AS s
+	ON e.emp_no = s.emp_no
+```
+* Question #7 -- Modify the above query to **only return results for those with the first name "Yishay", "Huan", or "Otmar"**
+* Question #8 -- Modify resulting query to **to show only their `first_name`, `last_name`, and `salary`.**  
+* Question #9 --Modify resulting query to **to show what departments they work in**.
+* Question #10 --Modify resulting query to **show their hire date**.

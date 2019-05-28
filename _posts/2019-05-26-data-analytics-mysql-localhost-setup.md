@@ -107,7 +107,8 @@ USE name_of_your_database
 Now, we need to go over a bit of boring stuff before we get to loading the CSV.  Sorry, I'll try to keep it brief.
 
 ## Datatypes
-![xkcd-types](https://imgs.xkcd.com/comics/types.png{float: left})
+![xkcd-types](https://imgs.xkcd.com/comics/types.png){: .float-right}
+
 In SQL, every field has something called a "datatype."  You can think of a datatype as a tag on your data tell the computer how to read them.
 
 Ultimately, a computer can't make sense of any human-words.  It has to convert everything into `0` and `1` before it understand its.  Think of a datatype is telling the computer "That word is in French and this other word is English."  Then, the computer knows how to translate those correctly.
@@ -139,7 +140,7 @@ For example:
 
 The maximum size of the data a human will try to stuff in the field is important to the SQL program, as it tries to store data in such a way it minimizes space used and maximizes efficiency in retrieving the data.
 
-As for the different types of data, not all of them will require you specificy the size, but all datatypes will have a size.  Some of them, though, SQL can figure out on its own.
+As for the different types of data, not all of them will require you specify the size, but all datatypes will have a size.  Some of them, though, SQL can figure out on its own.
 
 Ok, here are the types you will most commonly be using:
 

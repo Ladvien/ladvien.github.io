@@ -93,3 +93,77 @@ SHOW databases;
 ```
 You should see:
 ![mysql-windows-installer-download](../images/data-analytics-series/mysql_setup_53.PNG)
+
+# Loading CSV
+
+Create a database
+```sql
+CREATE DATABASE name_of_your_database;
+```
+Before we create a table, make sure we are using the created datebase.
+```sql
+USE name_of_your_database
+```
+Now, we need to go over a bit of boring stuff before we get to loading the CSV.  Sorry, I'll try to keep it brief.
+
+## Datatypes
+![xkcd-types](https://imgs.xkcd.com/comics/types.png{float: left})
+In SQL, every field has something called a "datatype."  You can think of a datatype as a tag on your data tell the computer how to read them.
+
+Ultimately, a computer can't make sense of any human-words.  It has to convert everything into `0` and `1` before it understand its.  Think of a datatype is telling the computer "That word is in French and this other word is English."  Then, the computer knows how to translate those correctly.
+
+If this was left up to the computer entirely, it might see a word and say, "Oh, yah, this is one of those French words," when it is actually English, thus, the conversion to `0` and `1`s are incorrect.
+
+<div style="clear: both;"></div>
+
+You may have encountered this in a spreadsheet.  If you open a spreadsheet and see something like
+![xkcd-types](../images/data-analytics-series/mysql_setup_59.png)
+
+The data I actually provided the spreadsheet were:
+
+| Zipcode |
+|:--------|
+| 75444   |
+| 06579   |
+
+Notice the zero in front of `6579`, this was due to the computer saying, "Oh, these data look like numbers--and since the human didn't tell me otherwise, I'm going to treat them like numbers.  And, well, it is perfectly valid to drop the leading zero of a number."
+
+In short, datatypes are _extremely_ important.  In my own work, a good 10-20% of bugs I find are when a human has provided an incorrect datatype to a computer.
+
+### SQL Datatypes
+In SQL there are a lot of datatypes, however, some you may never need to use.  One way SQL is a bit different than a spreadsheet is it wants to know ahead of time the size it needs to make the field.
+
+For example:
+* CHAR(19) could hold the following: `<-------19-------->` 
+* CHAR(5) could hold the following: `<-5->`
+
+The maximum size of the data a human will try to stuff in the field is important to the SQL program, as it tries to store data in such a way it minimizes space used and maximizes efficiency in retrieving the data.
+
+As for the different types of data, not all of them will require you specificy the size, but all datatypes will have a size.  Some of them, though, SQL can figure out on its own.
+
+Ok, here are the types you will most commonly be using:
+
+#### `CHAR`
+The `CHAR` is short for character data.  These data will include, you guessed it, characters.  Examples are: `A`, `B`, `z`, `$`, `:`, etc.  They are a single symbol understood by humans.
+
+#### `VARCHAR`
+
+
+* `VARCHAR`
+* `TINYINT` or `INT`
+* `TEXT`
+
+## Creating the Table
+
+```sql
+CREATE TABLE IF NOT EXISTS tasks (
+    task_id INT AUTO_INCREMENT,
+    title VARCHAR(255) NOT NULL,
+    start_date DATE,
+    due_date DATE,
+    status TINYINT NOT NULL,
+    priority TINYINT NOT NULL,
+    description TEXT,
+    PRIMARY KEY (task_id)
+)  ENGINE=INNODB;
+```

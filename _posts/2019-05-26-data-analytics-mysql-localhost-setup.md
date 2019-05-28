@@ -115,7 +115,7 @@ Ultimately, a computer can't make sense of any human-words.  It has to convert e
 
 If this was left up to the computer entirely, it might see a word and say, "Oh, yah, this is one of those French words," when it is actually English, thus, the conversion to `0` and `1`s are incorrect.
 
-<div style="clear: both;"></div>
+
 
 You may have encountered this in a spreadsheet.  If you open a spreadsheet and see something like
 ![xkcd-types](../images/data-analytics-series/mysql_setup_59.png)
@@ -130,6 +130,7 @@ The data I actually provided the spreadsheet were:
 Notice the zero in front of `6579`, this was due to the computer saying, "Oh, these data look like numbers--and since the human didn't tell me otherwise, I'm going to treat them like numbers.  And, well, it is perfectly valid to drop the leading zero of a number."
 
 In short, datatypes are _extremely_ important.  In my own work, a good 10-20% of bugs I find are when a human has provided an incorrect datatype to a computer.
+<div style="clear: both;"></div>
 
 ### SQL Datatypes
 In SQL there are a lot of datatypes, however, some you may never need to use.  One way SQL is a bit different than a spreadsheet is it wants to know ahead of time the size it needs to make the field.

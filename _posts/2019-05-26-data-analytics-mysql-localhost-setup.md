@@ -107,7 +107,7 @@ USE name_of_your_database
 Now, we need to go over a bit of boring stuff before we get to loading the CSV.  Sorry, I'll try to keep it brief.
 
 ## Datatypes
-![xkcd-types](../images/data-analytics-series/types.png){: .float-right}
+![xkcd-types](https://imgs.xkcd.com/comics/types.png){: .float-right}
 
 In SQL, every field has something called a "datatype."  You can think of a datatype as a tag on your data tell the computer how to read them.
 

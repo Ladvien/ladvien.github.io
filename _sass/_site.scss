@@ -35,7 +35,7 @@
 /* float image to the left */
 .image-left {
 	float: none;
-	@media #{$medium} {
+	@media #{$small} {
 		float: left;
 	}
 }
@@ -43,7 +43,7 @@
 /* float image to the right */
 .image-right {
 	float: none;
-	@media #{$medium} {
+	@media #{$small} {
 		float: right;
 	}
 }

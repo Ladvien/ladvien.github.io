@@ -138,7 +138,7 @@ For example:
 
 The maximum size of the data a human will try to stuff in the field is important to the SQL program, as it tries to store data in such a way it minimizes space used and maximizes efficiency in retrieving the data.
 
-As for the different types of data, not all of them will require you specify the size, but all datatypes will have a size.  Some of them, though, SQL can figure out on its own.
+As for the different datatypes, not all of them will require you specify the size, but all datatypes will have a size.  Some of them, though, SQL can figure out on its own.
 
 Ok, here are the types you will most commonly be using:
 

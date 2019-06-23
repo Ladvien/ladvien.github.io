@@ -109,11 +109,10 @@ Now, we need to go over a bit of boring stuff before we get to loading the CSV. 
 ## Datatypes
 In SQL, every field has something called a "datatype."  You can think of a datatype as a tag on your data tell the computer how to read them.
 
-Ultimately, a computer can't make sense of any human-words.  It has to convert everything into `0` and `1` before it understand its.  Think of a datatype is telling the computer "That word is in French and this other word is English."  Then, the computer knows how to translate those correctly.
-
-If this was left up to the computer entirely, it might see a word and say, "Oh, yah, this is one of those French words," when it is actually English, thus, the conversion to `0` and `1`s are incorrect.
+Ultimately, a computer can't make sense of any human-words.  It has to convert everything into `0` and `1` before it understand its.  If this conversion was left up to the computer entirely, it might see a word and say, "Oh, yah, this is one of those French words," when it is actually English, thus, the conversion to `0` and `1`s are incorrect.
 
 You may have encountered this in a spreadsheet.  If you open a spreadsheet and see something like
+
 ![xkcd-types](../images/data-analytics-series/mysql_setup_59.png)
 
 The data I actually provided the spreadsheet were:
@@ -125,7 +124,41 @@ The data I actually provided the spreadsheet were:
 
 Notice the zero in front of `6579`, this was due to the computer saying, "Oh, these data look like numbers--and since the human didn't tell me otherwise, I'm going to treat them like numbers.  And, well, it is perfectly valid to drop the leading zero of a number."
 
-In short, datatypes are _extremely_ important.  In my own work, a good 10-20% of bugs I find are when a human has provided an incorrect datatype to a computer.
+I wish all datatypes were this simple, however, the above example is about is simple as it gets. We can try to skip over a lot of nuances of datatypes and focus on the three we will probably see the most:
+
+* DATE
+* TIME
+* INT (short of integer)
+* FLOAT
+* CHAR (short for character)
+
+Here are what samples of the above data would look like in a spreadsheet:
+
+| DATE       | TIME | INT | FLOAT | CHAR | 
+|:-----------|:-----|:----|:------|:-----|
+| 2019-10-01 | 2019-10-01 12:01:22 | 42 | 42.4 | The answer to it all. | 
+
+#### DATE
+Dates are pretty straightforward, they store a year, month, and day as a number.  However, when we retrieve this number it is put in the human readable format listed above.
+
+#### TIME
+Time is exactly like `DATE`, but it also includes hours, minutes, and seconds (sometimes milliseconds).
+
+#### INT
+An `INT` stores a number no bigger than `2,147,483,647`.  However, one thing an `INT` cannot do is store a partial numbers.  For example, if we try to store `0.5` in an `INT` field it will probably get converted to `1`.
+
+#### FLOAT
+`FLOAT`s fill in where `INTS` fail.  That is, a `FLOAT` store only up to the precision you specifiy.  For example, if we tried to store a `0.5` in a `FLOAT` with two precision points we'd be fine.  However, if we tried to store `0.4567` in a `FLOAT` with only two precision points, then it would be converted to `0.46`, or rounded up.
+
+#### CHAR
+`CHAR` is meant to store human readable text.  When you put data into a `CHAR` field, the SQL program knows this is human readable information and doesn't try to figure it out at all.  It leaves it literally as it is.  This is why `CHARS` are known as "literals."  They are also called "strings," because the computer seems them as a bunch of characters strung together.
+
+### Don't Sweat Datatypes
+Datatypes are _extremely_ important.  In my own work, a good 10-20% of bugs I find are when a human has provided an incorrect datatype to a computer.
+
+However, don't feel overwhelemed by datatypes right now.  Give yourself permisson to ignore them as much as possible.
+
+I had to introduce you to them, as they will need them when importing data into your database.  But! They are a black-whole of nuance.  Best to deal wit them when they start causing you problems.  My goal was to just put a thought in the back of your mind they exist, so when you come a across the weirdness they cause you'll know how to Google for the answer.
 
 ![xkcd-types](../images/data-analytics-series/types.png)
 

@@ -193,6 +193,17 @@ Ready!? Let's do it!
 Open Workbench, type, and run the following:
 ```
 CREATE DATABASE tasksDB;
+
+SHOW databases;
+
+USE tasksDB;
+
+SELECT * FROM tasks;
+
+LOAD DATA INFILE 'task.csv' INTO TABLE tasks;
+
+SELECT * FROM tasks;
+
 ```
 
 
@@ -208,5 +219,6 @@ CREATE TABLE IF NOT EXISTS tasks (
     PRIMARY KEY (task_id)
 )  ENGINE=INNODB;
 ```
+
 
 https://superuser.com/questions/1354368/mysql-error-in-loading-csv-file-data-into-table

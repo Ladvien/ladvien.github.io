@@ -200,7 +200,10 @@ USE tasksDB;
 
 SELECT * FROM tasks;
 
-LOAD DATA INFILE 'task.csv' INTO TABLE tasks;
+LOAD DATA INFILE './task.csv'  INTO TABLE tasks
+FIELDS TERMINATED BY ','
+ENCLOSED BY '"' 
+LINES TERMINATED BY '\n';
 
 SELECT * FROM tasks;
 

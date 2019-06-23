@@ -153,37 +153,31 @@ An `INT` stores a number no bigger than `2,147,483,647`.  However, one thing an 
 #### CHAR
 `CHAR` is meant to store human readable text.  When you put data into a `CHAR` field, the SQL program knows this is human readable information and doesn't try to figure it out at all.  It leaves it literally as it is.  This is why `CHARS` are known as "literals."  They are also called "strings," because the computer seems them as a bunch of characters strung together.
 
-### Don't Sweat Datatypes
-Datatypes are _extremely_ important.  In my own work, a good 10-20% of bugs I find are when a human has provided an incorrect datatype to a computer.
-
-However, don't feel overwhelemed by datatypes right now.  Give yourself permisson to ignore them as much as possible.
-
-I had to introduce you to them, as they will need them when importing data into your database.  But! They are a black-whole of nuance.  Best to deal wit them when they start causing you problems.  My goal was to just put a thought in the back of your mind they exist, so when you come a across the weirdness they cause you'll know how to Google for the answer.
-
-![xkcd-types](../images/data-analytics-series/types.png)
-
 ### SQL Datatypes
 In SQL there are a lot of datatypes, however, some you may never need to use.  One way SQL is a bit different than a spreadsheet is it wants to know ahead of time the size it needs to make the field.
+
+#### CHAR Revisited
+This will mainly impact us when dealing with `CHAR`.  When the SQL program creates a `CHAR` field it wants to know the maximum number of characters which will ever go into the field.
 
 For example:
 * CHAR(19) could hold the following: `<-------19-------->` 
 * CHAR(5) could hold the following: `<-5->`
 
+One important note, if you put a single character in a `CHAR(5)` field, then the SQL program will fill in the other four characters with a `NULL`.  In short, a `CHAR` field will _always_ be full.
+
+#### VARCHAR
+There is another type of character field which allows you to put more or less data than was decided at the beginning.  The `VARCHAR` datatype stands for "variable character" field.  It will allow you to store up to `65,535` characters on MySQL.  This is around 3 pages of text. 
+
+#### VARCHAR vs. CHAR
+Why have `CHAR` at all?  Shouldn't we always use `VARCHAR` for everything just in case?  Well, usually, but not always.
+
+Often, when you design a database you want to make it as efficient as possible (I mean, it's going to be successful business product, right?).  `CHAR` has a few speed advantages for your database.  And take Social Security Numbers, if your database has to store these data then it should probably be a `CHAR` as these data have historically been 9-digits.
+
+Pop quiz, why don't we store a Social Security Number as an `INT`? 
+
 The maximum size of the data a human will try to stuff in the field is important to the SQL program, as it tries to store data in such a way it minimizes space used and maximizes efficiency in retrieving the data.
 
-As for the different datatypes, not all of them will require you specify the size, but all datatypes will have a size.  Some of them, though, SQL can figure out on its own.
 
-Ok, here are the types you will most commonly be using:
-
-#### `CHAR`
-The `CHAR` is short for character data.  These data will include, you guessed it, characters.  Examples are: `A`, `B`, `z`, `$`, `:`, etc.  They are a single symbol understood by humans.
-
-#### `VARCHAR`
-
-
-* `VARCHAR`
-* `TINYINT` or `INT`
-* `TEXT`
 
 ## Creating the Table
 

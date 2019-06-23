@@ -171,15 +171,30 @@ There is another type of character field which allows you to put more or less da
 #### VARCHAR vs. CHAR
 Why have `CHAR` at all?  Shouldn't we always use `VARCHAR` for everything just in case?  Well, usually, but not always.
 
-Often, when you design a database you want to make it as efficient as possible (I mean, it's going to be successful business product, right?).  `CHAR` has a few speed advantages for your database.  And take Social Security Numbers, if your database has to store these data then it should probably be a `CHAR` as these data have historically been 9-digits.
+Often, when you design a database you want to make it as efficient as possible (I mean, it's going to be successful business product, right?).  The maximum size of the data a human will try to stuff in the field is important to the SQL program, as it tries to store data in such a way it minimizes space used and maximizes efficiency in retrieving the data.
+
+In short, `CHAR` has a few advantages for your database.  And take Social Security Numbers, if your database has to store these data then it should probably be a `CHAR` as these data have historically been 9 characters (11 if you include dashes).
 
 Pop quiz, why don't we store a Social Security Number as an `INT`? 
 
-The maximum size of the data a human will try to stuff in the field is important to the SQL program, as it tries to store data in such a way it minimizes space used and maximizes efficiency in retrieving the data.
-
-
-
 ## Creating the Table
+Ok, I've put you through a crash course of datatypes to get you to this point.  
+
+We are going to:
+1. Create a database called `tasksDB`
+2. Active `tasksDB`
+3. Create a table on `tasksDB`, setting the fields datatype
+4. Then import a CSV into this table
+5. Lastly, we will write a query against the table
+
+Ready!? Let's do it!
+
+### Creating Database
+Open Workbench, type, and run the following:
+```
+CREATE DATABASE tasksDB;
+```
+
 
 ```sql
 CREATE TABLE IF NOT EXISTS tasks (
@@ -193,3 +208,5 @@ CREATE TABLE IF NOT EXISTS tasks (
     PRIMARY KEY (task_id)
 )  ENGINE=INNODB;
 ```
+
+https://superuser.com/questions/1354368/mysql-error-in-loading-csv-file-data-into-table

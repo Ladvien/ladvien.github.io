@@ -11,7 +11,7 @@ print("")
 print("*******************************************************")
 print("* Moving raw_images into images                       *")
 print("*******************************************************")
-os.system('rsync -h -v -r -P -t --ignore-existing /home/ladvien/ladvien.github.io/raw_images/* /home/ladvien/ladvien.github.io/images')
+os.system('rsync -h -v -r -P -t --size-only /home/ladvien/ladvien.github.io/raw_images/* /home/ladvien/ladvien.github.io/images')
 
 
 print('')

@@ -76,6 +76,10 @@ Also, the trainer would be expecting a file structure something like this:
 data
 ├── test
 │   ├── 2456
+│   │     └── 2456_0001.jpg
+│   │     └── 2456_0002.jpg
+│   │     └── 2456_0003.jpg
+│   │     └── ....
 │   ├── 3001
 │   ├── 3002
 │   ├── 3003
@@ -249,7 +253,7 @@ for part_number in part_numbers:
 Full code may be found here:
 * [CNN LEGO Trainer (Python)](https://github.com/Ladvien/lego_sorter/blob/master/lego_classifier_gpu.py)
 
-### Classifier Code:: Needed Libraries
+### Classifier Code: Needed Libraries
 ```python
 import tensorflow as tf
 
@@ -275,7 +279,7 @@ import webbrowser
 import time
 ```
 
-### Classifier Code:: Parameters
+### Classifier Code: Parameters
 ```python
 continue_training       = False
 initial_epoch           = 0
@@ -302,7 +306,7 @@ train_dir               = './lego_id_training_data/gray_train/'
 val_dir                 = './lego_id_training_data/gray_test/'
 ```
 
-### Classifier Code:: Helper Functions
+### Classifier Code: Helper Functions
 ```python
 if clear_logs:
   !rm -rf data/output/logs/*
@@ -325,7 +329,7 @@ def show_final_history(history):
 ```
 
 
-### Classifier Code:: Data Preparation
+### Classifier Code: Data Preparation
 ```python
 #################################
 # Create needed dirs
@@ -369,7 +373,7 @@ num_classes = len(train_gen.class_indices)
 ```
 
 
-### Classifier Code:: Building the Model
+### Classifier Code: Building the Model
 ```python
 
 def test_model(opt, input_shape):
@@ -423,7 +427,7 @@ model.compile(
 ```
 
 
-### Classifier Code:: Creating Callbacks
+### Classifier Code: Creating Callbacks
 ```python
 best_model_weights = model_save_dir + 'base.model'
 
@@ -473,7 +477,7 @@ callbacks = [checkpoint, csvlogger, tensorboard]
 ```
 
 
-### Classifier Code:: Training
+### Classifier Code: Training
 ```python
 if continue_training:
     model.load_weights(best_model_weights)

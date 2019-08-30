@@ -12,7 +12,7 @@ echo ""
 echo "*******************************************************"
 echo "* Moving raw_images into images                       *"
 echo "*******************************************************"
-rsync -h -v -r -P -t --ignore-existing /home/ladvien/ladvien.github.io/raw_images/* /home/ladvien/ladvien.github.io/images
+rsync -h -v -r -P -t --size-only /home/ladvien/ladvien.github.io/raw_images/* /home/ladvien/ladvien.github.io/images
 
 
 echo ""

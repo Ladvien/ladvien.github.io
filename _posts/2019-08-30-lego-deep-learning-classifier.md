@@ -13,7 +13,7 @@ custom_css:
 custom_js: 
 ---
 
-[![](../images/lego_classifier/lego_classifier_comic.png){: .float-right}](https://ladvien.com/lego_classifier/lego_classifier_comic.png) I've a robot friend.  To be clear, the friend is not a robot, rather, we build robots together.  One of the projects we tossed about is building a LEGO sorting machine.  Ezra--again, not a robot--teaches robotics to kids.  For their designs, LEGOs are the primary component.  Unfortunately, this results in much time spent to preparing for an event.
+[![](../images/lego_classifier/lego_classifier_comic.png){: .float-right}](https://ladvien.com/lego_classifier/lego_classifier_comic.png) I've a robot friend.  To be clear, the friend is not a robot, rather, we build robots together.  One of the projects we tossed about is building a LEGO sorting machine.  Rockets--again, not a robot--teaches robotics to kids.  For their designs, LEGOs are the primary component.  Unfortunately, this results in much time spent to preparing for an event.
 
 He mentioned to me, "What we really need is a sorting machine."  I remained skpetical for some time, but finally, I warmed up to the idea when he started talking about incorporating a deep neural-netowrk.  More specifically, a convultional neural-network (CNN).  
 
@@ -37,7 +37,7 @@ So, after reading a few articles, we figured we could do this.  We just need the
 * [Kaggle: Database of Lego "Images" (they are rendered from models)](https://www.kaggle.com/joosthazelzet/lego-brick-images)
 * [Kaggle: Lego vs Generic Brick](https://www.kaggle.com/pacogarciam3/lego-vs-generic-brick-image-recognition#example_Lego_1x4_crop0.jpg)
 
-I wasn't happy about these datasets.  Their structures weren't great and they were not designed to help train a classifier.  But then, Ezra found Paco had actually opened his dataset to the public:
+I wasn't happy about these datasets.  Their structures weren't great and they were not designed to help train a classifier.  But then, Rockets found Paco had actually opened his dataset to the public:
 
 * [Kaggle: Lego Brick Sorting (best)](https://www.kaggle.com/pacogarciam3/lego-brick-sorting-image-recognition?fbclid=IwAR303nIR4revbYVmW7YfC_4Frnqu3yn5gOi_HP7elJ4h1_a7uXDE1MVtacw)
 
@@ -50,24 +50,25 @@ Paco, you are a robot friend, too!
 Alright, we were encouraged by Paco.  We knew the project would be possible.  However, we didn't want to step on [brownfield](https://en.wikipedia.org/wiki/Brownfield_(software_development)).  We needed the green. Or if you don't speak dev, we didn't want to do this the easy way and replicate Paco's work.  We wanted to really beat ourselves up by doing everything from scratch.
 
 ## Creating a Dataset
-As I stated before, I didn't like any datasets but Paco's.  It was real images and meant to train a classifier.  But, they weren't the LEGOs we wanted to classify.  Ezra's LEGO projects involve a lot of technic bricks, which didn't seem to be in Paco's mix.  So, we set out to create our own (yanno, the hard way).
+As I stated before, I didn't like any datasets but Paco's.  It was real images and meant to train a classifier.  But, they weren't the LEGOs we wanted to classify.  Rockets's LEGO projects involve a lot of technic bricks, which didn't seem to be in Paco's mix.  So, we set out to create our own (yanno, the hard way).
 
 The first attempt creating training images was by rendering images from `.stl` files found on the internet using the Python version of [Visualization Toolkit](https://vtk.org/).  I won't cover it here since it was a fail and as I'll create an article later about the stuff we tried and didn't work.
 
-![](../images/lego_classifier/ezras_contraption.jpg){: .float-left} Anyway, while I was working on it Ezra had a brilliant plan.  He created an instrument to take pictures of a LEGO on a spin plate.  It used a Raspberry Pi, Pi Cam, and stepper motor, and unicorn farts.
+![](../images/lego_classifier/rockets_contraption.jpg){: .float-left} Anyway, while I was working on it Rockets had a brilliant plan.  He created an instrument to take pictures of a LEGO on a spin plate.  It used a Raspberry Pi, Pi Cam, and stepper motor, and unicorn farts.
 
-Then Ezra began taking pictures of 10 classes of LEGOs. Not sure how long this took him, but he shortly pinged me letting me know he had 19,000 images. (Ok, ok, he might be _part_ robot.) 
+Then Rockets began taking pictures of 10 classes of LEGOs. Not sure how long this took him, but he shortly pinged me letting me know he had 19,000 images. (Ok, ok, he might be _part_ robot.) 
 
-I'm not going to attempt explaining the build, as I believe Ezra will do this shortly.  Besides, about the only part I understand is the unicorn flatulence.
+I'm not going to attempt explaining the build, as I believe Rockets will do this shortly.  Besides, about the only part I understand is the unicorn flatulence.
 
 
 Alright! Now I needed to get my butt in gear and fix up the software.
 <div style="clear: both;"></div>
 
 ## Preprocessing Code: 
-Before we could start training a CNN on Ezra's images we needed to do some preprocessing.  First, the images came in at full resolution, but we needed to crop them, as the CNN would expected a square image.  Of course, the image would need to be cropped as not to lose the target data (the LEGO).s
+Before we could start training a CNN on Rockets's images we needed to do some preprocessing.  First, the images came in at full resolution, but we needed to crop them, as the CNN would expected a square image.  Of course, the image would need to be cropped as not to lose the target data (the LEGO).
 
 For example
+![preprocess-image-for-cnn](../images/lego_classifier/crop_and_resize.png)
 
 
 ## Classifier Code:

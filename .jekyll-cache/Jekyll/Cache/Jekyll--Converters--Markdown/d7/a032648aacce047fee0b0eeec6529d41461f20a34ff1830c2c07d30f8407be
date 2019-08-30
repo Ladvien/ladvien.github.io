@@ -1,0 +1,255 @@
+I"�9<h3 id="some-html">Some HTML</h3>
+
+<p><u>Why the Hell?</u></p>
+
+<p><img src="/../images/LeavingLMR.jpg" alt="LeavingLMR.jpg" />Wow, it’s been awhile since I’ve actually written anything in Drupal based text editor.  Feels like home.</p>
+
+<p>Honestly, I’m not going to go into the “Why” of building this site.  Maybe I’ll do that later.  Let’s just say, there was an impetus to recreate the home we were forced to leave.</p>
+
+<p><u>How the Blink?</u></p>
+
+<p>Spinning Up a Server:</p>
+
+<p>The first thing was deciding on a server.  I didn’t have much (um, any) experiencing in spinning up a server.  But after a bit of reading, checking the bank account, and finding what would work for Drupal site, I chose <a href="https://www.linode.com/">Linode</a>. </p>
+
+<p>Definitely happy so far.  Their business model seems to be no frills Linux servers which are fast to spin up–if you know what you are doing.  Of course, I didn’t.  Still, they had a lot of fairly up to date walkthroughs.</p>
+
+<p>Here are the walkthroughs I used (in order) to spin up this server:</p>
+
+<ol>
+  <li><a href="https://www.linode.com/docs/getting-started">Getting Started</a></li>
+  <li><a href="https://www.linode.com/docs/security/securing-your-server">Securing your Server</a></li>
+  <li><a href="https://www.linode.com/docs/websites/hosting-a-website">Hosting a Website</a></li>
+  <li><a href="https://www.linode.com/docs/websites/cms/managing-web-content-with-drupal-7">Installing Drupal 7</a></li>
+</ol>
+
+<p>This almost all the information needed to create this site’s based.  A couple of caveats:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo apt-get install php5 php-pear sudo apt-get install php5-mysql
+</code></pre></div></div>
+
+<p>Needs to be replaced with:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo apt-get install php php-pear sudo apt-get install php-mysql
+</code></pre></div></div>
+
+<p>This will install the latest version of PHP, for me, that was PHP7.</p>
+
+<p>Also, the install directory is different for PHP7.  This is important, since the php.ini file needs to be edited.  In 7 it may be found:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/etc/php/7.0/cli
+</code></pre></div></div>
+
+<p>The last thing to do was relocate the Drupal 7 files to the directory where Apache can serve them up.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cd /var/www/html sudo wget https://ftp.drupal.org/files/projects/drupal-7.50.zip
+</code></pre></div></div>
+
+<p>If all the script-blogs are followed correctly, then when entering the web IP of the site in the browser you should see the following:</p>
+
+<p><img src="/../images/Drupal_On_Linode.PNG" alt="Drupal_On_Linode.PNG" /></p>
+
+<p>Design Goals:</p>
+
+<p>Goals.  It’s good to have them.  Thinking through what I’d like out of a new robot-home here are some of the concepts which seemed critical and important:</p>
+
+<ol>
+  <li>An open place for anyone to express ideas, with minimum viable censorship.</li>
+  <li>Responsive.  Not just mobile friendly, but optimized for quick viewing of information.</li>
+  <li>Shoutbox.  Gots to have one.</li>
+  <li>WYSIWYG and rich content editors:
+    <ul>
+      <li>Iframes</li>
+      <li>Image boxes</li>
+      <li>Image storage system</li>
+      <li>Code-highlighting including our favorite languages (and Ada for Mr. Bdk6)</li>
+    </ul>
+  </li>
+  <li>The primary features of our old home:
+    <ul>
+      <li>Collect</li>
+      <li>Chill-out Zone</li>
+      <li>Forums</li>
+      <li>Shoutbox, oh wait, already stated that.</li>
+    </ul>
+  </li>
+  <li>New features requested by members:
+    <ul>
+      <li>Content rating</li>
+      <li>Member points</li>
+      <li>Wiki</li>
+      <li>Anything we could dream of</li>
+    </ul>
+  </li>
+</ol>
+
+<p>Theme:</p>
+
+<p>There are three layers to the theme: </p>
+
+<ol>
+  <li><a href="https://www.drupal.org/project/adaptivetheme\\">AdaptiveThemes</a> was selected as the main</li>
+  <li><a href="https://www.drupal.org/project/corolla">Corolla</a> over it</li>
+  <li><a href="https://www.drupal.org/project/footheme">FooTheme</a> went over it.</li>
+</ol>
+
+<p>In the /var/www/html/sites/all/themes/corolla/ directory there is a file called corolla.info inside a referenced was added for css/corolla_overrides.css.<br />
+<img src="/../images/Screenshot%202016-10-10%2018.59.30.png" alt="Screenshot 2016-10-10 18.59.30.png" /><br />
+Then, in the /var/www/html/sites/all/themes/corolla/css directory the corolla_override.css file was made which includes several hackish css snippets:</p>
+
+<figure class="highlight"><pre><code class="language-css" data-lang="css">    <span class="c">/* The title was originally set to -5px (weird) */</span>
+    <span class="nf">#site-name</span> <span class="nt">a</span> <span class="p">{</span>
+      <span class="nl">letter-spacing</span><span class="p">:</span> <span class="m">0px</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="nc">.wrap-code</span> <span class="p">{</span>
+      <span class="nl">overflow-x</span><span class="p">:</span> <span class="nb">scroll</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c">/* These hide some uncessary shoutbox labels. */</span>
+    <span class="nc">.shoutbox-interval-msg</span> <span class="p">{</span>
+      <span class="nl">visibility</span><span class="p">:</span> <span class="nb">hidden</span><span class="p">;</span>
+      <span class="nl">display</span><span class="p">:</span> <span class="nb">none</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="nf">#edit-nick</span><span class="p">{</span>
+      <span class="nl">visibility</span><span class="p">:</span> <span class="nb">hidden</span><span class="p">;</span>
+      <span class="nl">display</span><span class="p">:</span><span class="nb">none</span><span class="p">;</span>
+    <span class="p">}</span></code></pre></figure>
+
+<p>Regarding the color scheme.  The palettee can be edited in the Footheme “Color” section.  This requires th Color (Drupal Core) module be enabled.  The palettee was selected by using <a href="http://www.pictaculous.com/">Pictaculous</a> taking an image of Russian revolutionary art.  This was meant to capture the feeling palette selected by an artist with a better understanding of <a href="https://designshack.net/articles/graphics/the-science-behind-color-and-emotion/">color-emotion</a> connections.</p>
+
+<p><img src="http://3.bp.blogspot.com/-UNUkZH4wSVg/UMQieV7p8bI/AAAAAAAAO6g/gk-z_yAnkIA/s640/a1.JPG" alt="" /></p>
+
+<p>Fonts<br />
+Logo selection</p>
+
+<p>Modules:</p>
+
+<p><a href="https://www.drupal.org/project/admin_tools">Admin Tools:</a></p>
+
+<p>“Admin Tools is an addon module for the <a href="http://drupal.org/project/admin">Admin</a> module, which provides a sidebar navigation for selected roles. The Admin Tools module adds functionality and quick access for clearing caches, running cron and updates much like <a href="http://drupal.org/project/admin_menu">Admin Menu</a>.”</p>
+
+<p>I <em>hate</em> cache errors.  Mother-blinking cache!</p>
+
+<p><a href="https://www.drupal.org/project/admin_menu">Administration Menu</a>:</p>
+
+<p>Admin tools sped up development a lot.  It basically simplifies the admin menu so 4th level items are exposed to one click.</p>
+
+<p>Blog (core)</p>
+
+<p>Allows the Drupal site act like a good old blog–for us, this allows multi-authoring content and management.</p>
+
+<p>Block (core)</p>
+
+<p>Allows a block design of the UI.</p>
+
+<p><a href="https://www.drupal.org/project/ctools">Chaos Tools</a></p>
+
+<p>This is a dependency for other modules (a lot of others).</p>
+
+<p><a href="https://www.drupal.org/project/ckeditor">CKEditor</a><img src="/../images/Screenshot%202016-09-24%2020.49.03.png" alt="Screenshot 2016-09-24 20.49.03.png" /></p>
+
+<p>The CKEditor is the core of the Drupal blogging package.  It is the editor used to create this post.  However, it put up the most fight when trying to install.  Actually, that’s not fair.  It wasn’t the CKEditor it was the code highlighting which was such a pain.  The code highlighting allows this:</p>
+
+<figure class="highlight"><pre><code class="language-c" data-lang="c">    <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">marioTouchesRobots</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">){</span>
+        <span class="n">aHackerSpiritDies</span><span class="p">();</span>
+    <span class="p">}</span></code></pre></figure>
+
+<p>I’m going to list out the steps used to setup the CKEditor used for this article, but then discuss some of the pitfalls, which ended up costing a lot of development time.</p>
+
+<p>Steps to Setup CKEditor with CodeSnippets and HighlightingJS:</p>
+
+<ol>
+  <li>Download the <a href="https://www.drupal.org/project/ckeditor">CKEditor - WYSIWYG HTML editor</a> module.</li>
+  <li>Enable the CKEditor module.</li>
+  <li>Go to Configuration–&gt;CKEditor–&gt;Edit CKEditor Global Profile</li>
+  <li>Set the “Path to CKEditor” to //cdn.ckeditor.com/4.5.4/full-all. This will use the content delivery network to serve up the CKEditor JavaScript.  It also lets you access a lot of plugins without having to manage them.  The other option is to pull a copy on the local server–it’s a lot more hassle managing.</li>
+  <li>Go to Configuration–&gt;CKEditor–&gt;Profile X–&gt;Edit (note, X = Text Editing profiles users will be able to select when blogging.  These can be managed under content Content Authoring –&gt; Text Formats).</li>
+  <li>Go to Basic Setup.  Here, add all the Text Formats this particular CKEditor profile should affect.<img src="/../images/Screenshot%202016-10-02%2010.43.11.png" alt="Screenshot 2016-10-02 10.43.11.png" /></li>
+  <li>Under Security make sure “Always run security filters for CKEditor” is Enabled (should default).</li>
+  <li>Under Editor Appearance go straight to the check-box title “Plugin for inserting Code Snippets” and enable it.</li>
+  <li>Also, enable what other CKEditor Plugins needed.  Note, there are more plugins then this, but these are the ones provided through the Content Delivery Network.</li>
+  <li>Scroll to the end and hit Save.  Now, go back to Configuration–&gt;CKEditor–&gt;Profile X–&gt;Edit.  Go straight to Editor Appearance.  There should be a new button available</li>
+  <li>Add the Code Snippet button to the “Current Toolbar”</li>
+  <li>This should enable the CKEditor and provide the Code Snippet button.</li>
+  <li>Download the <a href="https://www.drupal.org/project/highlightjs">highlight js</a> Drupal module.  This should be installed in the modules directory</li>
+  <li>Navigate to var/www/html/sites/all/libraries folder and make a directory called ‘highlightjs’, switch to it.</li>
+  <li>The highlight js module is dependent on the actual <a href="https://highlightjs.org/">highlightjs css</a> libaries though.  Download a package in the /var/www/html/sites/all/libraries/highlightjs folder.</li>
+  <li>Unzip highlightjs here.</li>
+  <li>Issue the command ‘sudo mv higlight.pack.js highlightjs’.  This is required or the highlight module can’t find the libraries.</li>
+  <li>And the command ‘sudo chmod 666 highlightjs’.</li>
+  <li>Go to the modules dashboard and enable Highlight JS Syntax.  <u>DO NOT</u> enable Highlight JS Filtetr.</li>
+  <li>Open the modules /var/www/html/sites/all/modules/ckeditor$</li>
+  <li>Type sudo nano ckeditor.config.js</li>
+  <li>Add each HighlightJS language you would like to show in the dropdown box in the CKEditor.  The part on the left of the colon is should match the HighlighJS language code.  The part between the ‘ ‘s will be what is displayed in the CKEditor dropdown.  When adding supported languages, here’s a good reference – <a href="http://highlightjs.readthedocs.io/en/latest/css-classes-reference.html">Supported HighlightJS languages</a> (but it doesn’t include custom languages, like Arduino).  Don’t forget to save when done.</li>
+</ol>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js">        <span class="nx">config</span><span class="p">.</span><span class="nx">codeSnippet_languages</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="na">php</span><span class="p">:</span> <span class="dl">'</span><span class="s1">PHP</span><span class="dl">'</span><span class="p">,</span>
+            <span class="na">python</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Python</span><span class="dl">'</span><span class="p">,</span>
+            <span class="na">arduino</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Arduino</span><span class="dl">'</span><span class="p">,</span>
+            <span class="na">c</span><span class="p">:</span> <span class="dl">'</span><span class="s1">C</span><span class="dl">'</span>
+        <span class="p">};</span></code></pre></figure>
+
+<ol>
+  <li><img src="/../images/Overflow.png" alt="Overflow.png" />There is an issue with the HighlightJS module where the text escapes the divs.  It took a long time to find the culprit.  Apparently, the HighlightJS modules causes this whenever it renders HTML produced by CKEditor.  </li>
+  <li>Go to /var/www/html/sites/all/modules/highlightjs</li>
+  <li>Type sudo nano highlight_js.css</li>
+  <li>
+    <p>Enter the following style and save:</p>
+
+    <p>.field-items {
+     width: 100%;
+   }</p>
+  </li>
+</ol>
+
+<p>And that should be it.  A couple words of warning.  Make sure you don’t enable the HighlightJS Filter.  This will essentially double encode the HTML entities inside the <code> block.  This causes &gt;, &lt;, and &amp; to show as "&gt;, &amp;lt, &amp;" respectively.  This simple little issue took a lot of development time to solve--given the manual was lacking.</code></p>
+
+<p>Color
+Comment
+Contextual Links
+Dashboard
+Database Logging
+Entity API
+Field
+Field SQL Storage
+Field UI
+File
+Filter
+Five Star
+Forum
+Help
+Highlighter JS Filter
+Highlighter JS Syntax Highlighter
+Image
+IMCE
+Libraries
+List
+Menu
+Module Filter
+Node (core)
+Number
+Options
+Overlay
+Path
+Poll
+RDF
+Search
+Shoutbox
+Shoutbox Patch
+Statistics
+Statistics Counter
+SysLog
+System (core)
+Taxnomy
+Text (core)
+Update Manager
+User
+Userpoints
+Userpoints Service
+Views
+Views Content Panes
+Views UI
+Voting API</p>
+:ET

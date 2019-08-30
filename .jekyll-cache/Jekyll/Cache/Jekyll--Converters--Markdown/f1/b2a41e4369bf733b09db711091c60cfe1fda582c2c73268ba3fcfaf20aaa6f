@@ -1,0 +1,97 @@
+I"J<p>Originally posted on <a href="www.letsmakerobots.com">www.letsmakerobots.com</a></p>
+
+<div class="flex-video">
+<iframe width="560" height="315" src="https://www.youtube.com/embed/-UuNNiwHWFU" frameborder="0" allowfullscreen=""></iframe>
+</div>
+
+<p><strong>UPDATE: I discovered the link I had was referring (which is the true stock image) is unuseable unless update and upgrade are run.  Sadly, you can’t do that with a 2gb image.  Regardless, I’ve switched the image to the updated (as of writing this) Angstrom image.  Please double check and make sure you’ve got the latest image:</strong></p>
+
+<p><a href="http://beagleboard.org/latest-images">http://beagleboard.org/latest-images</a></p>
+
+<p>Replace the paths in steps 8 &amp; 10 (but I’ll try to keep it up to date). <strong>Again, it is unfortunate but you need a 4gb or greater microSD to use these instructions.</strong></p>
+
+<p>**MAIN: **</p>
+
+<p><span style="font-size: 13px; line-height: 1.231;">As I stated, I killed my stock Angstrom on the Beaglebone Black (B^3).  </span></p>
+
+<p>I pieced together how to restore it.</p>
+
+<p>You’ll need your B^3, microSD card, and Ethernet connection.</p>
+
+<p>(WiFi dongle can replace the Ethernet, if you got it working before I did.  And if you did, where’s the walkthrough :P?)</p>
+
+<p><strong>1. Download Angstrom</strong></p>
+
+<p><strong><a href="http://s3.armhf.com/boards/omap/bbb/bbb_angstrom_ga.img.xz">Angstrom</a></strong></p>
+
+<p>This fellow provides<a href="http://www.armhf.com/index.php/download/"> several B^3 distros,</a> one of them being the stock Angstrom.</p>
+
+<p><strong>2. Download and install 7-Zip.</strong></p>
+
+<p><a href="http://www.7-zip.org/">http://www.7-zip.org/</a></p>
+
+<p><strong>3. Download Image Writer (Win32diskimager).</strong></p>
+
+<p><a href="http://sourceforge.net/projectss/win32diskimager/">http://sourceforge.net/projectss/win32diskimager/</a></p>
+
+<p>If you are using Linux, you might try:</p>
+
+<p><a href="https://help.ubuntu.com/community/Installation/FromImgFiles">https://help.ubuntu.com/community/Installation/FromImgFiles</a></p>
+
+<p><strong>4. Unzip the bbb_angstrom_ga.img.xz file</strong></p>
+
+<p>**<img src="../images/Unzip_with_7-Zip.jpg" alt="" />
+**</p>
+
+<p><strong>5. Use Win32diskwriter to write stock Angstrom to your microSD</strong></p>
+
+<ol>
+  <li><span style="font-size: 13px; line-height: 1.231;">Open Win32diskwriter, hit the Blue Folder icon.</span></li>
+  <li><span style="font-size: 13px; line-height: 1.231;">Select your Angstrom </span><strong>bbb_angstrom_ga.img</strong> file.</li>
+  <li>Make sure your microSD is your PC, and it is selected (usually listed as H:).</li>
+  <li>Hit <strong>Write.</strong></li>
+</ol>
+
+<p><img src="../images/win32diskimager.jpg" alt="" /></p>
+
+<p><strong>6. Remove the microSD from your PC, put it into the Beaglebone Black, and boot from it.</strong></p>
+
+<p><strong>See video</strong></p>
+
+<p><strong>7. Use <a href="http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html">PuTTY</a> (or your favorite SSH program) to access the Beaglebone Black.</strong></p>
+
+<p><strong>8. Download the stock distro.</strong></p>
+
+<p>This is so we can put the image on the eMMC, note you must have the Beaglebone Black connected to the internet for this step.</p>
+
+<p>Type:</p>
+
+<p><strong>wget https://s3.amazonaws.com/angstrom/demo/beaglebone/Angstrom-Cloud9-IDE-GNOME-eglibc-ipk-v2012.12-beaglebone-2013.04.13.img.xz</strong></p>
+
+<p>**<img src="../images/Download_Stock_on_PuTTY.jpg" alt="" />
+**</p>
+
+<p><strong>9. Write the Angstrom Stock img to your Beaglebone Black eMMC.</strong></p>
+
+<p><span style="font-size: 13px; line-height: 1.231;">This next step is going to write the image file to your Beagle’s eMMC.  </span></p>
+
+<p><span style="font-size: 13px; line-height: 1.231;">Two notes, it is going to take awhile, if you are curious if it is still installing, use the LED activity lights to guide you.  When the PuTTY window gives you back to the command prompt and the LEDs are slowed, you’re good to go to the next step.  Oh, second note.  Try not to power down the Beagle during this step.</span></p>
+
+<p>Type:</p>
+
+<p><strong>xz -cd Angstrom-Cloud9-IDE-GNOME-eglibc-ipk-v2012.12-beaglebone-2013.04.13.img.xz &gt; /dev/mmcblk1</strong></p>
+
+<p><strong>10. Shutdown the Beaglebone Black</strong></p>
+
+<p>Type:</p>
+
+<p><strong>shutdown</strong></p>
+
+<p><strong>11. Remove the microSD and power back on the Beagle.  It should now boot like you bought it (unless, of course, I screwed up.  Feel free to yell at me and I’ll fix these instructions).</strong></p>
+
+<p>If you followed this process you’ll see these instructions can be used to write any image file to the eMMC.  Let me know if you get a different distro working (consistenly).</p>
+
+<p>Now, I’m going to turn to getting Arch Linux going.  Unless, someone else has it working…<strong>JerZ?</strong> :)</p>
+
+<p>Hope you’re all well.</p>
+:ET

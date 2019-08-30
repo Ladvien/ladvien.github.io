@@ -1,0 +1,300 @@
+I"�G<h1 id="saving-brain-waves-to-remote-mongodb-by-way-of-node-rest-api">Saving Brain Waves to Remote MongoDB by way of Node REST API</h1>
+
+<p>In this section I’m going to focus getting a remote Linux server setup with MongoDB and NodeJS.  This will allow us to make POST requests to our Linux server, saving the EEG data.</p>
+
+<p>I’m going to assume you are able to SSH into your Ubuntu 16 LTS server for this guide.  You don’t have a server? No sweat.  I wrote a guide on setting up a blog post which explains how to get a cheap Linux server setup.</p>
+
+<ul>
+  <li><a href="https://ladvien.com/creating-jekyll-website/">Setting up Nginx on Linode</a></li>
+</ul>
+
+<h2 id="1-install-mongodb">1. Install MongoDB</h2>
+
+<p>SSH into your server.  I’m assume this is a fresh new Linux install.  Let’s start with upgrading the packages.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>apt-get update <span class="nt">-y</span>
+</code></pre></div></div>
+
+<p>I’ll be following the Mongo website for instructions on installing MonogoDB Community version on Ubuntu.</p>
+
+<ul>
+  <li><a href="https://docs.mongodb.com/manual/tutorial/install-mongodb-on-ubuntu/">Installing MongoDB on Ubuntu</a></li>
+</ul>
+
+<p>Let’s get started.  Add the Debian package key.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>apt-key adv <span class="nt">--keyserver</span> hkp://keyserver.ubuntu.com:80 <span class="nt">--recv</span> 9DA31620334BD75D9DCB49F368818C72E52529D4
+</code></pre></div></div>
+
+<p>We need to create a list file.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">echo</span> <span class="s2">"deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/4.0 multiverse"</span> | <span class="nb">sudo tee</span> /etc/apt/sources.list.d/mongodb-org-4.0.list
+</code></pre></div></div>
+
+<p>Now reload the database</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>apt-get update
+</code></pre></div></div>
+
+<p>If you try to update and run into this error</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>E: The method driver /usr/lib/apt/methods/https could not be found.
+N: Is the package apt-transport-https installed?
+E: Failed to fetch https://repo.mongodb.org/apt/ubuntu/dists/xenial/mongodb-org/4.0/InRelease  
+E: Some index files failed to download. They have been ignored, or old ones used instead.
+</code></pre></div></div>
+
+<p>Then install <code class="highlighter-rouge">apt-transport-https</code></p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>apt-get <span class="nb">install </span>apt-transport-https
+</code></pre></div></div>
+
+<p>Now, let’s install MongoDB.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>apt-get <span class="nb">install</span> <span class="nt">-y</span> mongodb-org
+</code></pre></div></div>
+
+<p><em>Voila!</em></p>
+
+<h2 id="2-setup-mongodb">2. Setup MongoDB</h2>
+
+<p>We still need to do a bit of setup.  First, let’s check and make sure Mongo is fully installed.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>service mongod start
+</code></pre></div></div>
+
+<p>This starts the MongoDB daemon, the program which runs in the background and waits for someone to make connection with the database.</p>
+
+<p>Speaking of which, let’s try to connect to the database</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mongo
+</code></pre></div></div>
+
+<p>You should get the following:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@localhost:~# mongo
+MongoDB shell version v4.0.2
+connecting to: mongodb://127.0.0.1:27017
+MongoDB server version: 4.0.2
+Welcome to the MongoDB shell.
+For interactive <span class="nb">help</span>, <span class="nb">type</span> <span class="s2">"help"</span><span class="nb">.</span>
+For more comprehensive documentation, see
+	http://docs.mongodb.org/
+Questions? Try the support group
+	http://groups.google.com/group/mongodb-user
+Server has startup warnings:
+2018-09-02T03:52:18.996+0000 I STORAGE  <span class="o">[</span>initandlisten]
+2018-09-02T03:52:18.996+0000 I STORAGE  <span class="o">[</span>initandlisten] <span class="k">**</span> WARNING: Using the XFS filesystem is strongly recommended with the WiredTiger storage engine
+2018-09-02T03:52:18.996+0000 I STORAGE  <span class="o">[</span>initandlisten] <span class="k">**</span>          See http://dochub.mongodb.org/core/prodnotes-filesystem
+2018-09-02T03:52:19.820+0000 I CONTROL  <span class="o">[</span>initandlisten]
+2018-09-02T03:52:19.820+0000 I CONTROL  <span class="o">[</span>initandlisten] <span class="k">**</span> WARNING: Access control is not enabled <span class="k">for </span>the database.
+2018-09-02T03:52:19.820+0000 I CONTROL  <span class="o">[</span>initandlisten] <span class="k">**</span>          Read and write access to data and configuration is unrestricted.
+2018-09-02T03:52:19.820+0000 I CONTROL  <span class="o">[</span>initandlisten]
+<span class="nt">---</span>
+Enable MongoDB<span class="s1">'s free cloud-based monitoring service, which will then receive and display
+metrics about your deployment (disk utilization, CPU, operation statistics, etc).
+
+The monitoring data will be available on a MongoDB website with a unique URL accessible to you
+and anyone you share the URL with. MongoDB may use this information to make product
+improvements and to suggest MongoDB products and deployment options to you.
+
+To enable free monitoring, run the following command: db.enableFreeMonitoring()
+To permanently disable this reminder, run the following command: db.disableFreeMonitoring()
+---
+&gt;
+</span></code></pre></div></div>
+
+<p>This is good.  It means Mongo is up and running.  Notice, it is listening on <code class="highlighter-rouge">127.0.0.1:27017</code>.  If you try to access the database from any network, other than locally, it will refuse.  The plan, to have NodeJS connect to the MongoDB database locally.  Then, will send all of our data to Node and let it handle security.</p>
+
+<p>In the Mongo command line type:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>quit<span class="o">()</span>
+</code></pre></div></div>
+
+<p>And hit enter.  This should bring you back to the Linux command prompt.</p>
+
+<p>A few notes on <code class="highlighter-rouge">MongoDB</code> on Ubuntu.</p>
+
+<ul>
+  <li>The congfiguration file is located at <code class="highlighter-rouge">/etc/mongod.conf</code></li>
+  <li>Log file is at <code class="highlighter-rouge">/var/log/mongodb/mongod.log</code></li>
+  <li>The database is stored at <code class="highlighter-rouge">/var/lib/mongodb</code>, but this can be changed in the config file.</li>
+</ul>
+
+<p>Oh, and one last bit.  Still at the Linux command prompt type:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>systemctl <span class="nb">enable </span>mongod
+</code></pre></div></div>
+
+<p>You should get back</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Created symlink from /etc/systemd/system/multi-user.target.wants/mongod.service to /lib/systemd/system/mongod.service.
+</code></pre></div></div>
+
+<p>This setup a symlink which will cause Linux to load mongod every time it boots–you won’t need to manually start it.</p>
+
+<p>Next, NodeJS.</p>
+
+<h2 id="3-install-nodejs-and-npm">3. Install NodeJS and npm</h2>
+
+<p>Type</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>apt-get <span class="nb">install </span>nodejs <span class="nt">-y</span>
+</code></pre></div></div>
+
+<p>This should install <code class="highlighter-rouge">NodeJS</code>, but we also need the Node Package Managers <code class="highlighter-rouge">npm</code>.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>apt-get <span class="nb">install </span>npm <span class="nt">-y</span>
+</code></pre></div></div>
+
+<p>Let’s upgrade <code class="highlighter-rouge">npm</code>.  This is important, as the <code class="highlighter-rouge">mind-wave-journal-server</code> depends on recent versions of several packages that are not accessible to earlier versions of <code class="highlighter-rouge">npm</code>.</p>
+
+<p>The following commands should prepare <code class="highlighter-rouge">npm</code> for upgrading, then upgrade.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>npm cache clean <span class="nt">-f</span>
+<span class="nb">sudo </span>npm <span class="nb">install</span> <span class="nt">-g</span> n
+<span class="nb">sudo </span>n stable
+<span class="nb">sudo </span>n latest
+</code></pre></div></div>
+
+<p>Let’s reboot the server to make sure all of the upgrades are in place.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>reboot now
+</code></pre></div></div>
+
+<p>When the server boots back up, <code class="highlighter-rouge">ssh</code> back in.</p>
+
+<p>Check and make sure your <code class="highlighter-rouge">mongod</code> is still running</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mongo
+</code></pre></div></div>
+
+<p>If <code class="highlighter-rouge">mongo</code> doesn’t start, then revisit step 2.</p>
+
+<p>Let’s check our <code class="highlighter-rouge">node</code> and <code class="highlighter-rouge">npm</code> versions.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>node <span class="nt">-v</span>
+</code></pre></div></div>
+
+<p>I’m running <code class="highlighter-rouge">node</code> v10.9.0</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>npm <span class="nt">-v</span>
+</code></pre></div></div>
+
+<p>I’m running <code class="highlighter-rouge">npm</code> v6.2.0</p>
+
+<h2 id="4-clone-install-and-run-the-mind-wave-journal-server">4. Clone, Install, and Run the mind-wave-journal-server</h2>
+
+<p>I’ve already created a basic Node project, which we’ll be able to grab from my Github account.</p>
+
+<p>If you don’t already have git installed, let’s do it now.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>apt-get <span class="nb">install </span>git <span class="nt">-y</span>
+</code></pre></div></div>
+
+<p>Now, grab the Noder server I built.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git clone https://github.com/Ladvien/mind-wave-journal-server.git
+<span class="nb">cd </span>mind-wave-journal-server/
+</code></pre></div></div>
+
+<p>Install all the needed Node packages.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>npm <span class="nb">install</span>
+</code></pre></div></div>
+
+<p>This should download all the packages needed to run the little server program I wrote to store the EEG data into the Mongo database.</p>
+
+<p>Let’s run the <code class="highlighter-rouge">mind-wave-journal-server</code>.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>node server/server.js
+</code></pre></div></div>
+
+<p>This should be followed with:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@localhost:~/mind-wave-journal-server# node server/server.js
+<span class="o">(</span>node:1443<span class="o">)</span> DeprecationWarning: current URL string parser is deprecated, and will be removed <span class="k">in </span>a future version. To use the new parser, pass option <span class="o">{</span> useNewUrlParser: <span class="nb">true</span> <span class="o">}</span> to MongoClient.connect.
+Started on port 8080
+</code></pre></div></div>
+
+<h2 id="5-testing-mind-wave-journal-server-with-postman">5. Testing mind-wave-journal-server with Postman</h2>
+
+<p>Now, we are going to use Postman to test our new API.</p>
+
+<p>For this next part you’ll need either a Mac or Chrome, as Postman has a native Mac app or a Chrome app.</p>
+
+<p>I’m going to show the Chrome application.</p>
+
+<p>Head over to the Chrome app store:</p>
+
+<ul>
+  <li><a href="https://chrome.google.com/webstore/detail/postman/fhbjgbiflinjbdggehcddcbncdddomop?hl=en">Postman Chrome App</a></li>
+</ul>
+
+<p><img src="../images/postman-1.png" alt="add-postman-chrome-app" /></p>
+
+<p>After you add the Postman app it should redirect you to your Chrome applications.  Click on the Postman icon.</p>
+
+<p><img src="../images/postman-2.png" alt="run-postman-chrome-app" /></p>
+
+<p>Your choice, but I skipped the sign-up option for now.</p>
+
+<p><img src="../images/postman-3.png" alt="skipped-signup-postman-chrome-app" /></p>
+
+<p>Select <code class="highlighter-rouge">Create a Request</code>
+<img src="../images/postman-4.png" alt="skipped-signup-postman-chrome-app" /></p>
+
+<p>The purpose of Postman, in a nutshell, we are going to use it to create POST requests and send them to the <code class="highlighter-rouge">mind-wave-journal-server</code> to make sure it’s ready for the iOS app to start making POST requests, saving the EEG data to our Mongo server.</p>
+
+<p>Let’s create our first test POST request.  Start by naming the request <code class="highlighter-rouge">Test eegsamples</code>.  Create a folder to put the new request in, I named it <code class="highlighter-rouge">mind-wave-journal-server</code>.  Then click</p>
+
+<p><img src="../images/postman-5.png" alt="create-request-postman-chrome-app" /></p>
+
+<p>You will need to set the type as <code class="highlighter-rouge">POST</code>.  The url will be</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>http://your_ip_address:8080/eegsamples
+</code></pre></div></div>
+
+<p><img src="../images/postman-6.png" alt="create-request-postman-chrome-app" /></p>
+
+<p>No select the <code class="highlighter-rouge">Headers</code> section and add the <code class="highlighter-rouge">Content Type: application/json</code></p>
+
+<p><img src="../images/postman-7.png" alt="create-request-postman-chrome-app" /></p>
+
+<p>Lastly, select <code class="highlighter-rouge">Body</code>, then <code class="highlighter-rouge">raw</code> and enter the following JSON into the text area:</p>
+
+<figure class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">  
+   </span><span class="nl">"highBeta"</span><span class="p">:</span><span class="mi">5</span><span class="p">,</span><span class="w">
+   </span><span class="nl">"lowGamma"</span><span class="p">:</span><span class="mi">6</span><span class="p">,</span><span class="w">
+   </span><span class="nl">"theta"</span><span class="p">:</span><span class="mi">55</span><span class="p">,</span><span class="w">
+   </span><span class="nl">"lowAlpha"</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span><span class="w">
+   </span><span class="nl">"highAlpha"</span><span class="p">:</span><span class="mi">3</span><span class="p">,</span><span class="w">
+   </span><span class="nl">"lowBeta"</span><span class="p">:</span><span class="mi">4</span><span class="p">,</span><span class="w">
+   </span><span class="nl">"highGamma"</span><span class="p">:</span><span class="mi">7</span><span class="p">,</span><span class="w">
+   </span><span class="nl">"blink"</span><span class="p">:</span><span class="mi">55</span><span class="p">,</span><span class="w">
+   </span><span class="nl">"attention"</span><span class="p">:</span><span class="mi">8</span><span class="p">,</span><span class="w">
+   </span><span class="nl">"meditation"</span><span class="p">:</span><span class="mi">9</span><span class="p">,</span><span class="w">
+   </span><span class="nl">"time"</span><span class="p">:</span><span class="mi">4</span><span class="w">
+</span><span class="p">}</span></code></pre></figure>
+
+<p>And then! Hit <code class="highlighter-rouge">Send</code></p>
+
+<p><img src="../images/postman-8.png" alt="create-request-postman-chrome-app" /></p>
+
+<p>If all goes well, then you should get a similar response in the Postman response section</p>
+
+<p><img src="../images/postman-9.png" alt="create-request-postman-chrome-app" /></p>
+
+<p>Notice, the response is similar to what we sent.  However, there is the additional <code class="highlighter-rouge">_id</code>.  This is great.  It is the id assigned to the by MongoDB when the data is entered.  In short, it means it successfully saved to the database.</p>
+
+<h2 id="6-now-what">6. Now What?</h2>
+
+<p>Several caveats.</p>
+
+<p>First, each time you restart your server you will manually need to start your <code class="highlighter-rouge">mind-waver-journal-server</code>.  You can turn it into a Linux service and <code class="highlighter-rouge">enable</code> it.  If this interests anyone, let me know in the comments and I’ll add it.</p>
+
+<p>Second, notice I don’t currently have a way to retrieve data from the MongDB.  The easiest way will probably be using <a href="https://robomongo.org/">Robot 3T</a>.  Like the first caveat, if anyone is interested let me know and I’ll add instructions.  Otherwise, this series will stay on track to setup a Mongo BI connection to the database for viewing in Tableau (eh, gross).</p>
+
+<p>Your Node server is ready to be called by the iOS app.  In the next article I’ll return to building the MindWaveJournal app in iOS.</p>
+
+:ET

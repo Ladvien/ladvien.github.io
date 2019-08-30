@@ -1,0 +1,147 @@
+I"S<p>I’m spoiled.  I love the pretty colors of modern text IDEs.  My favorite among them being Visual Studio Code.</p>
+
+<ul>
+  <li><a href="#1-get-visual-studio-code">1. Get Visual Studio Code</a></li>
+</ul>
+
+<p>I know it’ll engender a lot of bad rep with the old-timers, but I prefer the one on the right.</p>
+
+<p><a href="../images/nano_vs_vsc.png"><img src="../images/nano_vs_vsc.png" alt="" /></a></p>
+
+<p>However, when working on a headless (no monitor) Raspberry Pi it felt like I was pretty much stuck with the <code class="highlighter-rouge">nano</code>.</p>
+
+<p>Until! I discovered Visual Studio Code’s <code class="highlighter-rouge">remote</code> extension.</p>
+
+<ul>
+  <li><a href="https://github.com/rafaelmaiolla/remote-vscode">Visual Studio Code Remote Extension</a></li>
+</ul>
+
+<p>This allowed me to edit my Raspberry Pi files from within Visual Studio Code.  So, I get all the joys of writing code directly on my Raspberry Pi, but with all the bells-and-whistles of Visual Studio Code (VSC).</p>
+
+<p>For the most part, setup is pretty straightforward.  But the Pi side can get tricky, so I’m going to walk us through the process.</p>
+
+<h3 id="1-get-visual-studio-code">1. Get Visual Studio Code</h3>
+
+<p>Download the version of VSC for your PC.  Note, you aren’t running this from the Raspberry Pi–instead, you’ll be running it from the PC and connecting it to the Raspberry Pi.</p>
+
+<ul>
+  <li><a href="https://code.visualstudio.com/download">Visual Studio Code Download</a></li>
+</ul>
+
+<p>After it’s downloaded and installed open it up.</p>
+
+<p><a href="../images/vsc-ext-btn.png"><img src="../images/vsc-ext-btn.png" alt="" class="float-left" /></a>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+Once open, click here
+<br />
+<br />
+<br />
+<br />
+<br /></p>
+
+<div style="clear: both;"></div>
+<p>Ok, now search for the extension called</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Remote VSCode
+</code></pre></div></div>
+
+<p>And hit the <code class="highlighter-rouge">Install</code> button.  Once it finishes hit the reload button.</p>
+
+<p>The extension works by creating a server which listens for incoming calls from the Raspberry Pi.  Once we finished setting up the Raspberry Pi we will use a special command which sends the file on the Raspberry Pi to Visual Studio Code.  However, when it’s all done, it’ll look pretty seamless.</p>
+
+<p>Back to setup.</p>
+
+<p>In Visual Studio Code type <code class="highlighter-rouge">F1</code> and type <code class="highlighter-rouge">Preferences: Open Workspace Settings</code></p>
+
+<p><a href="../images/vsc_preferences.png"><img src="../images/vsc_preferences.png" alt="" /></a></p>
+
+<p>Find the section labeled</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>remote.onStartup: false
+</code></pre></div></div>
+
+<p>We need to change it to <code class="highlighter-rouge">true</code> by clicking on the pencil next to its name.  This sets the listening server to start every time you open Visual Studio Code.</p>
+
+<p><a href="../images/vsc_start_server.png"><img src="../images/vsc_start_server.png" alt="" /></a></p>
+
+<p>Almost there.  Now to setup the Raspberry Pi.  We need to install a program on the Pi which will send a file of our choosing to Visual Studio Code to be edited.  <a href="https://github.com/textmate/rmate">RMate</a> was my choice.</p>
+
+<p>Start by SSH’ing into your Raspberry Pi as root.</p>
+
+<p>Run an update</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pacman -Syu
+</code></pre></div></div>
+
+<p>Let’s install ruby and supporting packages.</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pacman -S ruby ruby-docs ruby-rdoc
+sed "s|unset appendpath|appendpath \'$(ruby -e 'print Gem.user_dir')/bin'\\nunset appendpath|g" /etc/profile &gt;&gt; /etc/profile
+source /etc/profile
+</code></pre></div></div>
+<p>If it installs, then we setup the remote correctly.  If not, feel free to ask debugging questions in the comments.</p>
+
+<p>Now we’ll install the needed Ruby <code class="highlighter-rouge">gems</code>.</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gem install rmate
+gem install rdoc
+</code></pre></div></div>
+<p>The above commands install <a href="https://www.ruby-lang.org/en/">Ruby</a>, moves to to the user’s directory, uses the Ruby package manager to install rmate, then adds Ruby and it’s Gems (packages) executables to the environment variables.  All of this is necessary to get Rmate working on Arch Linux.</p>
+
+<p>Ok, let’s test it.  Stop SSH’ing into your Pi by typing <code class="highlighter-rouge">exit</code> until it brings you back to your PC’s prompt.  Now we are going to SSH into the Pi while listening for incoming files to be displayed in Visual Studio Code.</p>
+
+<p>Open Visual Studio Code and open the integrated terminal (if it’s not showing hit CTRL + `).</p>
+
+<p>At the terminal type</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ssh -R 52698:localhost:52698 alarm@192.168.1.x
+</code></pre></div></div>
+<p>Replace the <code class="highlighter-rouge">x</code> with your Pi’s ip address.</p>
+
+<p>This should SSH into the Pi while listening for files.</p>
+
+<p>At the pi command prompt, type</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>rmate test.js
+</code></pre></div></div>
+<p><a href="../images/rmate_new_file.png"><img src="../images/rmate_new_file.png" alt="" class="float-right" /></a>
+This should open a new file called <code class="highlighter-rouge">test.js</code> in your Visual Studio Code.</p>
+
+<p>Now you get all the goodness of the VSC IDE, such as syntax highlighting, linting, etc!</p>
+
+<p>A few notes.  File permissions still apply, so if you want to be able to save a file the user you logged into on the Raspberry Pi and <code class="highlighter-rouge">rmated</code> the file must have write permission on the file.</p>
+
+<p>However, if you do have write permissions, then the “File Save” function in the VSC editor will update the Raspberry Pi file with your modifications.  <em>Booyah!</em>
+<br />
+<br />
+<br />
+<br />
+<br /></p>
+<div style="clear: both;"></div>
+
+<p>One last annoyance to address.  Whenever you want to use VSC to edit your file you have to log into the Pi using</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ssh -R 52698:localhost:52698 alarm@192.168.1.x
+</code></pre></div></div>
+<p>This annoyed me a bit.  I could never remember all that.  Instead, I created a small bash script to help.</p>
+
+<p>On my PC (for Mac and Linux, Windows, you’re on your own) I created in my home user directory called</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vs
+</code></pre></div></div>
+<p>And added the following to the file.</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>echo $1
+ssh -R 52698:localhost:52698 "$1"
+</code></pre></div></div>
+
+<p>Essentially, this script takes your Pi’s login information and logs in to your Pi using the VSC Remote Extension listening.</p>
+
+<p>To get it to work you’ve got to make the file executable</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo +x chmod vs
+</code></pre></div></div>
+
+<p>Then login in your Pi like this</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./vs alarm@192.168.1.x
+</code></pre></div></div>
+<p>Hope you enjoy.</p>
+
+<p>Oh, and for you web-devs, this also works for remote servers.  Just replace the Pi with the server.</p>
+:ET

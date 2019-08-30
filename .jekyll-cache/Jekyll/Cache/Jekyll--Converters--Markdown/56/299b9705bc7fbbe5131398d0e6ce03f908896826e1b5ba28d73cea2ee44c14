@@ -1,0 +1,472 @@
+I"�<p>For a long time now I’ve put off learning JavaScript.  It really never interested me.  I’d like to say it was the thought, “Oh, JavaScript is for web developers and I’m embedded all the way!”  But that wasn’t really it.  I think it hasn’t appealed to me because I couldn’t connect it to hardware.  Well, at least, that was my assumption.</p>
+
+<p>However, I’ve recently discovered Google’s Web APIs.  Specifically, their Bluetooth Low Energy API.</p>
+
+<ul>
+  <li><a href="https://developers.google.com/web/updates/2015/07/interact-with-ble-devices-on-the-web">Google’s Bluetooth Web API</a></li>
+</ul>
+
+<p>It’s pretty amazing.  It allows a developer to write asynchronous JavaScript using <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promises</a> to get into the hardware of the client’s PC, all from the browser!</p>
+
+<p>Now, this might sound like it open for security issues–and perhaps it will be.  But there are two requirements Google has put in place which hopefully gets around any issues.  First, the API can only be called by action.  Secondly, the API can only be called from a secured connection (HTTP over SSL).</p>
+
+<p><img src="../images/2017-06-08-bluetooth-low-energy-javascript/BLE_scan.png" alt="" /></p>
+
+<p>Ok, there are few other downers to talk about.  First this only works in Chrome–but given this is a Google API, well, <em>duh</em>.  The other is not all OSes are currently supported.  The following I’ve tested and work right out of the box:</p>
+
+<ul>
+  <li>Mac OS</li>
+  <li>Android</li>
+</ul>
+
+<p>The others which are supposed to be supported but I’ve not tested:</p>
+
+<ul>
+  <li>Linux</li>
+  <li>Windows (with some work)</li>
+  <li>Chromium</li>
+</ul>
+
+<p>Having worked with Bluetooth LE on all of these OSes I can say there is hope for Windows.  In fact, I think with the Creator’s Update the Microsoft folk opened up the <a href="https://blogs.windows.com/buildingapps/2017/01/13/new-bluetooth-features-in-creators-update-gatt-server-bluetooth-le/#cRIO1b8BMgFqCfrz.97">last needed ingredient</a>.  The real hold out will be iOS.  Apple is not a fan of browser apps.  They would much rather browsing be done inside their native apps.  If I’m being positive, I’d say this is so Apple can make sure the mobile UX is excellent, and by forcing native apps, they have control by app approval.  If I’m being negative, well, Apple takes 30% on app purchases and web apps land them nada.  Just my opinion.</p>
+
+<p>If you’d like to stay up to date on compatibility of BLE in the browser there is a an implementation status page on the Web Bluetooth Community Group:</p>
+
+<ul>
+  <li><a href="https://github.com/WebBluetoothCG/web-bluetooth/blob/master/implementation-status.md">Current Compatibility Matrix for Web Bluetooth</a></li>
+</ul>
+
+<p>Sadly, right now iOS is the loser.</p>
+
+<p>Moving into the fun part.  Below is how to kick things off.</p>
+
+<p>To begin, it will pay to keep the Mozilla Developer Netowork’s Web Bluetooth API open for reference.</p>
+
+<ul>
+  <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Bluetooth_API">Web Bluetooth API</a></li>
+</ul>
+
+<p>The documentation is actually pretty robust–and with this guide, the process of subscribing to a device characteristic should be pretty straight forward.</p>
+
+<p>The first piece we need are service IDs to search for.</p>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">let</span> <span class="nx">optionalServices</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="dl">'</span><span class="s1">optionalServices</span><span class="dl">'</span><span class="p">).</span><span class="nx">value</span>
+	<span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="sr">/, </span><span class="se">?</span><span class="sr">/</span><span class="p">).</span><span class="nx">map</span><span class="p">(</span><span class="nx">s</span> <span class="o">=&gt;</span> <span class="nx">s</span><span class="p">.</span><span class="nx">startsWith</span><span class="p">(</span><span class="dl">'</span><span class="s1">0x</span><span class="dl">'</span><span class="p">)</span> <span class="p">?</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">s</span><span class="p">)</span> <span class="p">:</span> <span class="nx">s</span><span class="p">)</span>
+	<span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="nx">s</span> <span class="o">=&gt;</span> <span class="nx">s</span> <span class="o">&amp;&amp;</span> <span class="nx">BluetoothUUID</span><span class="p">.</span><span class="nx">getService</span><span class="p">);</span></code></pre></figure>
+
+<p>This takes the text element of the DOM element ‘optionalServices’, which should be in the in 16 bit hex format, 0x0000.  This becomes one of the service IDs searched in the Bluetooth LE search cycle.  For the Bluetooth module HM-10, HM-11, HM-16, HM-17 the service ID is 0xFFE0.</p>
+
+<p>Moving on to the search, when the code below is executed the Chrome browser should show a search and pair menu (see image) for pairing a device.  When a device has been paired the promise will resolve returning the device which has been paired.</p>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js">				
+<span class="nb">navigator</span><span class="p">.</span><span class="nx">bluetooth</span><span class="p">.</span><span class="nx">requestDevice</span><span class="p">({</span>
+		<span class="na">acceptAllDevices</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+		<span class="na">optionalServices</span><span class="p">:</span> <span class="nx">optionalServices</span>
+	<span class="p">})</span>
+		</code></pre></figure>
+
+<p>It is important to note this block must be called by a user action.  For example, if set to execute on page load it will refuse to fire.  But if called onClick then it will show.  This is meant to provide more security to the API.</p>
+
+<p>As stated, the requestDevice will return a device.  Using the promise <code class="highlighter-rouge">.then</code> we can begin working with the <code class="highlighter-rouge">BluetoothDevice</code></p>
+
+<ul>
+  <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/BluetoothDevice">BluetoothDevice</a></li>
+</ul>
+
+<p>Which is returned after it has been paired by the user.  The BluetoothDevice object has three items of interest.</p>
+
+<ul>
+  <li>name – which provides the string name of the device</li>
+  <li>id – the ID string</li>
+  <li>gatt – a <code class="highlighter-rouge">gatt</code> which contains a reference to the <code class="highlighter-rouge">BluetoothRemoteGATTServer</code> object</li>
+</ul>
+
+<p>The <code class="highlighter-rouge">BluetoothRemoteGATTServer</code> interface contains many of the methods needed to interact with the Bluetooth device.  For example,</p>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">device</span><span class="p">.</span><span class="nx">gatt</span><span class="p">.</span><span class="nx">connect</span><span class="p">()</span></code></pre></figure>
+
+<p>Attempts to asynchronously create a connection with the device through a Promise.  If <code class="highlighter-rouge">.then</code> is attached then the method will return a <code class="highlighter-rouge">service</code> object if succesful.  If you are just looking to get something done with Bluetooth, feel free to keep hacking through this article (that’s what I’d do–TL;DR).  However, if you want to know more about Bluetooth 4 protocol here a few useful links:</p>
+
+<ul>
+  <li><a href="https://www.bluetooth.com/specifications/generic-attributes-overview">Generic Attributes (GATT)</a></li>
+  <li><a href="https://www.bluetooth.com/specifications/bluetooth-core-specification">Bluetooth Core Specifications</a></li>
+</ul>
+
+<p>Back to the code.</p>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js"><span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">device</span> <span class="o">=&gt;</span> <span class="p">{</span>
+	<span class="nx">pairedDevices</span><span class="p">[</span><span class="nx">device</span><span class="p">.</span><span class="nx">name</span><span class="p">]</span> <span class="o">=</span> <span class="nx">device</span><span class="p">;</span>
+	<span class="k">return</span> <span class="nx">device</span><span class="p">.</span><span class="nx">gatt</span><span class="p">.</span><span class="nx">connect</span><span class="p">();</span>
+<span class="p">}).</span><span class="nx">then</span>
+			</code></pre></figure>
+
+<p>Once the connection attempt has been made and returned succesful, the <a href="https://developer.mozilla.org/en-US/docs/Web/API/BluetoothRemoteGATTServer">BluetoothRemoteGATTServer</a> object returned can be petitioned for a list of services.</p>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js"><span class="p">....</span>
+	<span class="k">return</span> <span class="nx">device</span><span class="p">.</span><span class="nx">gatt</span><span class="p">.</span><span class="nx">connect</span><span class="p">();</span>
+<span class="p">})</span>
+<span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">server</span> <span class="o">=&gt;</span> <span class="p">{</span>
+	<span class="k">return</span> <span class="nx">server</span><span class="p">.</span><span class="nx">getPrimaryServices</span><span class="p">();</span>
+<span class="p">})</span>
+			</code></pre></figure>
+
+<p>This will fire asynchronously using promises, and if succesful, return a <a href="https://developer.mozilla.org/en-US/docs/BluetoothRemoteGATTService">BluetoothRemoteGATTService</a> object.  This represents all the services the device has public.  Then, the returned <code class="highlighter-rouge">service</code> object may be iterated over to identify get characteristics of the device.  (Almost to the data, I swear).</p>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js"><span class="p">....</span>
+<span class="k">return</span> <span class="nx">server</span><span class="p">.</span><span class="nx">getPrimaryServices</span><span class="p">();</span>
+	<span class="p">})</span>
+	<span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">services</span> <span class="o">=&gt;</span> <span class="p">{</span>
+	<span class="nx">services</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="nx">service</span> <span class="o">=&gt;</span> <span class="p">{</span>
+			</code></pre></figure>
+
+<p>Essentially, the <a href="https://developer.mozilla.org/en-US/docs/BluetoothRemoteGATTService">BluetoothRemoteGATTService</a> object is merely an array containing on the services.  Using a <code class="highlighter-rouge">services.forEach</code> we get each individual service to explore its characteristics.</p>
+
+<p>Now, I’m going to add the whole block which is responsible for iterating over each service and its characteristics, essentially turning on notifications for each device.  This will ultimately allow a callback to be fired every every time the device sends data and a reference to a method by which data can be written to the device.</p>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js">	<span class="p">....</span>
+		<span class="kd">let</span> <span class="nx">queue</span> <span class="o">=</span> <span class="nb">Promise</span><span class="p">.</span><span class="nx">resolve</span><span class="p">();</span>
+		<span class="nx">queue</span> <span class="o">=</span> <span class="nx">queue</span><span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">_</span> <span class="o">=&gt;</span> <span class="nx">service</span><span class="p">.</span><span class="nx">getCharacteristics</span><span class="p">()</span>
+			<span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">characteristics</span> <span class="o">=&gt;</span> <span class="p">{</span>
+				<span class="nx">characteristics</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="nx">characteristic</span> <span class="o">=&gt;</span> <span class="p">{</span>
+					<span class="nx">writeCharacteristic</span> <span class="o">=</span> <span class="nx">characteristic</span><span class="p">;</span>
+					<span class="nx">writeCharacteristic</span><span class="p">.</span><span class="nx">startNotifications</span><span class="p">();</span>
+					<span class="nx">resolve</span><span class="p">();</span>
+			<span class="p">});</span> <span class="c1">// End enumerating characteristics</span>
+		<span class="p">}));</span> <span class="c1">// End queue</span>
+	<span class="p">})</span> <span class="c1">// End enumerating services</span>
+<span class="p">})</span> <span class="c1">// End Service exploration  </span>
+				</code></pre></figure>
+
+<p>The queue is a promise which allows us to loop through services and characteristics without breaking asynchronousity.  Since this is my first JavaScript program, I will not try to explain it, but here’s another guy’s article which attempts to explain it:</p>
+
+<ul>
+  <li><a href="https://www.promisejs.org/patterns/">Promise Patterns</a></li>
+</ul>
+
+<p>Essentially, each service and characteristic contained in the service enumerated.  At each characteristic there are two calls.  One is to get a reference to the characteristic for writing.  This is the global variable <code class="highlighter-rouge">writeCharacteristic</code>.  Then, notifications for the writeCharacteristic are started.  This will assure any time data is made available on the remote device our program is notified.</p>
+
+<p>Now, it should be noted, this above code is hackish.  For example, what if there are multiple characteristics and the last one isn’t the one we want to know about.  Well, we’d have a write reference to the wrong characteristic.  So, filtering to the desired characteritic is on my TODO list.</p>
+
+<p>But, let’s finish before refactoring.</p>
+
+<p>Let’s take a look at how to write data to the device after getting a reference to the desired characteristic.</p>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">var</span> <span class="nx">write</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="nx">string</span> <span class="o">=</span> <span class="kc">true</span><span class="p">)</span> <span class="p">{</span>
+	<span class="nx">p</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Promise</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">resolve</span><span class="p">,</span> <span class="nx">reject</span><span class="p">)</span> <span class="p">{</span>
+		<span class="c1">// See if the device is paired.</span>
+		<span class="k">if</span> <span class="p">(</span><span class="nx">pairedDevices</span><span class="p">)</span> <span class="p">{</span>
+			<span class="c1">// Has a write reference been discovered.</span>
+			<span class="k">if</span> <span class="p">(</span><span class="nx">writeCharacteristic</span> <span class="o">!=</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span>
+				<span class="c1">// Don't double encode.</span>
+				<span class="k">if</span> <span class="p">(</span><span class="nx">string</span><span class="p">)</span> <span class="p">{</span>
+					<span class="kd">let</span> <span class="nx">encoder</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">TextEncoder</span><span class="p">(</span><span class="dl">'</span><span class="s1">utf-8</span><span class="dl">'</span><span class="p">);</span>
+					<span class="nx">writeCharacteristic</span><span class="p">.</span><span class="nx">writeValue</span><span class="p">(</span><span class="nx">encoder</span><span class="p">.</span><span class="nx">encode</span><span class="p">(</span><span class="nx">data</span><span class="p">));</span>
+				<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+					<span class="nx">dataInUint8</span> <span class="o">=</span> <span class="nb">Uint8Array</span><span class="p">.</span><span class="k">from</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
+					<span class="nx">writeCharacteristic</span><span class="p">.</span><span class="nx">writeValue</span><span class="p">(</span><span class="nx">dataInUint8</span><span class="p">);</span>
+				<span class="p">}</span>
+				<span class="nx">resolve</span><span class="p">();</span>
+
+			<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+				<span class="nx">reject</span><span class="p">(</span><span class="dl">"</span><span class="s2">No write characteristic</span><span class="dl">"</span><span class="p">)</span>
+			<span class="p">}</span>
+		<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+			<span class="nx">reject</span><span class="p">(</span><span class="dl">"</span><span class="s2">No devices paired.</span><span class="dl">"</span><span class="p">)</span>
+		<span class="p">}</span>
+	<span class="p">}).</span><span class="k">catch</span><span class="p">(</span><span class="nx">error</span> <span class="o">=&gt;</span> <span class="p">{</span>
+	<span class="p">});</span>
+	<span class="k">return</span> <span class="nx">p</span><span class="p">;</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>The above method creates a promise and writes to the device asynchoronously.  On the way, it checks to make sure the device is paired (not connected, that’s on the TODO list).  Also, it makes sure we still have a reference to the writeCharacteristic.  Then, it will either encode it in utf-8 and write the data, or if the <code class="highlighter-rouge">string</code> argument is false it’ll just write the data.  After it has written the data, the resolve is executed.  This would allow the writeMethod to be called like so:</p>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js">	
+<span class="nx">write</span><span class="p">(</span><span class="dl">"</span><span class="s2">Buggers</span><span class="dl">"</span><span class="p">,</span> <span class="kc">true</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="nx">_</span> <span class="o">=&gt;</span> <span class="p">{</span>
+	<span class="c1">// Do something after write has completed.</span>
+<span class="p">})</span></code></pre></figure>
+
+<p>Ok, last bit.  Let’s setup capturing incoming data. To begin, I created a method which holds a list of all the callback methods to call when data has been received.</p>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js">	
+<span class="kd">var</span> <span class="nx">onReceivedDataCallbacks</span> <span class="o">=</span> <span class="p">[];</span>
+<span class="p">...</span>
+<span class="c1">// Adds a function called when a BLE characteristic changes value.</span>
+<span class="c1">// Mutiple callbacks may be added.</span>
+<span class="k">this</span><span class="p">.</span><span class="nx">addReceivedDataCallback</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
+	<span class="k">if</span> <span class="p">(</span><span class="nx">writeCharacteristic</span><span class="p">)</span> <span class="p">{</span>
+		<span class="nx">writeCharacteristic</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="dl">'</span><span class="s1">characteristicvaluechanged</span><span class="dl">'</span><span class="p">,</span> <span class="nx">callback</span><span class="p">);</span>
+		<span class="nx">onReceivedDataCallbacks</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span>
+			<span class="na">key</span><span class="p">:</span> <span class="nx">callback</span><span class="p">.</span><span class="nx">name</span><span class="p">,</span>
+			<span class="na">value</span><span class="p">:</span> <span class="nx">callback</span>
+		<span class="p">})</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+	</code></pre></figure>
+
+<p>This method allows a method’s name to be passed in.  It then adds an event listener to this method, which will be called whenever characteristicvaluechanged.  Also, it saves this method’s name in an array in case I want to stop notifications later (again, not completed, but on the TODO).</p>
+
+<p>The purpose of allowing multiple callbacks is for when I’m working with many modules which all would like to know what’s going on with the Bluetooth LE device.</p>
+
+<p>For example, this module is meant to be a piece of a larger project, which is an uploader app using BLE to upload HEX files to AVRs running TinySafeBoot.</p>
+
+<p>Ok, one last piece.  Let us see what the onRecievedData callback could looks like:</p>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js">    
+<span class="k">this</span><span class="p">.</span><span class="nx">onReceivedData</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
+	<span class="c1">// TODO: Handle received data better.  </span>
+	<span class="c1">// NOTE: the TX buffer for the HM-1X is only 20 bytes.  </span>
+	<span class="c1">// But other devices differ.</span>
+	<span class="kd">var</span> <span class="nx">receivedData</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Uint8Array</span><span class="p">(</span><span class="nx">event</span><span class="p">.</span><span class="nx">target</span><span class="p">.</span><span class="nx">value</span><span class="p">.</span><span class="nx">byteLength</span><span class="p">);</span>
+	<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">event</span><span class="p">.</span><span class="nx">target</span><span class="p">.</span><span class="nx">value</span><span class="p">.</span><span class="nx">byteLength</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+		<span class="nx">receivedData</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">=</span> <span class="nx">event</span><span class="p">.</span><span class="nx">target</span><span class="p">.</span><span class="nx">value</span><span class="p">.</span><span class="nx">getUint8</span><span class="p">(</span><span class="nx">i</span><span class="p">);</span>
+	<span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>This is how I’ve written the notification of data callback.  The event.target.value contains the data, which is in an untyped array.  I choice to encode it into Uint8 as I’ll be working with both ASCII and non-ASCII data.</p>
+
+<p>Well, that’s it.  This code will allow one to search, connect, write data to, and receive data from Bluetooth Low Energy devices from Chrome browser. Let me know if you have any recommendations.</p>
+
+<p>Here is the full code referenced directly from my project:</p>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js">    
+	<span class="kd">var</span> <span class="nx">LumiBluetooth</span> <span class="o">=</span> <span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+
+	<span class="c1">// Privates</span>
+	<span class="kd">var</span> <span class="nx">pairedDevices</span> <span class="o">=</span> <span class="p">{};</span>
+	<span class="kd">var</span> <span class="nx">onReceivedDataCallbacks</span> <span class="o">=</span> <span class="p">[];</span>
+	<span class="kd">var</span> <span class="nx">writeCharacteristic</span><span class="p">;</span>
+	<span class="kd">var</span> <span class="nx">writeBuffer</span> <span class="o">=</span> <span class="p">[];</span>
+	<span class="kd">var</span> <span class="nx">writing</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+	<span class="kd">var</span> <span class="nx">napsSinceWrite</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+	<span class="c1">// Adds a function called when a BLE characteristic changes value.</span>
+	<span class="c1">// Mutiple callbacks may be added.</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">addReceivedDataCallback</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
+		<span class="k">if</span> <span class="p">(</span><span class="nx">writeCharacteristic</span><span class="p">)</span> <span class="p">{</span>
+			<span class="nx">writeCharacteristic</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="dl">'</span><span class="s1">characteristicvaluechanged</span><span class="dl">'</span><span class="p">,</span> <span class="nx">callback</span><span class="p">);</span>
+			<span class="nx">onReceivedDataCallbacks</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span>
+				<span class="na">key</span><span class="p">:</span> <span class="nx">callback</span><span class="p">.</span><span class="nx">name</span><span class="p">,</span>
+				<span class="na">value</span><span class="p">:</span> <span class="nx">callback</span>
+			<span class="p">})</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+
+	<span class="c1">// Clears the RecievedDataCallback dictionary.</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">removeAllReceivedDataCallbacks</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+		<span class="nx">onReceivedDataCallbacks</span> <span class="o">=</span> <span class="p">[];</span>
+	<span class="p">}</span>
+
+	<span class="c1">// Searches for Devices based upon Service IDs.  Then prompts</span>
+	<span class="c1">// a user to select a target device.  Lastly, it conencts to</span>
+	<span class="c1">// target d evice.</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">searchAndConnect</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">primaryServicesUUID</span><span class="p">,</span> <span class="nx">addSystemText</span> <span class="o">=</span> <span class="dl">""</span><span class="p">)</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="k">new</span> <span class="nb">Promise</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">resolve</span><span class="p">,</span> <span class="nx">reject</span><span class="p">)</span> <span class="p">{</span>
+			<span class="kd">let</span> <span class="nx">optionalServices</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="dl">'</span><span class="s1">optionalServices</span><span class="dl">'</span><span class="p">).</span><span class="nx">value</span>
+				<span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="sr">/, </span><span class="se">?</span><span class="sr">/</span><span class="p">).</span><span class="nx">map</span><span class="p">(</span><span class="nx">s</span> <span class="o">=&gt;</span> <span class="nx">s</span><span class="p">.</span><span class="nx">startsWith</span><span class="p">(</span><span class="dl">'</span><span class="s1">0x</span><span class="dl">'</span><span class="p">)</span> <span class="p">?</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">s</span><span class="p">)</span> <span class="p">:</span> <span class="nx">s</span><span class="p">)</span>
+				<span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="nx">s</span> <span class="o">=&gt;</span> <span class="nx">s</span> <span class="o">&amp;&amp;</span> <span class="nx">BluetoothUUID</span><span class="p">.</span><span class="nx">getService</span><span class="p">);</span>
+
+			<span class="k">if</span> <span class="p">(</span><span class="nx">addSystemText</span><span class="p">)</span> <span class="p">{</span>
+				<span class="nx">addSystemText</span><span class="p">(</span><span class="dl">'</span><span class="s1">Requesting any Bluetooth Device...</span><span class="dl">'</span><span class="p">);</span>
+			<span class="p">}</span>
+			<span class="nb">navigator</span><span class="p">.</span><span class="nx">bluetooth</span><span class="p">.</span><span class="nx">requestDevice</span><span class="p">({</span>
+					<span class="na">acceptAllDevices</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+					<span class="na">optionalServices</span><span class="p">:</span> <span class="nx">optionalServices</span>
+
+				<span class="p">})</span> <span class="c1">// After getting a device</span>
+				<span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">device</span> <span class="o">=&gt;</span> <span class="p">{</span>
+					<span class="nx">pairedDevices</span><span class="p">[</span><span class="nx">device</span><span class="p">.</span><span class="nx">name</span><span class="p">]</span> <span class="o">=</span> <span class="nx">device</span><span class="p">;</span>
+					<span class="k">if</span> <span class="p">(</span><span class="nx">addSystemText</span><span class="p">)</span> <span class="p">{</span>
+						<span class="nx">addSystemText</span><span class="p">(</span><span class="dl">'</span><span class="s1">Connecting to GATT Server...</span><span class="dl">'</span><span class="p">);</span>
+					<span class="p">}</span>
+					<span class="k">return</span> <span class="nx">device</span><span class="p">.</span><span class="nx">gatt</span><span class="p">.</span><span class="nx">connect</span><span class="p">();</span>
+				<span class="p">})</span> <span class="c1">// After connecting</span>
+				<span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">server</span> <span class="o">=&gt;</span> <span class="p">{</span>
+					<span class="k">if</span> <span class="p">(</span><span class="nx">addSystemText</span><span class="p">)</span> <span class="p">{</span>
+						<span class="nx">addSystemText</span><span class="p">(</span><span class="dl">'</span><span class="s1">Getting Services...</span><span class="dl">'</span><span class="p">);</span>
+					<span class="p">}</span>
+					<span class="k">return</span> <span class="nx">server</span><span class="p">.</span><span class="nx">getPrimaryServices</span><span class="p">();</span>
+				<span class="p">})</span> <span class="c1">// After getting services</span>
+				<span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">services</span> <span class="o">=&gt;</span> <span class="p">{</span>
+					<span class="k">if</span> <span class="p">(</span><span class="nx">addSystemText</span><span class="p">)</span> <span class="p">{</span>
+						<span class="nx">addSystemText</span><span class="p">(</span><span class="dl">"</span><span class="s2">Found services: </span><span class="dl">"</span><span class="p">);</span>
+					<span class="p">}</span>
+					<span class="nx">services</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="nx">service</span> <span class="o">=&gt;</span> <span class="p">{</span>
+						<span class="kd">let</span> <span class="nx">queue</span> <span class="o">=</span> <span class="nb">Promise</span><span class="p">.</span><span class="nx">resolve</span><span class="p">();</span>
+						<span class="nx">queue</span> <span class="o">=</span> <span class="nx">queue</span><span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">_</span> <span class="o">=&gt;</span> <span class="nx">service</span><span class="p">.</span><span class="nx">getCharacteristics</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="nx">characteristics</span> <span class="o">=&gt;</span> <span class="p">{</span>
+							<span class="k">if</span> <span class="p">(</span><span class="nx">addSystemText</span><span class="p">)</span> <span class="p">{</span>
+								<span class="nx">addSystemText</span><span class="p">(</span><span class="dl">'</span><span class="s1">Service: </span><span class="dl">'</span> <span class="o">+</span> <span class="nx">service</span><span class="p">.</span><span class="nx">uuid</span><span class="p">);</span>
+							<span class="p">}</span>
+							<span class="nx">characteristics</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="nx">characteristic</span> <span class="o">=&gt;</span> <span class="p">{</span>
+								<span class="k">if</span> <span class="p">(</span><span class="nx">addSystemText</span><span class="p">)</span> <span class="p">{</span>
+									<span class="nx">addSystemText</span><span class="p">(</span><span class="dl">'</span><span class="s1">&gt;&gt; Characteristic: </span><span class="dl">'</span> <span class="o">+</span> <span class="nx">characteristic</span><span class="p">.</span><span class="nx">uuid</span> <span class="o">+</span> <span class="dl">'</span><span class="s1"> </span><span class="dl">'</span> <span class="o">+</span>
+										<span class="nx">getSupportedProperties</span><span class="p">(</span><span class="nx">characteristic</span><span class="p">));</span>
+								<span class="p">}</span>
+								<span class="nx">writeCharacteristic</span> <span class="o">=</span> <span class="nx">characteristic</span><span class="p">;</span>
+								<span class="k">if</span> <span class="p">(</span><span class="nx">addSystemText</span><span class="p">)</span> <span class="p">{</span>
+									<span class="nx">addSystemText</span><span class="p">(</span><span class="dl">"</span><span class="s2">Write characteristic set</span><span class="dl">"</span><span class="p">);</span>
+								<span class="p">}</span>
+								<span class="nx">writeCharacteristic</span><span class="p">.</span><span class="nx">startNotifications</span><span class="p">();</span>
+								<span class="nx">resolve</span><span class="p">();</span>
+							<span class="p">});</span> <span class="c1">// End enumerating characteristics</span>
+						<span class="p">}));</span> <span class="c1">// End queue</span>
+					<span class="p">})</span> <span class="c1">// End enumerating services</span>
+				<span class="p">}).</span> <span class="c1">// End Service exploration                   </span>
+			<span class="k">catch</span><span class="p">(</span><span class="nx">error</span> <span class="o">=&gt;</span> <span class="p">{</span>
+				<span class="k">if</span> <span class="p">(</span><span class="nx">addSystemText</span><span class="p">)</span> <span class="p">{</span>
+					<span class="nx">addSystemText</span><span class="p">(</span><span class="nx">error</span><span class="p">);</span>
+				<span class="p">}</span>
+			<span class="p">})</span>
+		<span class="p">});</span> <span class="c1">// End Search and Connect Promise</span>
+	<span class="p">}</span> <span class="c1">// End Search and Connect Function</span>
+
+	<span class="k">this</span><span class="p">.</span><span class="nx">writeString</span> <span class="o">=</span> <span class="k">async</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="nx">addSystemText</span> <span class="o">=</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span>
+		<span class="nx">write</span><span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="nx">addSystemText</span><span class="p">);</span>
+	<span class="p">}</span>
+
+	<span class="k">this</span><span class="p">.</span><span class="nx">writeData</span> <span class="o">=</span> <span class="k">async</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="nx">addSystemText</span> <span class="o">=</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span>
+		<span class="nx">write</span><span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="kc">false</span><span class="p">,</span> <span class="nx">addSystemText</span><span class="p">);</span>
+	<span class="p">}</span>
+
+	<span class="kd">var</span> <span class="nx">write</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="nx">string</span> <span class="o">=</span> <span class="kc">true</span><span class="p">,</span> <span class="nx">addSystemText</span> <span class="o">=</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span>
+		<span class="nx">p</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Promise</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">resolve</span><span class="p">,</span> <span class="nx">reject</span><span class="p">)</span> <span class="p">{</span>
+			<span class="k">if</span> <span class="p">(</span><span class="nx">pairedDevices</span><span class="p">)</span> <span class="p">{</span>
+				<span class="k">if</span> <span class="p">(</span><span class="nx">writeCharacteristic</span> <span class="o">!=</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span>
+					<span class="c1">// Don't double encode.</span>
+					<span class="k">if</span> <span class="p">(</span><span class="nx">string</span><span class="p">)</span> <span class="p">{</span>
+						<span class="kd">let</span> <span class="nx">encoder</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">TextEncoder</span><span class="p">(</span><span class="dl">'</span><span class="s1">utf-8</span><span class="dl">'</span><span class="p">);</span>
+						<span class="kd">var</span> <span class="nx">writeData</span> <span class="o">=</span> <span class="nx">encoder</span><span class="p">.</span><span class="nx">encode</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
+						<span class="nx">writeBuffer</span><span class="p">.</span><span class="nx">push</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="nx">writeBuffer</span><span class="p">,</span> <span class="nx">writeData</span><span class="p">);</span> <span class="c1">// test</span>
+						<span class="c1">// writeBuffer = appendUint8Buffer(writeBuffer, writeData);</span>
+						<span class="nx">writeLoop</span><span class="p">(</span><span class="nx">writeData</span><span class="p">);</span>
+					<span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">data</span> <span class="o">!=</span> <span class="kc">null</span><span class="p">){</span>
+						<span class="nx">writeData</span> <span class="o">=</span> <span class="nb">Array</span><span class="p">.</span><span class="k">from</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
+						<span class="c1">// dataInUint8 = Uint8Array.from(data);</span>
+						<span class="nx">writeBuffer</span><span class="p">.</span><span class="nx">push</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="nx">writeBuffer</span><span class="p">,</span> <span class="nx">writeData</span><span class="p">);</span>
+						<span class="c1">// writeBuffer = appendUint8Buffer(writeBuffer, dataInUint8);</span>
+						<span class="nx">writeLoop</span><span class="p">(</span><span class="nx">writeData</span><span class="p">);</span>
+					<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+						<span class="nx">resolve</span><span class="p">();</span>
+					<span class="p">}</span>
+					<span class="nx">resolve</span><span class="p">();</span>
+				<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+					<span class="nx">reject</span><span class="p">(</span><span class="dl">"</span><span class="s2">No write characteristic</span><span class="dl">"</span><span class="p">)</span>
+				<span class="p">}</span>
+			<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+				<span class="nx">reject</span><span class="p">(</span><span class="dl">"</span><span class="s2">No devices paired.</span><span class="dl">"</span><span class="p">)</span>
+			<span class="p">}</span>
+		<span class="p">}).</span><span class="k">catch</span><span class="p">(</span><span class="nx">error</span> <span class="o">=&gt;</span> <span class="p">{</span>
+			<span class="k">if</span> <span class="p">(</span><span class="nx">addSystemText</span><span class="p">)</span> <span class="p">{</span>
+				<span class="nx">addSystemText</span><span class="p">(</span><span class="dl">"</span><span class="s2">No device paired</span><span class="dl">"</span><span class="p">);</span>
+			<span class="p">}</span>
+		<span class="p">});</span>
+		<span class="k">return</span> <span class="nx">p</span><span class="p">;</span>
+	<span class="p">}</span>
+
+	<span class="k">this</span><span class="p">.</span><span class="nx">disconnectDevice</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+
+	<span class="p">}</span>
+
+	<span class="c1">// Important information on write queue</span>
+	<span class="c1">// https://github.com/WebBluetoothCG/web-bluetooth/issues/188</span>
+	<span class="c1">// </span>
+
+
+	<span class="kd">var</span> <span class="nx">writeLoop</span> <span class="o">=</span> <span class="k">async</span> <span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">){</span>
+		<span class="c1">// writing = true;</span>
+		<span class="c1">// for(var i = 0; i &lt; writeBuffer.length; i){</span>
+		<span class="c1">// 	var length = 0;</span>
+		<span class="c1">// 	// if(writeBuffer.length &lt; (i + 20)){ length = writeBuffer.length} else { length = i + 20; }</span>
+		<span class="c1">// 	if(writeBuffer.length &lt; 20){ length = writeBuffer.length; } else { length = 20; }</span>
+		<span class="c1">// 	var tmpWriteBfr = Uint8Array.from(writeBuffer.splice(0, length));</span>
+		<span class="c1">// 	console.log(tmpWriteBfr);</span>
+		<span class="c1">// 	writeCharacteristic.writeValue(tmp=WriteBfr);</span>
+		<span class="c1">// 	await sleep(42);</span>
+		<span class="c1">// 	i+=20;</span>
+		<span class="c1">// }</span>
+
+		<span class="c1">// 1. Create a rollback buffer, in case there is an error writing.</span>
+		<span class="c1">// 2. Check if the buffer is empty.</span>
+		<span class="c1">// 3. If writing is currently in progress, wait.  But not forever.</span>
+		<span class="c1">//	  After three naps, assume write is complete.</span>
+		<span class="c1">// 4. Limit the write to the HM-10 TX buffer (20 bytes)</span>
+			<span class="c1">// TODO Make the TX buffer size mutable.  For example, the </span>
+			<span class="c1">// HM-16 has a TX buffer of 256</span>
+		<span class="c1">// 5. Cut a chunk off the writeBuffer for writing.</span>
+		<span class="c1">// 6. Attempt to write the value to the device</span>
+		<span class="c1">// 7. Once the write is complete, set the writing flag to false.</span>
+			<span class="c1">// NOTE The write callback doesn't seem to be working.</span>
+		<span class="c1">// 8. If there is an error restore the buffer.</span>
+
+		<span class="kd">var</span> <span class="nx">mementoWriteBuffer</span> <span class="o">=</span> <span class="p">[];</span>
+		<span class="k">while</span><span class="p">(</span><span class="nx">writeBuffer</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">){</span>
+			<span class="k">if</span><span class="p">(</span><span class="nx">writing</span> <span class="o">===</span> <span class="kc">false</span><span class="p">){</span>
+				<span class="nx">writing</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+				<span class="kd">var</span> <span class="nx">length</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+				<span class="k">if</span><span class="p">(</span><span class="nx">writeBuffer</span><span class="p">.</span><span class="nx">length</span> <span class="o">&lt;</span> <span class="mi">20</span><span class="p">){</span> <span class="nx">length</span> <span class="o">=</span> <span class="nx">writeBuffer</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="p">}</span> <span class="k">else</span> <span class="p">{</span> <span class="nx">length</span> <span class="o">=</span> <span class="mi">20</span><span class="p">;</span> <span class="p">}</span>
+				<span class="nx">mementoWriteBuffer</span> <span class="o">=</span> <span class="nx">writeBuffer</span><span class="p">;</span>
+				<span class="kd">var</span> <span class="nx">tmpWriteBfr</span> <span class="o">=</span> <span class="nb">Uint8Array</span><span class="p">.</span><span class="k">from</span><span class="p">(</span><span class="nx">writeBuffer</span><span class="p">.</span><span class="nx">splice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nx">length</span><span class="p">));</span>
+				<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">TX: </span><span class="dl">"</span> <span class="o">+</span> <span class="nx">tmpWriteBfr</span><span class="p">);</span>
+				<span class="nx">writeCharacteristic</span><span class="p">.</span><span class="nx">writeValue</span><span class="p">(</span><span class="nx">tmpWriteBfr</span><span class="p">).</span>
+				<span class="nx">then</span><span class="p">(</span><span class="nx">blah</span> <span class="o">=&gt;</span> <span class="p">{</span>
+					<span class="nx">writing</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+				<span class="p">}).</span><span class="k">catch</span><span class="p">(</span><span class="nx">error</span> <span class="o">=&gt;</span> <span class="p">{</span>
+					<span class="nx">writeBuffer</span> <span class="o">=</span> <span class="nx">mementoWriteBuffer</span><span class="p">;</span>
+					<span class="nx">writing</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+					<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">BLE Write Error: </span><span class="dl">"</span><span class="p">);</span>
+					<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">error</span><span class="p">);</span>
+					<span class="nx">delayAndWriteAgain</span><span class="p">();</span>
+				<span class="p">});</span>
+			<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+				<span class="k">await</span> <span class="nx">bleWriteThrottling</span><span class="p">(</span><span class="mi">42</span><span class="p">);</span>
+			<span class="p">}</span>
+			
+		<span class="p">}</span>
+		<span class="nx">writeBuffer</span> <span class="o">=</span> <span class="p">[];</span>
+	<span class="p">}</span>
+
+	<span class="kd">var</span> <span class="nx">delayAndWriteAgain</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
+		<span class="nx">setTimeout</span><span class="p">(</span><span class="nx">writeLoop</span><span class="p">(),</span> <span class="mi">100</span><span class="p">);</span>
+	<span class="p">}</span>
+
+	<span class="kd">var</span> <span class="nx">bleWriteThrottling</span> <span class="o">=</span> <span class="k">async</span> <span class="kd">function</span><span class="p">(</span><span class="nx">ms</span><span class="p">){</span>
+		<span class="c1">// 1. Sleep a bit</span>
+		<span class="c1">// 2. Count naps</span>
+		<span class="c1">// 3. Too many naps, then assume BLE writing is done.</span>
+		<span class="k">await</span> <span class="nx">sleep</span><span class="p">(</span><span class="nx">ms</span><span class="p">);</span>
+		<span class="nx">napsSinceWrite</span><span class="o">++</span><span class="p">;</span>
+		<span class="k">if</span><span class="p">(</span><span class="nx">napsSinceWrite</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">){</span>
+			<span class="nx">writing</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+			<span class="nx">napsSinceWrite</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+		<span class="p">}</span>
+
+	<span class="p">}</span>
+
+	<span class="cm">/* Utils */</span>
+	<span class="kd">function</span> <span class="nx">getSupportedProperties</span><span class="p">(</span><span class="nx">characteristic</span><span class="p">)</span> <span class="p">{</span>
+		<span class="kd">let</span> <span class="nx">supportedProperties</span> <span class="o">=</span> <span class="p">[];</span>
+		<span class="k">for</span> <span class="p">(</span><span class="kd">const</span> <span class="nx">p</span> <span class="k">in</span> <span class="nx">characteristic</span><span class="p">.</span><span class="nx">properties</span><span class="p">)</span> <span class="p">{</span>
+			<span class="k">if</span> <span class="p">(</span><span class="nx">characteristic</span><span class="p">.</span><span class="nx">properties</span><span class="p">[</span><span class="nx">p</span><span class="p">]</span> <span class="o">===</span> <span class="kc">true</span><span class="p">)</span> <span class="p">{</span>
+				<span class="nx">supportedProperties</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">p</span><span class="p">.</span><span class="nx">toUpperCase</span><span class="p">());</span>
+			<span class="p">}</span>
+		<span class="p">}</span>
+		<span class="k">return</span> <span class="dl">'</span><span class="s1">[</span><span class="dl">'</span> <span class="o">+</span> <span class="nx">supportedProperties</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="dl">'</span><span class="s1">, </span><span class="dl">'</span><span class="p">)</span> <span class="o">+</span> <span class="dl">'</span><span class="s1">]</span><span class="dl">'</span><span class="p">;</span>
+	<span class="p">}</span>
+
+	<span class="kd">var</span> <span class="nx">appendUint8Buffer</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">bufferOne</span><span class="p">,</span> <span class="nx">bufferTwo</span><span class="p">)</span> <span class="p">{</span>
+		<span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nx">bufferOne</span><span class="p">){</span><span class="k">return</span> <span class="nx">bufferTwo</span><span class="p">;}</span>
+		<span class="kd">var</span> <span class="nx">tmp</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Uint8Array</span><span class="p">(</span><span class="nx">bufferOne</span><span class="p">.</span><span class="nx">byteLength</span> <span class="o">+</span> <span class="nx">bufferTwo</span><span class="p">.</span><span class="nx">byteLength</span><span class="p">);</span>
+		<span class="nx">tmp</span><span class="p">.</span><span class="kd">set</span><span class="p">(</span><span class="k">new</span> <span class="nb">Uint8Array</span><span class="p">(</span><span class="nx">bufferOne</span><span class="p">),</span> <span class="mi">0</span><span class="p">);</span>
+		<span class="nx">tmp</span><span class="p">.</span><span class="kd">set</span><span class="p">(</span><span class="k">new</span> <span class="nb">Uint8Array</span><span class="p">(</span><span class="nx">bufferTwo</span><span class="p">),</span> <span class="nx">bufferOne</span><span class="p">.</span><span class="nx">byteLength</span><span class="p">)</span>
+		<span class="k">return</span> <span class="nx">tmp</span><span class="p">.</span><span class="nx">buffer</span><span class="p">;</span>
+	<span class="p">}</span>
+
+	<span class="k">return</span> <span class="p">{</span>
+		<span class="na">addReceivedDataCallback</span><span class="p">:</span> <span class="nx">addReceivedDataCallback</span><span class="p">,</span>
+		<span class="na">searchAndConnect</span><span class="p">:</span> <span class="nx">searchAndConnect</span><span class="p">,</span>
+		<span class="na">writeString</span><span class="p">:</span> <span class="nx">writeString</span><span class="p">,</span>
+		<span class="na">writeData</span><span class="p">:</span> <span class="nx">writeData</span><span class="p">,</span>
+		<span class="na">disconnectDevice</span><span class="p">:</span> <span class="nx">disconnectDevice</span>
+	<span class="p">}</span>
+<span class="p">})();</span> <span class="c1">// End Proto</span>
+
+	</code></pre></figure>
+:ET

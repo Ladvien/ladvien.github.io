@@ -1,0 +1,90 @@
+I"Í:
+<figure class="highlight"><pre><code class="language-r" data-lang="r"><span class="n">options</span><span class="p">(</span><span class="n">java.parameters</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"-Xmx14336m"</span><span class="p">)</span><span class="w">  </span><span class="c1">## memory set to 14 GB</span><span class="w">
+</span><span class="n">library</span><span class="p">(</span><span class="s2">"sqldf"</span><span class="p">)</span><span class="w">
+</span><span class="n">library</span><span class="p">(</span><span class="s2">"XLConnect"</span><span class="p">)</span><span class="w">
+</span><span class="n">library</span><span class="p">(</span><span class="s2">"tcltk"</span><span class="p">)</span><span class="w">
+
+</span><span class="c1"># 1. Load all PoS </span><span class="w">
+</span><span class="c1"># 2. Load all NBN stays</span><span class="w">
+</span><span class="c1"># 3. Find all PEID's who have had a PoS in the last year</span><span class="w">
+</span><span class="c1"># 4. Find all PEID's of those who have stayed in a NBN bed in the last year</span><span class="w">
+</span><span class="c1"># 5. Append the lists and get a distinct set of PEIDs</span><span class="w">
+</span><span class="c1"># 6. Load family and individual demographic information</span><span class="w">
+</span><span class="c1"># 7. Inner join the demographic data to the distinct PEID set.</span><span class="w">
+</span><span class="c1"># 8. Write all information to file.</span><span class="w">
+</span><span class="c1"># 9. Pray.</span><span class="w">
+
+
+</span><span class="n">allNBN</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">readWorksheetFromFile</span><span class="p">(</span><span class="s2">"All TCES NBN Bed Data up to 1-19-2017 -- v04.xlsx"</span><span class="p">,</span><span class="w"> </span><span class="n">sheet</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="n">startRow</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">)</span><span class="w">
+</span><span class="n">allPoS</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">readWorksheetFromFile</span><span class="w"> </span><span class="p">(</span><span class="s2">"All PoS up to 12-14-16.xlsx"</span><span class="p">,</span><span class="w"> </span><span class="n">sheet</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="n">startRow</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">)</span><span class="w">
+
+</span><span class="c1"># Make SQL friendly headers</span><span class="w">
+</span><span class="n">colnames</span><span class="p">(</span><span class="n">allNBN</span><span class="p">)[</span><span class="m">1</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="s2">"peid"</span><span class="w">
+</span><span class="n">colnames</span><span class="p">(</span><span class="n">allNBN</span><span class="p">)[</span><span class="m">3</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="s2">"caseNumber"</span><span class="w">
+</span><span class="n">colnames</span><span class="p">(</span><span class="n">allNBN</span><span class="p">)[</span><span class="m">5</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="s2">"firstName"</span><span class="w">
+</span><span class="n">colnames</span><span class="p">(</span><span class="n">allNBN</span><span class="p">)[</span><span class="m">6</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="s2">"lastName"</span><span class="w">
+</span><span class="n">colnames</span><span class="p">(</span><span class="n">allNBN</span><span class="p">)[</span><span class="m">10</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="s2">"OccupancyStart"</span><span class="w">
+</span><span class="n">colnames</span><span class="p">(</span><span class="n">allNBN</span><span class="p">)[</span><span class="m">11</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="s2">"OccupancyEnd"</span><span class="w">
+
+
+</span><span class="n">colnames</span><span class="p">(</span><span class="n">allPoS</span><span class="p">)[</span><span class="m">1</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="s2">"ServiceName"</span><span class="w">
+</span><span class="n">colnames</span><span class="p">(</span><span class="n">allPoS</span><span class="p">)[</span><span class="m">2</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="s2">"peid"</span><span class="w">
+</span><span class="n">colnames</span><span class="p">(</span><span class="n">allPoS</span><span class="p">)[</span><span class="m">3</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="s2">"DateOfContact"</span><span class="w">
+
+</span><span class="c1"># Change dates to by SQL friendly.</span><span class="w">
+</span><span class="n">allNBN</span><span class="o">$</span><span class="n">OccupancyStart</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">as.character</span><span class="p">(</span><span class="n">allNBN</span><span class="o">$</span><span class="n">OccupancyStart</span><span class="p">)</span><span class="w">
+</span><span class="n">allNBN</span><span class="o">$</span><span class="n">OccupancyEnd</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">as.character</span><span class="p">(</span><span class="n">allNBN</span><span class="o">$</span><span class="n">OccupancyEnd</span><span class="p">)</span><span class="w">
+
+</span><span class="n">allPoS</span><span class="o">$</span><span class="n">DateOfContact</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">as.character</span><span class="p">(</span><span class="n">allPoS</span><span class="o">$</span><span class="n">DateOfContact</span><span class="p">)</span><span class="w">
+
+</span><span class="c1"># Find the days since the stay in the NBN bed started</span><span class="w">
+</span><span class="n">allNBN</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">sqldf</span><span class="p">(</span><span class="s2">"SELECT *, CAST((julianday('NOW') - julianday(OccupancyStart))AS INTEGER) 'DaysSince' 
+                FROM allNBN 
+                ORDER BY 'DaysSince' DESC"</span><span class="p">)</span><span class="w">
+
+</span><span class="n">write.csv</span><span class="p">(</span><span class="n">allNBN</span><span class="p">,</span><span class="w"> </span><span class="s2">"Test.csv"</span><span class="p">)</span><span class="w">
+
+</span><span class="c1"># Find the days since the PoS was occurred.</span><span class="w">
+</span><span class="n">allPoS</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">sqldf</span><span class="p">(</span><span class="s2">"SELECT *, CAST((julianday('NOW') - julianday(DateOfContact))AS INTEGER) 'DaysSince' 
+                FROM allPoS 
+                ORDER BY 'DaysSince' DESC"</span><span class="p">)</span><span class="w">
+
+
+</span><span class="n">allNBN</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">subset</span><span class="p">(</span><span class="n">allNBN</span><span class="p">)</span><span class="w">
+</span><span class="n">allPoS</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">subset</span><span class="p">(</span><span class="n">allPoS</span><span class="p">)</span><span class="w">
+
+</span><span class="c1"># Get all PEIDs who've stayed in a NBN bed in the last year</span><span class="w">
+</span><span class="n">activeInNBN</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">sqldf</span><span class="p">(</span><span class="s2">"SELECT * FROM allNBN WHERE DaysSince &lt; 366"</span><span class="p">)</span><span class="w">
+
+</span><span class="c1"># Get all PEIDS who received a Service in the last year</span><span class="w">
+</span><span class="n">activePoS</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">sqldf</span><span class="p">(</span><span class="s2">"SELECT * FROM allPoS WHERE DaysSince &lt; 366"</span><span class="p">)</span><span class="w">
+
+</span><span class="n">targetElementsFromActivePoS</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">sqldf</span><span class="p">(</span><span class="s2">"SELECT peid, ServiceName, DaysSince, 'PoS' FROM activePoS ORDER BY DaysSince DESC"</span><span class="p">)</span><span class="w">
+</span><span class="n">targetElementsFromActiveNBN</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">sqldf</span><span class="p">(</span><span class="s2">"SELECT peid, caseNumber, firstName, lastName, DaysSince, 'NBN' FROM activeInNBN ORDER BY DaysSince DESC"</span><span class="p">)</span><span class="w"> 
+
+</span><span class="c1"># Get all distinct PEIDs.</span><span class="w">
+</span><span class="n">posPEIDs</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">sqldf</span><span class="p">(</span><span class="s2">"SELECT DISTINCT(peid) FROM targetElementsFromActivePoS"</span><span class="p">)</span><span class="w">
+</span><span class="n">nbnPEIDs</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">sqldf</span><span class="p">(</span><span class="s2">"SELECT DISTINCT(peid) FROM targetElementsFromActiveNBN"</span><span class="p">)</span><span class="w">
+
+</span><span class="c1"># Combine the PEIDs</span><span class="w">
+</span><span class="n">posAndNbnPEIDs</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">rbind</span><span class="p">(</span><span class="n">posPEIDs</span><span class="p">,</span><span class="w"> </span><span class="n">nbnPEIDs</span><span class="p">)</span><span class="w">
+
+</span><span class="c1"># Get de-duplicate.</span><span class="w">
+</span><span class="n">allPEIDsDistinct</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">sqldf</span><span class="p">(</span><span class="s2">"SELECT DISTINCT(peid) FROM posAndNbnPEIDs"</span><span class="p">)</span><span class="w">
+
+</span><span class="c1"># Load all FAMILY demographic info</span><span class="w">
+</span><span class="n">allTCESDemographicsFamilies</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">readWorksheetFromFile</span><span class="p">(</span><span class="s2">"Demographics in TCES up to 1-24-2017 -- Batch Upload - Participants.xlsx"</span><span class="p">,</span><span class="w"> </span><span class="n">sheet</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="n">startRow</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">)</span><span class="w">
+</span><span class="n">colnames</span><span class="p">(</span><span class="n">allTCESDemographicsFamilies</span><span class="p">)[</span><span class="m">1</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="s2">"peid"</span><span class="w">
+
+</span><span class="c1"># Load all INDIVIDUAL demographic info</span><span class="w">
+</span><span class="n">allTCESDemographicsIndividuals</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">readWorksheetFromFile</span><span class="p">(</span><span class="s2">"Demographics in TCES up to 1-24-2017 -- Batch Upload - Participants.xlsx"</span><span class="p">,</span><span class="w"> </span><span class="n">sheet</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2</span><span class="p">,</span><span class="w"> </span><span class="n">startRow</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">)</span><span class="w">
+</span><span class="n">colnames</span><span class="p">(</span><span class="n">allTCESDemographicsIndividuals</span><span class="p">)[</span><span class="m">1</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="s2">"peid"</span><span class="w">
+
+
+</span><span class="c1"># Add back demographics</span><span class="w">
+</span><span class="n">activeThisYearWithDemoFamilies</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">sqldf</span><span class="p">(</span><span class="s2">"SELECT * FROM allPEIDsDistinct INNER JOIN allTCESDemographicsFamilies ON allPEIDsDistinct.peid=allTCESDemographicsFamilies.peid"</span><span class="p">)</span><span class="w">
+</span><span class="n">activeThisYearWithDemoIndividuals</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">sqldf</span><span class="p">(</span><span class="s2">"SELECT * FROM allPEIDsDistinct INNER JOIN allTCESDemographicsIndividuals ON allPEIDsDistinct.peid=allTCESDemographicsIndividuals.peid"</span><span class="p">)</span><span class="w">
+
+</span><span class="n">write.csv</span><span class="p">(</span><span class="n">activeThisYearWithDemoFamilies</span><span class="p">,</span><span class="w"> </span><span class="n">file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Active Families Demographics from TCES.csv"</span><span class="p">)</span><span class="w">
+</span><span class="n">write.csv</span><span class="p">(</span><span class="n">activeThisYearWithDemoIndividuals</span><span class="p">,</span><span class="w"> </span><span class="n">file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Active Individuals Demographics from TCES.csv"</span><span class="p">)</span></code></pre></figure>
+:ET

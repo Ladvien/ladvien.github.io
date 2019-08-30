@@ -1,0 +1,186 @@
+I"�)<h2 id="the-robber-board">The Robber Board</h2>
+
+<p>This board originated with a request from an LPC who was practicing <a href="https://www.emdr.com/what-is-emdr/">EMDR</a> and wanted to upgrade his feedback machine.  He had requested it be wireless and provide both haptic and visual feedback.  The whole thing fell apart when he sent me an NDA which seemed typical of real professional level projects.  However, it would have prohibited me from sharing anything I discovered, and given the amount I could have made from it, well, it just wasn’t worth it.  I thought I’d finish the project and share with everyone, since sharing is the greatest form of payment. </p>
+
+<p>Here are some of the features of the board:</p>
+
+<ol>
+  <li>OTA Uploading to an ATtiny84</li>
+  <li>An on board charing circuit with load sharing capability (<a href="http://blog.zakkemble.co.uk/a-lithium-battery-charger-with-load-sharing/">thanks Zak Kemble</a>)</li>
+  <li>Two RGB LEDs to provide visual feedback.</li>
+  <li>One unidirectional, motor-driver meant to control a vibration motor.</li>
+  <li>Three free pins</li>
+</ol>
+
+<p>My purpose in completing the board is to continue to test my TinySafeBoot BLE uploader:</p>
+
+<p><a href="https://github.com/Ladvien/Lumi_Windows_App">Lumi(v2)</a></p>
+
+<p>I’m also in the process of re-writing the uploader to be cross platform, targetting Android, iOS, and Windows 10.  It’ll be a feat, but I’m thinking I’ll center the project around Dropbox.  The consumer would:</p>
+
+<ol>
+  <li>Compile an AVR binary using Arduino, Atmel Studio, or AVRDude</li>
+  <li>Save the binary in Dropbox</li>
+  <li>Lumi3 will then connect to the target device, this could be done from Android, iOS, or Windows.</li>
+  <li>Lumi3 would then pull the binary from Dropbox and upload it using the TinySafeBootoader.</li>
+</ol>
+
+<p>Not sure if I can pull it off; wish me luck.  And feel free to follow the code base here:</p>
+
+<p><a href="https://github.com/Ladvien/Lumi3">Lumi3</a></p>
+
+<p><img src="../images/Robber_PCB_v1.JPG" alt="" /></p>
+
+<h2 id="design-info">Design Info</h2>
+
+<p><a href="http://ladvien.com../images/Robber_Schematic.pdf">Robber_Schematic.pdf</a></p>
+
+<p><img src="../images/Robber%20v01%20Schematic.PNG" alt="Robber v01 Schematic.PNG" /></p>
+
+<p><img src="../images/Robber%20v01%20T%20Solder%20Guide.PNG" alt="Robber v01 T Solder Guide.PNG" /></p>
+
+<p><img src="../images/Robber%20v01%20B%20Solder%20Guide.PNG" alt="Robber v01 B Solder Guide.PNG" /></p>
+
+<h2 id="hm-11-setup">HM-11 Setup</h2>
+
+<p> A few commands which are required to make the OTA process work correctly</p>
+
+<ol>
+  <li>AT+AFTC3FF  –  This command sets all IO pins to go HIGH after connection.  This isn’t needed for OTA but, since the AVR would be pulled low as soon as it connects, any sketch you have running would immediately be shutdown as the AVR’s RESET is pulled low.</li>
+  <li>AT+BEFC3FF – This is like the AFTC command, however, it set IO pins HIGH after the HM-11 is powered.  For the Robber, if this is not setup the AVR will stay reset until connected.  Initially, I didn’t notice this and spent a lot of time trying to figure out what the AVR wouldn’t respond.  Sigh.</li>
+  <li>AT+MODE2 – this put the HM-11 into “Remote” mode.  This will allow AT commands to be sent to the HM-11 after it has been connected, through the BLE connection.  This is what allows the commands to be sent to remotely toggle the PIO connected to the AVR’s RESET.</li>
+</ol>
+
+<p>A few commands which I <em>think</em> make the connection more reliable:</p>
+
+<ol>
+  <li>AT+BAUD2 – this sets the communication rate between the HM-11 and AVR to 38400.  After testing, this is about the highest speed ATtiny’s can for the TSB auto-baud.</li>
+  <li>AT+POWE3 – this raises the radio gain of the HM-11.  Power-convseration is not the friend of prototyping.</li>
+  <li>AT+GAIN1 – I think this raises the gain on the HM-11’s RX?  I’m not sure.  The documentation is a little crappy.</li>
+</ol>
+
+<h2 id="debugging-first-iteration">Debugging First Iteration </h2>
+
+<p>The boards came in from OSHPark.  They look sharp–but, it’s time to test the board and see what mistakes were made.</p>
+
+<p>Circuits tested:</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>Circuit Abstraction</td>
+      <td>Tested</td>
+      <td>Pass</td>
+      <td>Description of Issues</td>
+    </tr>
+    <tr>
+      <td>Mini USB</td>
+      <td>Yes</td>
+      <td>100%</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>MCP73831</td>
+      <td>Yes</td>
+      <td>100%</td>
+      <td>Battery Charges.  Used a 2k resistor for the charge rate.</td>
+    </tr>
+    <tr>
+      <td>MCP73831 - LED Charge Indicator</td>
+      <td>Yes</td>
+      <td>100%</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>Load Sharing</td>
+      <td>Yes</td>
+      <td>100%</td>
+      <td>Shesh, I love this circuit.  Thanks Zak.</td>
+    </tr>
+    <tr>
+      <td>LM1117 – 3.3v</td>
+      <td>Yes</td>
+      <td>50%</td>
+      <td>The OUTPUT voltage was calculated based upon 5V INPUT, however, when the USB connection is removed the INPUT voltage is equal to VBAT voltage.  In short, the output is ~3.29v when connected to USB and 2.9v when running on battery.  This will drop even more when the battery discharges.  I’ve selected a fixed VREG to drop in later (<a href="http://www.mouser.com/Search/ProductDetail.aspx?R=NCP186AMX330TAGvirtualkey58410000virtualkey863-NCP186AMX330TAG">NCP186-AMX330TAG</a>).</td>
+    </tr>
+    <tr>
+      <td>Tacit Reset Switch</td>
+      <td>Yes</td>
+      <td>75%</td>
+      <td>The reset line was being pulled HIGH with a 10k resistor.  This might have been causing issues.  It was removed for the time and will be re-added if needed.</td>
+    </tr>
+    <tr>
+      <td>ATtiny84 – Wireless UART Connection</td>
+      <td>Yes</td>
+      <td>85%</td>
+      <td>I cannot get the ATtiny84’s TSB bootloader to respond.  I’ve tried both wireless TSB HELLO and jumpering directly to the UART.  No response.  I’m currently waiting on a <a href="http://www.ebay.com/itm/250670056425?_trksid=p2060353.m2749.l2649&amp;ssPageName=STRK%3AMEBIDX%3AIT">SOIC-14 ATtiny AVR programme</a>r to arrive to more easily troubleshoot the ATtiny84 chip. One thing I’d like to test is the BROWNOUT fuse setting.  It seems like this fuse was set different than usual.  Also, testing the UART on the naked chip would be helpful. Update:  Ok, not sure what happened to the chip, but apparently I killed it?  Regardless, when a new one was programmed and swapped out using a heat gun–the new one worked like a charm. I’ve provided more details below.</td>
+    </tr>
+    <tr>
+      <td>Battery Voltage Monitor</td>
+      <td>No</td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>RGB LEDs</td>
+      <td>No</td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>HM-11 Reset of ATtiny84</td>
+      <td>Yes</td>
+      <td>0%</td>
+      <td>BAD IDEA! I’ve wasted a lot of time because the program I uploaded was sending the HM-11 RESET pin HIGH and LOW.  This made it difficult to re-program, since the HM-11 would lose connection before the upload finished.  Dear lord, what was I thinking?</td>
+    </tr>
+    <tr>
+      <td>Vibration Motor</td>
+      <td>Yes</td>
+      <td>100%</td>
+      <td>It doesn’t work too well when powered by USB alone.  Probably need to get a lower powered vibration motor.  Also, I don’t like the wire connections.  They get all tangled and pull off.  It’d be better with a PCB mounted vibration motor.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><img src="../images/IMG_1616_0.JPG" alt="IMG_1616_0.JPG" /></p>
+
+<p><img src="../images/IMG_1617_0.JPG" alt="IMG_1617_0.JPG" /></p>
+
+<h2 id="debugging-wireless-uart-connection">Debugging Wireless UART Connection</h2>
+
+<p>When the ATtiny84 and HM-11 combination were tested using Lumi the Robber board failed to handshake.  It was disheartening.  The connections were double checked, routing was checked, jumper wires soldered on, ATtiny84 fuses checked, even checked the TSB build used. Nothing.  Frankly, the reason it was such a problem to troubleshoot was lack of foresight in prototyping.  Here are a couple things which should be in every prototype:</p>
+
+<ol>
+  <li>Jumpers.  This is especially true if there is a UART connection.  They just beg to be miswired.  By providing solder-jumpers the UART connection can be tested a device at a time; ATtiny84, then, HM-11</li>
+  <li>Test points.  Gah, this is a no-brainer, but in inevitably there end up being leads soldered on at the most precarious place.</li>
+</ol>
+
+<p>Back to the Robber board issue.  I got wore out trying to do stuff like this:</p>
+
+<p><img src="../images/2017-01-22%2014.16.09.jpg" alt="2017-01-22 14.16.09.jpg" /></p>
+
+<p>The wires kept popping off, they’d need to be resoldered, then pop off again.  Finally, I broke down and bought a <a href="http://www.ebay.com/itm/ATtiny24A-SSU-ATtiny24-ATtiny44-ATtiny84-SOIC14-150-mil-AVR-Programmer-Adapter-/250670056425?hash=item3a5d1983e9:g:ijAAAOxyyFhTdw1-">SOIC-14 AVR Programmer</a>.  <em>Dear lord,</em> where has this thing been all of my life?  Instead of taking two hours of setting up a chip, wiring leads, and programming it, I was done in about 10 minutes.  If you like SOIC ATtiny85/84 chips, get one! </p>
+
+<p>Here’s an action shot!<br />
+<img src="../images/2017-02-01%2008.56.38.jpg" alt="2017-02-01 08.56.38.jpg" /></p>
+
+<h2 id="smd-rgb-led">SMD RGB LED</h2>
+
+<p>There was trouble testing the SMD RGB LEDs.  During the solder-desoldering process the voltage traces for the green LED came off the board.  However, this shouldn’t affect the second LED–but for some reason the green channel on the other LED is the only one working properly.  The red and blue do not seem to be lighting up.  </p>
+
+<p>I thought I’d take a moment and diagram the SMD RGBs I’m using, as I can’t ever seem to get directionality correct.<br />
+<img src="../images/SMD_RGB_Closeup.jpg" alt="SMD_RGB_Closeup.jpg" /></p>
+
+<h1 id="2017-12-24--v3">2017-12-24 – v3</h1>
+
+<p>I’ve almost finished testing the Robber board v3.  A few changes:</p>
+
+<h3 id="isp-key">ISP Key</h3>
+
+<p>I’ve added a special ISP header to the board.  It works with <a href="https://www.tindie.com/products/madworm/tiny-avr-isp-pogo-pin-programming-adapter/">Tiny AVR-ISP pogo-pin programming adapter</a></p>
+
+<p>It’s a bit of a pain to solder, but it’s pretty darn sweet once it’s in place.  Of course, the header is backwards.  More on that later.</p>
+
+<p><img src="../images/isp-key.png" alt="" /></p>
+
+:ET

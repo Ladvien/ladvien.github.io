@@ -1,0 +1,570 @@
+I"Y�<p>Welcome back! Alright, now we know how to connect to a remote server from within MySQL Workbench, let’s start writing some queries.</p>
+
+<p>Here’s a common SQL query:</p>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="k">SELECT</span> <span class="n">e</span><span class="p">.</span><span class="n">emp_no</span><span class="p">,</span>
+		   <span class="n">e</span><span class="p">.</span><span class="n">last_name</span><span class="p">,</span>
+           <span class="n">t</span><span class="p">.</span><span class="n">title</span>
+      <span class="k">FROM</span> <span class="n">employees</span> <span class="k">AS</span> <span class="n">e</span>
+ <span class="k">LEFT</span> <span class="k">JOIN</span> <span class="n">titles</span> 	 <span class="k">AS</span> <span class="n">t</span>
+        <span class="k">ON</span> <span class="n">e</span><span class="p">.</span><span class="n">emp_no</span> <span class="o">=</span> <span class="n">t</span><span class="p">.</span><span class="n">emp_no</span>
+     <span class="k">WHERE</span> <span class="n">e</span><span class="p">.</span><span class="n">hire_date</span> <span class="o">&gt;</span> <span class="s1">'1999-12-31'</span>
+  <span class="k">ORDER</span> <span class="k">BY</span> <span class="n">e</span><span class="p">.</span><span class="n">last_name</span> <span class="k">DESC</span><span class="p">;</span>
+</code></pre></div></div>
+<p>This query produces the following table when run on our <code class="highlighter-rouge">employees</code> database.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: right">row_num</th>
+      <th style="text-align: right">emp_no</th>
+      <th style="text-align: left">last_name</th>
+      <th style="text-align: left">title</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: right">0</td>
+      <td style="text-align: right">47291</td>
+      <td style="text-align: left">Flexer</td>
+      <td style="text-align: left">Staff</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">1</td>
+      <td style="text-align: right">60134</td>
+      <td style="text-align: left">Rathonyi</td>
+      <td style="text-align: left">Staff</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">2</td>
+      <td style="text-align: right">72329</td>
+      <td style="text-align: left">Luit</td>
+      <td style="text-align: left">Staff</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">3</td>
+      <td style="text-align: right">108201</td>
+      <td style="text-align: left">Boreale</td>
+      <td style="text-align: left">Senior Engineer</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">4</td>
+      <td style="text-align: right">205048</td>
+      <td style="text-align: left">Alblas</td>
+      <td style="text-align: left">Senior Staff</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">5</td>
+      <td style="text-align: right">222965</td>
+      <td style="text-align: left">Perko</td>
+      <td style="text-align: left">Senior Staff</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">6</td>
+      <td style="text-align: right">226633</td>
+      <td style="text-align: left">Benzmuller</td>
+      <td style="text-align: left">Staff</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">7</td>
+      <td style="text-align: right">227544</td>
+      <td style="text-align: left">Demeyer</td>
+      <td style="text-align: left">Senior Staff</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">8</td>
+      <td style="text-align: right">422990</td>
+      <td style="text-align: left">Verspoor</td>
+      <td style="text-align: left">Engineer</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">9</td>
+      <td style="text-align: right">424445</td>
+      <td style="text-align: left">Boreale</td>
+      <td style="text-align: left">Engineer</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">10</td>
+      <td style="text-align: right">428377</td>
+      <td style="text-align: left">Gerlach</td>
+      <td style="text-align: left">Engineer</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">11</td>
+      <td style="text-align: right">463807</td>
+      <td style="text-align: left">Covnot</td>
+      <td style="text-align: left">Engineer</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">12</td>
+      <td style="text-align: right">499553</td>
+      <td style="text-align: left">Delgrande</td>
+      <td style="text-align: left">Engineer</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>When the data are presented like this, it appear similar to our traditional Excel spreadsheet, right?</p>
+
+<p>Let’s compare the SQL query and a spreadsheet.</p>
+
+<p><img src="../images/data-analytics-series/sql_to_excel_compare.png" alt="compare-excel-and-sql" /></p>
+
+<p>Now, here in a few weeks when you are SQL-writing-machine you’ll notice this analogy between Excel and a SQL query breaks down.  But for now, let the above image comfort you in knowing the core functions of SQL are similar to those of a spreadsheet.  And you know these spreadsheet functions <em>well</em>.</p>
+
+<ul>
+  <li>Selecting columns</li>
+  <li>Filtering columns and rows</li>
+  <li>Ordering rows</li>
+  <li>Combining data sets</li>
+</ul>
+
+<p>However, SQL has a lot of superpowers an Excel spreadsheets doesn’t.  Of course, the tradeoff is you must leave behind the comfort of a graphical user interface.  But don’t let it scare you off–it only takes a 3-4 months to get used to, but then you’ll realize how much those graphical interfaces have been chaining you down.</p>
+
+<p>Alright, back to the queries.  Let’s take a look at the different parts of the query above.</p>
+
+<h1 id="select">SELECT</h1>
+<p>The <code class="highlighter-rouge">SELECT</code> statement is how you choose what turns up in the results section.  If don’t put something in the <code class="highlighter-rouge">SELECT</code> area, then you will not get anything.  It is often used to retrieve data, called fields, from one or more tables within a database.</p>
+
+<h3 id="select-area">Select Area</h3>
+<p>You may ask, what is the “SELECT area.”  It is everything between the word <code class="highlighter-rouge">SELECT</code> until <code class="highlighter-rouge">FROM</code>.</p>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">SELECT</span> <span class="c1">-------------------------------</span>
+       <span class="c1">-- ALL THIS IS THE SELECT AREA</span>
+       <span class="c1">-------------------------------</span>
+<span class="k">FROM</span>
+</code></pre></div></div>
+
+<h3 id="select-fields">Select Fields</h3>
+<p>There are two different ways to <code class="highlighter-rouge">SELECT</code> fields you want to get results from.  You can use the <code class="highlighter-rouge">*</code>, which means “everything.” Or you can list the field names you want returned.  Each item you put in the <code class="highlighter-rouge">SELECT</code> area should be followed by a comma, unless it is the last item.</p>
+
+<p>For example:</p>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="k">SELECT</span>  <span class="n">emp_no</span><span class="p">,</span>
+            <span class="n">last_name</span><span class="p">,</span>
+            <span class="n">title</span>
+<span class="p">...</span>
+</code></pre></div></div>
+<p>The code above requests three different fields be returned in the result set: <code class="highlighter-rouge">emp_no</code>, <code class="highlighter-rouge">last_name</code>, and <code class="highlighter-rouge">title</code>.</p>
+
+<p>Or</p>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="k">SELECT</span>  <span class="o">*</span>
+<span class="p">...</span>
+</code></pre></div></div>
+<p>Returns every field, in every table listed.</p>
+
+<p>I should point out, if you forget a comma it can get messy.  Often, the SQL server will send an error message, <strong>but not always</strong>.  As we will see in a moment.</p>
+
+<h3 id="select-calculations">Select Calculations</h3>
+<p>The <code class="highlighter-rouge">SELECT</code> does more than retrieve data from tables within a database.  It can also perform on-the-fly calculations, such as</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">SELECT</span> <span class="mi">1</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
+       <span class="mi">2</span> <span class="o">*</span><span class="mi">25</span><span class="p">,</span>
+       <span class="mi">55</span> <span class="o">/</span> <span class="mi">75</span><span class="p">,</span>
+</code></pre></div></div>
+<p>This should return the following:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: right"> </th>
+      <th style="text-align: right">1 + 1</th>
+      <th style="text-align: right">2 *25</th>
+      <th style="text-align: right">55 / 75</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: right">0</td>
+      <td style="text-align: right">2</td>
+      <td style="text-align: right">50</td>
+      <td style="text-align: right">0.7333</td>
+    </tr>
+  </tbody>
+</table>
+
+<h1 id="field">FIELD</h1>
+
+<p>A field in SQL is similar to the column in a spreadsheet.  It contains data of the same type on every row (more on datatypes later).  Fields may be referenced throughout a SQL query, but for them to show in the query results they must be included in the <code class="highlighter-rouge">SELECT</code> area–as we went over in the “SELECT” section above.</p>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">SELECT</span> <span class="n">emp_no</span><span class="p">,</span>
+       <span class="n">first_name</span><span class="p">,</span>
+       <span class="n">last_name</span>
+<span class="k">FROM</span> <span class="n">employees</span>
+</code></pre></div></div>
+
+<h3 id="ambiguous-field-list">Ambiguous Field List</h3>
+<p>The above query works.  However, try running the following query, which includes two tables.</p>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">SELECT</span> <span class="n">emp_no</span><span class="p">,</span>
+       <span class="n">first_name</span><span class="p">,</span>
+       <span class="n">last_name</span>
+<span class="k">FROM</span> <span class="n">employees</span>
+<span class="k">LEFT</span> <span class="k">JOIN</span> <span class="n">titles</span>
+    <span class="k">ON</span> <span class="n">employees</span><span class="p">.</span><span class="n">emp_no</span> <span class="o">=</span> <span class="n">titles</span><span class="p">.</span><span class="n">emp_no</span>
+</code></pre></div></div>
+<p>You get any results?  Me either. Only an error message from the database stating:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Error Code: 1052. Column 'emp_no' in field list is ambiguous	
+</code></pre></div></div>
+<p>This is because both the <code class="highlighter-rouge">employees</code> and <code class="highlighter-rouge">titles</code> table have a field named <code class="highlighter-rouge">emp_no</code> and the SQL program can’t figure out which you want.</p>
+
+<p>To solve this, we add the table name plus <code class="highlighter-rouge">.</code> to the front of each field name.  This will tell the SQL program from which tables we would like to field to come from–leaving no ambiguity.  Computers <em>hate</em> ambiguity.</p>
+
+<p>Let’s run the query again with table names.</p>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">SELECT</span> <span class="n">employees</span><span class="p">.</span><span class="n">emp_no</span><span class="p">,</span>
+       <span class="n">employees</span><span class="p">.</span><span class="n">first_name</span><span class="p">,</span>
+       <span class="n">employees</span><span class="p">.</span><span class="n">last_name</span>
+<span class="k">FROM</span> <span class="n">employees</span>
+<span class="k">LEFT</span> <span class="k">JOIN</span> <span class="n">titles</span>
+    <span class="k">ON</span> <span class="n">employees</span><span class="p">.</span><span class="n">emp_no</span> <span class="o">=</span> <span class="n">titles</span><span class="p">.</span><span class="n">emp_no</span>
+</code></pre></div></div>
+<p>This time we get the results we expected, without error.</p>
+
+<p>Building on this, a good SQL coder will <em>always</em> prepend the table name to the front of the query, whether it’s required or not.  This prevents future mistakes.</p>
+
+<p>For example, let’s say you wrote this code:</p>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">SELECT</span> <span class="n">emp_no</span><span class="p">,</span>
+       <span class="n">salary</span>
+<span class="k">FROM</span> <span class="n">salaries</span>
+</code></pre></div></div>
+<p>And your code was put into production (a term meaning put to use by your business) then a year later another coder added a second table to the query without critically looking at the query as a whole (something a bad SQL coder forgets to do).</p>
+
+<p>The new query looks like this:</p>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">SELECT</span> <span class="n">emp_no</span><span class="p">,</span>
+       <span class="n">salary</span><span class="p">,</span>
+       <span class="n">first_name</span><span class="p">,</span>
+       <span class="n">last_name</span>
+
+<span class="k">FROM</span> <span class="n">salaries</span>
+<span class="k">LEFT</span> <span class="k">JOIN</span> <span class="n">employees</span>
+    <span class="k">ON</span> <span class="n">salaries</span><span class="p">.</span><span class="n">emp_no</span> <span class="o">=</span> <span class="n">employees</span><span class="p">.</span><span class="n">emp_no</span><span class="p">;</span>
+</code></pre></div></div>
+<p>Try to run this query.  You will find the same <code class="highlighter-rouge">field list is ambiguous</code> error as we saw earlier.</p>
+
+<p>The deeper lesson here is: <strong>A good coder is like a defensive driver; they code in a way it expects others to be reckless.</strong></p>
+
+<p>Back to the example above, if we include the table in the field names, then it doesn’t matter if a reckless coworker adds another table.</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">SELECT</span> <span class="n">salaries</span><span class="p">.</span><span class="n">emp_no</span><span class="p">,</span>
+       <span class="n">salaries</span><span class="p">.</span><span class="n">salary</span><span class="p">,</span>
+       <span class="n">employees</span><span class="p">.</span><span class="n">first_name</span><span class="p">,</span>
+       <span class="n">employees</span><span class="p">.</span><span class="n">last_name</span>
+
+<span class="k">FROM</span> <span class="n">salaries</span>
+<span class="k">LEFT</span> <span class="k">JOIN</span> <span class="n">employees</span>
+    <span class="k">ON</span> <span class="n">salaries</span><span class="p">.</span><span class="n">emp_no</span> <span class="o">=</span> <span class="n">employees</span><span class="p">.</span><span class="n">emp_no</span><span class="p">;</span>
+</code></pre></div></div>
+
+<h3 id="field-aliases">Field Aliases</h3>
+<p>Often you will want to export your results into a CSV to send to someone.  You may have noticed when you execute a query SQL returns the results in a neat spreadsheet.  I don’t know if I’ve mentioned it, but you can export these results in a CSV by hitting the little disk button above the results.</p>
+
+<p><img src="../images/data-analytics-series/mysql_setup_33.PNG" alt="mysql-workbench-export-to-csv" /></p>
+
+<p>However, you may not like the machine formatted column names.  I mean, don’t get us wrong, we’re nerds! We read machine friendly words fine, but our bosses don’t.</p>
+
+<p>Well, MySQL has a built in command allowing you to rename fields (and more) on the fly.  This command is <code class="highlighter-rouge">AS</code> and is seen in the query below written to rename the column names.</p>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">SELECT</span> <span class="n">salaries</span><span class="p">.</span><span class="n">emp_no</span> 		<span class="k">AS</span> <span class="n">Id</span><span class="p">,</span>
+       <span class="n">salaries</span><span class="p">.</span><span class="n">salary</span>		<span class="k">AS</span> <span class="n">Salary</span><span class="p">,</span>
+       <span class="n">employees</span><span class="p">.</span><span class="n">first_name</span>	<span class="k">AS</span> <span class="nv">"First Name"</span><span class="p">,</span>
+       <span class="n">employees</span><span class="p">.</span><span class="n">last_name</span>	<span class="k">AS</span> <span class="nv">"Last Name"</span>
+
+<span class="k">FROM</span> <span class="n">salaries</span>
+<span class="k">LEFT</span> <span class="k">JOIN</span> <span class="n">employees</span>
+    <span class="k">ON</span> <span class="n">salaries</span><span class="p">.</span><span class="n">emp_no</span> <span class="o">=</span> <span class="n">employees</span><span class="p">.</span><span class="n">emp_no</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>Now the column headers have “boss-friendly” names.</p>
+
+<p><img src="../images/data-analytics-series/mysql_setup_34.PNG" alt="mysql-workbench-export-to-csv" /></p>
+
+<p>You’ve probably noticed the first two aliases are written without quotation marks and the second two are surrounded by them.  The SQL program can get confused by spaces, so we wrap the new name in <code class="highlighter-rouge">"</code> marks.  When the SQL program sees these marks, it says to itself, “Oh, I bet the user is going to have one of those fancy human names, I’m going to assume everything between the first quotation mark and the next one I find is all one fancy human word.  Silly humans.”</p>
+
+<p>A more technical term for someone inside quotations marks is a <strong>literal constant.</strong>  However, programmers know them as “strings.”  It’s probably b</p>
+
+<h3 id="dont-lose-your-as">Don’t Lose Your AS</h3>
+<p>Go ahead and try to run this query:</p>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">SELECT</span> <span class="n">emp_no</span>
+	   <span class="n">first_name</span><span class="p">,</span>
+       <span class="n">employees</span><span class="p">.</span><span class="n">last_name</span>
+<span class="k">FROM</span> <span class="n">employees</span><span class="p">;</span>
+</code></pre></div></div>
+<p>Did you run it?  Anything jump out as weird?  You don’t really run it did you?  Go run it, I’ll wait.</p>
+
+<p>Ok, you’ll see something like this:
+| first_name | last_name | 
+|:———–|:———-| 
+| 10001      | Facello   | 
+| 10002      | Simmel    | 
+| 10003      | Bamford   | 
+| …        | …       | 
+Super weird right?  There are only two columns and it seems like the column names are jumbled up.  That’s exactly what’s happened.  It’s due to a missing <code class="highlighter-rouge">,</code> right after the <code class="highlighter-rouge">emp_no</code>.  This is a result of something in SQL I think is silly–you can omit the <code class="highlighter-rouge">AS</code> keyword between a field and its alias.</p>
+
+<p>Meaning, we could rewrite the query from earlier where we showed alias use like this:</p>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">SELECT</span> <span class="n">salaries</span><span class="p">.</span><span class="n">emp_no</span> 		<span class="n">Id</span><span class="p">,</span>
+       <span class="n">salaries</span><span class="p">.</span><span class="n">salary</span>		<span class="n">Salary</span><span class="p">,</span>
+       <span class="n">employees</span><span class="p">.</span><span class="n">first_name</span>	<span class="nv">"First Name"</span><span class="p">,</span>
+       <span class="n">employees</span><span class="p">.</span><span class="n">last_name</span>	<span class="nv">"Last Name"</span>
+
+<span class="k">FROM</span> <span class="n">salaries</span>
+<span class="k">LEFT</span> <span class="k">JOIN</span> <span class="n">employees</span>
+    <span class="k">ON</span> <span class="n">salaries</span><span class="p">.</span><span class="n">emp_no</span> <span class="o">=</span> <span class="n">employees</span><span class="p">.</span><span class="n">emp_no</span><span class="p">;</span>
+</code></pre></div></div>
+<p>But, the first time you miss a comma you’ll be asking, “Why!? Why does MySQL allow this!”  I’m not sure, but we have to deal with it.  This is why I ask you <em>always</em> include the <code class="highlighter-rouge">AS</code> keyword.  Again, you are helping prevent bugs before they happen.</p>
+
+<h1 id="from">FROM</h1>
+<p>As you’ve already seen, the <code class="highlighter-rouge">FROM</code> command tells SQL where on the database it should look for data.  If you don’t specify a table in the <code class="highlighter-rouge">FROM</code> clause, then the SQL program acts if it doesn’t exist, and will not be able to find the fields you request.</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">SELECT</span> <span class="o">*</span>
+<span class="k">FROM</span> <span class="n">employees</span>
+<span class="k">LEFT</span> <span class="k">JOIN</span> <span class="n">departments</span>
+    <span class="k">ON</span> <span class="n">employees</span><span class="p">.</span><span class="n">emp_no</span> <span class="o">=</span> <span class="n">departments</span><span class="p">.</span><span class="n">emp_no</span>
+</code></pre></div></div>
+
+<p>In the next article we are going to talk about <code class="highlighter-rouge">JOINS</code>, they are an extension to the <code class="highlighter-rouge">FROM</code> clause of a query, but, they deserve their own article.  Right now, look at the <code class="highlighter-rouge">LEFT JOIN</code> as an extension of the <code class="highlighter-rouge">FROM</code> clause.  A join tells the SQL program, “First look in the employees table, then, check in the departments table, <em>if</em> there is a relationship with the employees table.”</p>
+
+<p>Like I said, we will review <code class="highlighter-rouge">JOINS</code> thoroughly in the next article.</p>
+
+<h3 id="table-aliases">Table Aliases</h3>
+<p>Like we could give fields nicknames, called aliases, we can do the same with table names.  However, this is usually done for a different reason: To save on typing.</p>
+
+<p>One of the primary reason bad coders don’t write out the table names (not <em>you</em>, you’re going to be a good coder) is it adds <em>a lot</em> more to type.  You may say, “Well, that’s just lazy.”  It is, but it’s smart-lazy–also know as efficient.  And efficiency is something you want to strive for in your code and <em>coding</em>.</p>
+
+<p>Let’s look at an example from earlier.</p>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">SELECT</span> <span class="n">salaries</span><span class="p">.</span><span class="n">emp_no</span> 		<span class="k">AS</span> <span class="n">Id</span><span class="p">,</span>
+       <span class="n">salaries</span><span class="p">.</span><span class="n">salary</span>		<span class="k">AS</span> <span class="n">Salary</span><span class="p">,</span>
+       <span class="n">employees</span><span class="p">.</span><span class="n">first_name</span>	<span class="k">AS</span> <span class="nv">"First Name"</span><span class="p">,</span>
+       <span class="n">employees</span><span class="p">.</span><span class="n">last_name</span>	<span class="k">AS</span> <span class="nv">"Last Name"</span>
+
+<span class="k">FROM</span> <span class="n">salaries</span>
+<span class="k">LEFT</span> <span class="k">JOIN</span> <span class="n">employees</span>
+    <span class="k">ON</span> <span class="n">salaries</span><span class="p">.</span><span class="n">emp_no</span> <span class="o">=</span> <span class="n">employees</span><span class="p">.</span><span class="n">emp_no</span><span class="p">;</span>
+</code></pre></div></div>
+<p>This query could be rewritten by using table aliases and save a lot of typing.  It’s probably best to show you.</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">SELECT</span> <span class="n">s</span><span class="p">.</span><span class="n">emp_no</span> 	<span class="k">AS</span> <span class="n">Id</span><span class="p">,</span>
+       <span class="n">s</span><span class="p">.</span><span class="n">salary</span>		<span class="k">AS</span> <span class="n">Salary</span><span class="p">,</span>
+       <span class="n">e</span><span class="p">.</span><span class="n">first_name</span>	<span class="k">AS</span> <span class="nv">"First Name"</span><span class="p">,</span>
+       <span class="n">e</span><span class="p">.</span><span class="n">last_name</span>	<span class="k">AS</span> <span class="nv">"Last Name"</span>
+
+<span class="k">FROM</span> <span class="n">salaries</span>       <span class="k">AS</span> <span class="n">s</span>
+<span class="k">LEFT</span> <span class="k">JOIN</span> <span class="n">employees</span> <span class="k">AS</span> <span class="n">e</span>
+    <span class="k">ON</span> <span class="n">s</span><span class="p">.</span><span class="n">emp_no</span> <span class="o">=</span> <span class="n">e</span><span class="p">.</span><span class="n">emp_no</span><span class="p">;</span>
+</code></pre></div></div>
+<p>Execute this query and compare its results to the query without table aliases.  You will find the results are exactly the same.  Moreover, this rewrite has saved 45 keystrokes.  You may think, “Eh, not much.”  Well, this is a small query.  Imagine writing queries twice this size all day long.  Your savings are worth it–may the time for an extra cup of coffee (or pot, in my case).</p>
+
+<p>It is also easier for the human brain to comprehend–at least, once you’ve been reading SQL for awhile.  Your brain will understand <code class="highlighter-rouge">e</code> and <code class="highlighter-rouge">employees</code> the same, but it doesn’t have to work as hard to understand <code class="highlighter-rouge">e</code>.</p>
+
+<p>In short, good coders use table aliases.</p>
+
+<h1 id="order-by">ORDER BY</h1>
+<p>In spreadsheets there will usually be a way to sort your data.  Often your options will be based on a column’s contextual order.  If the data are numbers it will be low-to-high, or high-to-low, respectively. If it’s text then your choice will probably be alphabetical, either A-Z to Z-A.  And if it’s a date, then it will be first-to-last, or last-to-first.  Each of these order types share a commonality, they value either goes to a low-values to high-values, or high-values to low-values.  These types of ordering are known as ascending and descending, respectively.</p>
+
+<p>In SQL, there are two types of <code class="highlighter-rouge">ORDER BY</code>s, <code class="highlighter-rouge">ASC</code> and <code class="highlighter-rouge">DESC</code>, for ascending and descending.  They operate a bit different than most spreadsheet applications.  They still order data by low-to-high or high-to-low, however, when you apply an <code class="highlighter-rouge">ORDER BY</code> it affects the entire result set.  When a field is targeted by an <code class="highlighter-rouge">ORDER BY</code> all other fields on the same row are ordered along with the targeted field.</p>
+
+<p>Enough words.  Let’s take a look at some examples:</p>
+
+<h3 id="desc">DESC</h3>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">SELECT</span> <span class="n">employees</span><span class="p">.</span><span class="n">emp_no</span><span class="p">,</span>
+       <span class="n">employees</span><span class="p">.</span><span class="n">first_name</span><span class="p">,</span>
+       <span class="n">employees</span><span class="p">.</span><span class="n">last_name</span>
+<span class="k">FROM</span> <span class="n">employees</span>
+<span class="k">ORDER</span> <span class="k">BY</span> <span class="n">employees</span><span class="p">.</span><span class="n">emp_no</span> <span class="k">DESC</span>
+</code></pre></div></div>
+
+<p><img src="../images/data-analytics-series/mysql_setup_35.PNG" alt="mysql-workbench-export-to-csv" /></p>
+
+<h3 id="asc">ASC</h3>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">SELECT</span> <span class="n">employees</span><span class="p">.</span><span class="n">emp_no</span><span class="p">,</span>
+       <span class="n">employees</span><span class="p">.</span><span class="n">first_name</span><span class="p">,</span>
+       <span class="n">employees</span><span class="p">.</span><span class="n">last_name</span>
+<span class="k">FROM</span> <span class="n">employees</span>
+<span class="k">ORDER</span> <span class="k">BY</span> <span class="n">employees</span><span class="p">.</span><span class="n">emp_no</span> <span class="k">ASC</span>
+</code></pre></div></div>
+
+<p><img src="../images/data-analytics-series/mysql_setup_36.PNG" alt="mysql-workbench-export-to-csv" /></p>
+
+<p>One note about <code class="highlighter-rouge">ASC</code>, if you do not specifcy what type of <code class="highlighter-rouge">ORDER BY</code> then it will default to <code class="highlighter-rouge">ASC</code>.</p>
+
+<p>For example, this query will provide the exact same results as the one above:</p>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">SELECT</span> <span class="n">employees</span><span class="p">.</span><span class="n">emp_no</span><span class="p">,</span>
+       <span class="n">employees</span><span class="p">.</span><span class="n">first_name</span><span class="p">,</span>
+       <span class="n">employees</span><span class="p">.</span><span class="n">last_name</span>
+<span class="k">FROM</span> <span class="n">employees</span>
+<span class="k">ORDER</span> <span class="k">BY</span> <span class="n">employees</span><span class="p">.</span><span class="n">emp_no</span>
+</code></pre></div></div>
+
+<p>Most of <code class="highlighter-rouge">ORDER BY</code> is used for humans, making it easier to find whether your data were returned correctly.  However, there are instances where <code class="highlighter-rouge">ORDER BY</code> will actually change the results of your queries, but it will be awhile before we get into those sorts of queries.</p>
+
+<p>Later, we’re going to start working on making our queries efficient and fast, but now I’ll state: <strong>Make sure you need your results ordered before you <code class="highlighter-rouge">ORDER BY</code></strong>.</p>
+
+<p>It can  be hard work for SQL program to order your results, which translates to longer execution times.  Something you will want to avoid if you are trying to write a query for speed (which you will when writing code for production software).</p>
+
+<h3 id="multiple-column-sort">Multiple Column Sort</h3>
+<p>SQL can also do multiple-field sorts.  This works by sorting by the first field in the <code class="highlighter-rouge">ORDER BY</code> and where there are ties, then sort by the second field.</p>
+
+<p>For example:</p>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">SELECT</span> <span class="n">employees</span><span class="p">.</span><span class="n">emp_no</span><span class="p">,</span>
+       <span class="n">employees</span><span class="p">.</span><span class="n">first_name</span><span class="p">,</span>
+       <span class="n">employees</span><span class="p">.</span><span class="n">last_name</span>
+<span class="k">FROM</span> <span class="n">employees</span>
+<span class="k">ORDER</span> <span class="k">BY</span> <span class="n">employees</span><span class="p">.</span><span class="n">last_name</span> <span class="k">ASC</span><span class="p">,</span> <span class="n">employees</span><span class="p">.</span><span class="n">emp_no</span> <span class="k">DESC</span> 
+</code></pre></div></div>
+
+<p><img src="../images/data-analytics-series/mysql_setup_37.PNG" alt="mysql-workbench-export-to-csv" /></p>
+
+<p>“Aamodt” is the first employee in the <code class="highlighter-rouge">last_name</code> field when the <code class="highlighter-rouge">ORDER BY</code> is set to <code class="highlighter-rouge">ASC</code>, however, there are many “Aamodt”s in this table.  This is where the second <code class="highlighter-rouge">ORDER BY</code> comes in.  The second <code class="highlighter-rouge">ORDER BY</code> is set on the <code class="highlighter-rouge">emp_no</code> field and is <code class="highlighter-rouge">DESC</code>, this is why all the numbers start at the highest values and move towards the lowest.  Of course, when the the <code class="highlighter-rouge">last_name</code> value changes the <code class="highlighter-rouge">emp_no</code> order will restart, still moving from highest to lowest.</p>
+
+<p><img src="../images/data-analytics-series/mysql_setup_38.PNG" alt="mysql-workbench-export-to-csv" /></p>
+
+<p>Alright, let’s move on.  Just remember, <code class="highlighter-rouge">ORDER BY</code> is extremely useful for humans, but it makes it slower for computers to process.  Therefore, when you write a query, consider your audience.</p>
+
+<h1 id="where">WHERE</h1>
+<p>The <code class="highlighter-rouge">WHERE</code> clause of a SQL query is a filter.  Simple as that.  It further limits your results.  And it is probably the second most important portion of a query, next to the <code class="highlighter-rouge">FROM</code> clause.  Reducing your results not only help you find what you need, it also makes it easier on the computer to find the results.</p>
+
+<p>Though, before we get into more detail let’s take a look at an example:</p>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">SELECT</span> <span class="n">employees</span><span class="p">.</span><span class="n">emp_no</span>         <span class="k">AS</span> <span class="n">Id</span><span class="p">,</span>
+       <span class="n">employees</span><span class="p">.</span><span class="n">first_name</span>     <span class="k">AS</span> <span class="nv">"First Name"</span><span class="p">,</span>
+       <span class="n">employees</span><span class="p">.</span><span class="n">last_name</span>      <span class="k">AS</span> <span class="nv">"Last Name"</span>
+<span class="k">FROM</span> <span class="n">employees</span>
+<span class="k">WHERE</span> <span class="n">employees</span><span class="p">.</span><span class="n">emp_no</span> <span class="o">=</span> <span class="mi">10006</span>
+<span class="k">ORDER</span> <span class="k">BY</span> <span class="n">employees</span><span class="p">.</span><span class="n">emp_no</span><span class="p">,</span> <span class="n">employees</span><span class="p">.</span><span class="n">first_name</span>
+</code></pre></div></div>
+<p>This returns a single record, which makes sense.  We told the SQL program we want <code class="highlighter-rouge">emp_no</code>, <code class="highlighter-rouge">first_name</code>, <code class="highlighter-rouge">last_name</code> from the <code class="highlighter-rouge">employees</code> table where the <code class="highlighter-rouge">emp_no</code> is equal to <code class="highlighter-rouge">10006</code>.</p>
+
+<p><img src="../images/data-analytics-series/mysql_setup_39.PNG" alt="mysql-workbench-export-to-csv" /></p>
+
+<p>But, let’s also look at the <code class="highlighter-rouge">Database Message</code></p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">Time</th>
+      <th style="text-align: left">Action</th>
+      <th style="text-align: left">Message</th>
+      <th style="text-align: left">Duration / Fetch</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">07:35:17</td>
+      <td style="text-align: left">SELECT employees.emp_no,        employees.first_name,        employees.last_name FROM employees ORDER BY employees.last_name ASC, employees.emp_no DESC LIMIT 0, 1000</td>
+      <td style="text-align: left">1000 row(s) returned</td>
+      <td style="text-align: left">0.152 sec / 0.0035 sec</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">07:48:56</td>
+      <td style="text-align: left">SELECT employees.emp_no         AS Id,        employees.first_name     AS “First Name”,        employees.last_name      AS “Last Name” FROM employees WHERE employees.emp_no = 10006 ORDER BY employees.emp_no, employees.first_name LIMIT 0, 1000</td>
+      <td style="text-align: left">1 row(s) returned</td>
+      <td style="text-align: left">0.0036 sec / 0.0000072 sec</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Notice how our query for one result took <em>much</em> less time than the query for a 1,000 results?  I’ll cover this more later, but felt it was import to point out now.  Using the <code class="highlighter-rouge">WHERE</code> clause to limit the data to only what you need will greatly increase the efficiency of your query.</p>
+
+<p>Ever been to a cheap buffet with the sign posted on the sneeze-guard reading: “Take only what you will eat!!!”  Well, imagine your SQL database has the same sign–you choose what you need with the <code class="highlighter-rouge">WHERE</code> clause.</p>
+
+<p>Ok, enough on efficiency for now, let’s focus on how the <code class="highlighter-rouge">WHERE</code> clause will allow you to get the results you are after.</p>
+
+<p>In queries we’ve written earlier, we’ve received every row on the database, from every table included in the <code class="highlighter-rouge">FROM</code> clause.  Now, we are narrowing the results down to those of interest.</p>
+
+<p>This can also be done with strings (text inside of <code class="highlighter-rouge">"</code> marks).</p>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">SELECT</span> <span class="n">employees</span><span class="p">.</span><span class="n">emp_no</span>         <span class="k">AS</span> <span class="n">Id</span><span class="p">,</span>
+       <span class="n">employees</span><span class="p">.</span><span class="n">first_name</span>     <span class="k">AS</span> <span class="nv">"First Name"</span><span class="p">,</span>
+       <span class="n">employees</span><span class="p">.</span><span class="n">last_name</span>      <span class="k">AS</span> <span class="nv">"Last Name"</span>
+<span class="k">FROM</span> <span class="n">employees</span>
+<span class="k">WHERE</span> <span class="n">employees</span><span class="p">.</span><span class="n">first_name</span> <span class="o">=</span> <span class="nv">"Ramzi"</span>
+<span class="k">ORDER</span> <span class="k">BY</span> <span class="n">employees</span><span class="p">.</span><span class="n">emp_no</span><span class="p">,</span> <span class="n">employees</span><span class="p">.</span><span class="n">first_name</span>
+</code></pre></div></div>
+
+<p><img src="../images/data-analytics-series/mysql_setup_40.PNG" alt="mysql-workbench-export-to-csv" /></p>
+
+<p>But what if we want to include multiple different employees, but not all? That’s where <code class="highlighter-rouge">IN</code> comes…in.</p>
+
+<h3 id="in">IN</h3>
+<p>The <code class="highlighter-rouge">WHERE</code> clause can be followed by the <code class="highlighter-rouge">IN</code> keyword, which is immediately followed by a set of parentheses; inside the parentheses you may put list of values you want to filter on.  Each value must be separated by a comma.</p>
+
+<p>For example:</p>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">SELECT</span> <span class="n">employees</span><span class="p">.</span><span class="n">emp_no</span>         <span class="k">AS</span> <span class="n">Id</span><span class="p">,</span>
+       <span class="n">employees</span><span class="p">.</span><span class="n">first_name</span>     <span class="k">AS</span> <span class="nv">"First Name"</span><span class="p">,</span>
+       <span class="n">employees</span><span class="p">.</span><span class="n">last_name</span>      <span class="k">AS</span> <span class="nv">"Last Name"</span>
+<span class="k">FROM</span> <span class="n">employees</span>
+<span class="k">WHERE</span> <span class="n">employees</span><span class="p">.</span><span class="n">last_name</span> <span class="k">IN</span> <span class="p">(</span><span class="nv">"Bamford"</span><span class="p">,</span> <span class="nv">"Casley"</span><span class="p">,</span> <span class="nv">"Benveniste"</span><span class="p">)</span>
+<span class="k">ORDER</span> <span class="k">BY</span> <span class="n">employees</span><span class="p">.</span><span class="n">last_name</span> <span class="k">ASC</span><span class="p">,</span> <span class="n">employees</span><span class="p">.</span><span class="n">first_name</span> <span class="k">ASC</span><span class="p">;</span>
+</code></pre></div></div>
+<p><img src="../images/data-analytics-series/mysql_setup_41.PNG" alt="mysql-workbench-export-to-csv" /></p>
+
+<p>This can also be done with numbers</p>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">SELECT</span> <span class="n">employees</span><span class="p">.</span><span class="n">emp_no</span>         <span class="k">AS</span> <span class="n">Id</span><span class="p">,</span>
+       <span class="n">employees</span><span class="p">.</span><span class="n">first_name</span>     <span class="k">AS</span> <span class="nv">"First Name"</span><span class="p">,</span>
+       <span class="n">employees</span><span class="p">.</span><span class="n">last_name</span>      <span class="k">AS</span> <span class="nv">"Last Name"</span>
+<span class="k">FROM</span> <span class="n">employees</span>
+<span class="k">WHERE</span> <span class="n">employees</span><span class="p">.</span><span class="n">emp_no</span> <span class="k">IN</span> <span class="p">(</span><span class="mi">422990</span><span class="p">,</span> <span class="mi">428377</span><span class="p">)</span>
+<span class="k">ORDER</span> <span class="k">BY</span> <span class="n">employees</span><span class="p">.</span><span class="n">last_name</span> <span class="k">ASC</span><span class="p">,</span> <span class="n">employees</span><span class="p">.</span><span class="n">first_name</span> <span class="k">ASC</span><span class="p">;</span>
+</code></pre></div></div>
+
+<h3 id="greater-and-less-than">Greater and Less Than</h3>
+<p>If the field you are using is numeric data, then you can also use the <code class="highlighter-rouge">&gt;</code>, <code class="highlighter-rouge">&lt;</code>, <code class="highlighter-rouge">&lt;=</code>, and <code class="highlighter-rouge">&gt;=</code> comparisons.</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">SELECT</span> <span class="n">employees</span><span class="p">.</span><span class="n">emp_no</span>         <span class="k">AS</span> <span class="n">Id</span><span class="p">,</span>
+       <span class="n">employees</span><span class="p">.</span><span class="n">first_name</span>     <span class="k">AS</span> <span class="nv">"First Name"</span><span class="p">,</span>
+       <span class="n">employees</span><span class="p">.</span><span class="n">last_name</span>      <span class="k">AS</span> <span class="nv">"Last Name"</span>
+<span class="k">FROM</span> <span class="n">employees</span>
+<span class="k">WHERE</span> <span class="n">employees</span><span class="p">.</span><span class="n">emp_no</span> <span class="o">&gt;</span> <span class="mi">40000</span>
+<span class="k">ORDER</span> <span class="k">BY</span> <span class="n">employees</span><span class="p">.</span><span class="n">emp_no</span><span class="p">,</span> <span class="n">employees</span><span class="p">.</span><span class="n">first_name</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p><img src="../images/data-analytics-series/mysql_setup_42.PNG" alt="mysql-workbench-export-to-csv" /></p>
+
+<p>If you aren’t familiar with the equalities, here’s a breakdown.</p>
+
+<ul>
+  <li>”&gt; 5000” will find all values which come <strong>after</strong> 5000, but <strong>does not include</strong> 5000 itself</li>
+  <li>”&lt; 5000” will find all values which come <strong>before</strong> 5000, but <strong>does not include</strong> 5000 itself</li>
+  <li>”&gt;= 5000” will find all values which come <strong>after</strong> 5000 <strong>including</strong> 5000 itself</li>
+  <li>”&lt;= 5000” will find all values which come <strong>before</strong> 5000 <strong>including</strong> 5000 itself</li>
+</ul>
+
+<p><strong>Closing</strong>
+Whew, these are the basic of a SQL query, but, it’s just the beginning.  There are many more parts to SQL queries, such as <code class="highlighter-rouge">AND</code>, <code class="highlighter-rouge">OR</code>, <code class="highlighter-rouge">&lt;&gt;</code>, <code class="highlighter-rouge">!=</code>, <code class="highlighter-rouge">JOIN</code>, functions, <code class="highlighter-rouge">UNION</code>, <code class="highlighter-rouge">DISTINCT</code>–we’ve got a lot more to do.  But! No worries, you’ve totally got this.</p>
+
+<p>Don’t believe me?  Don’t worry, I’m going to let you prove it to yourself.  Let’s do some homework! :)</p>
+
+<h1 id="homework-1">Homework #1</h1>
+<p>The following homework will have you take the query provided and modify it to return the described result.  Once all queries are completed, fill free to email the queries to me and I’ll “grade” them for you.</p>
+
+<p>For questions #1-6 use the following query:</p>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">SELECT</span> <span class="o">*</span>
+<span class="k">FROM</span> <span class="n">employees</span>
+<span class="k">LEFT</span> <span class="k">JOIN</span> <span class="n">dept_emp</span>
+	<span class="k">ON</span> <span class="n">employees</span><span class="p">.</span><span class="n">emp_no</span> <span class="o">=</span> <span class="n">dept_emp</span><span class="p">.</span><span class="n">emp_no</span>
+<span class="k">LEFT</span> <span class="k">JOIN</span> <span class="n">departments</span>
+	<span class="k">ON</span> <span class="n">dept_emp</span><span class="p">.</span><span class="n">dept_no</span> <span class="o">=</span> <span class="n">departments</span><span class="p">.</span><span class="n">dept_no</span>
+<span class="k">LEFT</span> <span class="k">JOIN</span> <span class="n">titles</span>
+	<span class="k">ON</span> <span class="n">employees</span><span class="p">.</span><span class="n">emp_no</span> <span class="o">=</span> <span class="n">titles</span><span class="p">.</span><span class="n">emp_no</span>
+<span class="k">LEFT</span> <span class="k">JOIN</span> <span class="n">salaries</span>
+	<span class="k">ON</span> <span class="n">employees</span><span class="p">.</span><span class="n">emp_no</span> <span class="o">=</span> <span class="n">salaries</span><span class="p">.</span><span class="n">emp_no</span><span class="p">;</span>
+</code></pre></div></div>
+<ul>
+  <li>Question #1 – Modify the above query to <strong>use table aliases instead of full table names.</strong></li>
+  <li>Question #2 – Modify resulting query to <strong>only return results for <code class="highlighter-rouge">emp_no</code>, <code class="highlighter-rouge">first_name</code>, <code class="highlighter-rouge">last_name</code>, <code class="highlighter-rouge">dept_name</code>, <code class="highlighter-rouge">salary</code>.</strong></li>
+  <li>Question #3 –Modify resulting query to *rename the fields to the following “Employee #”, “First Name”, “Last Name”, “Department #”, and “Salary”.</li>
+  <li>Question #4 –Modify resulting query to list employees <strong>by their salaries; order them lowest salary to the highest.</strong></li>
+  <li>Question #5 –While keeping the lowest-to-highest salary order, modify resulting query to <strong>list the employees in alphabetical order by their last name</strong> where their salaries are tied.</li>
+  <li>Question #6 – Modify resulting query to <strong>only provide clients who have make over 50,000</strong></li>
+</ul>
+
+<p>For questions #7-10 use the following query:</p>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">SELECT</span> <span class="o">*</span>
+<span class="k">FROM</span> <span class="n">employees</span> 			<span class="k">AS</span> <span class="n">e</span>
+<span class="k">LEFT</span> <span class="k">JOIN</span> <span class="n">dept_emp</span>		<span class="k">AS</span> <span class="n">de</span>
+	<span class="k">ON</span> <span class="n">e</span><span class="p">.</span><span class="n">emp_no</span> <span class="o">=</span> <span class="n">de</span><span class="p">.</span><span class="n">emp_no</span>
+<span class="k">LEFT</span> <span class="k">JOIN</span> <span class="n">departments</span>	<span class="k">AS</span> <span class="n">d</span>
+	<span class="k">ON</span> <span class="n">de</span><span class="p">.</span><span class="n">dept_no</span> <span class="o">=</span> <span class="n">d</span><span class="p">.</span><span class="n">dept_no</span>
+<span class="k">LEFT</span> <span class="k">JOIN</span> <span class="n">titles</span> 		<span class="k">AS</span> <span class="n">t</span>
+	<span class="k">ON</span> <span class="n">e</span><span class="p">.</span><span class="n">emp_no</span> <span class="o">=</span> <span class="n">t</span><span class="p">.</span><span class="n">emp_no</span>
+<span class="k">LEFT</span> <span class="k">JOIN</span> <span class="n">salaries</span> 		<span class="k">AS</span> <span class="n">s</span>
+	<span class="k">ON</span> <span class="n">e</span><span class="p">.</span><span class="n">emp_no</span> <span class="o">=</span> <span class="n">s</span><span class="p">.</span><span class="n">emp_no</span>
+</code></pre></div></div>
+<ul>
+  <li>Question #7 – Modify the above query to <strong>only return results for those with the first name “Yishay”, “Huan”, or “Otmar”</strong></li>
+  <li>Question #8 – Modify resulting query to <strong>to also show only their <code class="highlighter-rouge">first_name</code>, <code class="highlighter-rouge">last_name</code>, and <code class="highlighter-rouge">salary</code>.</strong></li>
+  <li>Question #9 – Modify resulting query to <strong>to also show what departments they work in</strong>.</li>
+  <li>Question #10 – Modify resulting query to <strong>also show their hire date</strong>.</li>
+</ul>
+:ET

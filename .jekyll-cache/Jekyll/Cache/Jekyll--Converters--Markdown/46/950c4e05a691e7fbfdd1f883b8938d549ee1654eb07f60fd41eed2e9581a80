@@ -1,0 +1,365 @@
+I"Tp<h2 id="sql-case">SQL Case</h2>
+<p>The SQL <code class="highlighter-rouge">CASE</code> function is one of my favorite.  The command basically works like if-then command.  If you are familiar with if-then commands, then feel free to skip this next bit.</p>
+
+<h3 id="if-then">If-Then</h3>
+<p>One of the reasons we have the amazing devices we do today is because a computer is capable of reasoning.  A computer can compare two things and decide which one it likes.</p>
+
+<p>Now, this may sound simple, but it’s actually a subtle miracle.  Anyone who has been stuck on the toothpaste isle trying to decide between the 45 kinds of toothpaste probably understands making decisions is difficult.  Of course, human decision making and computer decision making are not even on the same level.  Humans can make comparisons of all 45 products at once(sort of).  Computers, they have to make a decision between two objects, then, two objects, then two objects, so forth, until it has made it through all 45.  Fortunately, computers can make these decisions blazing fast.</p>
+
+<p><img src="../images/toothpaste-decision.svg" alt="" /></p>
+
+<p>In computer programming we call this computer decision making process <a href="https://en.wikipedia.org/wiki/Control_flow">control flow</a>.  But let’s write some pseudocode for a little better understanding:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">    If <span class="o">(</span>Computer Likes Toothpaste 1<span class="o">)</span> <span class="k">then </span>buy Toothpaste 1</code></pre></figure>
+
+<p>Pretty simple, right?  The only thing a computer can’t do is decide if it likes Toothpaste 1 on its own.  We have to program it to do that.</p>
+
+<p>Well, this sentence makes sense if a computer is trying to decide to buy toothpaste or no toothpaste, but what if there are more than two toothpaste options?  We just create another if-then statement.</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">    If <span class="o">(</span>Computer Likes Toothpaste 1 Best<span class="o">)</span> <span class="k">then </span>buy Toothpaste 1
+    If <span class="o">(</span>Computer Likes Toothpaste 2 Best<span class="o">)</span> <span class="k">then </span>buy Toothpaste 2</code></pre></figure>
+
+<p>Because the computer makes decisions in order it read them, then if it buys Toothpaste 1 then it will not buy Toothpaste 2.  However, if he doesn’t like Toothpaste 1 the best, then if he thinks Toothpaste 2 is the best he’ll buy it.  Otherwise, he will not buy any toothpaste–which makes sense, computers don’t have teeth.</p>
+
+<p>This is almost everything we need to know about <code class="highlighter-rouge">if-then</code>, two more little catches.</p>
+
+<p>First, what do we do if the computer doesn’t like any of the Toothpaste and don’t want him to just give up?  We need a way to say, “Look computer, if you don’t like any toothpaste the best then go ask for help.”</p>
+
+<p>In programming this is known as <code class="highlighter-rouge">if-then-else</code> statements.  They are similar to <code class="highlighter-rouge">if-then</code> but with a contingency clause if something goes wrong.</p>
+
+<p>Let’s take a look:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">    <span class="k">if</span> <span class="o">(</span>Computer Likes Toothpaste 1 Best<span class="o">)</span> <span class="k">then </span>buy Toothpaste 1
+    <span class="k">if</span> <span class="o">(</span>Computer Likes Toothpaste 2 Best<span class="o">)</span> <span class="k">then </span>buy Toothpaste 2
+    <span class="k">else </span>Go Ask a Computer Dentist what to buy</code></pre></figure>
+
+<p>Ok, that’s it.  Now let’s apply it to SQL.</p>
+
+<h3 id="sql-case-when">SQL CASE WHEN</h3>
+<p>SQL applies if-then logic in several ways.  We’ve already looked at the <code class="highlighter-rouge">WHERE</code> statement, which basicaly works like an <code class="highlighter-rouge">if-then</code>.</p>
+
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql">    <span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="k">data</span> <span class="k">WHERE</span> <span class="n">Name</span> <span class="o">=</span> <span class="s1">'Bob'</span></code></pre></figure>
+
+<p>See how this could be written as</p>
+
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql">    <span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="k">data</span> <span class="n">IF</span> <span class="n">Name</span> <span class="o">=</span> <span class="s1">'Bob'</span></code></pre></figure>
+
+<p>But the most likely SQL statement used for <code class="highlighter-rouge">if-then-else</code> logic is the <code class="highlighter-rouge">CASE WHEN</code> statement.</p>
+
+<p>Here’s an example to be run in R.</p>
+
+<figure class="highlight"><pre><code class="language-r" data-lang="r"><span class="n">library</span><span class="p">(</span><span class="n">sqldf</span><span class="p">)</span><span class="w">
+</span><span class="c1">################### Data DO NOT CHANGE ###########################</span><span class="w">
+</span><span class="n">peopleDf</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">data.frame</span><span class="p">(</span><span class="n">PersonalID</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="s2">"ZP1U3EPU2FKAWI6K5US5LDV50KRI1LN7"</span><span class="p">,</span><span class="w"> </span><span class="s2">"IA26X38HOTOIBHYIRV8CKR5RDS8KNGHV"</span><span class="p">,</span><span class="w"> </span><span class="s2">"LASDU89NRABVJWW779W4JGGAN90IQ5B2"</span><span class="p">),</span><span class="w"> 
+                       </span><span class="n">FirstName</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="s2">"Timmy"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Fela"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Sarah"</span><span class="p">),</span><span class="w">
+                       </span><span class="n">LastName</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="s2">"Tesa"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Falla"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Kerrigan"</span><span class="p">),</span><span class="w">
+                       </span><span class="n">DOB</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="s2">"2010-01-01"</span><span class="p">,</span><span class="w"> </span><span class="s2">"1999-1-1"</span><span class="p">,</span><span class="w"> </span><span class="s2">"1992-04-01"</span><span class="p">))</span><span class="w">
+</span><span class="c1">##################################################################</span><span class="w">
+
+</span><span class="n">peopleDf1</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">sqldf</span><span class="p">(</span><span class="s2">"SELECT *, 
+                  CASE WHEN DOB &gt; '2000-1-1' THEN 'Yes' ELSE 'No' END As 'Millennial' 
+                  FROM peopleDf"</span><span class="p">)</span></code></pre></figure>
+
+<p>Here is the output:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">PersonalID</th>
+      <th style="text-align: left">FirstName</th>
+      <th style="text-align: left">LastName</th>
+      <th style="text-align: left">DOB</th>
+      <th style="text-align: left">Gender</th>
+      <th style="text-align: left">Millennial</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">ZP1U3EPU2FKAWI6K5US5LDV50KRI1LN7</td>
+      <td style="text-align: left">Timmy</td>
+      <td style="text-align: left">Tesa</td>
+      <td style="text-align: left">2010-01-01</td>
+      <td style="text-align: left">Male</td>
+      <td style="text-align: left">Yes</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">IA26X38HOTOIBHYIRV8CKR5RDS8KNGHV</td>
+      <td style="text-align: left">Fela</td>
+      <td style="text-align: left">Falla</td>
+      <td style="text-align: left">1999-1-1</td>
+      <td style="text-align: left">Female</td>
+      <td style="text-align: left">No</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">LASDU89NRABVJWW779W4JGGAN90IQ5B2</td>
+      <td style="text-align: left">Sarah</td>
+      <td style="text-align: left">Kerrigan</td>
+      <td style="text-align: left">1992-04-01</td>
+      <td style="text-align: left">Female</td>
+      <td style="text-align: left">No</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The SQL query, specifically the <code class="highlighter-rouge">CASE WHEN</code> statement created a column called <code class="highlighter-rouge">Millennial</code>, it then went through every person’s date of birth, comparing it. When the query found a person who was born after 2000-01-01 it inserted a ‘Yes’ in the Millennial column.  If they were not born after 2000-01-01 then it set the <code class="highlighter-rouge">Millennial</code> column to ‘No.’  Nifty, right?</p>
+
+<p>Notice, the <code class="highlighter-rouge">ELSE</code> is required to get the ‘No’.  Otherwise, the query would leave everyone else blank.</p>
+
+<p>Here’s a few more examples of using CASE WHEN for powerful results.</p>
+
+<h4 id="using-or-with-case-when">Using OR with CASE WHEN</h4>
+
+<figure class="highlight"><pre><code class="language-r" data-lang="r"><span class="n">peopleDf2</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">sqldf</span><span class="p">(</span><span class="s2">"SELECT *, 
+                  CASE WHEN DOB &gt; '2000-1-1' OR FirstName = 'Sarah' THEN 'PersonIsCool' ELSE 'NotHip' END As 'Cool?' 
+                  FROM peopleDf"</span><span class="p">)</span></code></pre></figure>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">PersonalID</th>
+      <th style="text-align: left">FirstName</th>
+      <th style="text-align: left">LastName</th>
+      <th style="text-align: left">DOB</th>
+      <th style="text-align: left">Gender</th>
+      <th style="text-align: left">Cool</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">ZP1U3EPU2FKAWI6K5US5LDV50KRI1LN7</td>
+      <td style="text-align: left">Timmy</td>
+      <td style="text-align: left">Tesa</td>
+      <td style="text-align: left">2010-01-01</td>
+      <td style="text-align: left">Male</td>
+      <td style="text-align: left">PersonIsCool</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">IA26X38HOTOIBHYIRV8CKR5RDS8KNGHV</td>
+      <td style="text-align: left">Fela</td>
+      <td style="text-align: left">Falla</td>
+      <td style="text-align: left">1999-1-1</td>
+      <td style="text-align: left">Female</td>
+      <td style="text-align: left">NotHip</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">LASDU89NRABVJWW779W4JGGAN90IQ5B2</td>
+      <td style="text-align: left">Sarah</td>
+      <td style="text-align: left">Kerrigan</td>
+      <td style="text-align: left">1992-04-01</td>
+      <td style="text-align: left">Female</td>
+      <td style="text-align: left">PersonIsCool</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 id="using-and-with-case-when">Using AND with CASE WHEN</h4>
+
+<figure class="highlight"><pre><code class="language-r" data-lang="r"><span class="n">peopleDf3</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">sqldf</span><span class="p">(</span><span class="s2">"SELECT *, 
+                  CASE WHEN FirstName = 'Sarah' AND LastName = 'Kerrigan' THEN 'Yes' ELSE '' 
+                  END As 'Queen of Blades' 
+                  FROM peopleDf"</span><span class="p">)</span></code></pre></figure>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">PersonalID</th>
+      <th style="text-align: left">FirstName</th>
+      <th style="text-align: left">LastName</th>
+      <th style="text-align: left">DOB</th>
+      <th style="text-align: left">Gender</th>
+      <th style="text-align: left">Queen of Blades</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">ZP1U3EPU2FKAWI6K5US5LDV50KRI1LN7</td>
+      <td style="text-align: left">Timmy</td>
+      <td style="text-align: left">Tesa</td>
+      <td style="text-align: left">2010-01-01</td>
+      <td style="text-align: left">Male</td>
+      <td style="text-align: left"> </td>
+    </tr>
+    <tr>
+      <td style="text-align: left">IA26X38HOTOIBHYIRV8CKR5RDS8KNGHV</td>
+      <td style="text-align: left">Fela</td>
+      <td style="text-align: left">Falla</td>
+      <td style="text-align: left">1999-1-1</td>
+      <td style="text-align: left">Female</td>
+      <td style="text-align: left"> </td>
+    </tr>
+    <tr>
+      <td style="text-align: left">LASDU89NRABVJWW779W4JGGAN90IQ5B2</td>
+      <td style="text-align: left">Sarah</td>
+      <td style="text-align: left">Kerrigan</td>
+      <td style="text-align: left">1992-04-01</td>
+      <td style="text-align: left">Female</td>
+      <td style="text-align: left">Yes</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 id="using-sum-with-case-when">Using SUM with CASE WHEN</h4>
+<p>Using <code class="highlighter-rouge">CASE WHEN</code> in combination with <code class="highlighter-rouge">SUM</code> is a great way to get counts of different discrete data.  Below is an example of getting total counts of males and females within the peopleDf</p>
+
+<figure class="highlight"><pre><code class="language-r" data-lang="r"><span class="n">count1</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">sqldf</span><span class="p">(</span><span class="s2">"SELECT 
+                  SUM(
+                      CASE WHEN Gender = 'Female' THEN 1 ELSE 0 END
+                    ) As 'NumberOfFemales',
+                  SUM(
+                      CASE WHEN Gender = 'Male' THEN 1 ELSE 0 END
+                    ) As 'NumberOfMales'
+                   FROM peopleDf"</span><span class="p">)</span></code></pre></figure>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: right">NumberOfFemales</th>
+      <th style="text-align: right">NumberOfMales</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: right">2</td>
+      <td style="text-align: right">1</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 id="using-multiple-cases">Using Multiple CASES</h4>
+<p>So far, we’ve only covered one <code class="highlighter-rouge">if-then</code> statement, but in our example with the toothpaste we could string them together.  The same can be done with <code class="highlighter-rouge">CASE WHEN</code>.</p>
+
+<figure class="highlight"><pre><code class="language-r" data-lang="r"><span class="n">peopleDf4</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">sqldf</span><span class="p">(</span><span class="s2">"SELECT *, CASE WHEN DOB &gt;= '1980-01-01' AND DOB &lt; '1990-01-01' THEN 'X'
+                           WHEN DOB &gt;= '1990-01-01' AND DOB &lt; '2000-01-01' THEN 'Y'
+                           WHEN DOB &gt;= '2000-01-01' AND DOB &lt; '2010-01-01' THEN 'Millennial'
+                           WHEN DOB &gt;= '2010-01-01' AND DOB &lt; '2020-01-01' THEN 'NotYetDefined'
+                           END As 'Generation'
+                   FROM peopleDf"</span><span class="p">)</span></code></pre></figure>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">PersonalID</th>
+      <th style="text-align: left">FirstName</th>
+      <th style="text-align: left">LastName</th>
+      <th style="text-align: left">DOB</th>
+      <th style="text-align: left">Gender</th>
+      <th style="text-align: left">Generation</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">ZP1U3EPU2FKAWI6K5US5LDV50KRI1LN7</td>
+      <td style="text-align: left">Timmy</td>
+      <td style="text-align: left">Tesa</td>
+      <td style="text-align: left">2010-01-01</td>
+      <td style="text-align: left">Male</td>
+      <td style="text-align: left">NotYetDefined</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">IA26X38HOTOIBHYIRV8CKR5RDS8KNGHV</td>
+      <td style="text-align: left">Fela</td>
+      <td style="text-align: left">Falla</td>
+      <td style="text-align: left">1999-1-1</td>
+      <td style="text-align: left">Female</td>
+      <td style="text-align: left">Y</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">LASDU89NRABVJWW779W4JGGAN90IQ5B2</td>
+      <td style="text-align: left">Sarah</td>
+      <td style="text-align: left">Kerrigan</td>
+      <td style="text-align: left">1992-04-01</td>
+      <td style="text-align: left">Female</td>
+      <td style="text-align: left">Y</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="paste">Paste</h2>
+<p>The <code class="highlighter-rouge">paste()</code> in R is meant for manipulating strings of text. You pass it strings as parameters and it returns one string containing all the strings passed into it.  Let’s take a look.</p>
+
+<figure class="highlight"><pre><code class="language-r" data-lang="r"><span class="n">greeting</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">paste</span><span class="p">(</span><span class="s2">"Hello how are you,"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Bob?"</span><span class="p">)</span></code></pre></figure>
+
+<p>After running this line the <code class="highlighter-rouge">greeting</code> variable contains the following string <code class="highlighter-rouge">Hello how are you, Bob?</code>.  This can be used by printing the contents of the variable using the <code class="highlighter-rouge">print()</code></p>
+
+<figure class="highlight"><pre><code class="language-r" data-lang="r"><span class="n">print</span><span class="p">(</span><span class="n">greeting</span><span class="p">)</span></code></pre></figure>
+
+<p>Side note, <code class="highlighter-rouge">print()</code> will actually print out anything you pass it to the console.  This can be useful when trying to debug code.</p>
+
+<p>Back to our combined strings, notice whenever the greeting prints out there is a space inserted between ‘you,’ and ‘Bob?’, this is done automatically by paste.  It will insert a space between every string you pass it, unless you pass the additional parameter <code class="highlighter-rouge">sep</code>.  This parameter will take whatever you set it as and insert it between the two strings.</p>
+
+<figure class="highlight"><pre><code class="language-r" data-lang="r"><span class="n">greeting</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">paste</span><span class="p">(</span><span class="s2">"Hello how are you,"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Bob?"</span><span class="p">,</span><span class="w"> </span><span class="n">sep</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"!!"</span><span class="p">)</span><span class="w">
+</span><span class="n">print</span><span class="p">(</span><span class="n">greeting</span><span class="p">)</span></code></pre></figure>
+
+<p>This time <code class="highlighter-rouge">print()</code> will display “Hello how are you,!!Bob?” in the console.  But, inserting exclamation marks is probably not what we want.  Most of the time we will not want paste to insert anything and we can tell it to insert nothing.</p>
+
+<figure class="highlight"><pre><code class="language-r" data-lang="r"><span class="n">greeting</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">paste</span><span class="p">(</span><span class="s2">"Hello how are you,"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Bob?"</span><span class="p">,</span><span class="w"> </span><span class="n">sep</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">""</span><span class="p">)</span><span class="w">
+</span><span class="n">print</span><span class="p">(</span><span class="n">greeting</span><span class="p">)</span></code></pre></figure>
+
+<p>Print will spit out “Hello how are you,Bob?”.  Notice, there is no longer any character between “you,” and “Bob?”.</p>
+
+<p>Paste is a pretty straightforward function, the one last trick is knowing you can pass in multiple strings.</p>
+
+<figure class="highlight"><pre><code class="language-r" data-lang="r"><span class="n">greeting</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">paste</span><span class="p">(</span><span class="s2">"Hello"</span><span class="p">,</span><span class="w"> </span><span class="s2">" how are you,"</span><span class="p">,</span><span class="w"> </span><span class="s2">" Bob?"</span><span class="p">,</span><span class="w"> </span><span class="n">sep</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">""</span><span class="p">)</span><span class="w">
+</span><span class="n">print</span><span class="p">(</span><span class="n">greeting</span><span class="p">)</span></code></pre></figure>
+
+<p>This will produce the string “Hello how are you, Bob?”.  Notice the spaces were inserted manually so the end string is readable to humans.</p>
+
+<h2 id="dynamic-sql-with-paste">Dynamic SQL with Paste()</h2>
+
+<p>Prepare to have your mind blown.  One of the powers of the <code class="highlighter-rouge">paste()</code> is building a <code class="highlighter-rouge">sqldf</code> string.  Remember using SQLdf like this?</p>
+
+<figure class="highlight"><pre><code class="language-r" data-lang="r"><span class="n">library</span><span class="p">(</span><span class="n">sqldf</span><span class="p">)</span><span class="w">
+</span><span class="c1">################### Data DO NOT CHANGE ###########################</span><span class="w">
+</span><span class="n">peopleDf</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">data.frame</span><span class="p">(</span><span class="n">PersonalID</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="s2">"ZP1U3EPU2FKAWI6K5US5LDV50KRI1LN7"</span><span class="p">,</span><span class="w"> </span><span class="s2">"IA26X38HOTOIBHYIRV8CKR5RDS8KNGHV"</span><span class="p">,</span><span class="w"> </span><span class="s2">"LASDU89NRABVJWW779W4JGGAN90IQ5B2"</span><span class="p">),</span><span class="w"> 
+                       </span><span class="n">FirstName</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="s2">"Timmy"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Fela"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Sarah"</span><span class="p">),</span><span class="w">
+                       </span><span class="n">LastName</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="s2">"Tesa"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Falla"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Kerrigan"</span><span class="p">),</span><span class="w">
+                       </span><span class="n">DOB</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="s2">"2010-01-01"</span><span class="p">,</span><span class="w"> </span><span class="s2">"1999-1-1"</span><span class="p">,</span><span class="w"> </span><span class="s2">"1992-04-01"</span><span class="p">))</span><span class="w">
+</span><span class="c1">##################################################################</span><span class="w">
+
+</span><span class="n">peopleDf1</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">sqldf</span><span class="p">(</span><span class="s2">"SELECT * FROM peopleDf WHERE DOB &gt; '2001-01-01'"</span><span class="p">)</span></code></pre></figure>
+
+<p>This creates the table</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">PersonalID</th>
+      <th style="text-align: left">FirstName</th>
+      <th style="text-align: left">LastName</th>
+      <th style="text-align: left">DOB</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">ZP1U3EPU2FKAWI6K5US5LDV50KRI1LN7</td>
+      <td style="text-align: left">Timmy</td>
+      <td style="text-align: left">Tesa</td>
+      <td style="text-align: left">2010-01-01</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>This is a dataframe of everyone who was born after January 1st, 2001.  This method of filtering data works for a static date.  But let’s say you wanted to easily change out the <code class="highlighter-rouge">2001-01-01</code> with other dates.  You <em>could</em> replace the date with a different date, but when that date is in multiple SQL calls it can be easy to miss one.  A better way to do it is using the <code class="highlighter-rouge">paste()</code>.  And remember, everything inside the <code class="highlighter-rouge">sqldf()</code> parentheses is a string.</p>
+
+<figure class="highlight"><pre><code class="language-r" data-lang="r"><span class="n">targetDate</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="s2">"2001-01-01"</span><span class="w">
+</span><span class="n">sqlString</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">paste</span><span class="p">(</span><span class="s2">"SELECT * FROM peopleDf WHERE DOB &gt; '"</span><span class="p">,</span><span class="w"> </span><span class="n">targetDate</span><span class="p">,</span><span class="w"> </span><span class="s2">"'"</span><span class="p">,</span><span class="w"> </span><span class="n">sep</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">""</span><span class="p">)</span><span class="w">
+</span><span class="n">peopleDf5</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">sqldf</span><span class="p">(</span><span class="n">sqlString</span><span class="p">)</span></code></pre></figure>
+
+<p>Ok, let’s take this slow, there’s a lot going on.  First, we create a variable called <code class="highlighter-rouge">targetDate</code> and assign it the string <code class="highlighter-rouge">2001-01-01</code>.  Next, we create a complex string using the <code class="highlighter-rouge">paste()</code> which looks a lot like a SQLdf string, but instead of hardcoding the date, we insert the <code class="highlighter-rouge">targetDate</code> variable.  This creates the following string:</p>
+
+<figure class="highlight"><pre><code class="language-r" data-lang="r"><span class="s2">"SELECT * FROM peopleDf WHERE DOB &gt; '2001-01-01'"</span></code></pre></figure>
+
+<p>Which is then inserted into the variable <code class="highlighter-rouge">sqlString</code>, which is a string.</p>
+
+<p>Lastly, we pass the <code class="highlighter-rouge">sqlString</code> variable into the <code class="highlighter-rouge">sqldf()</code> which executes the fancy SQL query.  Awesome, right?</p>
+
+<p>Now, if we want to look at those born after a different date, we simply change the <code class="highlighter-rouge">targetDate</code> variable and re-run the script.</p>
+
+<figure class="highlight"><pre><code class="language-r" data-lang="r"><span class="n">targetDate</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="s2">"1980-01-01"</span><span class="w">
+</span><span class="n">sqlString</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">paste</span><span class="p">(</span><span class="s2">"SELECT * FROM peopleDf WHERE DOB &gt; '"</span><span class="p">,</span><span class="w"> </span><span class="n">targetDate</span><span class="p">,</span><span class="w"> </span><span class="s2">"'"</span><span class="p">,</span><span class="w"> </span><span class="n">sep</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">""</span><span class="p">)</span><span class="w">
+</span><span class="n">peopleDf5</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">sqldf</span><span class="p">(</span><span class="n">sqlString</span><span class="p">)</span></code></pre></figure>
+
+<h3 id="sysdate">Sys.Date()</h3>
+
+<h3 id="gsub">GSUB</h3>
+:ET

@@ -1,0 +1,100 @@
+I"�<p>Originally posted on <a href="www.letsmakerobots.com">www.letsmakerobots.com</a></p>
+
+<div class="flex-video">
+  <iframe width="420" height="315" src="https://www.youtube.com/embed/leWv0mJ9VVE" frameborder="0" allowfullscreen=""></iframe>
+</div>
+
+<p>I decided to try making an Arduino Pro Mini at home.  Being done, it’s not worth it.  You can buy one for a dollar more than you can make them, and it took awhile to populate.  Although, it’s “fun.”</p>
+
+<p><img src="../images/IMG_8868_513x768.jpg" alt="" /></p>
+
+<p>This projects was also a chance for me to test the Spying-Stalactite I built.</p>
+
+<p>I’ve enjoyed it.  It allows me to reflect on my strategy while populating boards.  It’s simply a drop down with some high-powered LEDs (~2500 lumen), heatsink, and coolant fan.  It has a hole for my iphone to do the recording.  Cheap and simple.  Although, I need to diffuse the light, as you might see by the video that it washes out the details of the projects.  Also, I’ll add a few more lights and do away with the tungsten lamp, since the iphone is constantly in a white-balance battle as I move infront of the mixed lightsources.</p>
+
+<p><img src="../images/IMG_8862_1150x768.jpg" alt="" /></p>
+
+<p>I populated this board; everything came out fine (although, it was <em>much more difficult</em> trying not to block the camera with my head).  I popped it into Atmel studio and it read out the device voltage and signature.  Of course, I bricked it, as I seem to do a lot.</p>
+
+<p>My next projects is a Fuse Doctor. :)</p>
+
+<p>I had ordered the boards from OSHPark and had planned on making three.  So, I populated another and took some time programming it.  I’ve outlined my steps below:</p>
+
+<p><strong>1. Hook up the AVRISP MKII</strong></p>
+
+<p><img src="../images/avrispmkii-pin-out.png" alt="" /></p>
+
+<p><img src="../images/Pinout_of_Aduino_Pro_Mini.jpg" alt="" /></p>
+
+<p><strong>2. Open Atmel Studio.  Go to Tools – Device Programming.</strong></p>
+
+<p><strong>3. Setup:</strong></p>
+
+<ul>
+  <li><strong>Tool: AVRISP mkII</strong></li>
+  <li><strong>Device: ATmega328P</strong></li>
+  <li><strong>Interface: ISP</strong></li>
+</ul>
+
+<p><strong>Click apply</strong></p>
+
+<p><strong>4. Read Target voltage (it should be ~5V).  Read Device Signature.</strong></p>
+
+<p><strong><img src="../images/Atmel_Studio_1.jpg" alt="" /></strong></p>
+
+<ol>
+  <li>
+    <p>Open <strong>boards.txt</strong> that comes with Arduino (\Desktop\arduino-1.0.3\hardware\arduino\boards.txt).</p>
+  </li>
+  <li>
+    <p>Scroll down to the area marked:</p>
+  </li>
+</ol>
+
+<p><img src="../images/Boards_File.jpg" alt="" /></p>
+
+<p><strong>8. Pull the programming information for the board from this area.</strong>  Now, I’ve bricked a few boards, but I think I’ve figured this one out.  When programming this board with the MKII and Atmel Studio, you should follow this order.</p>
+
+<p><strong>1. Set the fuses:</strong></p>
+
+<ul>
+  <li><strong>Extended: 0xFD</strong></li>
+  <li><strong>High: 0xDA</strong></li>
+  <li><strong>Low: 0xFF</strong></li>
+  <li><strong>(Double check the board file to make sure I didn’t make typos)</strong></li>
+  <li><strong>Hit “Program”</strong></li>
+</ul>
+
+<p><strong>2. Upload Bootloader.</strong></p>
+
+<p>“The bootloader for the 5v, 16mhz Arduino Pro Mini (which is what I built) is “ATmegaBOOT_168_atmega328.hex (Desktop\arduino-1.0.3\hardware\arduino\bootloaders\atmega\ATmegaBOOT_168_atmega328.hex).<br />
+<strong>It’s important to note that the 3.3v and 5v versions use different bootloaders.</strong></p>
+
+<ul>
+  <li><strong>Go to the Memories tab</strong></li>
+  <li><strong>Hit the browse ellipsis.</strong></li>
+  <li><strong>Select the “ATmegaBOOT_168_atmega328.hex”</strong></li>
+  <li><strong>(Double check the boards file to make sure I’m not screwing you up).</strong></li>
+  <li><strong>Hit program.</strong></li>
+</ul>
+
+<p><strong>3  Set Lock Bits.</strong></p>
+
+<ul>
+  <li><strong>Go to the “Lock bits” tab.</strong></li>
+  <li><strong>Check the boards.txt file for Lockbit number</strong></li>
+  <li><strong>Lockbit: 0xCF</strong></li>
+  <li><strong>(Double check the boards.txt.  I don’t take blame for bricked boards :P).</strong></li>
+  <li><strong>Hit “Program”</strong></li>
+</ul>
+
+<p><strong>9 Upload the Blink Sketch; the LED by the reset button should blink.</strong></p>
+
+<p><strong>10 Let me know how it went.  If you bricked a chip using these instructions, let me know so I can modify them quick.</strong></p>
+
+<p>Now that I’m used to the camera and stalactite, I plan to annotate my next board for tips on working with 0402s.</p>
+
+<p>Hope all are well.</p>
+
+<p>ps. Birdmun et al., sorry bout the copyright issues.  Not a professional at anything, especially video editing :)</p>
+:ET

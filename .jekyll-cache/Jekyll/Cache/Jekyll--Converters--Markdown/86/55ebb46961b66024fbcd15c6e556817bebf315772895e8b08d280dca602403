@@ -1,0 +1,264 @@
+I"�C<h1 id="step-1-ios-app">Step 1: iOS App</h1>
+
+<p>I’m going to assume you have Xcode installed.</p>
+
+<h3 id="step-11-install-cocoapods">Step 1.1: Install CocoaPods</h3>
+<p><a href="https://guides.cocoapods.org/using/getting-started.html">CocoaPods</a> is a package handler for Xcode.  We will be using it to install <a href="https://github.com/Alamofire/Alamofire">Alamofire</a>, which a Swift library for making HTTP requests.  We will need HTTP call support as we will call our server to store the EEG samples.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo gem install cocoapods
+</code></pre></div></div>
+<p>After you hit Return it will prompt for your password</p>
+
+<p><img src="../images/cocoapods_installation.png" alt="cocoapods-installation" /></p>
+
+<h3 id="step-12-setup-xcode-project">Step 1.2: Setup Xcode Project</h3>
+<p>Now, let’s setup a project folder.  This is main folder where all the iOS app code will live.  It’s a bad habit, but I usually put mine on the Desktop.</p>
+
+<p>Open Xcode and select “Create a new Xcode proejct”</p>
+
+<p><img src="../images/xcode_project_start_1.png" alt="xcode-project-start" /></p>
+
+<p>Then select “Single View App” and click “Next”</p>
+
+<p><img src="../images/xcode_project_start_2.png" alt="xcode-project-start" /></p>
+
+<p>Let’s call the project <code class="highlighter-rouge">MindWaveJournaler</code> and click “Next”
+<img src="../images/xcode_project_start_3.png" alt="xcode-project-start" /></p>
+
+<p>Choose your Desktop as location for the project and click “Create”
+<img src="../images/xcode_project_start_4.png" alt="xcode-project-start" /></p>
+
+<h3 id="step-13-development-environment-setup">Step 1.3: Development Environment Setup</h3>
+<p>You’ve created a Project Folder, but we have to setup the project folder to be used with CocoaPods.  After, we will use CocoaPods to install Alamofire.</p>
+
+<p>Back in the terminal, type:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cd ~/Desktop/MindWaveJournaler
+pod init
+</code></pre></div></div>
+<p>This creates a <code class="highlighter-rouge">Podfile</code> in the root folder of our project.  We can list CocoaPod packages in the Podfile and run <code class="highlighter-rouge">pod install</code> in the same directory, this will cause CocoaPods to install all the packages we listed.</p>
+
+<p>Sadly, we are really only doing this for Alamofire right now.  But, later, when we start building on to this app it will allow us to quickly access third-party frameworks.</p>
+
+<p>Ok, back to typing:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>open -a Xcode Podfile
+</code></pre></div></div>
+<p>This will open the Podfile for editing in Xcode.  Now let’s insert the our desired pod information.</p>
+
+<p>Copy information below and paste it into your file:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Uncomment the next line to define a global platform for your project
+platform :ios, '11.4'
+
+target 'MindWaveJournaler' do
+  # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
+  use_frameworks!
+
+  # Pods for MindWaveJournaler
+  pod 'Alamofire', '~&gt; 4.7'
+
+  target 'MindWaveJournalerTests' do
+    inherit! :search_paths
+    # Pods for testing
+  end
+
+  target 'MindWaveJournalerUITests' do
+    inherit! :search_paths
+    # Pods for testing
+  end
+
+end
+</code></pre></div></div>
+
+<p>You may notice the only changes we made were</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>platform :ios, '11.4'
+...
+pod 'Alamofire', '~&gt; 4.7'
+</code></pre></div></div>
+<p>These lines tell CocoaPods which version of iOS we are targetting with our app (this will silence a warning, but shouldn’t be required).  The other, is telling CocoaPods which version of Alamofire we’d like to use on this project.</p>
+
+<p>Ok, now let’s run this Podfile.</p>
+
+<p>Back in the same directory as the Podfile type:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pod install
+</code></pre></div></div>
+<p>You should see CocoaPods do its thing with output much like below.</p>
+
+<p><img src="../images/alamofire_pod_installed.png" alt="cocoapods-installed-alamofire" /></p>
+
+<h3 id="step-14-install-neurosky-ios-sdk">Step 1.4: Install NeuroSky iOS SDK</h3>
+<p>NeuroSky has a “Swift SDK.”  Really, it’s an Objective-C SDK which is “bridged” into Swift.  Essentialy, this means we won’t be able to see what’s going on the SDK, but we can use functions from the pre-compiled binaries.</p>
+
+<p>I’ve not been impressed with NeuroSky’s website.  Or the SDK.  It does the job, but not much more.</p>
+
+<p>Anyway, the SDK download is annoyingly behind a sign-up wall.</p>
+
+<ul>
+  <li><a href="https://store.neurosky.com/products/ios-developer-tools-4">NeuroSky iOS SDK</a></li>
+</ul>
+
+<p>Visit the link above and click on “Add to Cart”</p>
+
+<p><img src="../images/neurosky-sdk-download-1.png" alt="neurosky-sdk-sign-up" /></p>
+
+<p>Then “Proceed to Checkout”</p>
+
+<p><img src="../images/neurosky-sdk-download-2.png" alt="neurosky-sdk-sign-up" /></p>
+
+<p>Lastly, you have to enter your “Billing Information.”  Really, this is only your email address, last name, street address, city, and zip.</p>
+
+<p>(Really NeuroSky?  This is very 1990.)</p>
+
+<p>Eh, I made mine up.</p>
+
+<p>Anyway, after your enter information click, then click “Continue to PayPal” (What? I just provided my information…)  You should be rewarded with a download link.  Click it and download the files.</p>
+
+<p><img src="../images/neurosky-sdk-download-5.png" alt="neurosky-sdk-sign-up" /></p>
+
+<p>Unzip the files and navigate <code class="highlighter-rouge">lib</code> folder</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>iOS Developer Tools 4.8 -&gt; MWM_Comm_SDK_for_iOS_V0.2.9 -&gt; lib
+</code></pre></div></div>
+<p>Copy all files from the <code class="highlighter-rouge">lib</code> folder into the main directory of the <code class="highlighter-rouge">MindWaveJournaler</code> project folders.</p>
+
+<p><img src="../images/neurosky-sdk-download-7.png" alt="neurosky-sdk-lib" /></p>
+
+<h3 id="step-15-workspace-setup">Step 1.5: Workspace Setup</h3>
+<p>CocoaPods works by creating a <code class="highlighter-rouge">.xcworkspace</code> file.  It contains all the information needed to compile your project <em>with</em> all of the CocoaPod packages installed.  In our case the file will be called <code class="highlighter-rouge">MindWaveJournaler.xcworkspace</code>.  And every time you want to work on your project, you must open it with this specific file.</p>
+
+<p>It can be a bit confusing because Xcode created a <code class="highlighter-rouge">.xcodeproj</code> file which is tempting to click on.
+<img src="../images/mind-wave-journaler-project-setup-1.png" alt="xcworkspace" /></p>
+
+<p>Go ahead and open the <code class="highlighter-rouge">MindWaveJournaler.xcworkspace</code> file.  The workspace should open with one warning, which we will resolve shortly.</p>
+
+<p>But first, another caveat.  CoreBluetooth, Apple’s Bluetooth LE Framework, <em>only</em> works when compiled for and run on an actual device.  <em>It does *not</em> work in the iOS Simulator.*  Once upon a time it did, if your Mac had the hardware, however, my version of the story is Apple didn’t like having to support the confusion and dropped it.</p>
+
+<p><img src="../images/mind-wave-journaler-project-setup-2.png" alt="eeg-apple-workspace" /></p>
+
+<p>Moving on.  Click on the yellow warning.  Then click on the warning in the sidebar.  This should create a prompt asking if you’d like to make some changes.  This should automatically make some tweaks to the build settings which should make our project mo’ betta.</p>
+
+<p>Click <code class="highlighter-rouge">Perform Changes</code>.
+<img src="../images/mind-wave-journaler-project-setup-3.png" alt="eeg-apple-workspace-resolve-warning" /></p>
+
+<p>This should silence the warning and make your project error free.  Go ahead and hit <code class="highlighter-rouge">Play</code> button and let it compile to the simulator (we aren’t testing the Bluetooth, so it’s ok).  Everything should compile correctly, if not, just let me know the specifics of your problems in the comments.</p>
+
+<h3 id="step-15-enable-secure-http-request">Step 1.5: Enable Secure HTTP Request</h3>
+<p>There are still a few tweaks we need to make to the Xcode workspace to get everything working.</p>
+
+<p>First, open the <code class="highlighter-rouge">ViewController.swift</code> file and add <code class="highlighter-rouge">import Alamofire</code> right below <code class="highlighter-rouge">import UIKit</code>.  If auto-complete lists Alamofire as an option you know the workspace is detecting its presence.  Good deal.</p>
+
+<p>Now, for Alamofire to be able to securely make HTTP request an option needs to be added to the <code class="highlighter-rouge">Info.plist</code> file.  I scratched my head as to why the HTTP calls were not being made successfully until Manab Kumar Mal’s StackOverflow post:</p>
+
+<ul>
+  <li><a href="https://stackoverflow.com/a/32631185/2108441">The resource could not be loaded</a></li>
+</ul>
+
+<p>Thanks, buddy.</p>
+
+<p>Ok, following his instructions open up the <code class="highlighter-rouge">Info.plist</code> file in your MindWaveJournaler folder.  Now add an entry by right-clicking and selecting <code class="highlighter-rouge">Add Row</code>.  Change the <code class="highlighter-rouge">Application Category</code> to <code class="highlighter-rouge">NSAppTransportSecurity</code> and make sure it’s set as <code class="highlighter-rouge">dictionary</code>.  Now, click the plus sign by the new dictionary and set this attribute as <code class="highlighter-rouge">NSAllowsArbitraryLoads</code>, setting the type <code class="highlighter-rouge">bool</code>, and the value as <code class="highlighter-rouge">YES</code>.</p>
+
+<p><img src="../images/mind-wave-journaler-project-setup-4.png" alt="eeg-apple-workspace-add-secure-layer" /></p>
+
+<h3 id="step-15-setup-objective-c-bridge-header-for-mindwave-sdk">Step 1.5: Setup Objective-C Bridge Header for MindWave SDK</h3>
+
+<p>There’s a few other bits of housekeeping, though.  As I mentioned earlier, the MindwAve SDK is in an Objective-C precompiled binary.  It is usable in a Swift project, but requires setting up a “bridge header” file.</p>
+
+<ul>
+  <li><a href="https://stackoverflow.com/a/39615171">Manually Creating Bridging Header</a></li>
+</ul>
+
+<p>Start by creating the bridge header file.  Go to <code class="highlighter-rouge">File -&gt; New -&gt; File...</code></p>
+
+<p><img src="../images/bridge-header-setup-01.png" alt="bridge-header-file" /></p>
+
+<p>Then select <code class="highlighter-rouge">Header</code> and click <code class="highlighter-rouge">Next</code>.</p>
+
+<p><img src="../images/bridge-header-setup-02.png" alt="bridge-header-file" /></p>
+
+<p>Name the file <code class="highlighter-rouge">YourProjectName-Bridging-Header</code> and <strong>make sure the file is saved to the same folder which contains the <code class="highlighter-rouge">.xcworkspace</code> file</strong>, then click <code class="highlighter-rouge">Create</code>.</p>
+
+<p><img src="../images/bridge-header-setup-03.png" alt="bridge-header-file" /></p>
+
+<p>The header file should automatically open.  Copy and paste the following to the bottom of the header file.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#import "MWMDevice.h"
+#import "MWMDelegate.h"
+#import "MWMEnum.h"
+</code></pre></div></div>
+
+<p>My entire file looked like this once done.</p>
+
+<h4 id="mindwavejournaler-bridging-headerh">MindWaveJournaler-Bridging-Header.h</h4>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="c1">//</span>
+<span class="c1">//  MindWaveJournaler-Bridging-Header.h</span>
+<span class="c1">//  MindWaveJournaler</span>
+<span class="c1">//</span>
+<span class="c1">//  Created by Casey Brittain on 8/3/18.</span>
+<span class="c1">//  Copyright © 2018 Honeysuckle Hardware. All rights reserved.</span>
+<span class="c1">//</span>
+
+<span class="cp">#ifndef MindWaveJournaler_Bridging_Header_h</span>
+<span class="cp">#define MindWaveJournaler_Bridging_Header_h</span>
+
+
+<span class="cp">#endif /* MindWaveJournaler_Bridging_Header_h */</span>
+
+<span class="cp">#import "MWMDevice.h"</span>
+<span class="cp">#import "MWMDelegate.h"</span>
+<span class="cp">#import "MWMEnum.h"</span></code></pre></figure>
+
+<p>Let’s tell the Swift compile we have a header file.  In Xcode go to <code class="highlighter-rouge">Project File -&gt; Build Settings -&gt; All</code>  then in the search box type <code class="highlighter-rouge">Swift Compiler - General</code>  (if you don’t include the hyphen and spaces it wont find it).</p>
+
+<p><img src="../images/bridge-header-setup-04.png" alt="bridge-header-file" /></p>
+
+<p>Double-click on the line <code class="highlighter-rouge">Objective-C Bridging Header</code> directly underneath the name of your project (see red box in image).  Copy and paste the following into the box and click off to save the change.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$(PROJECT_DIR)/$(PROJECT_NAME)-Bridging-Header.h
+</code></pre></div></div>
+
+<p>This creates a relative path to your Bridging-Header file.  In a little bit we are going to try to compile, if you get errors around this file not being found, then it’s probably not named per our naming scheme (<code class="highlighter-rouge">YourProjectName-Bridging-Header</code>) or it wasn’t saved in the same folder as the <code class="highlighter-rouge">.xworkspace</code> file.  No worries, if you have troubles just leave me a comment below.</p>
+
+<p><img src="../images/bridge-header-setup-05.png" alt="bridge-header-file" /></p>
+
+<p>One last thing to do before we’re ready to code.  We still need to import the MindWave SDK into our project.</p>
+
+<p><img src="../images/mindwave-sdk-1.png" alt="bridge-header-file" /></p>
+
+<p>Right click on your project file and select <code class="highlighter-rouge">New Group</code>.  Name the group <code class="highlighter-rouge">MindWave SDK</code>.  Now right click on the folder you created and select <code class="highlighter-rouge">Add Files to "MindWave SDK"...</code>.  Navigate to the <code class="highlighter-rouge">lib</code> folder containing the MindWave SDK and select all files inside it.</p>
+
+<p><img src="../images/mindwave-sdk-2.png" alt="mindwave-sdk" /></p>
+
+<p>When you add the SDK, Xcode should automatically detect the binary file (<code class="highlighter-rouge">libMWMSDK.a</code>) and create a link to it.  But, let’s make sure, just in case.  Click on your project file, then go to the <code class="highlighter-rouge">General</code> tab.</p>
+
+<p><img src="../images/mindwave-sdk-3.png" alt="mindwave-sdk" /></p>
+
+<p>It needs to be linked under the <code class="highlighter-rouge">Build Phases</code> tab as well, under <code class="highlighter-rouge">Linked Frameworks and Libraries</code>.</p>
+
+<p><img src="../images/mindwave-sdk-4.png" alt="mindwave-sdk" /></p>
+
+<p>That’s it.  Let’s test and make sure your app is finding the SDK appropriately.</p>
+
+<p>Open the <code class="highlighter-rouge">ViewController</code> file and under <code class="highlighter-rouge">viewDidLoad()</code> after the existing code, type:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>let mwDevice = MWMDevice()
+mwDevice.scanDevice()
+</code></pre></div></div>
+
+<p>Watch for autocomplete detecting the existince of the MindWave SDK</p>
+
+<p><img src="../images/mindwave-sdk-5.png" alt="mindwave-sdk" /></p>
+
+<p>Now for the true test, <code class="highlighter-rouge">Compile</code> and <code class="highlighter-rouge">Run</code>.  But, before we do, <strong>please be aware–this will only work on an actual iOS device.  If you try to run it in the iOS simulator it will fail.</strong>  It actually fails on two accounts, first, <code class="highlighter-rouge">CoreBluetooth</code> will not work in the iOS simulator, second, the MindWave SDK binaries were compiled specifically ARM architecture.</p>
+
+<p>Ok! Enough preamble. Connect and select your iOS device and hit <code class="highlighter-rouge">Run</code>.</p>
+
+<p><img src="../images/mindwave-app-run-1.png" alt="mindwave-app-run" /></p>
+
+<p>If all goes well you should see two things.  A blank white screen appear on your phone and concerning message in the Xcode console.</p>
+
+<p><img src="../images/corebluetooth-error-1.png" alt="corebluetooth-error-api-misuse" /></p>
+
+<p>The <code class="highlighter-rouge">CoreBluetooth</code> error has to do with firing up the iOS Bluetooth services <em>without</em> checking to make sure the iOS BLE is turned on and ready to go.  This is a good thing, it probably means the MindWave SDK has been foudn and is functioning properly.</p>
+
+<p>If you get any other errors, let’s chat.  I’ll help if I can.</p>
+
+<p>This is part of a series, which I’m writing with care as I’ve time.  I’ll get the next part out ASAP.</p>
+:ET

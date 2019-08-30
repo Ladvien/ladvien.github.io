@@ -1,0 +1,692 @@
+I"��<p>Recently I was required to work with MySQL 10.0.  I was surprised to find MySQL 10.2 and less does not support some common <a href="https://drill.apache.org/docs/sql-window-functions-introduction/">Windowing Functions</a>, specifically, <a href="https://drill.apache.org/docs/value-window-functions/">Value Functions</a> and <a href="https://drill.apache.org/docs/ranking-window-functions/">Rank Functions</a>.</p>
+
+<p>Well, bummer.  I really needed them.</p>
+
+<p>On top of it, I only had read access to the database without the ability to create a stored procedure.  Out of desperation, I found myself researching the possibility of creating my own functions using MySQL <a href="https://dev.mysql.com/doc/refman/5.7/en/user-variables.html">User Variables</a>.</p>
+
+<p>Slightly tweaking Dante, “Abandon all normal, ye who enter here.”  User variables are weird.</p>
+
+<p>I’ve spent some time researching on the interweb and about the best article I’ve found on the subject is:</p>
+
+<p><a href="https://www.xaprb.com/blog/2006/12/15/advanced-mysql-user-variable-techniques/">Advanced MySQL User Variable Techniques</a></p>
+
+<p>Which focuses on getting the desired behavior from user variables rather than understanding them.  This article is going to stick with the same philosophy–I don’t need to necessarily understand them, however, I want to be able to predict their behavior.</p>
+
+<p>One word of warning, the above article is not really a suggessted reading before this article–it’s more of required reading.  If you don’t know how to force the user variables to be evaluated when you need them, then the results are unpredictable.</p>
+
+<p>The TL;DR version: Order of operations matter <em>a lot</em> in user variables and wrap the user variable in a subquery or function to force evaluation.</p>
+
+<p>At this bottom of the article I’ve included the data used in this article.  You can insert it into a MySQL or MariaDB database and follow along. The goal is to convert these data into a <code class="highlighter-rouge">start_date</code> and <code class="highlighter-rouge">stop_date</code> which would <em>greatly</em> reduce the storage needs.</p>
+
+<p>For <code class="highlighter-rouge">id</code> 1 the <code class="highlighter-rouge">start_date</code> and <code class="highlighter-rouge">stop_date</code> equivalents would look like:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>id</th>
+      <th>date</th>
+      <th> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td><strong><em>09/10/12</em></strong></td>
+      <td>start_1</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>09/11/12</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>09/12/12</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>09/13/12</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td><strong><em>09/14/12</em></strong></td>
+      <td>stop_1</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td><strong><em>10/11/12</em></strong></td>
+      <td>start_2</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>10/12/12</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td><strong><em>10/13/12</em></strong></td>
+      <td>stop_2</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>We want to end up with a table like below.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>id</th>
+      <th>start_date</th>
+      <th>end_date</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>09/10/12</td>
+      <td>09/14/2012</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>10/11/22</td>
+      <td>10/13/2012</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>To transform the data into this table it’s important to know user variables can hold a value from one row to the next.</p>
+
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">SELECT</span>
+    <span class="n">id</span><span class="p">,</span> <span class="nb">date</span><span class="p">,</span> <span class="o">@</span><span class="n">row_number</span><span class="p">:</span><span class="o">=@</span><span class="n">row_number</span> <span class="o">+</span> <span class="mi">1</span> <span class="n">row_num</span>
+<span class="k">FROM</span>
+    <span class="n">attendance</span>
+        <span class="k">CROSS</span> <span class="k">JOIN</span>
+    <span class="p">(</span><span class="k">SELECT</span> <span class="o">@</span><span class="n">row_number</span><span class="p">:</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="n">r</span><span class="p">;</span></code></pre></figure>
+
+<p>This should produce the following table:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>id</th>
+      <th>date</th>
+      <th>row_num</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>2012-09-10</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>2012-09-10</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>2012-09-11</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>2013-02-07</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>2013-02-07</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>2013-02-07</td>
+      <td>6</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>2013-02-07</td>
+      <td>7</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>2013-02-07</td>
+      <td>8</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>2013-02-07</td>
+      <td>9</td>
+    </tr>
+    <tr>
+      <td>…</td>
+      <td>…</td>
+      <td>…</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Pretty cool, right?  Now, if only we could get the <code class="highlighter-rouge">row_number</code> to reset whenever the <code class="highlighter-rouge">id</code> changes.  No worries, let’s use another variable to store the <code class="highlighter-rouge">id</code> from the previous row so we can compare it to the current.</p>
+
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">SELECT</span> 
+    <span class="n">id</span><span class="p">,</span>
+    <span class="nb">date</span><span class="p">,</span>
+    <span class="o">@</span><span class="n">row_number</span><span class="p">:</span><span class="o">=@</span><span class="n">row_number</span> <span class="o">+</span> <span class="mi">1</span> <span class="n">row_number</span><span class="p">,</span>
+    <span class="n">IF</span><span class="p">(</span><span class="o">@</span><span class="n">previous_id</span> <span class="o">=</span> <span class="n">id</span><span class="p">,</span>
+        <span class="o">@</span><span class="n">row_number</span><span class="p">,</span>
+        <span class="o">@</span><span class="n">row_number</span><span class="p">:</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="n">calc1</span><span class="p">,</span>
+    <span class="o">@</span><span class="n">previous_id</span><span class="p">:</span><span class="o">=</span><span class="n">id</span> <span class="n">cacl2</span>
+<span class="k">FROM</span>
+    <span class="n">attendance</span>
+        <span class="k">CROSS</span> <span class="k">JOIN</span>
+    <span class="p">(</span><span class="k">SELECT</span> <span class="o">@</span><span class="n">row_number</span><span class="p">:</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="o">@</span><span class="n">previous_id</span><span class="p">:</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="n">r</span><span class="p">;</span></code></pre></figure>
+
+<p>This should give us the following output:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>id</th>
+      <th>date</th>
+      <th>row_number</th>
+      <th>calc1</th>
+      <th>cacl2</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>2012-09-10</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>2012-09-10</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>2012-09-11</td>
+      <td>2</td>
+      <td>2</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>2013-02-07</td>
+      <td>3</td>
+      <td>0</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>2013-02-07</td>
+      <td>1</td>
+      <td>1</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <td>…</td>
+      <td>…</td>
+      <td>…</td>
+      <td>…</td>
+      <td>…</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Notice, the <code class="highlighter-rouge">calc1</code> and <code class="highlighter-rouge">calc2</code> are not values you need.  They are merely calculations used to reset the <code class="highlighter-rouge">row_number</code> whenever the <code class="highlighter-rouge">id</code> changes.  Hmm, this is interesting–and, hopefully, you can see it has many possibilities.</p>
+
+<p>Now, let’s go back and think about our problem a bit more.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>id</th>
+      <th>date</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td><strong>09/10/12</strong></td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>09/11/12</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>09/12/12</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>09/13/12</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td><strong>09/14/12</strong></td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td><strong>10/11/12</strong></td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>10/12/12</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td><strong>10/13/12</strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>We can save a value from one row to the next.  Therefore, detecting the breaks in a range of attendance dates can be obtained by comparing the current row’s <code class="highlighter-rouge">date</code> value to the previous row’s <code class="highlighter-rouge">date</code> value.  If the previous row is greater than the current row minus one, then we know there was a break in the range.</p>
+
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">SELECT</span> 
+    <span class="n">id</span><span class="p">,</span> <span class="nb">date</span><span class="p">,</span> <span class="n">range_selector</span>
+<span class="k">FROM</span>
+    <span class="p">(</span><span class="k">SELECT</span> <span class="k">DISTINCT</span>
+        <span class="n">id</span><span class="p">,</span>
+            <span class="nb">date</span><span class="p">,</span>
+            <span class="n">IF</span><span class="p">(</span><span class="o">@</span><span class="n">previous_id</span> <span class="o">=</span> <span class="n">id</span><span class="p">,</span> <span class="o">@</span><span class="n">range_selector</span><span class="p">,</span> <span class="o">@</span><span class="n">range_selector</span><span class="p">:</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="n">calc1</span><span class="p">,</span>
+            <span class="n">IF</span><span class="p">(</span><span class="n">DATEDIFF</span><span class="p">(</span><span class="o">@</span><span class="n">previous_date</span><span class="p">,</span> <span class="nb">date</span><span class="p">)</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="o">@</span><span class="n">range_selector</span><span class="p">,</span> <span class="o">@</span><span class="n">range_selector</span><span class="p">:</span><span class="o">=@</span><span class="n">range_selector</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="n">range_selector</span><span class="p">,</span>
+            <span class="o">@</span><span class="n">previous_id</span><span class="p">:</span><span class="o">=</span><span class="n">id</span> <span class="n">calc2</span><span class="p">,</span>
+            <span class="o">@</span><span class="n">previous_date</span><span class="p">:</span><span class="o">=</span><span class="nb">DATE</span><span class="p">(</span><span class="nb">date</span><span class="p">)</span> <span class="n">calc3</span>
+    <span class="k">FROM</span>
+        <span class="p">(</span><span class="k">SELECT</span> <span class="k">DISTINCT</span>
+        <span class="o">*</span>
+    <span class="k">FROM</span>
+        <span class="n">attendance</span>
+    <span class="k">ORDER</span> <span class="k">BY</span> <span class="n">id</span> <span class="k">DESC</span> <span class="p">,</span> <span class="nb">date</span> <span class="k">DESC</span><span class="p">)</span> <span class="n">order_sub</span>
+    <span class="k">CROSS</span> <span class="k">JOIN</span> <span class="p">(</span><span class="k">SELECT</span> 
+        <span class="o">@</span><span class="n">id_selector</span><span class="p">:</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="o">@</span><span class="n">previous_date</span><span class="p">:</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="o">@</span><span class="n">range_selector</span><span class="p">:</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="o">@</span><span class="n">previous_id</span><span class="p">:</span><span class="o">=</span><span class="mi">0</span>
+    <span class="p">)</span> <span class="n">variable_initialization</span>
+    <span class="k">ORDER</span> <span class="k">BY</span> <span class="n">id</span> <span class="p">,</span> <span class="nb">date</span> <span class="k">DESC</span><span class="p">)</span> <span class="n">date_ranges</span><span class="p">;</span></code></pre></figure>
+
+<p>This <em>should</em> give the following table:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>id</th>
+      <th>date</th>
+      <th>range_index</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>2012-10-13</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>2012-10-12</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>2012-10-11</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>2012-09-14</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>2012-09-13</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>2012-09-12</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>2012-09-11</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>2012-09-10</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>2012-09-23</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>2012-08-22</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>2012-08-17</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>2012-08-12</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>2012-08-11</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>2012-08-10</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>2012-08-09</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>2012-11-22</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>2012-11-03</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>2012-11-02</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>2012-11-01</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>2012-10-04</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>2012-10-03</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>2012-10-02</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>2012-10-01</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>2013-02-07</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>2013-02-06</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>2013-02-05</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>2013-02-04</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>2013-02-03</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>2013-02-02</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>2013-01-28</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>2013-01-24</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>2013-01-23</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>2012-12-07</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>2012-12-06</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>2012-12-05</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>2012-12-04</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>2012-12-03</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>2012-12-02</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>2012-12-01</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>2012-11-01</td>
+      <td>5</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The reason I state “should”, if you modify the order of the user variables, it’ll break.  If you change the <code class="highlighter-rouge">ORDER BY</code>, it’ll break.  If you add a <code class="highlighter-rouge">WHERE</code> or <code class="highlighter-rouge">HAVING</code> clause, it’ll break.  Pretty much, it’s as fragile a query as they come.</p>
+
+<p>However, the clever bunch probably see where we are going with this.  Now, it’s simply a matter of taking the <code class="highlighter-rouge">MIN()</code> and <code class="highlighter-rouge">MAX()</code> of of <code class="highlighter-rouge">date</code> and <code class="highlighter-rouge">group by</code> the <code class="highlighter-rouge">id</code> and <code class="highlighter-rouge">range_index</code>.</p>
+
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">SELECT</span> 
+    <span class="n">id</span><span class="p">,</span> <span class="k">min</span><span class="p">(</span><span class="nb">date</span><span class="p">)</span> <span class="n">start_date</span><span class="p">,</span> <span class="k">max</span><span class="p">(</span><span class="nb">date</span><span class="p">)</span> <span class="n">end_date</span>
+<span class="k">FROM</span>
+    <span class="p">(</span><span class="k">SELECT</span> <span class="k">DISTINCT</span>
+        <span class="n">id</span><span class="p">,</span>
+            <span class="nb">date</span><span class="p">,</span>
+            <span class="n">IF</span><span class="p">(</span><span class="o">@</span><span class="n">previous_id</span> <span class="o">=</span> <span class="n">id</span><span class="p">,</span> <span class="o">@</span><span class="n">range_selector</span><span class="p">,</span> <span class="o">@</span><span class="n">range_selector</span><span class="p">:</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="n">calc1</span><span class="p">,</span>
+            <span class="n">IF</span><span class="p">(</span><span class="n">DATEDIFF</span><span class="p">(</span><span class="o">@</span><span class="n">previous_date</span><span class="p">,</span> <span class="nb">date</span><span class="p">)</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="o">@</span><span class="n">range_selector</span><span class="p">,</span> <span class="o">@</span><span class="n">range_selector</span><span class="p">:</span><span class="o">=@</span><span class="n">range_selector</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="n">range_selector</span><span class="p">,</span>
+            <span class="o">@</span><span class="n">previous_id</span><span class="p">:</span><span class="o">=</span><span class="n">id</span> <span class="n">calc2</span><span class="p">,</span>
+            <span class="o">@</span><span class="n">previous_date</span><span class="p">:</span><span class="o">=</span><span class="nb">DATE</span><span class="p">(</span><span class="nb">date</span><span class="p">)</span> <span class="n">calc3</span>
+    <span class="k">FROM</span>
+        <span class="p">(</span><span class="k">SELECT</span> <span class="k">DISTINCT</span>
+        <span class="o">*</span>
+    <span class="k">FROM</span>
+        <span class="n">attendance</span>
+    <span class="k">ORDER</span> <span class="k">BY</span> <span class="n">id</span> <span class="k">DESC</span> <span class="p">,</span> <span class="nb">date</span> <span class="k">DESC</span><span class="p">)</span> <span class="n">order_sub</span>
+    <span class="k">CROSS</span> <span class="k">JOIN</span> <span class="p">(</span><span class="k">SELECT</span> 
+        <span class="o">@</span><span class="n">id_selector</span><span class="p">:</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="o">@</span><span class="n">previous_date</span><span class="p">:</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="o">@</span><span class="n">range_selector</span><span class="p">:</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="o">@</span><span class="n">previous_id</span><span class="p">:</span><span class="o">=</span><span class="mi">0</span>
+    <span class="p">)</span> <span class="n">r</span>
+    <span class="k">ORDER</span> <span class="k">BY</span> <span class="n">id</span> <span class="p">,</span> <span class="nb">date</span> <span class="k">DESC</span><span class="p">)</span> <span class="n">date_ranges</span>
+    <span class="k">GROUP</span> <span class="k">BY</span> <span class="n">id</span><span class="p">,</span> <span class="n">range_selector</span><span class="p">;</span></code></pre></figure>
+
+<p>Which should provide us with output like:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>id</th>
+      <th>start_date</th>
+      <th>end_date</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>2012-10-11</td>
+      <td>2012-10-13</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>2012-09-10</td>
+      <td>2012-09-14</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>2012-09-23</td>
+      <td>2012-09-23</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>2012-08-22</td>
+      <td>2012-08-22</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>2012-08-17</td>
+      <td>2012-08-17</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>2012-08-09</td>
+      <td>2012-08-12</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>2012-11-22</td>
+      <td>2012-11-22</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>2012-11-01</td>
+      <td>2012-11-03</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>2012-10-01</td>
+      <td>2012-10-04</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>2013-02-02</td>
+      <td>2013-02-07</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>2013-01-28</td>
+      <td>2013-01-28</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>2013-01-23</td>
+      <td>2013-01-24</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>2012-12-01</td>
+      <td>2012-12-07</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>2012-11-01</td>
+      <td>2012-11-01</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>And there we go.  Not too amazing, but I couldn’t find this answer by Googling, so I figure I’d add it to the great Wiki in the Sky.</p>
+
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">CREATE</span> <span class="k">TABLE</span> <span class="n">attendance</span><span class="p">(</span>
+   <span class="n">id</span>   <span class="nb">INTEGER</span>  <span class="k">NOT</span> <span class="k">NULL</span>
+  <span class="p">,</span><span class="nb">date</span> <span class="nb">DATE</span>  <span class="k">NOT</span> <span class="k">NULL</span>
+<span class="p">);</span>
+<span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">attendance</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="nb">date</span><span class="p">)</span> <span class="k">VALUES</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="s1">'2012-09-10'</span><span class="p">);</span>
+<span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">attendance</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="nb">date</span><span class="p">)</span> <span class="k">VALUES</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="s1">'2012-09-11'</span><span class="p">);</span>
+<span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">attendance</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="nb">date</span><span class="p">)</span> <span class="k">VALUES</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="s1">'2012-09-12'</span><span class="p">);</span>
+<span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">attendance</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="nb">date</span><span class="p">)</span> <span class="k">VALUES</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="s1">'2012-09-13'</span><span class="p">);</span>
+<span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">attendance</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="nb">date</span><span class="p">)</span> <span class="k">VALUES</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="s1">'2012-09-14'</span><span class="p">);</span>
+<span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">attendance</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="nb">date</span><span class="p">)</span> <span class="k">VALUES</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="s1">'2012-10-11'</span><span class="p">);</span>
+<span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">attendance</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="nb">date</span><span class="p">)</span> <span class="k">VALUES</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="s1">'2012-10-12'</span><span class="p">);</span>
+<span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">attendance</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="nb">date</span><span class="p">)</span> <span class="k">VALUES</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="s1">'2012-10-13'</span><span class="p">);</span>
+<span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">attendance</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="nb">date</span><span class="p">)</span> <span class="k">VALUES</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="s1">'2012-08-09'</span><span class="p">);</span>
+<span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">attendance</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="nb">date</span><span class="p">)</span> <span class="k">VALUES</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="s1">'2012-08-10'</span><span class="p">);</span>
+<span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">attendance</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="nb">date</span><span class="p">)</span> <span class="k">VALUES</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="s1">'2012-08-11'</span><span class="p">);</span>
+<span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">attendance</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="nb">date</span><span class="p">)</span> <span class="k">VALUES</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="s1">'2012-08-12'</span><span class="p">);</span>
+<span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">attendance</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="nb">date</span><span class="p">)</span> <span class="k">VALUES</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="s1">'2012-08-17'</span><span class="p">);</span>
+<span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">attendance</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="nb">date</span><span class="p">)</span> <span class="k">VALUES</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="s1">'2012-08-22'</span><span class="p">);</span>
+<span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">attendance</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="nb">date</span><span class="p">)</span> <span class="k">VALUES</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="s1">'2012-09-23'</span><span class="p">);</span>
+<span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">attendance</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="nb">date</span><span class="p">)</span> <span class="k">VALUES</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="s1">'2012-10-01'</span><span class="p">);</span>
+<span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">attendance</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="nb">date</span><span class="p">)</span> <span class="k">VALUES</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="s1">'2012-10-02'</span><span class="p">);</span>
+<span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">attendance</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="nb">date</span><span class="p">)</span> <span class="k">VALUES</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="s1">'2012-10-03'</span><span class="p">);</span>
+<span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">attendance</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="nb">date</span><span class="p">)</span> <span class="k">VALUES</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="s1">'2012-10-04'</span><span class="p">);</span>
+<span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">attendance</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="nb">date</span><span class="p">)</span> <span class="k">VALUES</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="s1">'2012-11-01'</span><span class="p">);</span>
+<span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">attendance</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="nb">date</span><span class="p">)</span> <span class="k">VALUES</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="s1">'2012-11-02'</span><span class="p">);</span>
+<span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">attendance</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="nb">date</span><span class="p">)</span> <span class="k">VALUES</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="s1">'2012-11-03'</span><span class="p">);</span>
+<span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">attendance</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="nb">date</span><span class="p">)</span> <span class="k">VALUES</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="s1">'2012-11-22'</span><span class="p">);</span>
+<span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">attendance</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="nb">date</span><span class="p">)</span> <span class="k">VALUES</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="s1">'2012-11-01'</span><span class="p">);</span>
+<span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">attendance</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="nb">date</span><span class="p">)</span> <span class="k">VALUES</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="s1">'2012-12-01'</span><span class="p">);</span>
+<span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">attendance</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="nb">date</span><span class="p">)</span> <span class="k">VALUES</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="s1">'2012-12-02'</span><span class="p">);</span>
+<span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">attendance</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="nb">date</span><span class="p">)</span> <span class="k">VALUES</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="s1">'2012-12-03'</span><span class="p">);</span>
+<span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">attendance</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="nb">date</span><span class="p">)</span> <span class="k">VALUES</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="s1">'2012-12-04'</span><span class="p">);</span>
+<span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">attendance</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="nb">date</span><span class="p">)</span> <span class="k">VALUES</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="s1">'2012-12-05'</span><span class="p">);</span>
+<span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">attendance</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="nb">date</span><span class="p">)</span> <span class="k">VALUES</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="s1">'2012-12-06'</span><span class="p">);</span>
+<span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">attendance</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="nb">date</span><span class="p">)</span> <span class="k">VALUES</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="s1">'2012-12-07'</span><span class="p">);</span>
+<span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">attendance</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="nb">date</span><span class="p">)</span> <span class="k">VALUES</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="s1">'2013-01-23'</span><span class="p">);</span>
+<span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">attendance</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="nb">date</span><span class="p">)</span> <span class="k">VALUES</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="s1">'2013-01-24'</span><span class="p">);</span>
+<span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">attendance</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="nb">date</span><span class="p">)</span> <span class="k">VALUES</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="s1">'2013-01-28'</span><span class="p">);</span>
+<span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">attendance</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="nb">date</span><span class="p">)</span> <span class="k">VALUES</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="s1">'2013-02-02'</span><span class="p">);</span>
+<span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">attendance</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="nb">date</span><span class="p">)</span> <span class="k">VALUES</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="s1">'2013-02-03'</span><span class="p">);</span>
+<span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">attendance</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="nb">date</span><span class="p">)</span> <span class="k">VALUES</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="s1">'2013-02-04'</span><span class="p">);</span>
+<span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">attendance</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="nb">date</span><span class="p">)</span> <span class="k">VALUES</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="s1">'2013-02-05'</span><span class="p">);</span>
+<span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">attendance</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="nb">date</span><span class="p">)</span> <span class="k">VALUES</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="s1">'2013-02-06'</span><span class="p">);</span>
+<span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">attendance</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="nb">date</span><span class="p">)</span> <span class="k">VALUES</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="s1">'2013-02-07'</span><span class="p">);</span></code></pre></figure>
+
+:ET

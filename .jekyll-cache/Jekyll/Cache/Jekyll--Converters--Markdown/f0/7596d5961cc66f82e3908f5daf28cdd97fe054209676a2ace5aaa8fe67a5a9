@@ -1,0 +1,23 @@
+I"B<p>Originally posted on <a href="www.letsmakerobots.com">www.letsmakerobots.com</a></p>
+
+<p><a class="btn" href="/files/ADUM1250ARZ_v.01.zip" target="">Breakout PCB</a>
+<a class="btn" href="/files/Arduino_to_Pi_I2C_v2.zip" target="">Arduino Code</a></p>
+
+<div class="flex-video">
+  <iframe width="420" height="315" src="https://www.youtube.com/embed/P77ZGNKlc9M" frameborder="0" allowfullscreen=""></iframe>
+</div>
+
+<p>I’ve waited to finish incorporating my Raspberry Pi into my bot for an ample bit.  But since I know so little about electricity, I swore to myself I wouldn’t add my Pi to my <a href="http://letsmakerobots.com/node/35922">bot </a>until I was absolutely sure I wouldn’t fry it.</p>
+
+<p>Well, I’m still not “absolutely” sure, but I feel this little optoisolator has brought me a lot closer.  This builds on <a href="http://letsmakerobots.com/node/36672">my post</a> a week or so ago about making Eagle parts.</p>
+
+<p>I plan to actually list out what tweaks a Wheezy image needs to get this optoisolator build to work.  It’s actually pretty easy–but whatever you, don’t be lured in by quick2wire.  Those buggers wasted most of my day :(</p>
+
+<p>If anyone has questions let me know.</p>
+
+<p><strong>Oh, one note.  When I populated the board I used 4.7k resistors on the Arduino side, but I pulled off everything on the Raspberry Pi side.  It seems the Pi has built in pull-ups that do the job rather well.</strong></p>
+
+<p><a href="http://www.analog.com/static/imported-files/data_sheets/ADUM1250_1251.pdf">ADUM1250ARZ Datasheet</a></p>
+
+<p>Hope everyone is well :)</p>
+:ET

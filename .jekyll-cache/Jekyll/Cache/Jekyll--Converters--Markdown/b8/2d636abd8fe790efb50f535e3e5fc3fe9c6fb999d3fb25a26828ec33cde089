@@ -1,0 +1,385 @@
+I"��<h3 id="overview">Overview</h3>
+
+<p>Well, I’ve had the urge to hack.  It’s been strong for awhile now, sadly, with a more than fullt-time job and Bek in graduate school, I’ve just had no time.  <strong>Until now!</strong>  The new job I have (HMIS Database Manager) has <em>actual</em> vacation time.  I’ve had almost two weeks off (combined with the Christmas holiday).  The first few days were obviously spent working…<strong>But!</strong> After turning my phone and email I was able to…catch up on family time.  Sigh.  Then, clean house.  Then, get bored.  But with a few days left I actually got some hacking in.</p>
+
+<p>I downloaded Visual Studio Express on my work computer a few months ago.  (Shh.  Don’t tell the boss.) But I’ve not had time to write a single line of code.  This holiday was a good time to learn C#!</p>
+
+<p>Two weeks later I had this monster,</p>
+
+<div class="flex-video">
+<iframe width="420" height="315" src="https://www.youtube.com/embed/XtrS7ENc1EU" frameborder="0" allowfullscreen=""></iframe>
+</div>
+
+<p>It is meant to be a GUI for the HM-10, HM-11, and HM-15 modules.  The highlights,</p>
+
+<p><a href="https://github.com/Ladvien/HM-1X-Build/raw/master/setup.exe">HM-1X Aid Download</a></p>
+
+<p>The source can be found,</p>
+
+<p><a href="https://github.com/Ladvien/HM-1X_Aid_v01">HM-1X Aid Source</a></p>
+
+<ol>
+  <li>It uses threads to prevent any “Sleeping.”  Keeps the UI healthy.</li>
+  <li>IO.SerialPorts <em>should</em> allow a lot of USB-to-UART chips to work.</li>
+  <li>Basic Terminal App features (view as ASCII, HEC, Decimal, etc.) like RealTerm and the others. BUT! With one feature I’ve longed for in a terminal app for so damn long.  The ability to save your settings on exit.  No more selecting 9600 baud for the billionth time.</li>
+  <li>I’ve put a lot of command validity checks in the system.  For example, if you were to type “AT+CON0123<strong>S</strong>6789012” Would not be a valid command normally, but terminal will convert the “S” to “F.”</li>
+  <li>I have also imbued it with a bit my understanding of the HM-1X datasheets.  This is probably the greatest selling point of the program, sadly.</li>
+  <li><strong>C# is my new favorite.  Don’t judge me :P.</strong></li>
+</ol>
+
+<p>I thought I would take some time to go into the code involved in the little terminal, not for posterity, merely for my own reference.</p>
+
+<p><em>Quick reminder, for anyone unfamiliar with my posts:</em>
+<em>I am not a profesionnal.  These writings are not great.  They are simply my journal towards understanding what the hell I’m doing</em></p>
+
+<h3 id="object-oriented-programming">Object Oriented Programming</h3>
+
+<p>I have not posted as much lately.  It is a combination of losing LMR and not having time since Bek started school.  But I have definitely been writing code.  The focus has been on learning OOP design.  This this C# program was probably my first <em>real</em> object-oriented program.  But I have also been writing in <a href="https://developer.apple.com/ios/?cid=wwa-us-kwg-features">Swift</a> for iOS, which is an OOP language as well.</p>
+
+<p>Arlight, so what’s the difference between OOP and the other thing? And why learn OOP?  I thought robots used microcontollers which are much too small to handle OOP?  Well, I’m learning every robot builder is <em>already</em> an object oriented programmer.</p>
+
+<h4 id="difference-between-oop-and-procedural-programming">Difference between OOP and Procedural programming</h4>
+
+<p>I wont butcher others’ explanations by rephrasing them. Instead, I’m going to list what helped me understand.</p>
+
+<ol>
+  <li><a href="https://en.wikipedia.org/wiki/Object-oriented_programming">Object-Oriented programming (Wikipedia)</a></li>
+  <li><a href="https://www.youtube.com/watch?v=lbXsrHGhBAU">Object-Oriented programming</a> (video)</li>
+  <li><a href="https://www.youtube.com/watch?v=b4n9KYD05jg">Procedural Programming</a> (video)</li>
+  <li><a href="https://www.youtube.com/watch?v=vNHpsC5ng_E&amp;list=PLF206E906175C7E07">Derek Banas’ Design Patterns Series</a> (examples in Java, but it helped me the most.  Got to see OOP in action.)</li>
+</ol>
+
+<p>I believe every roboticist is both an object oriented programmer and a procedural programmer.  They create objects with specific functions (PCBs, STLs, etc.), holding on to the plans so copies can be made.  They instantiate those objects (print the STL, send the PCB file to OSHPark, etc).  Each of these objects created usually has a specific purpose.  The design of the object, a motor-controller for instance, is often only accessible by a specific input such as UART connection. Its outputs are controlled by how the inputs are digested by the motor-controller itself. The robot-builder may decide to add an accelerometer to the motor-controller by copying the design files and adding the needed accelerometer circuit (inheritance).  And so forth.</p>
+
+<p>It seems like a lot of the the concepts are supported by this metaphor,</p>
+
+<ol>
+  <li><a href="https://en.wikipedia.org/wiki/Abstraction_%28computer_science%29">Abstraction</a></li>
+  <li><a href="https://en.wikipedia.org/wiki/Encapsulation_%28computer_programming%29">Encapsulation</a></li>
+  <li><a href="https://en.wikipedia.org/wiki/Polymorphic_code">Polymorhphism</a></li>
+  <li><a href="https://en.wikipedia.org/wiki/Inheritance_%28object-oriented_programming%29">Inheritance</a></li>
+</ol>
+
+<p>Objects are great.  Especially when they are walking, talking, grasping robotic sort of objects.  However, each roboticist must line the insides of objects with procedures that move data through in a predictable manner.  This means, at some granularity, objects are filled with small runs of procedural programming.  Ultimately, it takes both for roboticists, object oriented programming and procedural programming.  And I argue, whether aware or not, the roboticist practices both continuously.</p>
+
+<p>Moving away from the hippy-dippy stuff; for my personal development as a robot builder I will be taking time to learn both, regardless of my possibly metaphor of convenience, as they both appear as roots of computational-thinking</p>
+
+<p>In application, I want to know procedural programming to be effective. Microcontrollers often have small memory sets and the code needs to move from input to output with little overhead (hmm, procedural programming is a linear style and a line is the shortest distance between two points, there’s gotta be something there).  But I want to know how to connect my robot to large systems, such as a Raspberry Pi, PC, or the whooooole Internet.  To do this effectively I need to be able to pass data between procedural and object based programs.</p>
+
+<h3 id="avoiding-sleep">Avoiding Sleep</h3>
+
+<p><img height="110" width="160" style="float: left; margin: 10px;" src="http://www.frugal-cafe.com/public_html/frugal-blog/frugal-cafe-blogzone/wp-content/uploads/2010/11/coffee-smiley-face-ballistik-coffee-boy-flickr.jpg" /></p>
+
+<p>My program is walking between the microcontroller world and the big-boy-PC world.  As I stated above, at some point the HM-1X module would need to pass its data to the PC. Here in lies a dilemma best explained by a picture,</p>
+
+<p><img height="277" width="640" style="margin: 10px; alignment: center;" src="../images/threadingCars.png" /></p>
+
+<p>For the HM-1X Aid the data is passed through the Serial connection.  Of course, as I stated above, I am using the Systems.IO.Ports.SerialPorts framework to handle the incoming serial data.  A nifty little aspect of IO.Ports is it actually has the <a href="https://msdn.microsoft.com/en-us/library/system.io.ports.serialport.datareceived%28v=vs.110%29.aspx">DataReceivedEvent</a> on a separate thread (more on threads in a moment).  This event is triggered by an RX interrupt on whatever USB-to-<a href="https://en.wikipedia.org/wiki/Universal_asynchronous_receiver/transmitter">UART</a> chip, which allows data to be handled as it is coming in.</p>
+
+<p>Now, I mentioned methods for handling data probably go from procedural to object-oriented when moving upstream from a microcontroller to a PC.  A USB-to-UART bridge is a perfect example.  Receiving <a href="https://en.wikipedia.org/wiki/Universal_asynchronous_receiver/transmitter">UART</a> data for a microntroller looks like this,</p>
+
+<figure class="highlight"><pre><code class="language-c" data-lang="c"><span class="kt">int</span> <span class="n">incomingByte</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>   <span class="c1">// for incoming serial data</span>
+
+<span class="kt">void</span> <span class="nf">setup</span><span class="p">()</span> <span class="p">{</span>
+        <span class="n">Serial</span><span class="p">.</span><span class="n">begin</span><span class="p">(</span><span class="mi">9600</span><span class="p">);</span>     <span class="c1">// opens serial port, sets data rate to 9600 bps</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">loop</span><span class="p">()</span> <span class="p">{</span>
+        <span class="c1">// send data only when you receive data:</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">Serial</span><span class="p">.</span><span class="n">available</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+                <span class="c1">// read the incoming byte:</span>
+                <span class="n">incomingByte</span> <span class="o">=</span> <span class="n">Serial</span><span class="p">.</span><span class="n">read</span><span class="p">();</span>
+                <span class="c1">// say what you got:</span>
+                <span class="n">Serial</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">"I received: "</span><span class="p">);</span>
+                <span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="n">incomingByte</span><span class="p">,</span> <span class="n">DEC</span><span class="p">);</span>
+        <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>Here, the microcontroller is looping over a if-statement to see if there is any data available in the RX buffer.  Whenever the <code class="highlighter-rouge">loop()</code> finds there are data available, then it will run through some procedures on handling those data.  This method works OK, your microcontroller’s program is only dealing with serial data.  But what happens if is supposed to handle other tasks and your microcontroller has a never-ending stream of data?  Whatever code is after the <code class="highlighter-rouge">if(Serial.available() &gt; 0)</code> will not execute, since the available serial data will never be less than 0.  This is referred to as using a “blocking” serial data method.  Not sure how this term was derived, but I’m guessing “blocking” comes from how the method prevents the program from doing anything else</p>
+
+<p>Hmm, wouldn’t be better to handle serial data “immediately” when it comes in?  That’s where interrupts come in.</p>
+
+<p>The <code class="highlighter-rouge">Serial.onReceive()</code> is an interrupt vector which fires every time the serial data is received.  The interrupt vector calls a method which copies the data received from the serial buffer into the <code class="highlighter-rouge">string_buffer</code>.</p>
+
+<figure class="highlight"><pre><code class="language-c" data-lang="c"><span class="kt">void</span> <span class="nf">MyFunction</span><span class="p">(){</span>
+   <span class="kt">int</span> <span class="n">i</span><span class="p">;</span>
+   <span class="kt">int</span> <span class="n">length</span> <span class="o">=</span> <span class="n">Serial</span><span class="p">.</span><span class="n">available</span><span class="p">();</span>
+   <span class="kt">int</span> <span class="n">string_buffer</span><span class="p">[</span><span class="mi">32</span><span class="p">];</span>   
+
+   <span class="c1">//copy data out of the receive buffer</span>
+   <span class="k">for</span><span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">length</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">){</span>
+      <span class="n">string_buffer</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">Serial</span><span class="p">.</span><span class="n">read</span><span class="p">();</span>
+   <span class="p">}</span>
+
+   <span class="c1">//run a string compare function, or otherwise parse the received data</span>
+   <span class="k">if</span><span class="p">(</span><span class="n">MySpecialStingCompare</span><span class="p">(</span><span class="n">string_buffer</span><span class="p">,</span><span class="s">"Hello Arduino"</span><span class="p">)){</span>
+      <span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s">"Hello World"</span><span class="p">);</span>
+   <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">setup</span><span class="p">(){</span>
+   <span class="n">Serial</span><span class="p">.</span><span class="n">begin</span><span class="p">(</span><span class="mi">9600</span><span class="p">);</span>
+   <span class="n">Serial</span><span class="p">.</span><span class="n">onReceive</span><span class="p">(</span><span class="n">MyFunction</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">loop</span><span class="p">(){</span>
+   <span class="c1">//do nothing</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>This is a non-blocking method of handling serial data.  It takes advantage of a hardware level peripheral on the Atmel chips known as an <a href="https://en.wikipedia.org/wiki/Interrupt_vector_table">interrupt vector</a>.  This particular interrupt is fired any time the RX pin receives a series of LOWs which resemble incoming data.</p>
+
+<p>This method has the advantage of freeing the microcontroller to do other things in the main loop and handle data <em>only</em> when new data is received.  This saves program from having to make a comparison every clock cycle.  Also, and more importantly, it allows the microcontroller to immediately update data important to the purpose of the main process; this is critical in processes which are time sensitive, such as remote control on a quadcopter.</p>
+
+<p>For example, if we wrote a radio controller for our quadcopter using a Bluetooth device which talks to an Arduino Pro Mini.  If we used the blocking method the Arduino receives any data from the radio controller, like, oh I don’t know, “Don’t run into that tree!” the main process on the Arduino would not have this information until it gets back to the <code class="highlighter-rouge">Serial.available() &gt; 0</code>.  Not cool if milliseconds matter.</p>
+
+<p>However, if you were to write the same radio controller using non-blocking, interrupt based serial communication, then whenever you send the signal to the Bluetooth device, and that device sends it serially to the Arduino, the Arduino will basically bookmark its place in the main process and handle any data regarding its immediate crash.</p>
+
+<p>Another example, what happens if your Arduino has an LCD which is meant to display the output of a temperature sensor.  Yet, the temperature sensor and display are a small portion of what the Arduino is doing.  If the temperature changes using the blocking methods, then the LCD will not be updated until the Arduino finishes whatever tasks and makes it back around to the <code class="highlighter-rouge">if(Serial.available() &gt; 0)</code>. This will make your LCD’s responsiveness be clunky.</p>
+
+<p>Contrast this with the non-blocking method (see what I did there?).  Setting up an interrupt on the temperature sensor to update the LCD whenever the temperature changes will make LCD appear responsive to temperature changes.  This is how a 3D Printer handles the thousands of tasks it must complete and still keep its LCD responsive.</p>
+
+<p>Good stuff.</p>
+
+<p>Alright, so that’s how a microcontroller handles things–even with interrupts it’s still processing tasks one at a time.  We can avoid the appearance of slowing the microcontroller with processing intensive tasks, like waiting on serial data to be received, but ultimately, the microcontroller is handling the tasks one at a time.  So what does this have to do with my C# program?</p>
+
+<p>Let’s take a look at C#’s version of ‘Serial.onReceive()’</p>
+
+<figure class="highlight"><pre><code class="language-c#" data-lang="c#"><span class="kt">string</span> <span class="n">InputData</span> <span class="p">=</span> <span class="s">""</span><span class="p">;</span>
+
+<span class="c1">// Read Data.</span>
+<span class="k">private</span> <span class="k">void</span> <span class="nf">DataReceivedHandler</span><span class="p">(</span><span class="kt">object</span> <span class="n">sender</span><span class="p">,</span> <span class="n">SerialDataReceivedEventArgs</span> <span class="n">e</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="c1">// Gets incoming data from open port and passes it to a handler.</span>
+    <span class="n">InputData</span> <span class="p">=</span> <span class="n">ComPort</span><span class="p">.</span><span class="nf">ReadExisting</span><span class="p">();</span>
+    <span class="n">data</span> <span class="p">=</span> <span class="s">""</span><span class="p">;</span>
+    <span class="n">data</span> <span class="p">=</span> <span class="n">InputData</span><span class="p">;</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>This is probably the simplest version of a <code class="highlighter-rouge">DataReceivedHandler()</code> using C#.  In short, it fires whenever data is received; so it’s non-blocking.  The method, as I have it written, simply grabs the data from the interrupt buffer using <code class="highlighter-rouge">ComPort.ReadExisting()</code> and shoves it into the <code class="highlighter-rouge">inputData</code>.  Pretty simple, right?  Being candid, I believe it is one reason so many <a href="http://www.sparxeng.com/blog/software/must-use-net-system-io-ports-serialport">poo-poo</a> using IO.Ports.SerialPort framework.  But how is IO.Ports.SerialPorts different than the <a href="http://hackaday.com/2015/10/20/the-case-for-arduino-in-real-engineering/">Arduino HAL</a> <code class="highlighter-rouge">Serial.onReceive()</code>?   Hmm, perhaps I should have used a more credible comparison.</p>
+
+<p>But coming back to the complex command.  What if a computer sends a command to the microcontroller and expects a response?  It’s going to take some time for the microcontroller to reply.  In the meantime, what does the PC do?  It could run off to do other tasks and wait for the onReceive to fire.  But, what if one of those tasks requires some information from microcontroller.  In short, the microcontroller is holding up the show and little can be done but wait.</p>
+
+<p>We know the PC is going to need to wait.  Coming back to the blocking and non-blocking methods we looked at on microntroller, the only option really available in C# is the non-blocking, which is good because it’s our favorite.  But is it really enough?</p>
+
+<p>If our PC program is serial-data centric, meaning the PC’s processes are dependent on the microcontrollers data and vice-versa, then simply using the non-blocking helps us little.  The PC could move from waiting on serial data to painting a label on the UI, but what if the text in that label is meant to be data from the microcontroller?  Regardless of how we look at at it, it seems like it would be best for the sake of our program to throttle the PC to the microcontroller.</p>
+
+<p>But exactly how much slower would our program go?</p>
+
+<p>Let’s say you have the following:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Device</th>
+      <th>Speed</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Arduino Uno (Atmega328P)</td>
+      <td>16mhz</td>
+    </tr>
+    <tr>
+      <td>PC</td>
+      <td>2.2ghz</td>
+    </tr>
+    <tr>
+      <td>UART-to-USB</td>
+      <td>9600bps</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Let’s find the common denominator and compare.</p>
+
+<p>Arduino:</p>
+
+<figure class="highlight"><pre><code class="language-xml" data-lang="xml">16mhz = 16 * 1,000,000 = 16,000,000
+1 to 2 clock cycles for each instruction
+1 to 2 / 16,000,000 = 62.5 to 125 nano-seconds  
+(Who said Arduinos were slow? Pfft)</code></pre></figure>
+
+<p>PC:</p>
+
+<figure class="highlight"><pre><code class="language-xml" data-lang="xml">2.2ghz = 2.2 * 11,000,000,000 = 2,200,000,000
+1 to 2 clock cycles for each instruction
+1 to 2 / 2,200,000,000 = .45456 to .90900 nano-seconds
+(Oh, I guess it's slow to the PC.)</code></pre></figure>
+
+<p>UART-to-USB:</p>
+
+<figure class="highlight"><pre><code class="language-xml" data-lang="xml">bytes x bits_per_character / bits_per_second
+1 byte x 10 / 9600
+10 / 9600 = 10416666.66 nano-seconds (~10 milliseconds)</code></pre></figure>
+
+<p>Remember, this is for one byte, so if we send the string, “Mario, your princess is in another castle” (41 x chars) it will take approximately half a second (41 x 10 = 410 milliseconds = ~0.5 second), which will definitely be noticeable if it is meant to be displayed.  Hmm, I guess we identified the hold up, eh?  This means even if we were limited to the Arduino speed we would probably still get a smooth UI–without it appearing clunky.  But, limited to the UART-to-USB; well, crap.  This affirms my speculation, we will need to throttle the PC, the UI, the microcontroller, pretty much to the whole system to be respective of the sluggishness of the UART-to-USB.</p>
+
+<p><em>Alright, if I’ve sold you on the program we are ready to ask, “What’s the best way to throttle the program?”</em>  Let me jump how I did this in C#.</p>
+
+<p>The main difference between C# and Arduino’s data receive methods is the C# method takes place on a separate thread. Now days most PCs have multiple cores and in object oriented programming these are harnessed through <a href="https://en.wikipedia.org/wiki/Thread_%28computing%29">threading</a>.  Most microcontrollers have one core (yes, yes, except the Parrallax), so threading is not common on a microcontroller.  <img height="178" width="248" style="margin: 10px; float: right;" src="../images/quad_core_die_arduino.png" />
+Now, I’m going to dare to oversimplify what little understanding I have regarding threads.  Since I came from the hardware side the way I think of threading is having two Arduinos connected by I2C.  One of the Arduinos is the master and the other the slave.  Whenever the master Arduino gets data from the USB-to-UART there is code on the master which sends half the data to the slave Arduino via I2C, with some instructions it should do some particular tasks with the data and send the results back to the master Arduino.  While the slave works on its half of the data, the master is working on the other half.  If the slave gets done first (there is nothing dictating which order they finish in; they are asynchronous) the master has an interrupt on the I2C, it sees the slave is done, and tells him to wait to send its results.  After the master finishes, it sends a request for the completed data from the slave.  Lastly, if the master finishes first, then it waits with a dirty-look only 8-bit ICs can give while the slave finishes its crunching.  Ultimately, when all the data is crunched the main processor does something with it.  Each Arduino here would be a processor and the tasks running on them would be a thread.</p>
+
+<p><img height="178" width="248" style="margin: 10px; float: left;" src="../images/quad_core_die.jpeg" />
+Inside the PC we have something similar going on, but instead of two Arduninos you would have two processors on the same  die.</p>
+
+<p>I like to think of a thread as a separate process within our system.  Of course, we can’t call the second process, “main process.”  We’ve already got one of those. And computers don’t like ambiguity.  Instead, let’s get creative and call the second process something wild, fun, and bizarre! Like…“second process.”</p>
+
+<p>Let me to try and explain how this is different than the Arduino HAL.  In C# the second process is pretty much like the main process.  With one grand honking exception: The user interface (UI) runs on the main process and cannot be updated by any other process.  This makes perfect sense; you wouldn’t want half a button to show on your UI, right?  Instead, a protocol saving data in a space both processes can access it and a flag to look in the shared space when updated.  This is like the old snail-mail mailbox where the flag is raised when you want the post-person to look for an epistel.</p>
+
+<p>Bringing it back to my code.  The HM-1X’s serial DataReceivedEvent is on one process and my UI is on another.  This means, when my program gets  data serially then it puts that data in the shared space and lets the main process know data has been received.</p>
+
+<p>Those of you who are probably sharper than me will notice an issue <em>similar</em> to the Arduino and its LCD.  If the data coming in and the UI are working out of sync what happens if a user does something like continually hit the Send on a command without waiting for a serial response to be received.  The best case scenario is we got an “OK” for every time the command was sent.  However, if it is a more complicated command which requires a back-and-forth between the microcontroller and the PC, well, big problems.  It would be like a <a href="https://www.youtube.com/watch?v=yCOPJi0Urq4">sloth and a rabbit trying to have a conversation</a>.  Those of you from the Arduino world know the common (however, I’ll argue poor) answer to this dilemma: <code class="highlighter-rouge">delay()</code>.</p>
+
+<p>The <code class="highlighter-rouge">delay()</code> in the Arduino basically tells the microcontroller to do nothing for however long you tell it.  After waiting the Arduino can then check to see if there is an answer waiting for it.  There are two main reasons this isn’t diserable.  But let’s take a look at this delay setup in C#.</p>
+
+<figure class="highlight"><pre><code class="language-c#" data-lang="c#"><span class="c1">//Write Data</span>
+<span class="k">public</span> <span class="k">void</span> <span class="nf">WriteData</span><span class="p">(</span><span class="kt">string</span> <span class="n">dataToWrite</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">ComPort</span><span class="p">.</span><span class="nf">Write</span><span class="p">(</span><span class="n">dataToWrite</span><span class="p">);</span>
+  <span class="p">*</span><span class="n">System</span><span class="p">.</span><span class="n">Threading</span><span class="p">.</span><span class="n">Thread</span><span class="p">.</span><span class="nf">Sleep</span><span class="p">(</span><span class="m">5000</span><span class="p">);*</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>The above code will write data to the serialport and will sleep for 5 seconds after.  This <code class="highlighter-rouge">System.Threading.Thread.Sleep()</code> call will actually puts the main thread to sleep.  This means all of the UI will become non-responsive and anything which might happen on the main thread will be blocked.  This is very similar to our first Arduino code set, but instead of receiving data, we are writing it.</p>
+
+<p>The intention of this solution is to send a command to the UART-to-USB and wait for a response.  A couple of problems,</p>
+
+<ol>
+  <li>The main thread is shut down while waiting.</li>
+  <li>Response time must be predetermined.</li>
+</ol>
+
+<p>Now, the response time can be taken care of with better code handling it.  However, the “frozen” UI posed an issue.  I tried to keep it pretty simple by removing the <code class="highlighter-rouge">System.Threading.Thread.Sleep()</code>.</p>
+
+<figure class="highlight"><pre><code class="language-c#" data-lang="c#"><span class="c1">//Write Data</span>
+<span class="k">public</span> <span class="k">void</span> <span class="nf">WriteData</span><span class="p">(</span><span class="kt">string</span> <span class="n">dataToWrite</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">ComPort</span><span class="p">.</span><span class="nf">Write</span><span class="p">(</span><span class="n">dataToWrite</span><span class="p">);</span>
+  <span class="nf">DisableUI</span><span class="p">();</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>With this code the <code class="highlighter-rouge">WriteMethod()</code> is called all most of the non-critical UI elements are disabled.  This gives the user the impression he or she needs to wait, without making the program appear frozen.  This worked great.  Not only was my RX method interrupt driven, it was on a whole different thread. There were no worries about losing important data received from the USB-to-UART.  Oh, but wait, the UI never was re-enabled.  Hmm.</p>
+
+<p>No problem.  I added a method to our <code class="highlighter-rouge">DataReceivedHandler()</code> to re-enable the UI</p>
+
+<figure class="highlight"><pre><code class="language-c#" data-lang="c#"><span class="kt">string</span> <span class="n">InputData</span> <span class="p">=</span> <span class="s">""</span><span class="p">;</span>
+
+<span class="c1">// Read Data.</span>
+<span class="k">private</span> <span class="k">void</span> <span class="nf">DataReceivedHandler</span><span class="p">(</span><span class="kt">object</span> <span class="n">sender</span><span class="p">,</span> <span class="n">SerialDataReceivedEventArgs</span> <span class="n">e</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="c1">// Gets incoming data from open port and passes it to a handler.</span>
+    <span class="n">InputData</span> <span class="p">=</span> <span class="n">ComPort</span><span class="p">.</span><span class="nf">ReadExisting</span><span class="p">();</span>
+    <span class="n">data</span> <span class="p">=</span> <span class="s">""</span><span class="p">;</span>
+    <span class="n">data</span> <span class="p">=</span> <span class="n">InputData</span><span class="p">;</span>
+    <span class="nf">enableUI</span><span class="p">();</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>This worked great! Oh, but wait, if there was a problem and a response was never received then the UI was never re-enabled.  No worries, let’s add a timeout feature.</p>
+
+<figure class="highlight"><pre><code class="language-c#" data-lang="c#"><span class="c1">//Write Data</span>
+<span class="k">public</span> <span class="k">void</span> <span class="nf">WriteData</span><span class="p">(</span><span class="kt">string</span> <span class="n">dataToWrite</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">ComPort</span><span class="p">.</span><span class="nf">Write</span><span class="p">(</span><span class="n">dataToWrite</span><span class="p">);</span>
+  <span class="nf">DisableUI</span><span class="p">();</span>
+  <span class="nf">setResponseTimeout</span><span class="p">(</span><span class="m">500</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="c1">// Read Data.</span>
+<span class="k">private</span> <span class="k">void</span> <span class="nf">DataReceivedHandler</span><span class="p">(</span><span class="kt">object</span> <span class="n">sender</span><span class="p">,</span> <span class="n">SerialDataReceivedEventArgs</span> <span class="n">e</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="c1">// Gets incoming data from open port and passes it to a handler.</span>
+    <span class="n">InputData</span> <span class="p">=</span> <span class="n">ComPort</span><span class="p">.</span><span class="nf">ReadExisting</span><span class="p">();</span>
+    <span class="n">data</span> <span class="p">=</span> <span class="s">""</span><span class="p">;</span>
+    <span class="n">data</span> <span class="p">=</span> <span class="n">InputData</span><span class="p">;</span>
+    <span class="nf">enableUI</span><span class="p">();</span>
+    <span class="c1">// Let's disable the timer since we didn't use it.</span>
+    <span class="n">HM1Xtimer</span><span class="p">.</span><span class="n">Enabled</span> <span class="p">=</span> <span class="k">false</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+<span class="c1">// The consumer interface for the response timer.</span>
+<span class="k">public</span> <span class="k">void</span> <span class="nf">setResponseTimeout</span><span class="p">(</span><span class="kt">int</span> <span class="n">responseTime</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">responseTimeout</span> <span class="p">=</span> <span class="n">responseTime</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// Creates the response timers and attaches the elapse method.</span>
+<span class="k">private</span> <span class="k">void</span> <span class="nf">HM1XCallbackSetTimer</span><span class="p">(</span><span class="kt">int</span> <span class="n">milliseconds</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="c1">// Create a timer</span>
+    <span class="n">HM1Xtimer</span> <span class="p">=</span> <span class="k">new</span> <span class="n">System</span><span class="p">.</span><span class="n">Timers</span><span class="p">.</span><span class="nf">Timer</span><span class="p">(</span><span class="n">milliseconds</span><span class="p">);</span>
+    <span class="c1">// Hook up the Elapsed event for the timer.</span>
+    <span class="n">HM1Xtimer</span><span class="p">.</span><span class="n">Elapsed</span> <span class="p">+=</span> <span class="n">hm1xCommandTimedCallback</span><span class="p">;</span>
+    <span class="n">HM1Xtimer</span><span class="p">.</span><span class="n">AutoReset</span> <span class="p">=</span> <span class="k">false</span><span class="p">;</span>
+    <span class="n">HM1Xtimer</span><span class="p">.</span><span class="n">Enabled</span> <span class="p">=</span> <span class="k">true</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// This event is fired if the response timer elapses.</span>
+<span class="k">private</span> <span class="k">void</span> <span class="nf">hm1xCommandTimedCallback</span><span class="p">(</span><span class="n">Object</span> <span class="n">source</span><span class="p">,</span> <span class="n">EventArgs</span> <span class="n">e</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">data</span> <span class="p">==</span> <span class="s">""</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">waitingOn</span> <span class="p">=</span> <span class="n">hm1xConstants</span><span class="p">.</span><span class="n">hm1xEnumCommands</span><span class="p">.</span><span class="n">ERROR</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>Yay! That code is darn clever, right?  Let’s compile, run it, and celeb…son-of-a-B!  It wouldn’t compile.</p>
+
+<p><img height="550" width="265" style="float: right; margin: 10px;" src="https://i.ytimg.com/vi/785gNCpvcQM/maxresdefault.jpg" /></p>
+
+<p>The problem is with the <code class="highlighter-rouge">enableUI()</code> call in the <code class="highlighter-rouge">DataReceivedHandler()</code> method. It seems the <code class="highlighter-rouge">DataReceivedHandler()</code> is actually taking place on a separate thread from the main thread, and the main thread is where the UI is being maintained.  This is where the good-ole-Ghostbusters adage is important to recall: <em>Don’t cross the streams! EVER!</em>  Staying away from explaining what I don’t understand, I’ll simply say: Don’t cross thread.  One thread should not be updating what another thread is working on.  Instead, information from one thread should be set down and the other thread notified it is ready.</p>
+
+<p>These metaphors are nice and all, but how do we implement a thread friendly solution?</p>
+
+<figure class="highlight"><pre><code class="language-c#" data-lang="c#"><span class="c1">//Write Data</span>
+<span class="k">public</span> <span class="k">void</span> <span class="nf">WriteData</span><span class="p">(</span><span class="kt">string</span> <span class="n">dataToWrite</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">ComPort</span><span class="p">.</span><span class="nf">Write</span><span class="p">(</span><span class="n">dataToWrite</span><span class="p">);</span>
+  <span class="nf">DisableUI</span><span class="p">();</span>
+  <span class="nf">setResponseTimeout</span><span class="p">(</span><span class="m">500</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="c1">// Read Data.</span>
+<span class="k">private</span> <span class="k">void</span> <span class="nf">DataReceivedHandler</span><span class="p">(</span><span class="kt">object</span> <span class="n">sender</span><span class="p">,</span> <span class="n">SerialDataReceivedEventArgs</span> <span class="n">e</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="c1">// Gets incoming data from open port and passes it to a handler.</span>
+    <span class="n">InputData</span> <span class="p">=</span> <span class="n">ComPort</span><span class="p">.</span><span class="nf">ReadExisting</span><span class="p">();</span>
+    <span class="n">data</span> <span class="p">=</span> <span class="s">""</span><span class="p">;</span>
+    <span class="n">data</span> <span class="p">=</span> <span class="n">InputData</span><span class="p">;</span>
+    <span class="nf">enableUI</span><span class="p">();</span>
+    <span class="c1">// Let's disable the timer since we didn't use it.</span>
+    <span class="n">HM1Xtimer</span><span class="p">.</span><span class="n">Enabled</span> <span class="p">=</span> <span class="k">false</span><span class="p">;</span>
+
+    <span class="c1">// Pass data to main thread.</span>
+    <span class="nf">gotData</span><span class="p">(</span><span class="n">sender</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="p">....</span>
+
+<span class="c1">// RX event handler triggered by SerialPort.  Hands off data quick.  </span>
+<span class="c1">// If you try to update UI from this method, threads tangel.</span>
+<span class="k">public</span> <span class="k">void</span> <span class="nf">gotData</span><span class="p">(</span><span class="kt">object</span> <span class="n">sender</span><span class="p">,</span> <span class="kt">string</span> <span class="n">data</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="c1">// Incoming data is on another thread UI cannot be updated without crashing.</span>
+    <span class="k">this</span><span class="p">.</span><span class="nf">BeginInvoke</span><span class="p">(</span><span class="k">new</span> <span class="nf">SetTextCallback</span><span class="p">(</span><span class="n">SetText</span><span class="p">),</span> <span class="k">new</span> <span class="kt">object</span><span class="p">[]</span> <span class="p">{</span> <span class="n">data</span> <span class="p">});</span>
+<span class="p">}</span>
+
+<span class="c1">// This method happens on main thread.</span>
+<span class="k">public</span> <span class="k">void</span><span class="p">(</span><span class="kt">string</span> <span class="n">text</span><span class="p">){</span>
+  <span class="n">txbMainDisplay</span><span class="p">.</span><span class="n">Text</span> <span class="p">=</span> <span class="n">text</span><span class="p">;</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>This is pretty complex and I poorly understand it.  In fact, I wrote this whole article with the hope it would help me understand this part.  Here’s what I think is going on:</p>
+
+<p>We create an event which will fire every time the USB-to-UART, <code class="highlighter-rouge">DataReceivedHandler()</code>  in this method there is a call to <code class="highlighter-rouge">gotData()</code>.   In the <code class="highlighter-rouge">gotData()</code> call we use the <a href="https://msdn.microsoft.com/en-us/library/a06c0dc2%28v=vs.110%29.aspx">BeginInvoke</a> method.  The <code class="highlighter-rouge">BeginInvoke</code> then executes <code class="highlighter-rouge">SetText()</code> method on the main thread.  We know ‘SetText’ is being called from the main thread because of the word <em>this</em> in the command.  This is a place holders for the object of origination.  It looks complicated, but really, the thread controlling the UART-to-USB is simply calling a method on the main thread whenever it has received data, and passing it the data it received.</p>
+
+<p>And that’s it.  Using this method we can enable and disable the UI every time data is sent or received.</p>
+
+<p>A few more notes,</p>
+
+<ol>
+  <li>This method doesn’t need to be used for disabling the UI.  The <code class="highlighter-rouge">WriteData()</code> is actually executed on the main thread.  It is the <code class="highlighter-rouge">DataReceivedEvent()</code> which is executed on a different thread.</li>
+  <li>This process gets a little more complicated when you are dealing with multiple objects, which is what I did.  In my code <code class="highlighter-rouge">SerialPortsExtended</code> object handles all the data receiving and sending of data, so delegates are used to pass data back-and-forth between threads and objects.</li>
+</ol>
+
+<p>That’s about it.  Let me know what questions I can try to answer.</p>
+:ET

@@ -1,0 +1,782 @@
+I"T<p>Originally posted on <a href="www.letsmakerobots.com">www.letsmakerobots.com</a></p>
+
+<p><strong>NOTE: Try as I might, guys, I can’t get the numbers to line up in my HTML version of my code.  Instead, you might just load it into Geany or Notepad+ to follow along, since I indicated things by the line number.  I’m sorry, I’m out of patience for it.</strong></p>
+
+<p><strong>These are redneck instructions on how to control a robot with a static webcam for under 50 USD.</strong></p>
+
+<p>I’m a robot builder and I got tired of seeing universities play robot soccer or something with computer vision guiding their players, and no matter how much I begged, darn Ivy Leagues wouldn’t share.</p>
+
+<p>So, I wrote my own.  And while I did it, I swore I’d try to help <em>anyone</em> trying something similar.</p>
+
+<p><img src="http://www.instructables.com/files/deriv/FQN/P4DN/HMVJHBJQ/FQNP4DNHMVJHBJQ.MEDIUM.jpg" alt="" /></p>
+
+<p><a href="http://www.youtube.com/watch?v=uqnNYnS66do">Overlord and Dot Muncher</a></p>
+
+<p><a href="http://www.youtube.com/watch?v=uqnNYnS66do"><img src="../images/Video_1.jpg" alt="" /></a></p>
+
+<p>So, here’s an overview of how the code works:</p>
+
+<p><a href="http://www.youtube.com/watch?feature=player_embedded&amp;v=WyMZ6iGWpj4"></a></p>
+
+<p><a href="http://www.youtube.com/watch?feature=player_embedded&amp;v=WyMZ6iGWpj4">Red Hatted Robot</a></p>
+
+<p><a href="http://www.youtube.com/watch?feature=player_embedded&amp;v=WyMZ6iGWpj4"><img src="../images/Video_2_0.jpg" alt="" /></a></p>
+
+<ol>
+  <li>Webcam sends images of its field-of-view.</li>
+  <li>OpenCV looks for the largest red blob.</li>
+  <li>It begins tracking the red blob’s X, Y.</li>
+  <li>The PC averages these X, Y positions for around 150 camera frames.</li>
+  <li>If the blob hasn’t moved much, the PC assumes the red blob is the robot.</li>
+  <li>The PC gets frisky and gives our robot a random target within the webcam’s field-of-view.</li>
+  <li>The PC calculates the angle between the bot and the target.</li>
+  <li><strong>Meanwhile,</strong> the robot’s microcontroller is taking readings from a <a href="https://www.loveelectronics.co.uk/Tutorials/8/hmc5883l-tutorial-and-arduino-library">magnetometer</a> on the robot.</li>
+  <li>The robot, with a one time human calibration, translates true North to “video-game north,” aka, top of PC’s screen.</li>
+  <li>The microcontroller transmits this code to the PC.</li>
+  <li>The PC compares the angle of the bot from the target with the robots angle.</li>
+  <li>The PC sends a code to the bot telling it to turn left, right, or move forward (closer to the target).</li>
+  <li>When the robot has made it within an acceptable distance from the target he “Munches the Dot.”</li>
+  <li>A new random dot appears. Rinse repeat. (For real though, don’t rinse the bot. Consider <a href="http://en.wikipedia.org/wiki/Isaac_Asimov">Asimov’s</a> Third Law.)</li>
+</ol>
+
+<p><strong>About Me: (skip, it’s boring)</strong></p>
+
+<p>I’m a homeless outreach worker.  The job’s amazing.  But I’ll say, emotionally taxing.  Skipping the politics and the sermon on <a href="http://en.wikipedia.org/wiki/Harm_reduction">harm-reduction</a>, I decided at the start I needed something far from the job to allow my mind rest and prevent compassion fatigue.  Something that consumed my brain-power so I’d not be stressing over the 6 months pregnant 17 year-old, shooting up under a bridge on I-35. Something to protect my down-time so I’d be frosty for the next day.</p>
+
+<p>Well, I saw that TED talk about the <a href="http://www.youtube.com/watch?v=6b4ZZQkcNEo#t=23">Sand Flea</a> and I told Bek, “That’s awesome, think I could build one?”
+ “Oh crap,” she said, “new obsession?”</p>
+
+<p>Now, robots are my relief.  My way to prevent white-matter from becoming dark-matter as I rake through sludge looking for those who want out.</p>
+
+<p>I started reading a lot.  I discovered, Arduino, Sparkfun, eBay, Raspberry Pi, <a rel="nofollow">ferric chloride</a>, Python, <a href="http://hackaday.com/">hackaday</a>, <a href="http://www.instructables.com/id/Easy-ultrasonic-4-pin-sensor-monitoring-hc-sr04/">HC-SR04</a>, <a href="http://www.cadsoftusa.com/">Eagle</a>, <a href="http://www.oshpark.com/">OSHPark</a>, and the list goes on.  But every time I Googled something about robots, I’d end up at the same place.</p>
+
+<p><a href="http://www.letsmakerobots.com">www.letsmakerobots.com</a></p>
+
+<p><strong>These guys are brilliant.  They are a college education from collaboration, I swear.</strong></p>
+
+<p>Soon, I ended up with <a href="http://letsmakerobots.com/node/35922">my first bot.</a>  A piece of sh…short-circuits.  Although, I did learn a lot interfacing the bot with the <a href="http://www.instructables.com/id/How-to-Make-a-ArduinoRaspberry-Pi-Robot-Platform/">Raspberry Pi</a>.  Also, while I was working with a Raspberry Pi, I played with <a href="http://opencv.org/">OpenCV</a>, and was considering adding a face tracker to my bot before I got distracted.  But before I quit, I created a <a href="http://letsmakerobots.com/node/36947">proof-of-concept</a>.</p>
+
+<p>So, all these experiences began to culminate.</p>
+
+<p>Meanwhile, I was taking a graduate Research Methods class at UTA and my professor disappeared.  The university was amazing; good professors filled in and made sure our education didn’t suffer. But we wondered for many months.  Sadly, it was discovered he had killed himself.</p>
+
+<p>It shook me.  I deal with suicidality every other day, but it’s usually on the street.  Why a successful research professor?  My thoughts got dark for a bit, which meant I sunk into robots even more.  Yet, now, a question sat at the front of my mind:<strong>Will robots one day kill themselves?</strong></p>
+
+<p><img src="http://www.instructables.com/files/deriv/F2S/B0VP/HMMFC1O5/F2SB0VPHMMFC1O5.MEDIUM.gif" alt="" /></p>
+
+<p>This may sound silly.  But I believe the formula for self-termination can be expressed in Boolean logic, and therefore coded.</p>
+
+<p>Pseudo-code would be:</p>
+
+<p><strong>if painOfExistence &gt; senseOfPurpose then:</strong></p>
+
+<p><strong>self_terminate()</strong></p>
+
+<p>Derived from work and life experience I genuinely believe the root-motive for suicide is <a href="http://en.wikipedia.org/wiki/Anxiety#Existential_anxiety">existential-anxiety</a>, which seems to me, entangled within both constructs.</p>
+
+<p>Ok.  Skipping the _Time_bit.</p>
+
+<p>Someday, I’d like to delve into swarm robotics. Or, at least, attempt to replicate organic group behavior within a robot group.  And I thought it might be possible to control a group of robots with a setup similar to those universities or research groups keep showing off. (Jockish Ivy Leagues :P)</p>
+
+<p>Well, I found these desires, information, and tools synergized into a passion.  After two days, I was able to write a basic OpenCV Python script that could control a robot using a static webcam looking down on it.  Let me clarify, I’m of average intelligence, simply obsessive, so when I mentioned “two-days” I’m trying to convey the utter feasibility of this project, for<strong><em>anyone</em></strong>.  Python, Arduino, and OpenCV make it <em>so very easy;</em> anyidiot like me can hack it out.</p>
+
+<p>Of course, my purpose for this platform is to control robot groups.  The group being the second social collection (one-to-eight) and social interaction seems to be the essential in developing a <a href="http://en.wikipedia.org/wiki/Positronic_brain">positronic brain</a>.  The white-mattered brained being necessary for me to test the above mentioned self-termination formula.  So, maybe, I’ll learn if robots will commit suicide, or perhaps, have a better understanding of why humans do.</p>
+
+<p><strong>Dark and depressing!  I know, right?  Who writes this crap!?</strong></p>
+
+<p><img src="http://www.instructables.com/files/deriv/FGK/6EXC/HMMFAICI/FGK6EXCHMMFAICI.SQUARE.jpg" alt="" /></p>
+
+<p><strong>A robot</strong></p>
+
+<p>It doesn’t matter what sort of robot you use, it only needs:</p>
+
+<ol>
+  <li>A microncontroller (e.g., <a href="http://www.arduino.cc/">Arduino</a>, <a href="http://www.picaxe.com/">PicAxe</a>, etc.)</li>
+  <li>Built from material of a bold, solid color.</li>
+  <li>The ability to change directions and move.</li>
+  <li>A magnetometer.  I used the <a href="http://www.ebay.com/itm/HMC5883L-Triple-Axis-Compass-Magnetometer-Sensor-Module-For-Arduino-3V-5V-/400362466832?pt=LH_DefaultDomain_0&amp;hash=item5d37766e10">HMC5883L</a>.  They’re like 2 USD on eBay.</li>
+  <li>A wireless serial connection. <a href="http://www.instructables.com/id/how-to-Control-arduino-by-bluetooth-from-PC-pock/">Bluetooth</a>, <a href="http://www.ladyada.net/make/xbee/">Xbee</a>, and <a href="http://arduino-info.wikispaces.com/Nrf24L01-2.4GHz-HowTo">nRF24L01</a> would be my recommendation since all are well documented creating a bridge between PC and microcontroller.</li>
+</ol>
+
+<p>I personally built my <a href="http://letsmakerobots.com/node/38203">own</a> using red cutting-board I stole from Bek (shh).  For my serial connection I used two $10 Bluetooth 4.0 modules, which I’ve written an instructable on setting up a Bluetooth 4.0 module to work with an Arduino and PC: <a href="http://www.instructables.com/id/How-to-Create-an-Arduino-Compatible-Bluetooth-40-M/">Bluetooth 4.0 and Arduino</a>.</p>
+
+<p><img src="http://www.instructables.com/files/deriv/F0J/3P8E/HMMFC1RK/F0J3P8EHMMFC1RK.SQUARE.jpg" alt="" /></p>
+
+<p><strong>A PC</strong></p>
+
+<p>Probably something less than 10 years old.  It could be running Linux or Windows;though, I’ll be using Windows Vista (hey, I’m first-world poor and can’t afford Windows 7 :P).</p>
+
+<ol>
+  <li>The PC will need to be running <a href="http://www.python.org/download/releases/2.7/">Python 2.7</a></li>
+  <li>It’ll need <a href="http://opencv.org/downloads.html">OpenCV 2.4.4</a></li>
+  <li>It will need a wireless serial connection that pairs with your bot.  Again, I used my <a href="http://www.instructables.com/id/How-to-Create-an-Arduino-Compatible-Bluetooth-40-M/">BT 4.0 modules</a>.</li>
+</ol>
+
+<p><img src="http://www.instructables.com/files/deriv/FU8/RLE6/HMMFC1TF/FU8RLE6HMMFC1TF.SQUARE.jpg" alt="" /></p>
+
+<p><strong>A Webcam</strong></p>
+
+<p>It’s really up to you.  I’m not going to lie, I went with the <a href="http://www.fasttech.com/products/0/10003325/1246901-compact-13mp-pc-usb-webcam-with-built-in-microphon">cheapest webcam</a> I saw, which costs 6.87 USD. But I would _not _recommend this webcam.  It didn’t like my PC, so every time my Python script stopped I had to unplug the webcam and re-plug it in.  A real annoyance for debugging.</p>
+
+<ol>
+  <li>I’d suggest a high-resolution webcam.  Maybe even a IP cam, if you’re rich?  If you are, would you buy me one too?</li>
+  <li>Long<strong>male-to-female</strong> USB cable.  Again, I got two 15’ USB cables on <a href="http://www.ebay.com/itm/15ft-15feet-USB2-0-A-Male-to-A-Female-Extension-Cable-White-U2A1-A2-15WHT-/400580131707?pt=US_USB_Cables_Hubs_Adapters&amp;hash=item5d446fbb7b">eBay</a> for around 4.50 USD.  If you get everything setup and you notice problems with the webcam at the end of the cable, you can put a powered hub at the end of the cable with an extension cord and it’ll take care of the issue.  Though, I didn’t have this problem at 15’.</li>
+  <li>A wife that’ll let you screw your webcam into the ceiling. Or…don’t ask…</li>
+</ol>
+
+<p>So, I made my robot, <a href="http://letsmakerobots.com/node/38203">Dot Muncher</a>, using an <a href="http://arduino.cc/en/Main/arduinoBoardUno">Arduino Uno</a>, <a href="http://www.ebay.com/itm/L298P-Shield-DC-Motor-Driver-Module-2A-H-Bridge-Arduino-Compatible-/321178232095?pt=LH_DefaultDomain_0&amp;hash=item4ac7b6e51f">Motor Shield</a>, and a <a href="http://letsmakerobots.com/node/38009">Bluetooth 4.0 module</a>.  The chassis was made from <a href="http://en.wikipedia.org/wiki/High-density_polyethylene">HDPE</a>, a cutting board I stole from my wife. The <a href="http://www.ebay.com/itm/3-6V-DC-Small-Micro-Geared-Box-Electric-Motor-High-Quality-/190576860674?pt=LH_DefaultDomain_0&amp;hash=item2c5f441e02">motors</a> and <a href="http://www.ebay.com/itm/2pcs-43-19-3mm-D-hole-Small-Smart-car-model-tire-wheel-Robot-Part-for-DIY-/390668300421?pt=Model_Kit_US&amp;hash=item5af5a53085">tires</a> were from eBay.</p>
+
+<p>Now, about any robot will work, like I’ve stated, so Google away and select a robot build you like.</p>
+
+<p>Of course, everything you’d every want to know can be found one this site :)</p>
+
+<p>I’m just sayin’.</p>
+
+<p>But the code, that’s the part we want to focus on. Really, our robot only has a nerves and muscles, the brain will actually be in the PC, all the robot does is,</p>
+
+<ol>
+  <li>Calculates the compass info.</li>
+  <li>Sends the compass info to the PC.</li>
+  <li>Reads the movement codes from the PC.</li>
+  <li>Translates the movement code received into a motor activation.</li>
+</ol>
+
+<p>That’s it.  Pretty simple.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//I've been using Zombie_3_6_RC in Processing to interact.</span>
+
+
+<span class="c1">// Reference the I2C Library</span>
+<span class="cp">#include &lt;Wire.h&gt;
+</span><span class="c1">// Reference the HMC5883L Compass Library</span>
+<span class="cp">#include &lt;HMC5883L.h&gt;
+</span>
+<span class="c1">// Store our compass as a variable.</span>
+<span class="n">HMC5883L</span> <span class="n">compass</span><span class="p">;</span>
+
+<span class="c1">// Record any errors that may occur in the compass.</span>
+<span class="kt">int</span> <span class="n">error</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+<span class="c1">//int pwm_a = 10; //PWM control for motor outputs 1 and 2 is on digital pin 10</span>
+<span class="kt">int</span> <span class="n">pwm_a</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>  <span class="c1">//PWM control for motor outputs 1 and 2 is on digital pin 3</span>
+<span class="kt">int</span> <span class="n">pwm_b</span> <span class="o">=</span> <span class="mi">11</span><span class="p">;</span>  <span class="c1">//PWM control for motor outputs 3 and 4 is on digital pin 11</span>
+<span class="kt">int</span> <span class="n">dir_a</span> <span class="o">=</span> <span class="mi">12</span><span class="p">;</span>  <span class="c1">//dir control for motor outputs 1 and 2 is on digital pin 12</span>
+<span class="kt">int</span> <span class="n">dir_b</span> <span class="o">=</span> <span class="mi">13</span><span class="p">;</span>  <span class="c1">//dir control for motor outputs 3 and 4 is on digital pin 13</span>
+
+<span class="kt">int</span> <span class="n">lowspeed</span> <span class="o">=</span> <span class="mi">120</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">highspeed</span> <span class="o">=</span> <span class="mi">140</span><span class="p">;</span>
+
+<span class="c1">//Distance away</span>
+<span class="kt">int</span> <span class="n">distance</span><span class="p">;</span>
+
+<span class="c1">//Sets the duration each keystroke captures the motors.</span>
+<span class="kt">int</span> <span class="n">keyDuration</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+
+<span class="kt">int</span> <span class="n">iComp</span><span class="p">;</span>
+
+<span class="kt">void</span> <span class="nf">setup</span><span class="p">()</span>
+<span class="p">{</span>
+  <span class="n">Serial</span><span class="p">.</span><span class="n">begin</span><span class="p">(</span><span class="mi">9600</span><span class="p">);</span>
+
+  <span class="n">Wire</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span> <span class="c1">// Start the I2C interface.</span>
+
+  <span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s">"Constructing new HMC5883L"</span><span class="p">);</span>
+  <span class="n">compass</span> <span class="o">=</span> <span class="n">HMC5883L</span><span class="p">();</span> <span class="c1">// Construct a new HMC5883 compass.</span>
+
+  <span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s">"Setting scale to +/- 1.3 Ga"</span><span class="p">);</span>
+  <span class="n">error</span> <span class="o">=</span> <span class="n">compass</span><span class="p">.</span><span class="n">SetScale</span><span class="p">(</span><span class="mf">1.3</span><span class="p">);</span> <span class="c1">// Set the scale of the compass</span>
+  <span class="n">error</span> <span class="o">=</span> <span class="n">compass</span><span class="p">.</span><span class="n">SetMeasurementMode</span><span class="p">(</span><span class="n">Measurement_Continuous</span><span class="p">);</span> <span class="c1">// Set the measurement mode to Continuous</span>
+
+  <span class="n">pinMode</span><span class="p">(</span><span class="n">pwm_a</span><span class="p">,</span> <span class="n">OUTPUT</span><span class="p">);</span>  <span class="c1">//Set control pins to be outputs</span>
+  <span class="n">pinMode</span><span class="p">(</span><span class="n">pwm_b</span><span class="p">,</span> <span class="n">OUTPUT</span><span class="p">);</span>
+  <span class="n">pinMode</span><span class="p">(</span><span class="n">dir_a</span><span class="p">,</span> <span class="n">OUTPUT</span><span class="p">);</span>
+  <span class="n">pinMode</span><span class="p">(</span><span class="n">dir_b</span><span class="p">,</span> <span class="n">OUTPUT</span><span class="p">);</span>
+
+  <span class="n">analogWrite</span><span class="p">(</span><span class="n">pwm_a</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+  <span class="c1">//set both motors to run at (100/255 = 39)% duty cycle (slow)  </span>
+  <span class="n">analogWrite</span><span class="p">(</span><span class="n">pwm_b</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+
+  <span class="n">pinMode</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="n">OUTPUT</span><span class="p">);</span><span class="c1">//attach pin 2 to vcc</span>
+  <span class="n">pinMode</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="n">OUTPUT</span><span class="p">);</span><span class="c1">//attach pin 5 to GND</span>
+  <span class="c1">// initialize serial communication:</span>
+  <span class="n">Serial</span><span class="p">.</span><span class="n">begin</span><span class="p">(</span><span class="mi">9600</span><span class="p">);</span>
+
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">loop</span><span class="p">()</span>
+<span class="p">{</span>
+
+
+
+  <span class="c1">// Retrive the raw values from the compass (not scaled).</span>
+  <span class="n">MagnetometerRaw</span> <span class="n">raw</span> <span class="o">=</span> <span class="n">compass</span><span class="p">.</span><span class="n">ReadRawAxis</span><span class="p">();</span>
+
+  <span class="c1">// Retrived the scaled values from the compass (scaled to the configured scale).</span>
+  <span class="n">MagnetometerScaled</span> <span class="n">scaled</span> <span class="o">=</span> <span class="n">compass</span><span class="p">.</span><span class="n">ReadScaledAxis</span><span class="p">();</span>
+
+  <span class="c1">// Values are accessed like so:</span>
+  <span class="kt">int</span> <span class="n">MilliGauss_OnThe_XAxis</span> <span class="o">=</span> <span class="n">scaled</span><span class="p">.</span><span class="n">XAxis</span><span class="p">;</span><span class="c1">// (or YAxis, or ZAxis)</span>
+
+  <span class="c1">// Calculate heading when the magnetometer is level, then correct for signs of axis.</span>
+  <span class="kt">float</span> <span class="n">heading</span> <span class="o">=</span> <span class="n">atan2</span><span class="p">(</span><span class="n">scaled</span><span class="p">.</span><span class="n">YAxis</span><span class="p">,</span> <span class="n">scaled</span><span class="p">.</span><span class="n">XAxis</span><span class="p">);</span>
+
+  <span class="c1">// Once you have your heading, you must then add your 'Declination Angle', which is the 'Error' of the magnetic field in your location.</span>
+  <span class="c1">// Find yours here: http://www.magnetic-declination.com/</span>
+  <span class="c1">// Mine is: 237' W, which is 2.617 Degrees, or (which we need) 0.0456752665 radians, I will use 0.0457</span>
+  <span class="c1">// If you cannot find your Declination, comment out these two lines, your compass will be slightly off.</span>
+  <span class="kt">float</span> <span class="n">declinationAngle</span> <span class="o">=</span> <span class="mf">0.0457</span><span class="p">;</span>
+  <span class="n">heading</span> <span class="o">+=</span> <span class="n">declinationAngle</span><span class="p">;</span>
+
+  <span class="c1">// Correct for when signs are reversed.</span>
+  <span class="k">if</span><span class="p">(</span><span class="n">heading</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">heading</span> <span class="o">+=</span> <span class="mi">2</span><span class="o">*</span><span class="n">PI</span><span class="p">;</span>
+
+  <span class="c1">// Check for wrap due to addition of declination.</span>
+  <span class="k">if</span><span class="p">(</span><span class="n">heading</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="o">*</span><span class="n">PI</span><span class="p">)</span>
+    <span class="n">heading</span> <span class="o">-=</span> <span class="mi">2</span><span class="o">*</span><span class="n">PI</span><span class="p">;</span>
+
+  <span class="c1">// Convert radians to degrees for readability.</span>
+  <span class="kt">float</span> <span class="n">headingDegrees</span> <span class="o">=</span> <span class="n">heading</span> <span class="o">*</span> <span class="mi">180</span><span class="o">/</span><span class="n">M_PI</span><span class="p">;</span>
+
+  <span class="c1">// Normally we would delay the application by 66ms to allow the loop</span>
+  <span class="c1">// to run at 15Hz (default bandwidth for the HMC5883L).</span>
+  <span class="c1">// However since we have a long serial out (104ms at 9600) we will let</span>
+  <span class="c1">// it run at its natural speed.</span>
+  <span class="c1">// delay(66);</span>
+
+  <span class="c1">//This throttles how much data is sent to Python code.  </span>
+  <span class="c1">//Basically, it updates every second (10 microsecond delay X 100 iComps)</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">iComp</span> <span class="o">&gt;=</span> <span class="mi">30</span><span class="p">){</span>
+
+    <span class="kt">int</span> <span class="n">adjHeading</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="c1">//The "floor" part makes the float into an integer, rounds it up.</span>
+    <span class="n">headingDegrees</span> <span class="o">=</span> <span class="n">floor</span><span class="p">(</span><span class="n">headingDegrees</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">headingDegrees</span> <span class="o">&gt;=</span> <span class="mi">280</span><span class="p">){</span>
+        <span class="n">adjHeading</span> <span class="o">=</span> <span class="n">map</span><span class="p">(</span><span class="n">headingDegrees</span><span class="p">,</span> <span class="mi">280</span><span class="p">,</span> <span class="mi">360</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">79</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">headingDegrees</span> <span class="o">&lt;=</span> <span class="mi">279</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">adjHeading</span> <span class="o">=</span> <span class="n">map</span><span class="p">(</span><span class="n">headingDegrees</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">279</span><span class="p">,</span> <span class="mi">80</span><span class="p">,</span> <span class="mi">360</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="n">adjHeading</span><span class="p">);</span>
+    <span class="n">iComp</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="n">iComp</span><span class="o">++</span><span class="p">;</span>
+
+  <span class="n">delay</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span> <span class="c1">//For serial stability.</span>
+
+
+
+  <span class="kt">int</span> <span class="n">val</span> <span class="o">=</span> <span class="n">Serial</span><span class="p">.</span><span class="n">read</span><span class="p">()</span> <span class="o">-</span> <span class="sc">'0'</span><span class="p">;</span>
+
+  <span class="k">if</span> <span class="p">(</span><span class="n">val</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
+  <span class="p">{</span>
+    <span class="n">Back</span><span class="p">();</span>
+  <span class="p">}</span>
+
+  <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">val</span> <span class="o">==</span> <span class="mi">2</span><span class="p">)</span>
+  <span class="p">{</span>
+    <span class="n">Right</span><span class="p">();</span>
+  <span class="p">}</span>
+
+  <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">val</span> <span class="o">==</span> <span class="mi">3</span><span class="p">)</span>
+  <span class="p">{</span>
+    <span class="n">Forward</span><span class="p">();</span>
+  <span class="p">}</span>
+
+  <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">val</span> <span class="o">==</span> <span class="mi">4</span><span class="p">)</span>
+  <span class="p">{</span>
+    <span class="n">Left</span><span class="p">();</span>
+  <span class="p">}</span>
+
+  <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">val</span> <span class="o">==</span> <span class="mi">5</span><span class="p">)</span>
+  <span class="p">{</span>
+    <span class="n">Stop</span><span class="p">();</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">Back</span><span class="p">(){</span>
+<span class="c1">//Straight back</span>
+      <span class="n">analogWrite</span><span class="p">(</span><span class="n">pwm_a</span><span class="p">,</span> <span class="n">highspeed</span><span class="p">);</span>
+      <span class="n">analogWrite</span><span class="p">(</span><span class="n">pwm_b</span><span class="p">,</span> <span class="n">highspeed</span><span class="p">);</span>
+
+      <span class="n">digitalWrite</span><span class="p">(</span><span class="n">dir_a</span><span class="p">,</span> <span class="n">HIGH</span><span class="p">);</span>  <span class="c1">//Reverse motor direction, 1 high, 2 low</span>
+      <span class="n">digitalWrite</span><span class="p">(</span><span class="n">dir_b</span><span class="p">,</span> <span class="n">LOW</span><span class="p">);</span>  <span class="c1">//Reverse motor direction, 3 low, 4 high</span>
+
+<span class="n">delay</span><span class="p">(</span><span class="n">keyDuration</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">Left</span><span class="p">(){</span>
+      <span class="c1">//Left</span>
+      <span class="n">analogWrite</span><span class="p">(</span><span class="n">pwm_a</span><span class="p">,</span> <span class="n">lowspeed</span><span class="p">);</span>
+      <span class="n">analogWrite</span><span class="p">(</span><span class="n">pwm_b</span><span class="p">,</span> <span class="n">lowspeed</span><span class="p">);</span>
+
+      <span class="n">digitalWrite</span><span class="p">(</span><span class="n">dir_a</span><span class="p">,</span> <span class="n">HIGH</span><span class="p">);</span>  <span class="c1">//Reverse motor direction, 1 high, 2 low</span>
+      <span class="n">digitalWrite</span><span class="p">(</span><span class="n">dir_b</span><span class="p">,</span> <span class="n">HIGH</span><span class="p">);</span>  <span class="c1">//Reverse motor direction, 3 low, 4 high</span>
+
+<span class="n">delay</span><span class="p">(</span><span class="n">keyDuration</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">Right</span><span class="p">(){</span>
+      <span class="c1">//Right</span>
+      <span class="n">analogWrite</span><span class="p">(</span><span class="n">pwm_a</span><span class="p">,</span> <span class="n">lowspeed</span><span class="p">);</span>
+      <span class="n">analogWrite</span><span class="p">(</span><span class="n">pwm_b</span><span class="p">,</span> <span class="n">lowspeed</span><span class="p">);</span>
+
+      <span class="n">digitalWrite</span><span class="p">(</span><span class="n">dir_a</span><span class="p">,</span> <span class="n">LOW</span><span class="p">);</span>  <span class="c1">//Reverse motor direction, 1 high, 2 low</span>
+      <span class="n">digitalWrite</span><span class="p">(</span><span class="n">dir_b</span><span class="p">,</span> <span class="n">LOW</span><span class="p">);</span>  <span class="c1">//Reverse motor direction, 3 low, 4 high</span>
+
+<span class="n">delay</span><span class="p">(</span><span class="n">keyDuration</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">Forward</span><span class="p">(){</span>
+  <span class="c1">//set both motors to run at 100% duty cycle (fast)</span>
+  <span class="n">analogWrite</span><span class="p">(</span><span class="n">pwm_a</span><span class="p">,</span> <span class="n">highspeed</span><span class="p">);</span>
+  <span class="n">analogWrite</span><span class="p">(</span><span class="n">pwm_b</span><span class="p">,</span> <span class="n">highspeed</span><span class="p">);</span>
+
+  <span class="c1">//Straight forward</span>
+  <span class="n">digitalWrite</span><span class="p">(</span><span class="n">dir_a</span><span class="p">,</span> <span class="n">LOW</span><span class="p">);</span>  <span class="c1">//Set motor direction, 1 low, 2 high</span>
+  <span class="n">digitalWrite</span><span class="p">(</span><span class="n">dir_b</span><span class="p">,</span> <span class="n">HIGH</span><span class="p">);</span>  <span class="c1">//Set motor direction, 3 high, 4 low</span>
+
+  <span class="n">delay</span><span class="p">(</span><span class="n">keyDuration</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">Stop</span><span class="p">(){</span>
+  <span class="c1">//set both motors to run at 100% duty cycle (fast)</span>
+  <span class="n">analogWrite</span><span class="p">(</span><span class="n">pwm_a</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+  <span class="n">analogWrite</span><span class="p">(</span><span class="n">pwm_b</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+
+  <span class="c1">//Straight forward</span>
+  <span class="n">digitalWrite</span><span class="p">(</span><span class="n">dir_a</span><span class="p">,</span> <span class="n">LOW</span><span class="p">);</span>  <span class="c1">//Set motor direction, 1 low, 2 high</span>
+  <span class="n">digitalWrite</span><span class="p">(</span><span class="n">dir_b</span><span class="p">,</span> <span class="n">HIGH</span><span class="p">);</span>  <span class="c1">//Set motor direction, 3 high, 4 low</span>
+
+  <span class="n">delay</span><span class="p">(</span><span class="n">keyDuration</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The first bit of robot code I’d like to focus on is the compass.  Now, I’ve not detailed how to use the <a href="https://www.sparkfun.com/tutorials/301">HMC5883L</a>, since SparkFun has done this for me.  I also won’t go into <a href="http://www.loveelectronics.co.uk/Tutorials/13/tilt-compensated-compass-arduino-tutorial">tilt-compensation</a>, since I was more worried about proving the concept here than dead-on accuracy.  But if you’re a smart-cookie and would like to take that chaellenge, feel free.  Just be sure and share the code with us all when you’re done :P</p>
+
+<p>No.  Instead, I want to focus on adjusting the compass heading from a value respective to true North, to what we want it to think is north, in our case, whatever is the top of our screen.  This process takes a little involvement, since the numbers must be set manually and with a little guesstimation.</p>
+
+<p><strong><em>See code above.</em></strong></p>
+
+<p>So, I got my compass module lying flat as possible and then bolted it to my robot.  This helps assure your getting a full 360º and will keep you from having to re-calibrate what we’d like to call north every time the compass module gets knocked out of place.</p>
+
+<p><strong>106-114:</strong> These modules and the Arduino library are both designed to have 0º be North, but we want to set our own north, video-game north.  Which is exactly what lines 106-114 are about.  I found 80º is what value my robot was reading when he was headed towards the top of the screen.  I had to find a way to adjust this to give me the reading 0º.  I ended with this simple code to spin the compass.</p>
+
+<p>I had to divide the adjustments into two sections for the math to stay simple.  Lines 109-111 handle <a href="http://arduino.cc/en/Reference/map">mapping</a> 0-79º onto 280-0º, making the robot think 0-79º is 280-0º.  Lines 112-114 do the same for 80-360º, converting it to 0-279º.</p>
+
+<p>Honestly, I’ve got some spatial-retardation, so I have a hard time thinking through this,<strong>I just know it works</strong>.  So, if you have problems I’ll answer emails and Skypes and we can work through it together.  And, if you want to submit a better explanation, I’ll post it and be sure to give you credit.</p>
+
+<p><img src="http://www.instructables.com/files/deriv/F2A/FT0S/HMVJ9ADF/F2AFT0SHMVJ9ADF.MEDIUM.jpg" alt="" /></p>
+
+<p>Do know, my redneck solution was to change the orientation of the camera. <strong>Pfft.  Too easy</strong>.</p>
+
+<p>Moving on,</p>
+
+<p><strong>116:</strong> Sends the robot’s heading to the PC.</p>
+
+<p><strong>117:</strong>iComp is a variable allowing us to decide when to start sending data to the PC.  We don’t want to send data to the PC before it’s ready or before the robot is warmed-up, we’d be dealing with poor readings.</p>
+
+<p><strong>118:</strong>This is a delay that makes sure we are not bogging down the serial line, since every time we call<strong>Serial.println(“whatever”)</strong>both the PC and the robot have to take some processing power to deal with it.  In short, it’s to make sure the robot is not talking the computer’s ear off.</p>
+
+<p><strong><em>See code above.</em></strong></p>
+
+<p>This bit is pretty easy.  It reads the codes being sent from the PC and translates them into a function call.  I write all my robot-PC interactions this way, since if I want a code to mean something completely different, for instance I want to swap the robot’s right and left movements, I’d just swap lines 134 and 144.</p>
+
+<p>Easy.</p>
+
+<p><strong>125:</strong>If I remember correctly, this line reads serial data being sent from the PC and assures the<strong>val</strong> variable isn’t getting a bunch of zeros.</p>
+
+<p>Easy one.</p>
+
+<p>This is one of the functions called to make the motor move, or in the case of this function, stop.</p>
+
+<p><strong>188-189:</strong> This actually tells which pin on the Arduino, specified by the variables<strong>pwm_a</strong> and<strong>pwm_b</strong>to decrease to 0.  This effectively stops our robot.</p>
+
+<p><strong>192-193:</strong> This bit actually tells the motor which direction to turn.  The pins (<strong>dir_a</strong> and<strong>dir_b)</strong>are set either HIGH or LOW and this changes the direction of how the motor moves.</p>
+
+<p>Tell you what, my good friend <a href="http://www.duino-robotics.com/">ChickenParmi</a> explains it better <a href="http://www.youtube.com/watch?feature=player_embedded&amp;v=XZLVpfydUdw">here</a></p>
+
+<p><strong><em>See code above.</em></strong></p>
+
+<p>Now we have a our little robot setup, let’s setup our Python environment.</p>
+
+<p>I’m going to use Python 2.7 (just found later versions piss me off).</p>
+
+<p><strong><a href="http://www.python.org/download/releases/2.7/">Python 2.7 download</a></strong></p>
+
+<p>For windows, use the MSI Install respective to your architecture, either x86 or x64.  Of course, Linux and Mac are versions are there as well.  Go ahead and install Python 2.7, but I’m not a fan of their <a href="http://en.wikipedia.org/wiki/Integrated_development_environment">IDE</a>.  Instead, I use:</p>
+
+<p><a href="http://www.geany.org/Support/RunningOnWindows"><strong>Geany</strong></a></p>
+
+<p><img src="http://www.instructables.com/files/deriv/FK4/HWSS/HMVJGC35/FK4HWSSHMVJGC35.SMALL.jpg" alt="" /></p>
+
+<p>Though, this IDE is a little tricky to get running on Windows, since it’s meant for Linux.  <a href="http://stackoverflow.com/questions/126753/is-there-a-good-free-python-ide-for-windows">These posts</a> over at Stack Overflow go through some popular Windows Python IDEs.  Pick what you feel comfortable in.  I suggest running ‘Hello World’ in each until you decide you like one.</p>
+
+<p>Here we are, the hardest part of this whole project; if not careful, we fall into <a href="http://en.wikipedia.org/wiki/Dependency_hell">dependency hell</a>.</p>
+
+<p>I’m going to try and help you setup all the modules needed to run the Python code.  It’s been difficult for me to do this right, so I’ll try to be descriptive.</p>
+
+<p>There are seven modules we will use.</p>
+
+<ol>
+  <li><a href="http://opencv.org/downloads.html">OpenCV</a> (which we’ll call cv2).</li>
+  <li><a href="http://www.numpy.org/">Numpy</a></li>
+  <li><a href="http://pyserial.sourceforge.net/pyserial.html">Serial</a></li>
+  <li><a href="http://docs.python.org/2/library/time.html">Time</a></li>
+  <li><a href="http://docs.python.org/2/library/math.html">Math</a></li>
+  <li><a href="http://docs.python.org/2/library/random.html">Random</a></li>
+  <li><a href="http://docs.python.org/2/library/threading.html">Threading</a></li>
+</ol>
+
+<p>Of these<strong>we will need to install OpenCV, Numpy, and Serial,</strong> since the rest come built into Python 2.7.</p>
+
+<p>The main trick with <em><strong>any</strong></em><strong>module you install in Python is to make sure the exact path you install it to gets added to the Environment Variable (this is true for both Windows and Linux).</strong></p>
+
+<p>To explain this I’m going to hand it over to Lovely Ada as she tells us how to install the Serial module:</p>
+
+<p><strong><a href="http://learn.adafruit.com/arduino-lesson-17-email-sending-movement-detector/installing-python-and-pyserial">pySerial</a> installation</strong></p>
+
+<p>Note the bit about adding the environment variable, since none of the other modules will explain this, but each will need to be there.</p>
+
+<p>Now, let’s try OpenCV and Numpy.  My favorite installation guide (meaning it worked for me) was written by <a href="https://plus.google.com/118298613334549762938/posts">Abid Rahman</a>:</p>
+
+<p><a href="http://opencvpython.blogspot.com/2012/05/install-opencv-in-windows-for-python.html"><strong>OpenCV 2.4.4 installation</strong></a></p>
+
+<p>At this point, you might bring up Python and try some simple webcam capture test code (if you have problems copying and pasting, I’ve added web capture code as an attachment as well):</p>
+
+<p><strong><em>See code above.</em></strong></p>
+
+<p>If you see a live feed from your webcam, you’re almost good to go.</p>
+
+<p><img src="http://www.instructables.com/files/deriv/FFM/AZIF/HMVJGCAS/FFMAZIFHMVJGCAS.MEDIUM.jpg" alt="" /></p>
+
+<p>If there any problems, like I said, you and me buddy.  Feel free to ask questions here or Skype me:<strong>thomas_ladvien</strong></p>
+
+<p>Okay.  Here’s all the Python code in one go. _Don’t be scared _if this looks confusing.  I feel the same way.  In fact, some of it I _still _don’t understand.  (Hey, honesty a is a rare fault I seem to possess.)  Again, don’t worry, we’re going to walk through it one section at a time, you and me, buddy.  Until the end.</p>
+
+<p>On the flip side, if you are a Python guru, or yanno, just a sassy-pants: Feel free to add corrections and comments on this page.  I’d love to make this code grow through critique.  Do know, I guarantee the following: Typos, grammar problems, illogical coding, artifacts from debugging, and the like.  But don’t worry, I’m thick skinned and usually wear my big-boy panties.</p>
+
+<p>I should state, the basic code for color tracking was written by <a href="https://plus.google.com/118298613334549762938/posts">Abid Rahman</a> in a reply on <a href="http://stackoverflow.com/questions/12943410/opencv-python-single-rather-than-multiple-blob-tracking">Stack Overflow</a>.</p>
+
+<p>Also, I’ve included the code as an attachment, it’s at the bottom.  Video-game south.</p>
+
+<p><strong><em>See code above.</em></strong></p>
+
+<p>Ok.  The beginning.</p>
+
+<p>So lines 3-10 pull in the <a href="http://docs.python.org/2/tutorial/modules.html">modules</a> we will need.  My take on a module is the following, “Code some smart guy wrote and doesn’t want anymore, so he gave it to me to use.”</p>
+
+<p>To be specific</p>
+
+<ul>
+  <li><a href="http://opencv.org/downloads.html"><strong>cv2</strong> </a>is the OpenCV module.</li>
+  <li><a href="http://www.numpy.org/"><strong>Numpy</strong></a>, which we’ll call “<strong>np</strong>” throughout the code, is used for higher number functions needed for OpenCV to do her magic.</li>
+  <li><a href="http://pyserial.sourceforge.net/pyserial.html"><strong>Serial</strong> </a>is the module which will allow us to establish a serial connection between the PC and the robot, via whichever wireless device you’ve chosen.</li>
+  <li><a href="http://docs.python.org/2/library/time.html"><strong>Time</strong> </a>allows us to basically idle the code.  This is important in controlling many things, for instance, how far the robot moves.  We tell the motors to turn on, wait 10 secs, then turn off.  Because the sleep function actually puts the code into an idle state, we must have the threading module, since our code requires the PC to do several things at once.</li>
+  <li><a href="http://docs.python.org/2/library/math.html"><strong>Math</strong></a>.  From the math module we get the code to help us simplify the trigonometry calculations, like the angle between the robot and target.</li>
+  <li>The <a href="http://docs.python.org/2/library/random.html"><strong>random</strong> </a>module is only used to gives us a random target.</li>
+  <li><a href="http://docs.python.org/2/library/threading.html"><strong>Threading</strong></a>.  Important module.  Basically, threading allows the computers to do two tasks at the same time.  This becomes important when we are both trying to track the robot and receive his position.  Throughout this code we will have three threads
+    <ol>
+      <li>The thread running the OpenCV stuff.  This tracks the robot and is also the largest.</li>
+      <li>A thread controlling the serial connection between the robot and PC.</li>
+      <li>And a thread with the small job of telling the motors how long to be on, thereby controlling how far the robot will move.</li>
+    </ol>
+  </li>
+</ul>
+
+<p><strong><em>See code above.</em></strong></p>
+
+<p>13: This is where we actually open a serial connection to the wireless device you are using.  Note, we’ve named the serial connection we opened “<strong>ser</strong>” so when we go to send information it will be something like,<strong>ser.write(“What you want to send here”)</strong></p>
+
+<p>15-38: Here we declare a bunch of <a href="http://www.tutorialspoint.com/python/python_variable_types.htm">variables.</a> The “<a href="http://stackoverflow.com/questions/423379/using-global-variables-in-a-function-other-than-the-one-that-created-them">global variable</a>” lets the code know that this variable is going to jump between all threads. Next, the<strong>variable = 0</strong> actually declares the variable.  Do know, you’ll have to remind each thread a variable is global by stating “global variable.”</p>
+
+<p>One thing I should state,<strong>iFrame = 0</strong> is an actual variable declaration, as well as setting it to 0.  Of course, this is how one would declare an integer variable with an initial value of 0.  On the flip,<strong>rx = “ “</strong> isalso a variable declaration but this time a string.  You’ll know I switched information from a integer to a string if you see something like this:</p>
+
+<p><strong>headingDeg = str(intHeadingDeg)</strong></p>
+
+<p>That tells the code, “I want to convert the value in intHeadingDeg, which is an integer, into a string and call it ‘headingDeg’”</p>
+
+<p>The comments indicate what each variable is meant for.  Not going to lie, not sure I don’t have some declared variables I meant to use, didn’t, and forgot to remove.</p>
+
+<p>One important variable is the<strong>iFrame</strong> variable, since it tracks which frame we are on.  This becomes key in all aspects of tracking our robot.</p>
+
+<p><img src="http://www.instructables.com/files/deriv/FB1/6OS8/HMMF9408/FB16OS8HMMF9408.SMALL.jpg" alt="" /></p>
+
+<p><strong><em>See code above.</em></strong></p>
+
+<p><strong>42</strong>: Here we start this <a href="http://docs.python.org/2/library/threading.html">function</a> that does most of the work,<strong>OpenCV():</strong>.  It is one of the functions that<strong>will be threaded at lines 345-347</strong>.</p>
+
+<p><strong>44</strong>: We open up the webcam and give it the nickname<strong>cap</strong>.  If I remember right the “0” in the parenthesis refers to whatever camera comes first on your USB bus, so if you have more than one camera you can specify by changing this number, e.g.,<strong>cap = cv2.VideoCapture(3)</strong>.  Notice we called the OpenCV module cv2, so we are using the OpenCV module to access the webcam.</p>
+
+<p><strong>46-52</strong>: Just making the variables we declared work within this function.  This might not be needed, but hey, I don’t read the <em>whole</em> Python manual.</p>
+
+<p><strong>55:</strong>This is just a string flag that is flipped to tell the PC to generate a new target for the robot.  Note, we initially set it to “Yes” meaning the first time we run through this function a target needs to be generated.</p>
+
+<p><strong>58:</strong>This is an integer variable to count how many dots the robot has “ate.”</p>
+
+<p>Ok, before I get to the next bit I need to take a minute and explain how we approach actually getting the coordinates of our robot.  As you know, OpenCV does the hard work for us, giving us the X and Y coordinate of the largest red blob on the screen.  Though, the coordinates it gives us are the center of the mass.  Now, this is all just a logical guess because I didn’t read the whole OpenCV manual, but I believe the X or Y coordinate that refers to the center of this mass is called the <a href="http://en.wikipedia.org/wiki/Centroid">centroid</a>.</p>
+
+<p><img src="http://www.instructables.com/files/deriv/F3D/YKW5/HMNNG8MH/F3DYKW5HMNNG8MH.SMALL.jpg" alt="" /></p>
+
+<p>This might seems simple.  That’s because it is, I’m not sure why we don’t just call it the damn center or something.  Eh, oh well.  Though, it will become important when we do collision detection between the robot and its target.</p>
+
+<p><strong>61-62</strong>: All that to say, the “c” in<strong>cyAvg</strong>and<strong>cxAvg</strong>stands for centroid.  So, these are variables that will hold the running average for the X and Y coordinates of the red blob’s centroid.</p>
+
+<p><strong>65-66:</strong>These are back-up variables of the<strong>cxAvg</strong> and<strong>cyAvg</strong>and will be important around line<strong>122-127</strong>when  we are trying to decide if the color we are tracking is actually the robot or some other piece of junk with enough red in it to fool OpenCV.</p>
+
+<p><strong>69:</strong>This simply clears the string variable with data that came from the robot, like the robot’s heading, before another iFrame starts.</p>
+
+<p><strong><em>See code above.</em></strong></p>
+
+<p><strong>71</strong>: Creates a loop within the OpenCV() function.</p>
+
+<p><strong>73-81:</strong>Ok, I need to be humble here and say I’m not sure what the <a href="http://en.wikipedia.org/wiki/Cthulhu">Cthulhu’s</a> Kitchen I was doing.  I know<strong>printRx = str(intRx)</strong>is taking the information received from the robot and converting it into a string. <strong>intRx</strong>is as a global variable and it is loaded with robot data at line 326.<strong>headingDeg = printRx</strong>is moving the heading data from one variable to another; the idea here was if I wanted more information to come from the robot besides the compass heading it would come in through<strong>printRx</strong>, then I could chop it up and load it into variables respective to their purpose.</p>
+
+<p>For instance, printRx.split(“,”) should give a list of strings based on how many commas are currently held within printRx.</p>
+
+<p><strong>printRx = “2, 23, 88”
+ compass, sonar, battery_life = printRx.split(“,”)</strong></p>
+
+<p>Now,</p>
+
+<p><strong>compass = 2
+ sonar = 23
+ battery_life = 88</strong></p>
+
+<p>But the part that confuses me is I turn right back around and convert the string back to an integer?  I’m not sure, guys.  I might have Southpark while coding again.</p>
+
+<p>At the end of that poor coding we end up with two variables to use:<strong>intHeadingDeg</strong> and<strong>headingDeg.</strong>We the integer<strong>intHeadingDeg</strong> to do any calculations that involve the robot’s heading.  The other,<strong>headingDeg</strong>, is to print the robot’s heading to the screen, which is done at line 263.</p>
+
+<p><strong>84-85:</strong>These are string variables that will will hold the “Target Locked X” or “Target Locked Y” if we are tracking the robot.  These strings are needed so we can print this to the screen on line 259-260.</p>
+
+<p><strong><em>See code above.</em></strong></p>
+
+<p>We’re in the meat now.</p>
+
+<p><strong>88:</strong> This increments our frame counter.</p>
+
+<p><strong>91:</strong>We read a single frame from the webcam we declared, cap, at line 44.</p>
+
+<p><strong>OPENCV!</strong>Sorry, I just love it so much.</p>
+
+<p>So, by now you know I’ve not read the OpenCV manual.  And please don’t tell me, “What! Go <a href="http://en.wikipedia.org/wiki/RTFM">RTFM</a>!”  You go RTFM! I’ve got a wife, kid, and a job I love.  I’m just going to tinker with crap and get it to work. But this attitude will begin to show as we go through the OpenCV calls, since I don’t know their inner working.  Instead, I’m going to offer my best guess, and as always, if someone wants to correct me or offer better explanation, I’ll post and give credit.</p>
+
+<p><strong>94:</strong>This <a href="http://docs.opencv.org/modules/imgproc/doc/filtering.html?highlight=blur#blur">blurs</a> the image we got.  You may say, “But I thought higher resolution was better?” It is.  But jagged edges and color noise are not.  A simple shape is much easier for math of OpenCV to wrap around then a complex one.  Therefore, we blur the image a little, giving us softer edges to deal with.</p>
+
+<p>Also, blur melds colors, so if there are 2 blue pixels and 1 red pixel in a group, then it become 3 blue-purplish pixels.  This has the nifty benefit of speeding up the image processing <em>a lot</em>.  How much? I don’t know I didn’t RTFM.</p>
+
+<p><img src="http://www.instructables.com/files/deriv/F0P/YHO2/HMVJCR4D/F0PYHO2HMVJCR4D.MEDIUM.jpg" alt="" /></p>
+
+<p><strong>97-100:</strong>Our image is converted to a <a href="http://en.wikipedia.org/wiki/Histogram">histogram</a> here.  Having the image in a histogram format allows us to use <a href="http://en.wikipedia.org/wiki/Histogram">comparative statements</a> with it.  What we use it for is to get rid of all the colors except the one we are trying to find.  This will give us a black and white image, the white being only the color we are looking to find.**Line 98 is where your color is defined (it’s the two “np.array”s).</p>
+
+<p>In the next step I’ll go through how to select your robot’s exact color.**</p>
+
+<p><img src="http://www.instructables.com/files/deriv/FYR/K54L/HMVJCR5D/FYRK54LHMVJCR5D.MEDIUM.jpg" alt="" /></p>
+
+<p><strong>103:</strong>Finds the contours of the white area in the resulting image.</p>
+
+<p><img src="http://www.instructables.com/files/deriv/F39/IAO6/HMVJCR94/F39IAO6HMVJCR94.SMALL.jpg" alt="" /></p>
+
+<p><strong>107-112:</strong>OpenCV then counts how many pixels are in each contour it finds in the webcam image.  It assumes whichever has the most white area (aka, “mass”) is our object.</p>
+
+<p><img src="http://www.instructables.com/files/deriv/F9D/UH63/HMVJCRAS/F9DUH63HMVJCRAS.MEDIUM.jpg" alt="" /></p>
+
+<p><strong>114-117:</strong>After we decided which object we want to track, now we need to come up with the centroid coordinates.  That is what lines 115-116 do.  I’ve not done the research on the math there, but I believe it averages the <a href="http://docs.opencv.org/modules/imgproc/doc/structural_analysis_and_shape_descriptors.html?highlight=moments#moments">moments</a> of the polygon and calls the average either centroid X or Y, depending on the calculation.  But, feel free to correct or explain better.</p>
+
+<p><img src="http://www.instructables.com/files/deriv/FMF/JV82/HMVJCRB8/FMFJV82HMVJCRB8.MEDIUM.jpg" alt="" /></p>
+
+<p><strong>121-127:</strong>Here we lock onto the mass we believe is the robot.  It begins by collecting a 150 samples before it will state is tracking the largest mass.  But after it begins to track the largest mass, then we try to stay locked on to it.  This is line 122-127.  In essence, we allow the mass to move enough to be considered a movement by the robot, but not so much that noise (like a stray hand in the webcam image) will cause the tracking to switch off the robot.
+<img src="http://www.instructables.com/files/deriv/FD4/XTKA/HMVJCRKM/FD4XTKAHMVJCRKM.MEDIUM.jpg" alt="" /></p>
+
+<p><strong><em>See code above.</em></strong></p>
+
+<p>This particular line defines what color you are looking for, specifically, the two sets of values:<strong>130, 170, 110 and 190, 190, 200.</strong>  These two values set the lower limit and the upper limit of the color you are looking to find.  The reason we use upper and lower limits, which we’ll call color thresholds, is because our robot will move through different lights.  Different light sources have a tendency to change how the webcam reads the color.</p>
+
+<p>The color format we are using is HSV, which stands for<strong>hue, saturation, value</strong>.  Later, I’ll probably write code to select the robot within our actual program, but for now I use<strong><a href="http://www.gimp.org/downloads/">Gimp</a></strong>and the following method:</p>
+
+<ol>
+  <li>Setup your webcam the in the area you’ll be using, just like you’re ready to control him.</li>
+  <li>Run the webcam program attached in step 10.
+<img src="http://www.instructables.com/files/deriv/FI9/HH9G/HMVJH9RL/FI9HH9GHMVJH9RL.MEDIUM.jpg" alt="" /></li>
+  <li>While the webcam program is watching your robot, hit<strong>Ctrl + Print Screen</strong></li>
+  <li>Open Gimp.</li>
+  <li>Hit Ctrl + V to paste the screen capture into gimp.
+<img src="http://www.instructables.com/files/deriv/FIO/KPUZ/HMVJH9SP/FIOKPUZHMVJH9SP.MEDIUM.jpg" alt="" /></li>
+  <li>Now, find the Color Selector tool.
+<img src="http://www.instructables.com/files/deriv/F4B/HJ1R/HMVJH9U0/F4BHJ1RHMVJH9U0.MEDIUM.jpg" alt="" /></li>
+  <li>Select the main color of your robot.</li>
+  <li>Now double click on the color square on the toolbar.
+<img src="http://www.instructables.com/files/deriv/FM1/ZV3Q/HMVJH9US/FM1ZV3QHMVJH9US.MEDIUM.jpg" alt="" /></li>
+  <li>A window should pop open with color information regarding the color you selected, your robot.
+<img src="http://www.instructables.com/files/deriv/FMC/8T5P/HMVJH9VI/FMC8T5PHMVJH9VI.MEDIUM.jpg" alt="" /></li>
+  <li>Now, the three numbers listed should be close to what we need.  Sadly, we have to convert from Gimp’s HSV number range to OpenCV’s HSV number range.  You see, HSV value range in Gimp is H = 0- 360, S = 0-100, and V = 0-100.  In OpenCV, H = 0-180, S = 0-255, V = 0-255.  So, some conversion needs to take place.</li>
+  <li>From my selection I ended with Gimp numbers of, H: 355, S:50, and V:61.  I could get all fancy and calculate the right numbers, but I figure 180 (OpenCV) is half of 360, so<strong>for my H I just divided by two: 177.</strong>The other two I kinda guess at a little.  I doubled and added 25,<strong>S: 125 and V: 147.</strong></li>
+  <li><strong>In the end, this gave me middle numbers.  But I wanted an upper and lower threshold, so I took each number and subtracted 20 to give me a lower, and added 20 to give me an upper.</strong></li>
+  <li><strong>The result for my robot was:</strong></li>
+</ol>
+
+<p><strong><em>See code above.</em></strong></p>
+
+<p>I’ll try to code a color selector into the program to make this whole damn thing a cinch.</p>
+
+<p>If you’d like to read more, two good posts on Stack Overflow.</p>
+
+<ol>
+  <li><a href="http://stackoverflow.com/questions/10948589/choosing-correct-hsv-values-for-opencv-thresholding-with-inranges">Choosing HSV</a></li>
+  <li><a href="http://stackoverflow.com/questions/14551154/best-way-to-find-hsv-values">Finding HSV in image.</a></li>
+</ol>
+
+<p><strong><em>See code above.</em></strong></p>
+
+<p><strong>132-136:</strong> Here we actually take the running average of the centroids’ X and Y.  We load this into the  variables<strong>cxAvg</strong> and<strong>cyAvg</strong>, again, this is to assure we are tracking the robot.</p>
+
+<p><strong>142-145</strong>: Here the target, or “dot,” for the robot to run after is randomly generated.  As you may notice I restricted the generation area of the dots towards the center of my webcam’s field-of-view.  That’s because I’m messy and dots were going where the little robot couldn’t get.</p>
+
+<p><strong>147-153:</strong>This is a rough collision detection function.  Basically, if the robot gets so close to the target (45px) then it has considered to have “eaten” the dot.  If it did, then the<strong>dot</strong> variable is incremented showing the total amount he’s done ate and the<strong>newTarget</strong> string variable is flipped so it can generate a new target the next run through.</p>
+
+<p><strong><em>See code above.</em></strong></p>
+
+<p><strong>156-177:</strong>Here we are trying to find the angle between the robot and his target.  We basically divide the entire screen up into four quadrants but always using the robot’s centroid as the point of origin.  We then calculate the slope between the target’s X and Y (<strong>tY</strong>,<strong>tX</strong>) and the robot’s X and Y (<strong>cxAvg</strong> and<strong>cyAvg</strong>).</p>
+
+<p><strong>Something like this:</strong><img src="http://www.instructables.com/files/deriv/FAI/LHZV/HMVJCRN2/FAILHZVHMVJCRN2.MEDIUM.jpg" alt="" /></p>
+
+<p>If the target were to be located in the quadrant III, it would go something like this.</p>
+
+<p><img src="http://www.instructables.com/files/deriv/FNO/YR6F/HMVJCSCO/FNOYR6FHMVJCSCO.MEDIUM.jpg" alt="" />
+If you’d like to dig further into <a href="http://docs.python.org/2/library/math.html#trigonometric-functions">Trigonometric Functions</a> in Python, have fun.  Share if you find better math :)</p>
+
+<p><strong><em>See code above.</em></strong></p>
+
+<p><strong>181:</strong>When we find the angle between the robot and the target, then convert it into degrees, it ends up giving us a number which is a <a href="http://en.wikipedia.org/wiki/Floating_point">float</a>. That’s more than we need, so here we convert the float<strong>(</strong><strong>degs)</strong> to and integer<strong>(targetDegs)</strong> so we can compare to the robot’s compass heading.</p>
+
+<p><strong>184:</strong>We declare an empty string called<strong>strTargetDegs</strong>.
+<strong>187:</strong> Then we convert the float<strong>degs</strong> into a string so we can print the target angle onto the screen at line 264.</p>
+
+<p><strong><em>See code above.</em></strong></p>
+
+<p>This is where I need help guys.  My turning code has a bug, so if you find it and come up with a correction I’ll send you a prize.  I dunno? A lint ball? It’d probably be one of my left over circuit boards, or some piece of hardware I hacked together.</p>
+
+<p>But for now, let’s take a look.</p>
+
+<p>The idea is like:</p>
+
+<p><img src="http://www.instructables.com/files/deriv/F2J/HJ9J/HMVJHBLN/F2JHJ9JHMVJHBLN.MEDIUM.jpg" alt="" /></p>
+
+<p>The code is supposed to go as follows:</p>
+
+<p><strong>if target1 = True then:</strong></p>
+
+<p><strong>MoveForward()</strong></p>
+
+<p><strong>elif target2 = True then:</strong></p>
+
+<p><strong>TurnRight()</strong></p>
+
+<p><strong>elif target3 = True then:</strong></p>
+
+<p><strong>TurnLeft()</strong></p>
+
+<p>And for the most part that happens, but occasionally it is dumb and turns left when it should right.  Not sure what I’m doing wrong.  Hey, that “You and me buddy, until the end” is a two-way street. :P</p>
+
+<p>Let’s step through it</p>
+
+<p><strong>195:</strong>We want to make sure we are deep into tracking the robot before we start moving it towards the target.</p>
+
+<p><strong>198:</strong>We compare<strong>intHeadingDeg</strong>, which is the robot’s heading angle, with<strong>targetDegs,</strong> which is the angle between the robot and the target.  But we do this + or - 30º.  This means the robot does not have to have its heading angle <em>exactly</em> the same as the angle to the target it.  It only need to be approximately pointing in the right direction.</p>
+
+<p><strong>199:</strong>The movement code for the robot to go forward is<strong>3</strong>, so here, given the robot is approximately headed in the right direction, we tell the robot to move forward.  This happens by loading<strong>3</strong>into the variable<strong>tranx,</strong> which is transmitted to the robot at line 307.  When this code gets transmitted to my robot, the Arduino code at line 137 tells the<strong>Forward();</strong> function to fire.</p>
+
+<p><strong>202:</strong>If our robot isn’t headed in the right direction, then which way should he turn?</p>
+
+<p>**203-232: **Still debugging here.  I’m sorry guys.  I can tell you this code works “Ok.”  But once I’m done with this tutorial, I’ll go back and focus on making it turn perfect.  Sorry, this code took me two days to right, but this tutorial has taken too many days.</p>
+
+<p>Though, within each of the if statements we have two variable assignments:<strong>tranx = X</strong>and<strong>motorDuration = 10</strong>.  The tranx tells the robot which direction to move and the motorDuration tells it how long to move that way (this is not yet being utilized in my code).</p>
+
+<p><strong><em>See code above.</em></strong></p>
+
+<p>Here, we are drawing every thing to the screen before we show the frame.</p>
+
+<p><strong>242:</strong>Red circle for target.</p>
+
+<p><strong>247:</strong>White box to display black text on.  Note, we are drawing things bottom up.  So, if you want something to have a particular Z level you’ll need to put it towards the top of this section.</p>
+
+<p><strong>250:</strong>This is the green line between the target and our robot.</p>
+
+<p><strong>253-267:</strong>We display all our info here.  Compass heading, target-lock, etc.</p>
+
+<p><strong>270:</strong>This actually shows the color window (the window we wrote everything on).</p>
+
+<p><strong>271:</strong>This shows the HSV copy of the captured frame.  Notice the white area to be assessed as our target.</p>
+
+<p><strong><em>See code above.</em></strong></p>
+
+<p><strong>276:</strong>An if-statement that waits for the ESC to be pressed.  If it gets pressed, we close stuff.</p>
+
+<p><strong>278:</strong>This releases our webcam.</p>
+
+<p><strong>279:</strong>This closes the windows we were displaying the color and HSV frames.</p>
+
+<p><strong>281:</strong>We send the code to stop our robot.  If we don’t do this and we hit the ESC in the middle of a robot movement, that move will continue forever.</p>
+
+<p><strong>282:</strong>Here we closed the serial connection.</p>
+
+<p><strong>283:</strong>We quit.</p>
+
+<p>Towards the beginning of this article I stated my webcam had crappy drivers; well, while writing this I noticed I had placed the<strong>cv2.destroyAllWindows</strong>before<strong>cap.release().</strong> This is what was causing the problem.  My interpretation of this was our camera being sucked into the void where the destroyed windows go.  Anyway, I switched the order and it seems to have solved the problem.</p>
+
+<p><strong><em>See code above.</em></strong></p>
+
+<p>Finally, we are opening our second threaded function.  This function is much smaller than the OpenCV function.  Here all serial communication takes place.</p>
+
+<p><strong>289:</strong>This helps in translating ASCII.</p>
+
+<p><strong>292-296:</strong>Global variables for passing robot information to other threads.</p>
+
+<p><strong><em>See code above.</em></strong></p>
+
+<p><strong>303:</strong>We read information into the variable<strong>rx</strong>. The information is coming from the serial line we opened at the code’s beginning.</p>
+
+<p><strong>307:</strong>This is a flag gate that makes it where our Python code can only send a motor command to the robot if the robot isn’t already in the middle of a movement.</p>
+
+<p><strong>308:</strong>We write whatever value is in<strong>tranx</strong>, which should be loaded with some sort of movement from lines 192-232.</p>
+
+<p><strong>313:</strong>I think I threw this in there so the serial-line would bog down the my code.</p>
+
+<p><strong>316:</strong> We strip the number down to three digits only;remember, this is the compass heading in degrees, e.g,<strong>000-360</strong><strong>º.</strong></p>
+
+<p><strong>319:</strong>When something is sent over serial it gets an end-of-line character. We don’t want that.</p>
+
+<p><strong>323:</strong>The robot collected this number from a compass, which gave a number with a decimal involved.  This removes the decimal so we are only dealing with whole numbers.</p>
+
+<p><strong>326-329:</strong>I’m not sure what I was doing here, I think it had to do with the oddities of zero.  Eh.  I’ll try to remember.</p>
+
+<p><strong><em>See code above.</em></strong></p>
+
+<p>This is a short threaded function.  It only really has one job, to control how long the motors on the robot stay on.  It works like this, if we send the robot a message to move forward, it continues to do so until line<strong>341. **There, the command to stop is sent to the robot and the</strong>motorBusy** flag is set back to “No” meaning the motor is ready to be used again.</p>
+
+<p><strong>340:</strong>This sets how long the motor will stay on.  For instance, if it were changed to<strong>sleep(1)</strong> the robot’s motor would continue in the direction they were told for 1 second.</p>
+
+<p><strong>342:</strong>This makes the robot wait in between movements.  In theory, this was meant to ensure OpenCV could keep up with the little guy.  So, if you have a fast robot, you might set this higher.</p>
+
+<p><strong><em>See code above.</em></strong></p>
+
+<p>Ok.<strong>Code’s End.</strong></p>
+
+<p>This bit starts all three threads:<strong>OpenCV</strong>,<strong>rxtx</strong>, and<strong>motorTimer.</strong></p>
+
+<p>And here is my poor attempt to explain Python threading.  Most Python code is run sequentially; the order it comes is the order it is executed.  One problem is timing.  If we have to cause a delay in code, then the<strong>whole program</strong> has to pause.  Threading allows us to get around this.  I see it like a juggler performing that trick where he keeps all the balls going in one hand, while he holds one ball still in his other.  I dunno, just how I see it.</p>
+
+<p><img src="http://www.instructables.com/files/deriv/FGS/GBQ0/HMVJHBGS/FGSGBQ0HMVJHBGS.SMALL.jpg" alt="" />
+Well, like I said,<strong>“You and me, buddy, until the end.” **And here we are.  The end.</strong></p>
+
+<p>I hope this code has been helpful.  But do know, you’re not alone.</p>
+
+<p><strong>cthomasbrittain@hotmail.com</strong></p>
+
+<p>Skype: thomas_ladvien**</p>
+
+<p>Skype or email me if you have any questions. Likewise, all that crap I did a poor job explaining, coding, writing, just shoot me an email and I’ll fix it.</p>
+
+<p>I still want to develop this into a Swarmie platform; so you might keep an eye out on <a href="http://www.letsmakerobots.com">www.letsmakerobots.com</a> since I’ll post my unfinished work there.  Alright, I’m off to work on the 8th iteration of my Swarmie…ugh.</p>
+:ET

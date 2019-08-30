@@ -1,0 +1,172 @@
+I"�7<p>One of the issues I’ve had in the past with the Lumi projects is manageable UI.  The project will start out pretty straight foward, but soon, I’m switching between device types, checking if hardware is ready, and routing callbacks based upon the device selected.  It becomes spaghetti code quick.  On Lumi4, I’ve decided to bite the bullet and implement <a href="https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93viewmodel">MVVM</a>.</p>
+
+<p>After about 20 hours struggling with setting up Lumi4 as an MVVM project I’ve dervied two conclusions:</p>
+
+<ol>
+  <li>It’s possible</li>
+  <li>Apple spoils developers with MVC baked into Xcode</li>
+</ol>
+
+<p>MVVM in C# and UWP isn’t simple.  It seems like there is a lot more boiler-plate coding necessary for MVVM than MVC in Xcode.  Eventually, I broke down and downloaded the NuGet package <a href="https://github.com/PrismLibrary/Prism">Prism</a>, as a MVVM helper.  This helped alleviate some of the code necesssary for Commanding (which I still don’t understand well enough to implement without Prism). </p>
+
+<p>Below I’m going to take a look at a couple of controls I’ve written MVVM on.  Finding documentation for MVVM in <a href="https://en.wikipedia.org/wiki/Universal_Windows_Platform">Universal Windows Plateform</a> (UWP) is tricky.  It is similar to XamarinForms and WPF, but overall, there are syntax differences which make generalizing the documentation difficult.</p>
+
+<p>First though, here’s how I structured my project:</p>
+
+<p>*MainPage.xaml = View
+*MainViewViewModel = ViewModel
+*[Not Yet Written] = Model</p>
+
+<p>Below is some code for a couple of UI controls.</p>
+
+<p>First, taking a look at the four text boxes which will hold the network IDs and host IDs the user is to type in:</p>
+
+<p>MainPage.xaml</p>
+
+<figure class="highlight"><pre><code class="language-xaml" data-lang="xaml">    ....
+    &lt;TextBox x:Name="NetworkIDOne" Text="{Binding HostIDOne, Mode=TwoWay}" VerticalAlignment="Center" HorizontalAlignment="Stretch" TextAlignment="Center" Grid.Column="1"/&gt;
+    &lt;TextBox x:Name="NetworkIDTwo" Text="{Binding HostIDTwo, Mode=TwoWay}" VerticalAlignment="Center" HorizontalAlignment="Stretch" TextAlignment="Center" Grid.Column="2"/&gt;
+    &lt;TextBox x:Name="HostIDOne" Text="{Binding NetworkIDOne, Mode=TwoWay}" VerticalAlignment="Center" HorizontalAlignment="Stretch" TextAlignment="Center" Grid.Column="3"/&gt;
+    &lt;TextBox x:Name="HostIDTwo" Text="{Binding NetworkIDTwo, Mode=TwoWay}" VerticalAlignment="Center" HorizontalAlignment="Stretch" TextAlignment="Center" Grid.Column="4"/&gt;
+    ....</code></pre></figure>
+
+<p>This sets up the binding to the variables HostIDOne, HostIDTwo, NetworkIDOne, NetworkIDTwo.  However, there’s plenty more boilerplate code before things start working. </p>
+
+<p>To setup a ViewModel it’s best to setup an abstract class which can be inherited.  This saves on creating boilerplate.  Below is the abstract class the internet told me to make:</p>
+
+<p>MainViewModelBase.cs</p>
+
+<figure class="highlight"><pre><code class="language-csharp" data-lang="csharp">    <span class="k">public</span> <span class="k">abstract</span> <span class="k">class</span> <span class="nc">MainViewModelBase</span> <span class="p">:</span> <span class="n">INotifyPropertyChanged</span>
+    <span class="p">{</span>
+    	<span class="k">public</span> <span class="k">event</span> <span class="n">PropertyChangedEventHandler</span> <span class="n">PropertyChanged</span><span class="p">;</span>
+    	<span class="k">protected</span> <span class="k">virtual</span> <span class="k">void</span> <span class="nf">OnPropertyChanged</span><span class="p">(</span><span class="kt">string</span> <span class="n">propertyName</span><span class="p">)</span>
+    	<span class="p">{</span>
+    		<span class="k">this</span><span class="p">.</span><span class="n">PropertyChanged</span><span class="p">?.</span><span class="nf">Invoke</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="k">new</span> <span class="nf">PropertyChangedEventArgs</span><span class="p">(</span><span class="n">propertyName</span><span class="p">));</span>
+    	<span class="p">}</span>
+    <span class="p">}</span></code></pre></figure>
+
+<p>This code handles the property changing notification for all properties declared in classes which inherit from the MainViewModelBase.  Such as the MainViewViewModel which is used in Lumi4</p>
+
+<p>MainViewViewModel.cs</p>
+
+<figure class="highlight"><pre><code class="language-csharp" data-lang="csharp">    <span class="p">....</span>
+        <span class="k">public</span> <span class="k">class</span> <span class="nc">MainViewViewModel</span><span class="p">:</span> <span class="n">MainViewModelBase</span>
+        <span class="p">{</span>
+    <span class="p">....</span></code></pre></figure>
+
+<p>Moving on to the actual implementation of the bound text boxes.  Each text box will have a property associated with the string value in the Text attribute.  However, before this will work, the DataContext must be set for the MainPage.xaml.  This is done in the MainPage.xaml.cs file.</p>
+
+<p>MainPage.xaml.cs</p>
+
+<figure class="highlight"><pre><code class="language-csharp" data-lang="csharp">    <span class="k">public</span> <span class="nf">MainPage</span><span class="p">()</span>
+    <span class="p">{</span>
+    	<span class="k">this</span><span class="p">.</span><span class="nf">InitializeComponent</span><span class="p">();</span>
+    	<span class="n">DataContext</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Lumi4App</span><span class="p">.</span><span class="n">ViewModels</span><span class="p">.</span><span class="nf">MainViewViewModel</span><span class="p">();</span></code></pre></figure>
+
+<p>(I told you it was a lot of work to setup.  Well, compared to Xcode’s MVC.)</p>
+
+<p>Ok, everything should be in place, time to implement the bound properties.  In the MainViewViewModel I’ve the following code:</p>
+
+<figure class="highlight"><pre><code class="language-csharp" data-lang="csharp">    <span class="k">private</span> <span class="kt">string</span> <span class="n">_HostIDOne</span><span class="p">;</span>
+    <span class="k">public</span> <span class="kt">string</span> <span class="n">HostIDOne</span>
+    <span class="p">{</span>
+    	<span class="k">get</span> <span class="p">{</span> <span class="k">return</span> <span class="n">_HostIDOne</span><span class="p">;</span> <span class="p">}</span>
+    	<span class="k">set</span> <span class="p">{</span>
+    		<span class="k">if</span> <span class="p">(</span><span class="n">_HostIDOne</span> <span class="p">!=</span> <span class="k">value</span><span class="p">)</span>
+    		<span class="p">{</span>
+    			<span class="n">_HostIDOne</span> <span class="p">=</span> <span class="k">value</span><span class="p">;</span>
+    		<span class="p">}</span>
+    	<span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">private</span> <span class="kt">string</span> <span class="n">_HostIDTwo</span><span class="p">;</span>
+    <span class="k">public</span> <span class="kt">string</span> <span class="n">HostIDTwo</span>
+    <span class="p">{</span>
+    	<span class="k">get</span> <span class="p">{</span> <span class="k">return</span> <span class="n">_HostIDTwo</span><span class="p">;</span> <span class="p">}</span>
+    	<span class="k">set</span> <span class="p">{</span>
+    		<span class="k">if</span> <span class="p">(</span><span class="n">_HostIDTwo</span> <span class="p">!=</span> <span class="k">value</span><span class="p">)</span>
+    		<span class="p">{</span>
+    			<span class="n">_HostIDTwo</span> <span class="p">=</span> <span class="k">value</span><span class="p">;</span>
+    		<span class="p">}</span>
+    	<span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">private</span> <span class="kt">string</span> <span class="n">_NetworkIDOne</span><span class="p">;</span>
+    <span class="k">public</span> <span class="kt">string</span> <span class="n">NetworkIDOne</span>
+    <span class="p">{</span>
+    	<span class="k">get</span> <span class="p">{</span> <span class="k">return</span> <span class="n">_NetworkIDOne</span><span class="p">;</span> <span class="p">}</span>
+    	<span class="k">set</span> <span class="p">{</span>
+    		<span class="k">if</span> <span class="p">(</span><span class="n">_NetworkIDOne</span> <span class="p">!=</span> <span class="k">value</span><span class="p">)</span>
+    		<span class="p">{</span>
+    			<span class="n">_NetworkIDOne</span> <span class="p">=</span> <span class="k">value</span><span class="p">;</span>
+    		<span class="p">}</span>
+    	<span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">private</span> <span class="kt">string</span> <span class="n">_NetworkIDTwo</span><span class="p">;</span>
+    <span class="k">public</span> <span class="kt">string</span> <span class="n">NetworkIDTwo</span>
+    <span class="p">{</span>
+    	<span class="k">get</span> <span class="p">{</span> <span class="k">return</span> <span class="n">_NetworkIDTwo</span><span class="p">;</span> <span class="p">}</span>
+    	<span class="k">set</span> <span class="p">{</span>
+    		<span class="k">if</span> <span class="p">(</span><span class="n">_NetworkIDTwo</span> <span class="p">!=</span> <span class="k">value</span><span class="p">)</span>
+    		<span class="p">{</span>
+    			<span class="n">_NetworkIDTwo</span> <span class="p">=</span> <span class="k">value</span><span class="p">;</span>
+    		<span class="p">}</span>
+    	<span class="p">}</span>
+    <span class="p">}</span>
+    </code></pre></figure>
+
+<p>The if statement under the setter checks if the value about to be set is the same as the value is currently.  Note, there is a helper in Prism which will prevent one from having to rewrite this for every attribute.  However, I implemented the above code before I downloaded Prism and decided to write this article while it was still fresh in my mind.  I’ll probably correct these to use the Prism helper before moving.</p>
+
+<p>The code so far should allow for the properties setter to be called whenever the user types something in one of the four textboxes. On caveat, it seems the setter is not called until the user removes focus from the textbox.  I’ll probably need to change the binding of the properties, but for now, it works well enough.</p>
+
+<p>Well, this is all fine and gone, but what about Commands such as Button Click Events?  Pretty simple, but with more boilerplate code.</p>
+
+<p>First, bind to the command in the View</p>
+
+<p>MainPage.xaml</p>
+
+<figure class="highlight"><pre><code class="language-xaml" data-lang="xaml">    &lt;Button x:Name="Search" Command="{Binding SearchCommand, Mode=TwoWay}" Padding="2" &gt;</code></pre></figure>
+
+<p>  Next, and this is the part I don’t understand without Prism helping, there needs to be a delegate which will fire an event whenever the commad is called.  In Prism there is the DelegateCommand type which takes care of a lot of the work.  The DelegateCommand has to be initialized with two event handlers CanExecute and Execute.  These methods will be called in that order every time the DelegateCommand property is accessed.</p>
+
+<p>MainViewViewModel.cs</p>
+
+<figure class="highlight"><pre><code class="language-csharp" data-lang="csharp">    <span class="k">public</span> <span class="n">DelegateCommand</span> <span class="n">SearchCommand</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+    <span class="k">private</span> <span class="kt">bool</span> <span class="nf">SearchCanExecute</span><span class="p">()</span>
+    <span class="p">{</span>
+    	<span class="k">return</span> <span class="p">(</span><span class="n">CentralDeviceTypeSelected</span> <span class="p">==</span> <span class="n">CentralDeviceType</span><span class="p">.</span><span class="n">Http</span><span class="p">)</span> <span class="p">?</span> <span class="k">true</span> <span class="p">:</span> <span class="k">false</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">private</span> <span class="k">void</span> <span class="nf">SearchExecute</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="p">[</span><span class="n">Add</span> <span class="n">Code</span> <span class="n">to</span> <span class="n">Do</span> <span class="n">Stuff</span> <span class="n">when</span> <span class="n">the</span> <span class="n">Search</span> <span class="n">Button</span> <span class="k">is</span> <span class="n">pressed</span> <span class="n">here</span><span class="p">]</span>
+    <span class="p">}</span>
+
+    <span class="p">....</span>
+
+    <span class="k">public</span> <span class="nf">MainViewViewModel</span><span class="p">()</span>
+    <span class="p">{</span>
+    	<span class="n">SearchCommand</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">DelegateCommand</span><span class="p">(</span><span class="n">SearchExecute</span><span class="p">,</span> <span class="n">SearchCanExecute</span><span class="p">);</span>
+    <span class="p">}</span></code></pre></figure>
+
+<p>And that’s it for now.  Had to make sure I jotted down my notes while the challenge was still fresh in my head.</p>
+
+<p>Update: 4-16-2017</p>
+
+<p>Apparently, a Prism ViewModel should inherit from BindableBase instead of the custom ViewModelBase the internet told me to write.  Also, to get the prismProp code snippet it looks like you have to download the Prism template packet:</p>
+
+<p>*<a href="https://marketplace.visualstudio.com/items?itemName=BrianLagunas.PrismTemplatePack">Prism Templates</a></p>
+
+<p>And the intellisense phrase for the PrismProperty is “pprop”.</p>
+
+<p>Also, Brian Laguna (maintainer of Prism) has a video using Prism 6:</p>
+
+<p>*<a href="https://www.youtube.com/watch?v=ZfBy2nfykqY">MVVM Made Simple with Prism</a></p>
+
+<p>Oh, and to make Prism work you need to get NuGet packages:</p>
+
+<ol>
+  <li>Prism.Core</li>
+  <li>Prism.Windows (contains ViewModelLocator)</li>
+</ol>
+:ET

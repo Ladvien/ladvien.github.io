@@ -1,0 +1,74 @@
+I"�<p>I bought a few Raspberry Pi Zero W’s for $10.  It was happenstance I also purchased the Udemy course Learn Ethical Hacking from Scratch.  I figure, I might as well put these things together.</p>
+
+<ul>
+  <li><a href="https://www.raspberrypi.org/products/raspberry-pi-zero-w/">Raspberry Pi Zero W</a></li>
+  <li><a href="https://www.udemy.com/learn-ethical-hacking-from-scratch/">Learn Ethical Hacking from Scratch</a></li>
+</ul>
+
+<p>I also discovered the Sticky Fingers Kali Pi kernel and distros put together by Re4son.</p>
+
+<ul>
+  <li><a href="https://whitedome.com.au/re4son/sticky-fingers-kali-pi/">Kali Pi</a></li>
+</ul>
+
+<p>It has worked well so far.  However, I’ve not fully tested the Bluetooth LE hardware on the custom kernel.</p>
+
+<p>One of the issues I’ve had is not being able to connect to new hotspots headlessly.  Usually, you’d boot the rp0w connected to a monitor, keyboard, mouse, and edit wpa_supplicant.conf directly.  But what if you want to go into a new location with only your laptop and the rp0w.  How would you add the wifi credentials to the rp0w without a monitor, etc.</p>
+
+<p>For awhile, I tried to get the ethernet gadget setup to work on the rp0w without any luck.  I think the problems relates to trying to use the gadget hardware on a Mac rather than a Windows machine.</p>
+
+<p>In the end, I decided I would add a script which would do the following:</p>
+
+<ol>
+  <li>Mount the /boot partition (which is editable through PC’s SD card reader).</li>
+  <li>Look for a file on the /boot called “wpa_supplicant.txt” and copy it to the /etc/wpa_supplicant.conf</li>
+  <li>Look for a file on the /boot called “interfaces.txt” and copy it to the /etc/networks/interfaces</li>
+  <li>Unmount /boot</li>
+  <li>Remove the /boot directory</li>
+</ol>
+
+<p>I saved this script in <code class="highlighter-rouge">/root</code> as <code class="highlighter-rouge">wifi_setup.sh</code>.  I then added a call to it in <code class="highlighter-rouge">/etc/rc.local</code></p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c">#!/bin/sh -e</span>
+<span class="c">#</span>
+<span class="c"># rc.local</span>
+<span class="c">#</span>
+<span class="c"># This script is executed at the end of each multiuser runlevel.</span>
+<span class="c"># Make sure that the script will "exit 0" on success or any other</span>
+<span class="c"># value on error.</span>
+<span class="c">#</span>
+<span class="c"># In order to enable or disable this script just change the execution</span>
+<span class="c"># bits.</span>
+<span class="c">#</span>
+<span class="c"># By default this script does nothing.</span>
+/root/wifi_setup.sh <span class="o">||</span> <span class="nb">exit </span>1
+<span class="nb">exit </span>0</code></pre></figure>
+
+<p>Here’s the <code class="highlighter-rouge">wifi_setup.sh</code></p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c">#!/bin/bash</span>
+
+<span class="k">if</span> <span class="o">[</span> <span class="o">!</span> <span class="nt">-d</span> <span class="s2">"/boot"</span> <span class="o">]</span><span class="p">;</span> <span class="k">then
+        </span><span class="nb">echo</span> <span class="s1">'Mounting /boot'</span>
+        <span class="nb">cd</span> ..
+        <span class="nb">mkdir</span> /boot
+        mount /dev/mmcblk0p1 /boot
+<span class="k">fi
+
+if</span> <span class="o">[</span> <span class="nt">-f</span> <span class="s2">"/boot/wpa_supplicant.txt"</span> <span class="o">]</span><span class="p">;</span> <span class="k">then
+        </span><span class="nb">echo</span> <span class="s1">'Applying wpa_supplicant'</span>
+        <span class="nb">cp</span> /boot/wpa_supplicant.txt /etc/wpa_supplicant.conf
+        <span class="nb">mv</span> /boot/wpa_supplicant.txt /boot/wpa_supplicant.applied.txt
+<span class="k">fi
+
+if</span> <span class="o">[</span> <span class="nt">-f</span> <span class="s2">"/boot/interfaces.txt"</span> <span class="o">]</span><span class="p">;</span> <span class="k">then
+        </span><span class="nb">echo</span> <span class="s1">'Applying intefaces'</span>
+        <span class="nb">cp</span> /boot/interfaces.txt /etc/network/interfaces
+        <span class="nb">mv</span> /boot/interfaces.txt /boot/interfaces.applied
+<span class="k">fi
+
+</span>umount /boot
+<span class="nb">rm</span> <span class="nt">-r</span> /boot</code></pre></figure>
+
+<p>This has let me add a new network from my laptop with merely an SD card reader.</p>
+:ET

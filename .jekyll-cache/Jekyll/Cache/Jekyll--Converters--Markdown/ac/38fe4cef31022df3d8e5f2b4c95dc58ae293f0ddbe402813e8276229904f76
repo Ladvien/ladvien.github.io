@@ -1,0 +1,212 @@
+I"�B<p>Originally posted on <a href="www.letsmakerobots.com">www.letsmakerobots.com</a></p>
+
+<p><a class="btn" href="/files/Arduino_to_ATtiny_85__through_I2C_2_4.zip" target="">Code</a></p>
+
+<div class="flex-video">
+<iframe width="560" height="315" src="https://www.youtube.com/embed/gxLbelXcy1I" frameborder="0" allowfullscreen=""></iframe>
+</div>
+
+<p>UPDATE: Added info on making SPI programming jig (makes life a lot easier).</p>
+
+<p>UPDATE: Added ATtiny 84 info (though, the post is meant for the ATtiny 85).</p>
+
+<p>I’ve been non-traditional microcontroller curious for a bit.  Then, I had to put a Digi-Key order together for some real cheap stupid stuff (some SOT-23 N-Channels for the LiPo charger circuit) and I thought, “What the hell, let’s order some ATTiny 85s.”  Being cheap like I am, I ordered SMD:</p>
+
+<ul>
+  <li><a href="http://www.digikey.com/product-search/en?pv7=2&amp;k=ATTINY85-20SU-ND&amp;mnonly=0&amp;newproducts=0&amp;ColumnSort=0&amp;page=1&amp;quantity=0&amp;ptm=0&amp;fid=0&amp;pageSize=25">ATTiny 85 – SOIC-8</a> ($1.25 each)</li>
+</ul>
+
+<p>I then ran over to OSHPark and made a little breakout for it:</p>
+
+<ul>
+  <li><a href="http://www.oshpark.com/shared_projectss/lcmVFzMW">ATTiny 85 – SOIC-8 Breakout board</a> ($.85 for 3, $.28 each)</li>
+  <li><a href="http://www.oshpark.com/shared_projectss/MBPvF8Qb">ATtiny 84 – SOIC-14 Breakout board with pogo-pin header</a> ($1.85 for 3).</li>
+</ul>
+
+<p>This brought the <strong>price for one ATTiny 85 board to $1.53 each</strong>.  This is great, since the ATTiny 85 has an internal oscillator up to  8mhz, allowing it run <strong>without any passives</strong>.</p>
+
+<p><img src="../images/IMG_9166.jpg" alt="" /></p>
+
+<p>I was pretty excited the day they came in.  I soldered them together, put some headers on them, and tossed them into a bread board.  I switched over to Goggle and searched how to program these little guys.  The first article I hit was the one I eventually used, I just warn you, dear reader, read careful not to miss the bit about ignoring the error.  Personally, like the dumb-arse I am, programmed my first little ATtiny 85 a hundred times thinking it wasn’t working before I caught the caveat in the instructable:</p>
+
+<p><strong>“It should give the following error twice: avrdude: please define PAGEL and BS2 signals in the configuration file for part ATtiny 85”</strong></p>
+
+<p><strong>This error means you programmed it successfully.</strong></p>
+
+<p>But you all probably got that.</p>
+
+<ul>
+  <li><a href="http://www.instructables.com/id/Program-an-ATtiny-with-Arduino/">Program an ATtiny 85 with an Arduino</a></li>
+  <li><a href="http://www.instructables.com/id/Using-the-Arduino-Uno-to-program-ATTINY84-20PU/">Program an ATtiny 84 with an Arduino</a></li>
+</ul>
+
+<p>The easiest way to get going with I2C with the ATtiny 85 is using the TinyWireS and TinyWireM <a href="http://playground.arduino.cc/Code/USIi2c">libraries for Arduino</a>.</p>
+
+<ul>
+  <li><a href="https://github.com/rambo/TinyWire">TinyWireS</a> (this is Rambo’s library, he updated the original with onRequest, onReceive functions)</li>
+  <li><a href="http://playground.arduino.cc/uploads/Code/TinyWireM.zip">TinyWireM</a></li>
+</ul>
+
+<p>To get the ATtiny 84 to work you’ll need to add support:</p>
+
+<ul>
+  <li><a href="https://github.com/svoisen/TinyWire">TineWireS</a> (supporting ATtiny 84)</li>
+</ul>
+
+<p>They were developed to be comparable to the Wire library for Arduino.  To install them, just unzip them and place them in your Arduino libraries folder (e.g., C:\Program Files\Arduino\libraries).</p>
+
+<p><img src="http://1.bp.blogspot.com/-M8q0dmQhFV0/UWjmvcASNbI/AAAAAAAADJc/RCWiUSKbc4Q/s1600/attiny_pinout.jpg" alt="" /></p>
+
+<p><a href="http://www.ledsandchips.com/upload/cards/attiny.jpg">(Here’s the pinoutfor the ATtiny 84</a>)</p>
+
+<p>The I2C connections are pretty straight forward:</p>
+
+<ul>
+  <li><strong>Arduino SDA</strong> &lt;— 4.7k Resistor Tied to 5v —-&gt; <strong>ATtiny 85 – PB0</strong></li>
+  <li><strong>Arduino SCL</strong> &lt;— 4.7k Resistor Tied to 5v —-&gt; <strong>ATtiny 85 – PB3</strong></li>
+  <li><strong>ATtiny 85 – PB1</strong> &lt;— 330 Resistor —- LED —- &gt; <strong>GND</strong></li>
+</ul>
+
+<p>Below is code meant to demonstrate the purpose of this projects.  It sets the ATtiny 85 as an I2C slave.  It receives data over the I2C line, parses it into an integer, then writes this value of the integer to pin 1 (PB1).</p>
+
+<figure class="highlight"><pre><code class="language-c" data-lang="c"><span class="c1">// the 7-bit address (remember to change this when adapting this example)</span>
+<span class="cp">#define I2C_SLAVE_ADDRESS 0x4
+</span>
+<span class="c1">// Get this from https://github.com/rambo/TinyWire</span>
+<span class="cp">#include &lt;TinyWireS.h&gt;
+</span>
+<span class="c1">// The default buffer size, Can't recall the scope of defines right now</span>
+<span class="cp">#ifndef TWI_RX_BUFFER_SIZE
+#define TWI_RX_BUFFER_SIZE ( 16 )
+#endif
+</span>
+<span class="c1">//Character variable used to echo data back.</span>
+<span class="kt">char</span> <span class="n">chrSendData</span><span class="p">;</span>
+
+<span class="c1">//Variables used in getting and parsing data.</span>
+<span class="kt">char</span> <span class="n">rxChrData</span><span class="p">;</span> <span class="c1">//Receives the data.</span>
+<span class="kt">char</span> <span class="n">rxString</span><span class="p">[</span><span class="mi">12</span><span class="p">];</span>  <span class="c1">//Varbiable for holding one string of data.</span>
+<span class="kt">int</span> <span class="n">rxIndex</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="c1">//Used to index rxString.</span>
+
+<span class="c1">//Integer for holding the pwm value received from master.</span>
+<span class="kt">int</span> <span class="n">pwmValA</span><span class="p">;</span>
+
+<span class="kt">void</span> <span class="nf">requestEvent</span><span class="p">(){</span>  
+  <span class="n">TinyWireS</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="n">chrSendData</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="c1">//Handles receiving i2c data.</span>
+<span class="kt">void</span> <span class="nf">receiveEvent</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="n">howMany</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">TinyWireS</span><span class="p">.</span><span class="n">available</span><span class="p">()){</span>  
+      <span class="k">if</span> <span class="p">(</span><span class="n">howMany</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">)</span>
+      <span class="p">{</span>   <span class="c1">// Sanity-check</span>
+          <span class="k">return</span><span class="p">;</span>
+      <span class="p">}</span>
+      <span class="k">if</span> <span class="p">(</span><span class="n">howMany</span> <span class="o">&gt;</span> <span class="n">TWI_RX_BUFFER_SIZE</span><span class="p">)</span>
+      <span class="p">{</span>   <span class="c1">// Also insane number</span>
+          <span class="k">return</span><span class="p">;</span>
+      <span class="p">}</span>
+
+      <span class="n">howMany</span><span class="o">--</span><span class="p">;</span>
+      <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">howMany</span><span class="p">)</span>
+      <span class="p">{</span>   <span class="c1">// This write was only to set the buffer for next read</span>
+          <span class="k">return</span><span class="p">;</span>
+      <span class="p">}</span>
+      <span class="k">while</span><span class="p">(</span><span class="n">howMany</span><span class="o">--</span><span class="p">)</span>
+      <span class="p">{</span>   <span class="c1">//Gets i2c data.</span>
+          <span class="n">rxChrData</span> <span class="o">=</span> <span class="n">TinyWireS</span><span class="p">.</span><span class="n">receive</span><span class="p">();</span>
+          <span class="c1">//Places the characters in an array one at a time.</span>
+          <span class="n">rxString</span><span class="p">[</span><span class="n">rxIndex</span><span class="p">]</span> <span class="o">=</span> <span class="kt">char</span><span class="p">(</span><span class="n">rxChrData</span><span class="p">);</span>
+          <span class="c1">//Increment the data array.</span>
+          <span class="n">rxIndex</span><span class="o">++</span><span class="p">;</span>
+          <span class="c1">//If a stop character is read, parse the char array and convert it to a single integer.  </span>
+          <span class="k">if</span> <span class="p">(</span><span class="n">rxChrData</span> <span class="o">==</span> <span class="sc">':'</span><span class="p">){</span>
+              <span class="c1">//This is a low memory form of parsing the char array into an intger</span>
+              <span class="n">pwmValA</span> <span class="o">=</span> <span class="kt">int</span><span class="p">(</span><span class="mi">100</span><span class="o">*</span><span class="n">rxString</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">+</span><span class="mi">10</span><span class="o">*</span><span class="n">rxString</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">+</span><span class="n">rxString</span><span class="p">[</span><span class="mi">4</span><span class="p">]);</span>
+              <span class="c1">//Prints the parsed value.</span>
+              <span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="n">pwmValA</span><span class="p">);</span>
+              <span class="c1">//Writes the parsed value to pin 1 (PB1).</span>
+              <span class="n">analogWrite</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">pwmValA</span><span class="p">);</span>
+              <span class="c1">//Resets the char array index.</span>
+              <span class="n">rxIndex</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>  
+         <span class="p">}</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">setup</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">Serial</span><span class="p">.</span><span class="n">begin</span><span class="p">(</span><span class="mi">9600</span><span class="p">);</span>
+    <span class="n">pinMode</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">OUTPUT</span><span class="p">);</span> <span class="c1">// OC1A, also The only HW-PWM -pin supported by the tiny core analogWrite</span>
+    <span class="n">TinyWireS</span><span class="p">.</span><span class="n">begin</span><span class="p">(</span><span class="n">I2C_SLAVE_ADDRESS</span><span class="p">);</span>
+    <span class="c1">//Sets up the onReceive function (what we do if we get stuff).</span>
+    <span class="n">TinyWireS</span><span class="p">.</span><span class="n">onReceive</span><span class="p">(</span><span class="n">receiveEvent</span><span class="p">);</span>
+    <span class="c1">//Sets up the onRequest function (what we do if asked to send something).</span>
+    <span class="n">TinyWireS</span><span class="p">.</span><span class="n">onRequest</span><span class="p">(</span><span class="n">requestEvent</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">loop</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="c1">//Detects a stop sending command.</span>
+<span class="n">TinyWireS_stop_check</span><span class="p">();</span>
+
+<span class="c1">//Puts the data we got into a variable to send back for error checking.</span>
+<span class="n">chrSendData</span> <span class="o">=</span> <span class="kt">char</span><span class="p">(</span><span class="n">rxChrData</span><span class="p">);</span>
+
+<span class="p">}</span></code></pre></figure>
+
+<p>I’ve also included the code I used on my Arduino Mega, which was setup as the master.</p>
+
+<p>Your setup <strong>should not look like this :P</strong></p>
+
+<p><img src="../images/IMG_9163.jpg" alt="" /></p>
+
+<p>I’ve got several ideas I’d like to attempt with this setup.  But, it is somewhat silly.  The I2C reduces the ATtiny 85 to four pins.  But one of those is the reset pin (PB5), so really, only 3 usable pins.</p>
+
+<p>Before I started working with the Tiny I was lurking in the shoutbox and oversaw <a href="http://letsmakerobots.com/user/18840">Protowrx</a> chatting about making an ATtiny into a serially controlled motor driver.  So, I set to it.  I had chosen I2C because I wanted to make a setup like the <a href="http://dlnmh9ip6v2uc.cloudfront.net/datasheets/BreakoutBoards/drv8830.pdf">DRV8830</a> (Spark fun has a <a href="https://www.sparkfun.com/products/11890">breakout</a>). Of course, like the numbskull I am I didn’t do the simple math before sinking hours into interfacing with a chip.</p>
+
+<p>Most H-Bridge ICs require three pins a motor.  Two digital pins for direction and one for PWM.  Even cheaping out and using one PWM pin for both motors, that’s still five.  _And…_the ATtiny 85 has 8 pins.  1 x Power, 1 x Ground, 2 x I2C line, which leaves us with….<strong>4 pins.</strong> Oh wait! One of those is the reset pin and cannot be used without losing the ability to program it without an AVR programmer (which I have, but what a pain in the ass).  So! In short, there are 3 usable pins after interfacing with the ATtiny. I’d have done myself a favor if I had <a href="http://www.youtube.com/watch?v=O5ROhf5Soqs">remembered an 80s classic</a>.</p>
+
+<p>Still, I’ve I got it in my head to attempt doing something like this: <a href="http://forum.arduino.cc/index.php?topic=133833.0">2 Pin HBridge control</a>. Only, tying the PWM line together.  Not having much luck right now (only spent about 20 minutes, wanted to get this typed up before I forgot crap).</p>
+
+<p>Another idea is to use a Software Serial to <a href="http://www.ernstc.dk/arduino/tinycom.html">send one way communication</a> through the serial line.  But it doesn’t make much sense, since 4 pins aren’t much better than 3, given my intentions.</p>
+
+<p>Ok. In conclusion, I’m not sure why I did this.  It really doesn’t make much sense, other than the adventure.  I’m sure it’s one of those things I work out now and I won’t find a use until much later.  The real killer is thinking about how you can buy a full Arduino Pro Mini on the <a href="http://www.ebay.com/itm/Arduino-PRO-MINI-ATMEGA328-5V-16M-MWC-avr328P-Development-Board-/271251071444?pt=LH_DefaultDomain_0&amp;hash=item3f27d2e1d4">eBay</a> for $3.45. A little more than double the cost of an ATtiny 85 but triple the pins and utility.  Eh!</p>
+
+<p><strong>Making a ATtiny Jig:</strong></p>
+
+<p>I hate breadboarding.  Let me admit that.  Mainly, it is having wires everywhere, my little dyslexic brain can’t keep up.  And when I first started working with the ATtiny uCs I found it to be a pain to have to move my little ATtiny’s between my full circuit and the SPI programming circuit.  So, I thought, “Why not make a SMD programming pad and jig interface?”</p>
+
+<p>Well, here is the crude son-of-a-bitch:</p>
+
+<p><img src="../images/IMG_0309.jpg" alt="" />It’s nothing fancy, but it is a time saver.</p>
+
+<p>I put both the interface pads and the jig in my Eagle library.</p>
+
+<p><strong>POGO_PIN_JIG_SPI</strong></p>
+
+<p><strong>POGO_PIN_SPI_PAD</strong></p>
+
+<p><a href="https://github.com/Ladvien/Eagle_Library">Ladvien’s Eagle Library</a></p>
+
+<p>Here is my ATtiny 84 with the pads and the Jig PCB:</p>
+
+<p><a href="http://www.oshpark.com/shared_projectss/BjydrnT8">Jig</a> ($.60</p>
+
+<p><a href="http://www.oshpark.com/shared_projectss/MBPvF8Qb">ATtiny 84 PCB</a> ($1.85)</p>
+
+<p>These are the pogo pins I used:</p>
+
+<p><a href="http://www.ebay.com/itm/151107292577?ssPageName=STRK:MEWNX:IT&amp;_trksid=p3984.m1439.l2649">P100-B1 – 1.36mm diameter</a></p>
+
+<p><img src="../images/IMG_0307.jpg" alt="" /></p>
+
+<p>It was not too hard to put together, I set it up something like this.  Then, it is all about added flux to where the pins meet the PCB and soldering like you would usual header pins.</p>
+
+<p><img src="../images/IMG_0312.jpg" alt="" />And here it is in action.  It surprised the hell out of me, worked exactly like I wanted it.</p>
+
+<p>I’m sure I’ll eventually add some stabilizer bars between the two-PCBs and maybe a guide pin to prevent me from pressing the pins in the wrong holes :(</p>
+
+<p>Still, it is MUCH easier than pulling it from the breadboard and moving it to a new circuit.  Makes me happy.</p>
+:ET

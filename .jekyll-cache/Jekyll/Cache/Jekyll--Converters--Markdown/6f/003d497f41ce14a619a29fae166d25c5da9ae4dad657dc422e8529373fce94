@@ -1,0 +1,78 @@
+I"�<p>Originally posted on <a href="www.letsmakerobots.com">www.letsmakerobots.com</a></p>
+
+<p>UPDATE: August 10th, 2014</p>
+
+<p>I printed a body and added BLE.  I’ll explain tomorrow after I get some rest, but the BLE was to allow me to test directed locomotion.  I’ve also done some feature testing (load-sharing, charging circuit, “hunger” ADC), the board is actually a good design.  Works well.</p>
+
+<p>The BLE is the HM-11, itty-bitty BLE.</p>
+
+<p>My goal is to test the physical and feature designs with the ATtiny84, and when Mr. Bdk6 releases his toolchain for the LPC1114, switch it as the controlling chip.</p>
+
+<p>This is my version of Yahmez’ <a href="http://letsmakerobots.com/node/39306">Baby Bot</a>, the ATtiny84 Y-Baby (YB84).  There are few differences from Yahmez’ version.</p>
+
+<ol>
+  <li>This version uses an ATtiny84.</li>
+  <li>It uses a LIR2032.</li>
+  <li>It has a charge circuit built in, using the MCP73831.  This circuit has load-sharing capability so the baby can “feed” without sleeping.</li>
+  <li>The YB84 has two LED indicators.</li>
+  <li>One pin on the YB84 monitors the battery voltage, so it can tell how “hungry” it is.</li>
+</ol>
+
+<p>This version came about because Yahmez’ Baby Bots were so damn cool I had to copy them.  Here’s the <a href="http://letsmakerobots.com/node/39650">node</a> where I asked permission and added design notes.  Also, I’ve wanted to make a small, cheap, small robot to couple with my <a href="http://letsmakerobots.com/node/38883">Overlord</a> projects in hope to develop an electronic lab-rat.</p>
+
+<p>Here is the BOM:</p>
+
+<ol>
+  <li>1 x <a href="http://www.ebay.com/itm/10-pcs-lot-rechargeable-LIR2032-3-6V-Li-ion-coin-battery-button-battery-/331062082577?pt=US_Rechargeable_Batteries&amp;hash=item4d14d67c11">LIR2032</a> – $.44</li>
+  <li>1 x 1uF 0402 – $.08</li>
+  <li>1 x 4.7uF 0805 – $.10</li>
+  <li>1 x <a href="http://www.mouser.com/ProductDetail/Diodes-Incorporated/B130LAW-7-F/?qs=%2fha2pyFadujUWfJaost%2fO%2fm5EB%2flfSlr7qduYb4tkr4%3d">B130LAW</a> – $.41</li>
+  <li>1 x <a href="http://www.mouser.com/ProductDetail/Diodes-Incorporated/DMP1045U-7/?qs=sGAEpiMZZMshyDBzk1%2fWi1RgPhdS2EhaLQWFAsmm01A%3d">DMP1045U</a> – $..51</li>
+  <li>2 x 3mm IR LED – ?</li>
+  <li>1 x IR RX</li>
+  <li>3 x colorful LED 0603 – $.33</li>
+  <li>2 x <a href="http://www.ebay.com/itm/100pcs-MMBT2222A-MMBT2222-Sot-23-2N2222-SMD-NPN-Transistor-SSY-2310-KDQ6-/360798731492?pt=LH_DefaultDomain_2&amp;hash=item540147bce4">MBT2222A</a> (SOT-23) – $.24</li>
+  <li>1 x 60k Resistor 0402 – $.10</li>
+  <li>1 x 100k Resistor 0402 – $.10</li>
+  <li>5 x 330 Resistor 0402 $.50</li>
+  <li>1 x <a href="http://www.mouser.com/ProductDetail/Microchip-Technology/MCP73831T-2DCI-OT/?qs=sGAEpiMZZMtLck3p7ZBovbAQ8wdoIcbK">MCP73831</a> – $.61</li>
+  <li>1 x <a href="http://www.mouser.com/ProductDetail/Atmel/ATTINY84A-SSU/?qs=sGAEpiMZZMvqv2n3s2xjsUVXpvE2IBMzcgbJdwhGYzI%3d">ATtiny84</a> – $.1.30</li>
+  <li>1 x <a href="http://www.oshpark.com/shared_projectss/DCG21mrl">YB84 PCB</a> –  $1.76</li>
+  <li>2 x <a href="http://www.ebay.com/itm/181121246372?ssPageName=STRK:MEWNX:IT&amp;_trksid=p3984.m1439.l2649">virbation motor</a> – $1.95</li>
+</ol>
+
+<p>Note, I’ve not included the IR receiver or IR transmitters in the BOM.  I’ve not tested the circuit yet, or sourced cheap parts.  But I’m shooting to keep them under $10.</p>
+
+<p>YB84 BOM Total: $7.70</p>
+
+<p><strong>YB84 v_05</strong></p>
+
+<p><img src="../images/IMG_0404_0.jpg" alt="" /></p>
+
+<p>Really, there wasn’t much to developing this little guy, Yahmez had done all the work.  I simply selected an Atmel uC that I felt was cheap enough and provided enough pins to accomplish what I wanted to do with the little guy.  The one problem I had was with the <a href="http://blog.zakkemble.co.uk/a-lithium-battery-charger-with-load-sharing/#comment-54494">load-sharing circuit</a> I tried to copy from Zak Kemble.</p>
+
+<p>When I went to layout the load-circuit my mind got locked on the old thought, “MOSFET diodes go against the current.”  This caused me to lay the DMP1045U down backwards, which essentially shorts the battery.<a href="http://blog.zakkemble.co.uk/wp-content/uploads/2013/05/MCP73831_loadshare.png"><img src="../images/Drop_Charger_Notes_1.png" alt="" /></a></p>
+
+<p>This took me a bit to figure out.  I apparently wasn’t the only one that made the mistake, as a comment on Zak’s blog had a fellow asking my questions for me.  In the end, I got the circuit sorted out and now the little guy works as intended.</p>
+
+<p>That’s about it for now.  I still have lots of testing to do on the little guy.</p>
+
+<ol>
+  <li>Motor placement for correct movements.</li>
+  <li>Leg angling for correct gait.</li>
+  <li>IR-RX circuit.</li>
+  <li>IR-TX circuit.</li>
+</ol>
+
+<p>Currently, I have a pogo-pin programming header.  But it is <em>imperative</em> to accomplish my goals for this little guy to make him programmable via IR.  This should allow me to program a swarm of these little guys without manual interaction.  I know the Kilotbot projects modified the Arduino code to do this very thing.  My ideal setup is to add a mobile hanging over a swarm of these guys.  On this mobile would be: IR-TX, IR-RX, and a camera.   The camera would be using <a href="http://letsmakerobots.com/node/38883">Overlord</a> to track these guys and the IR to communicate with them in mass.</p>
+
+<p>As always, thoughts, opinions, and critiques I welcome :)</p>
+
+<div class="flex-video">
+<iframe width="560" height="315" src="https://www.youtube.com/embed/etl3zJbOEW0" frameborder="0" allowfullscreen=""></iframe>
+</div>
+
+<div class="flex-video">
+<iframe width="560" height="315" src="https://www.youtube.com/embed/9svlosASuNk" frameborder="0" allowfullscreen=""></iframe>
+</div>
+:ET

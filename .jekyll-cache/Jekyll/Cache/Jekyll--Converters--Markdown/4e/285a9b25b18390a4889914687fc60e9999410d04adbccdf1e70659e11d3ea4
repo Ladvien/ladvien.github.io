@@ -1,0 +1,392 @@
+I"Gm<p>Originally posted on <a href="www.letsmakerobots.com">www.letsmakerobots.com</a></p>
+
+<p>This is a continuation of my <a href="http://letsmakerobots.com/node/39996">Robot Metallurgy 101 Lesson Journal</a>.</p>
+
+<p>After I was able to get my motors moving using the SN754410 I became a little obessessed with understanding AVR PWM architecture.  There are several tutorials that helped me a lot:</p>
+
+<ol>
+  <li>Newbie Hack’s <a href="http://www.newbiehack.com/MicrocontrollerIntroToPWM.aspx">“Intro to PWM.”</a></li>
+  <li>Newbie Hack’s <a href="http://www.newbiehack.com/MicrocontrollerControlAHobbyServo.aspx">“Control a Servo with PWM.”</a></li>
+  <li>humanHardDrive’s “<a href="http://www.youtube.com/watch?v=ZhIRRyhfhLM">PWM</a>”</li>
+  <li>maxEmbedded’s “<a href="http://maxembedded.com/2012/01/07/avr-timers-pwm-mode-part-ii/">AVR Timers – PWM MODE</a>”</li>
+</ol>
+
+<p>In the end, I ripped maxEmbedded code and got my PB3 LED working in about 10 minutes.  Then, I spent the next three evenings reading trying to figure out what maxEmbedded’s code was doing.</p>
+
+<p>Really, it was the register and bit names that were tripping me up.  Each had names like, “TCCROA1” and “OCR0A”, and so forth.  Each is an <a href="http://en.wikipedia.org/wiki/Acronym">initialism</a>.  This was a problem for me, I was soon lost in a jungle of intialisms, which represented abstract concepts, such as other intialisms.  I felt as if I were bumbling through a <a href="http://en.wikipedia.org/wiki/George_Macdonald">George MacDonald</a> dissertation on an orc language:</p>
+
+<div class="flex-video">
+<iframe width="560" height="315" src="https://www.youtube.com/embed/voWenZRJcD0?list=UUKodYd0Fj3TSHzXg7aOJYYQ" frameborder="0" allowfullscreen=""></iframe>
+</div>
+
+<p>NOTE: Dear reader, I apologize if that video confused you more.  Again, this is a journal so to help me remember what I learn.  And I find adding a story to ridicules abstractions is necessary for me.</p>
+
+<p>Alright, now that I had a little story in my head to handle the intialisms learning PWM on the AVR flowed a little easier.</p>
+
+<p>Here is my reference list:</p>
+
+<p><strong>1. TCCR = Timer/Counter Control Register.</strong></p>
+
+<p>On the ATtiny1634 there are 4 control registers.  One is 8-bit and the other is 16-bit.  Though, this journal will stick with the Arduino standard, meaning, I’ll use my 16-bit as an 8-bit.  Here are the four Timer/Counter Control Register names:</p>
+
+<ol>
+  <li>TCCROA (8-bit)</li>
+  <li>TCCROB (8-bit)</li>
+  <li>TCCR1A (16-bit)</li>
+  <li>TCCR1B (16-bit)</li>
+</ol>
+
+<p>TCCROA (8-bit timer) and TCCROB (16-bit timer) control the PWM functions of pins.</p>
+
+<ul>
+  <li>TCCROA/B control pins PA5 and PA6.</li>
+  <li>TCCR1A/B control pins PC0 and PB3.</li>
+</ul>
+
+<p><strong>2. COM = Compare Output Mode</strong></p>
+
+<p>There are four bits per TCCR register that control the compare output of each pin.  This is where the magic happens.  If a pin is setup in compare output mode, it will only go high when the counter is equal to or higher than a number you provide.  For instance,</p>
+
+<ul>
+  <li><strong>Is timer greater than 100? Then go high.</strong></li>
+</ul>
+
+<p>This is the essence of PWM.  You provide a number, in our case a number between 0-255 since it is an 8-bit counter, and if the timer is equal to or greater than your number, the pin will be HIGH.  Then, the timer will continue to count up and will reset to 0 after 255 is reached.  Mind you, the comparison is made every tick of the counter, so when it resets to 0 the comparison will be made and the pin will go LOW ago.  <em>Voila!</em></p>
+
+<p>There are four COM bits in each TCCR register, two control the output of one pin.</p>
+
+<p><strong>Found in TCCR0A:</strong></p>
+
+<ol>
+  <li>COM0A0 and COM0A0 control pin PC0.</li>
+  <li>COM0B0 and COM0B0 control pin PA5.</li>
+</ol>
+
+<p><strong>Found in TCCR1A:</strong></p>
+
+<ol>
+  <li>COM1A0 and COM1A1 control pin PB3.</li>
+  <li>COM1B0 and COM1B1 control pin PA6.</li>
+</ol>
+
+<p>Now, switching these bits can create many different types of output.  But I stuck with Arduino standard.</p>
+
+<p><img src="../images/FAST_PWM_8BIT_COM0A1.png" alt="" /></p>
+
+<p><strong>3. WGM = Wave Form Generation (for 8-bit)</strong></p>
+
+<p>There are 3 bits that control the type of PWM we end up with.  There are all sorts of wave-forms, but the main three are:</p>
+
+<ol>
+  <li>Phase Correct</li>
+  <li>CTC</li>
+  <li>Fast PWM</li>
+</ol>
+
+<p>(<a href="http://arduino.cc/en/Tutorial/SecretsOfArduinoPWM#.Uwjeo_ldV8E">Here</a> is an Arduino article that explains them a bit.)</p>
+
+<p>The one I’ll invoke is Fast PWM,</p>
+
+<p><img src="../images/8_Bit_PWM_WGM.png" alt="" /></p>
+
+<p>We select this by setting WGM00 and WGM01 bits.</p>
+
+<p><strong>4. How to set the TCCR registers.</strong></p>
+
+<p>So, setting things up, the code will look something like this,</p>
+
+<figure class="highlight"><pre><code class="language-c" data-lang="c"><span class="c1">// Demonstration of PWM on an ATtiny1634.</span>
+<span class="c1">// C. Thomas Brittain</span>
+
+<span class="cp">#define F_CPU 8000000    // AVR clock frequency in Hz, used by util/delay.h
+#include &lt;avr/io.h&gt;
+#include &lt;util/delay.h&gt;
+</span>
+<span class="c1">//Initialize PWM</span>
+<span class="kt">void</span> <span class="nf">pwm_init</span><span class="p">()</span>
+<span class="p">{</span>
+	<span class="c1">//This is the first PWM register, TCNT0.  It is 8 bit.  Both PIN PA5 and PA6 are set to clear on compare,</span>
+	<span class="c1">//then set at bottom; this makes them non-inverting.  The WGM bits are set to for "Fast PWM MODE"</span>
+	<span class="c1">//and this clears at the top, "0x00FF."</span>
+	<span class="n">TCCR0A</span> <span class="o">=</span> <span class="mi">0</span><span class="n">b10100011</span><span class="p">;</span> <span class="c1">// WORKS FOR OC0A, OC0B</span>
+	<span class="n">TCCR0B</span> <span class="o">=</span> <span class="mi">0</span><span class="n">b00000001</span><span class="p">;</span> <span class="c1">// WORKS FOR OC0A, OC0B</span>
+
+	<span class="c1">//This is the second PWM register;TCNT1.  It is 8 bit.  Both PIN PB3 and PC0 are set to clear on compare,</span>
+	<span class="c1">//then set at bottom; this makes them non-inverting.  The WGM bits are set to for "Fast PWM MODE"</span>
+	<span class="c1">//and this clears at the top, "0x00FF."</span>
+	<span class="n">TCCR1A</span> <span class="o">=</span> <span class="mi">0</span><span class="n">b10100001</span><span class="p">;</span>  <span class="c1">//WORKS FOR OC1A, OC1B</span>
+	<span class="n">TCCR1B</span> <span class="o">=</span> <span class="mi">0</span><span class="n">b00001001</span><span class="p">;</span>  <span class="c1">//WORKS FOR OC1A, OC1B</span>
+
+	<span class="c1">//This sets the PWM pins as outputs.</span>
+	<span class="n">DDRB</span> <span class="o">|=</span> <span class="p">(</span><span class="mi">1</span><span class="o">&lt;&lt;</span><span class="n">PINB3</span><span class="p">);</span>
+	<span class="n">DDRA</span> <span class="o">|=</span> <span class="p">(</span><span class="mi">1</span><span class="o">&lt;&lt;</span><span class="n">PINA5</span><span class="p">);</span>
+	<span class="n">DDRA</span> <span class="o">|=</span> <span class="p">(</span><span class="mi">1</span><span class="o">&lt;&lt;</span><span class="n">PINA6</span><span class="p">);</span>
+	<span class="n">DDRC</span> <span class="o">|=</span> <span class="p">(</span><span class="mi">1</span><span class="o">&lt;&lt;</span><span class="n">PINC0</span><span class="p">);</span>
+
+<span class="p">}</span></code></pre></figure>
+
+<p>I left the assignment of the TCCR registers in a binary format.  This was just easier for me, but you could as easily use bitwise operations, e.g.,</p>
+
+<figure class="highlight"><pre><code class="language-c" data-lang="c"><span class="n">TCCR1A</span> <span class="o">|=</span> <span class="p">(</span><span class="mi">1</span><span class="o">&lt;&lt;</span><span class="n">COM1A1</span><span class="p">)</span><span class="o">|</span><span class="p">(</span><span class="mi">1</span><span class="o">&lt;&lt;</span><span class="n">WGM01</span><span class="p">)</span></code></pre></figure>
+
+<p>You notice we set the COM0A1 or COM1A1 bits, but later I’ll change this so they are not set at initialization.  I found if you connect the pins to the timers at the beginning, then they’ll constantly have a nominal voltage on them.  This is made clearer if you have an LED on the pin.  Therefore, unless you set the COM0A1 and COM1A1 bits low then the LED will never fully turn off.</p>
+
+<p>Also, we have to set the data direction registers for the PWM pins to outputs.</p>
+
+<p>Now, that the initialization is done, let’s look at the code I used to demonstrate PWM on the ATtiny1634.</p>
+
+<figure class="highlight"><pre><code class="language-c" data-lang="c"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+	<span class="kt">uint8_t</span> <span class="n">brightness</span><span class="p">;</span>
+
+	<span class="c1">// initialize timer0 in PWM mode</span>
+	<span class="n">pwm_init</span><span class="p">();</span>
+
+	<span class="c1">//Setup several duty-cycle counters to show differential PWM channels.</span>
+	<span class="kt">uint8_t</span> <span class="n">brightness2</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+	<span class="kt">uint8_t</span> <span class="n">brightness3</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+	<span class="kt">uint8_t</span> <span class="n">brightness4</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+	<span class="c1">//Let's only do this 3 times before turning PWM off.</span>
+	<span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">counterB</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">counterB</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">;</span> <span class="o">++</span><span class="n">counterB</span><span class="p">){</span>
+
+		<span class="c1">//The main duty PWM cycle counter will also be our loop counter. (0-255)</span>
+		<span class="k">for</span> <span class="p">(</span><span class="n">brightness</span> <span class="o">=</span> <span class="mi">255</span><span class="p">;</span> <span class="n">brightness</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">;</span> <span class="o">--</span><span class="n">brightness</span><span class="p">)</span>
+			<span class="p">{</span>
+				<span class="c1">// set the brightness as duty cycle</span>
+				<span class="n">brightness2</span> <span class="o">=</span> <span class="n">brightness2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+				<span class="n">brightness3</span> <span class="o">=</span> <span class="n">brightness3</span> <span class="o">+</span> <span class="mi">2</span><span class="p">;</span>
+				<span class="n">brightness4</span> <span class="o">=</span> <span class="n">brightness4</span> <span class="o">+</span> <span class="mi">10</span><span class="p">;</span>
+
+				<span class="n">OCR0A</span> <span class="o">=</span> <span class="n">brightness</span><span class="p">;</span>   <span class="c1">// PCO0</span>
+				<span class="n">OCR0B</span> <span class="o">=</span> <span class="n">brightness2</span><span class="p">;</span>  <span class="c1">// PA5</span>
+				<span class="n">OCR1A</span> <span class="o">=</span> <span class="n">brightness3</span><span class="p">;</span>  <span class="c1">// PB3</span>
+				<span class="n">OCR1B</span> <span class="o">=</span> <span class="n">brightness4</span><span class="p">;</span>  <span class="c1">// PA6</span>
+
+				<span class="c1">//Delay to make changes visible.</span>
+				<span class="n">_delay_ms</span><span class="p">(</span><span class="mi">40</span><span class="p">);</span>
+			<span class="p">}</span>
+
+			<span class="c1">//After 3 loops clear the PWM channels by setting COM0A1 and COM0B1 bits low.</span>
+			<span class="c1">//If this is not done then there will be a nominal voltage on these pins due to</span>
+			<span class="c1">//the internal pull-ups setting them as outputs.</span>
+			<span class="n">TCCR0A</span> <span class="o">=</span> <span class="mi">0</span><span class="n">b00000011</span><span class="p">;</span> <span class="c1">// WORKS FOR OC0A, OC0B</span>
+			<span class="n">TCCR1A</span> <span class="o">=</span> <span class="mi">0</span><span class="n">b00000011</span><span class="p">;</span> <span class="c1">// WORKS FOR OC0A, OC0B</span>
+		<span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>You’ll notice this is a modified “Fade” sketch from the Arduino world.</p>
+
+<p>The above code provided this output,</p>
+
+<div class="flex-video">
+<iframe width="560" height="315" src="https://www.youtube.com/embed/6dTCbc8Pd1Q?list=UUKodYd0Fj3TSHzXg7aOJYYQ" frameborder="0" allowfullscreen=""></iframe>
+</div>
+
+<p>How the magic happens in AVR is around the output comparison registers,</p>
+
+<ol>
+  <li>OCR0A – controls PC0</li>
+  <li>OCR0B – controls PA5</li>
+  <li>OCR1A – controls PB3</li>
+  <li>OCR1B – controls PA6</li>
+</ol>
+
+<p>Basically, the OCR registers flip the pin HIGH or LOW (as setup by the TCCR) based upon the number you assign to it.  If you assign OCR0A a value you of 144, it’ll be LOW (0v) for 144 clock cycles (TCNT) and HIGH (5v) for 111 clock cycles.  This gives us our PWM.  Booyah!</p>
+
+<ul>
+  <li>OCROA = 127;</li>
+</ul>
+
+<p>This sets PC0 to approximately 2.5v.  (127/255bit * 5v = ~2.5v)</p>
+
+<ul>
+  <li>OCR1A = 255;</li>
+</ul>
+
+<p>This sets PB3 to 5v. (255/255bit * 5v = 5v)</p>
+
+<p>Ok, here’s the tricky one,</p>
+
+<ul>
+  <li>OCR0A = 0;</li>
+</ul>
+
+<p>This should set PC0 to 0v, but that’s not the case.  When we set the COM registers (COM0A1, etc.) there are internal pull-up resistors connected to the corsponding pin.  This results in a constant nominal voltage unless the COM register is set low again.</p>
+
+<p>This can be done using the XOR operator on the TCCR register,</p>
+
+<ul>
+  <li>TCCRO ^= (1«COM0A0)</li>
+</ul>
+
+<p>This should set the PC0 pin to 0v.</p>
+
+<p>It’s really that simple…well, unless you want to mess with the type of PWM you are creating.  Ugh.</p>
+
+<p><strong>5. ATtiny1634 analogWrite.h</strong></p>
+
+<p>After I figured out how to use PWM on the ATtiny1634, I started thinking how nice it would be to re-create the Arduino library for it.</p>
+
+<p>Being able to write,</p>
+
+<ul>
+  <li>analogWrite(pin, strength)</li>
+</ul>
+
+<p>had a lot of appeal to me.</p>
+
+<p>I played with it a bit and ended up with the following,</p>
+
+<figure class="highlight"><pre><code class="language-c" data-lang="c"><span class="cp">#ifndef analogWrite1634
+#define analogWrite1634
+</span>
+<span class="cp">#include &lt;avr/io.h&gt;
+#include &lt;util/delay.h&gt;
+</span>
+<span class="kt">void</span> <span class="nf">analogWrite</span><span class="p">(</span><span class="kt">int</span> <span class="n">PWM_PinSelect</span><span class="p">,</span> <span class="kt">int</span> <span class="n">duty</span><span class="p">);</span>
+
+<span class="c1">// initialize PWM</span>
+<span class="kt">void</span> <span class="nf">pwm_init</span><span class="p">()</span>
+<span class="p">{</span>
+	<span class="c1">//Define PWM pins.</span>
+	<span class="cp">#define PWM_PC0 1
+</span>	<span class="cp">#define PWM_PA5 2
+</span>	<span class="cp">#define PWM_PA6 3
+</span>	<span class="cp">#define PWM_PB3 4
+</span>
+	<span class="c1">//This is the first PWM register, TCNT0.  It is 8 bit.  Both PIN PA5 and PA6 are set to clear on compare,</span>
+	<span class="c1">//then set at bottom; this makes them non-inverting.  The WGM bits are set to for "Fast PWM MODE"</span>
+	<span class="c1">//and this clears at the top, "0x00FF."</span>
+	<span class="n">TCCR0A</span> <span class="o">=</span> <span class="mi">0</span><span class="n">b00000011</span><span class="p">;</span> <span class="c1">// WORKS FOR OC0A, OC0B</span>
+	<span class="n">TCCR0B</span> <span class="o">=</span> <span class="mi">0</span><span class="n">b00000001</span><span class="p">;</span> <span class="c1">// WORKS FOR OC0A, OC0B</span>
+
+	<span class="c1">//This is the second PWM register;TCNT1.  It is 8 bit.  Both PIN PB3 and PC0 are set to clear on compare,</span>
+	<span class="c1">//then set at bottom; this makes them non-inverting.  The WGM bits are set to for "Fast PWM MODE"</span>
+	<span class="c1">//and this clears at the top, "0x00FF."</span>
+	<span class="n">TCCR1A</span> <span class="o">=</span> <span class="mi">0</span><span class="n">b00000001</span><span class="p">;</span>  <span class="c1">//WORKS FOR OC1A, OC1B</span>
+	<span class="n">TCCR1B</span> <span class="o">=</span> <span class="mi">0</span><span class="n">b00001001</span><span class="p">;</span>  <span class="c1">//WORKS FOR OC1A, OC1B</span>
+
+	<span class="c1">//This sets the PWM pins as outputs.</span>
+	<span class="n">DDRB</span> <span class="o">|=</span> <span class="p">(</span><span class="mi">1</span><span class="o">&lt;&lt;</span><span class="n">PINB3</span><span class="p">);</span>
+	<span class="n">DDRA</span> <span class="o">|=</span> <span class="p">(</span><span class="mi">1</span><span class="o">&lt;&lt;</span><span class="n">PINA5</span><span class="p">);</span>
+	<span class="n">DDRA</span> <span class="o">|=</span> <span class="p">(</span><span class="mi">1</span><span class="o">&lt;&lt;</span><span class="n">PINA6</span><span class="p">);</span>
+	<span class="n">DDRC</span> <span class="o">|=</span> <span class="p">(</span><span class="mi">1</span><span class="o">&lt;&lt;</span><span class="n">PINC0</span><span class="p">);</span>
+
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">analogWrite</span><span class="p">(</span><span class="kt">int</span> <span class="n">PWM_PinSelect</span><span class="p">,</span> <span class="kt">int</span> <span class="n">duty</span><span class="p">){</span>
+
+	<span class="c1">//Make sure we were passed a number in-range.</span>
+	<span class="k">if</span> <span class="p">(</span><span class="n">duty</span> <span class="o">&gt;</span> <span class="mi">255</span><span class="p">)</span> <span class="n">duty</span> <span class="o">=</span> <span class="mi">255</span><span class="p">;</span>
+	<span class="k">if</span> <span class="p">(</span><span class="n">duty</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">)</span> <span class="n">duty</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+	<span class="c1">//Sets PWM for PC0</span>
+	<span class="k">if</span> <span class="p">(</span><span class="n">PWM_PinSelect</span> <span class="o">==</span> <span class="mi">1</span><span class="p">){</span>
+		<span class="k">if</span> <span class="p">(</span><span class="n">duty</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">){</span>
+			<span class="n">TCCR0A</span> <span class="o">|=</span> <span class="p">(</span><span class="mi">1</span><span class="o">&lt;&lt;</span><span class="n">COM0A1</span><span class="p">);</span>
+			<span class="n">OCR0A</span> <span class="o">=</span> <span class="n">duty</span><span class="p">;</span>
+		<span class="p">}</span>
+		<span class="k">else</span> <span class="p">{</span>
+			<span class="n">TCCR0A</span> <span class="o">^=</span> <span class="p">(</span><span class="mi">1</span><span class="o">&lt;&lt;</span><span class="n">COM0A1</span><span class="p">);</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+
+	<span class="c1">//Sets PWM for PA5</span>
+	<span class="k">if</span> <span class="p">(</span><span class="n">PWM_PinSelect</span> <span class="o">==</span> <span class="mi">2</span><span class="p">){</span>
+		<span class="k">if</span> <span class="p">(</span><span class="n">duty</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">){</span>
+			<span class="n">TCCR0A</span> <span class="o">|=</span> <span class="p">(</span><span class="mi">1</span><span class="o">&lt;&lt;</span><span class="n">COM0B1</span><span class="p">);</span>
+			<span class="n">OCR0B</span> <span class="o">=</span> <span class="n">duty</span><span class="p">;</span>
+		<span class="p">}</span>
+		<span class="k">else</span> <span class="p">{</span>
+			<span class="n">TCCR0A</span> <span class="o">^=</span> <span class="p">(</span><span class="mi">1</span><span class="o">&lt;&lt;</span><span class="n">COM0B1</span><span class="p">);</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+
+	<span class="c1">//Sets PWM for PA6</span>
+	<span class="k">if</span> <span class="p">(</span><span class="n">PWM_PinSelect</span> <span class="o">==</span> <span class="mi">3</span><span class="p">){</span>
+		<span class="k">if</span> <span class="p">(</span><span class="n">duty</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">){</span>
+			<span class="n">TCCR1A</span> <span class="o">|=</span> <span class="p">(</span><span class="mi">1</span><span class="o">&lt;&lt;</span><span class="n">COM1B1</span><span class="p">);</span>
+			<span class="n">OCR1B</span> <span class="o">=</span> <span class="n">duty</span><span class="p">;</span>
+		<span class="p">}</span>
+		<span class="k">else</span> <span class="p">{</span>
+			<span class="n">TCCR1A</span> <span class="o">^=</span> <span class="p">(</span><span class="mi">1</span><span class="o">&lt;&lt;</span><span class="n">COM1B1</span><span class="p">);</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+
+	<span class="c1">//Sets PWM for PB3</span>
+	<span class="k">if</span> <span class="p">(</span><span class="n">PWM_PinSelect</span> <span class="o">==</span> <span class="mi">4</span><span class="p">){</span>
+		<span class="k">if</span> <span class="p">(</span><span class="n">duty</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">){</span>
+			<span class="n">TCCR1A</span> <span class="o">|=</span> <span class="p">(</span><span class="mi">1</span><span class="o">&lt;&lt;</span><span class="n">COM1A1</span><span class="p">);</span>
+			<span class="n">OCR1A</span> <span class="o">=</span> <span class="n">duty</span><span class="p">;</span>
+		<span class="p">}</span>
+		<span class="k">else</span> <span class="p">{</span>
+			<span class="n">TCCR1A</span>	 <span class="o">^=</span> <span class="p">(</span><span class="mi">1</span><span class="o">&lt;&lt;</span><span class="n">COM1A1</span><span class="p">);</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+
+<span class="p">}</span>
+
+<span class="cp">#endif</span></code></pre></figure>
+
+<p>A synopsis of the library,</p>
+
+<ul>
+  <li>Lines 1-2 and 90 make sure the library is only included once.</li>
+  <li>Lines 13-16 define the ATtiny1634 pins.</li>
+  <li>18-28 setup the TCCR registers (notice, the pins start out off to prevent nominal voltage).</li>
+  <li>41-42 makes sure our PWM value is in range.</li>
+  <li>46-85 control the PWM on each pin, with an else statement to gives us a true zero voltage in the case a PWM value of 0 is passed to the function.</li>
+</ul>
+
+<p>I saved this as <strong>1634analogWrite.h</strong> and then wrote a sketch to use</p>
+
+<figure class="highlight"><pre><code class="language-c" data-lang="c"><span class="c1">// program to change brightness of an LED</span>
+<span class="c1">// demonstration of PWM</span>
+<span class="c1">//void Tiny1634_PWM(int PWM_PinSelect, int duty);</span>
+
+<span class="cp">#define F_CPU 8000000    // AVR clock frequency in Hz, used by util/delay.h
+#include &lt;avr/io.h&gt;
+#include &lt;util/delay.h&gt;
+#include "1634analogWrite.h"
+</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+	<span class="kt">uint8_t</span> <span class="n">brightness</span><span class="p">;</span>
+
+	<span class="c1">// initialize timer0 in PWM mode</span>
+	<span class="n">pwm_init</span><span class="p">();</span>
+	<span class="kt">int</span> <span class="n">brightness2</span> <span class="o">=</span> <span class="mi">255</span><span class="p">;</span>
+	<span class="kt">int</span> <span class="n">brightness3</span> <span class="o">=</span> <span class="mi">255</span><span class="p">;</span>
+	<span class="kt">int</span> <span class="n">brightness4</span> <span class="o">=</span> <span class="mi">255</span><span class="p">;</span>
+	<span class="c1">// run forever</span>
+	<span class="k">while</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="k">for</span> <span class="p">(</span><span class="n">brightness</span> <span class="o">=</span> <span class="mi">255</span><span class="p">;</span> <span class="n">brightness</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span> <span class="o">--</span><span class="n">brightness</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="n">analogWrite</span><span class="p">(</span><span class="n">PWM_PC0</span><span class="p">,</span> <span class="n">brightness</span><span class="p">);</span>
+			<span class="n">analogWrite</span><span class="p">(</span><span class="n">PWM_PB3</span><span class="p">,</span> <span class="n">brightness2</span><span class="p">);</span>
+			<span class="n">analogWrite</span><span class="p">(</span><span class="n">PWM_PA5</span><span class="p">,</span> <span class="n">brightness3</span><span class="p">);</span>
+			<span class="n">analogWrite</span><span class="p">(</span><span class="n">PWM_PA6</span><span class="p">,</span> <span class="n">brightness4</span><span class="p">);</span>
+
+			<span class="n">_delay_ms</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>
+			<span class="n">brightness2</span> <span class="o">=</span> <span class="n">brightness2</span> <span class="o">-</span> <span class="mi">5</span><span class="p">;</span>
+			<span class="n">brightness3</span> <span class="o">=</span> <span class="n">brightness3</span> <span class="o">-</span> <span class="mi">10</span><span class="p">;</span>
+			<span class="n">brightness4</span> <span class="o">=</span> <span class="n">brightness4</span> <span class="o">-</span> <span class="mi">15</span><span class="p">;</span>
+
+			<span class="k">if</span> <span class="p">(</span><span class="n">brightness</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+			<span class="p">{</span>
+				<span class="n">_delay_ms</span><span class="p">(</span><span class="mi">1000</span><span class="p">);</span>
+			<span class="p">}</span>
+			<span class="k">if</span><span class="p">(</span><span class="n">brightness2</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="n">brightness2</span> <span class="o">=</span><span class="mi">255</span><span class="p">;</span>
+			<span class="k">if</span><span class="p">(</span><span class="n">brightness3</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="n">brightness3</span> <span class="o">=</span><span class="mi">255</span><span class="p">;</span>
+			<span class="k">if</span><span class="p">(</span><span class="n">brightness4</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="n">brightness4</span> <span class="o">=</span><span class="mi">255</span><span class="p">;</span>
+		<span class="p">}</span>
+
+	<span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>Ok.  I’ll revisit this probably with a complete H-Bridge control library.</p>
+
+<p><strong>As always, please feel free to correct my f’ups.</strong>  <strong>:)</strong></p>
+:ET

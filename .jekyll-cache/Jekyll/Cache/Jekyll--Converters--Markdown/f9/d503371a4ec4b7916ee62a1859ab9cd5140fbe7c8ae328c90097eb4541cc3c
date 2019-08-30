@@ -1,0 +1,164 @@
+I"2-<h1 id="providing-chronically-homeless-list">Providing Chronically Homeless List</h1>
+<p>With this work challenge we are going to take the concepts we’ve learned from the first challenge and build on them.  We will combine two dataframes derived from Client.csv and Enrollment.csv.  Then, we will apply HUD’s formula to get a by-name-list of those who are chronically homeless.</p>
+
+<h2 id="data-needed">Data Needed</h2>
+<p>The current definition of chronically homeless is found in <a href="https://www.federalregister.gov/documents/2015/12/04/2015-30473/homeless-emergency-assistance-and-rapid-transition-to-housing-defining-chronically-homeless">HUD’s federal register</a>:</p>
+
+<blockquote>
+  <p>A “chronically homeless” individual is defined to mean a homeless individual with a disability who lives either in a place not meant for human habitation, a safe haven, or in an emergency shelter, or in an institutional care facility if the individual has been living in the facility for fewer than 90 days and had been living in a place not meant for human habitation, a safe haven, or in an emergency shelter immediately before entering the institutional care facility. In order to meet the “chronically homeless” definition, the individual also must have been living as described above continuously for at least 12 months, or on at least four separate occasions in the last 3 years, where the combined occasions total a length of time of at least 12 months. Each period separating the occasions must include at least 7 nights of living in a situation other than a place not meant for human habitation, in an emergency shelter, or in a safe haven.</p>
+</blockquote>
+
+<p>There are several data elements which will be needed for us to calculate whether someone is chronically homeless. These data elements are reported to case-managers and entered into a HUD Entry Assessment when a client enters a program.</p>
+
+<p>Here’s a list of the data elements we will use:</p>
+
+<ol>
+  <li>DisablingCondition</li>
+  <li>TimesHomelessPastThreeYears</li>
+  <li>MonthHomelessPastThreeYears</li>
+  <li>DateToStreetESSH</li>
+</ol>
+
+<p>All of the above data elements are found in the Enrollment.csv.  Therefore, similar to the last Challenge, we will need to join the Client.csv and the Enrollment.csv.</p>
+
+<p>We’ve covered how to get all data from CSVs into one dataframe using joins.  This Challenge will build on that skill.  The new concepts here will be combining logic to get to a specific answer.</p>
+
+<ul>
+  <li><a href="https://en.wikipedia.org/wiki/Logical_connective">Logic</a></li>
+</ul>
+
+<p>In SQL we will use the following logic operators:</p>
+
+<ul>
+  <li><strong>IS (==)</strong></li>
+  <li><strong>NOT (!=)</strong></li>
+  <li><strong>AND (&amp;&amp;)</strong></li>
+  <li><strong>OR (||)</strong></li>
+  <li><strong>&gt; (greater than)</strong></li>
+  <li><strong>&lt; (less than)</strong></li>
+</ul>
+
+<p>For example, let’s take the chronically homeless definition and turn it into something a computer can understand using these logic operators.  We can do this by re-writing the definition several times, each time dropping what makes sense to humans and leaving what makes sense to computers.</p>
+
+<p>For example, this should make sense to most humans.</p>
+
+<blockquote>
+  <p>A chronically homeless individual is disabled and been homeless greater than 364 days.  Or, is disabled and been homeless greater than three times in three years and the time spent in homelessness adding up to greater than 364 days.</p>
+</blockquote>
+
+<p>That paragraph seems a little hard to read, right?  But still, humans should be able to understand it.  Now, let’s look at the same paragraph emphasizing the logic operators.</p>
+
+<blockquote>
+  <p>A chronically homeless individual <strong>IS</strong> disabled <strong>AND</strong> been homeless <strong>GREATER THAN</strong> 364 days.  <strong>OR</strong>, <strong>IS</strong> disabled <strong>AND</strong> been homeless <strong>GREATER THAN</strong> three times in three years <strong>AND</strong> the time spent in homelessness adding up to <strong>GREATER THAN</strong> 364 days.</p>
+</blockquote>
+
+<p>This is skill of a Computational-Thinker, taking a definition like HUD provided and re-write it from something a human would understand into something a computer will understand.</p>
+
+<p>The next step is re-writing the paragraph in something called <a href="https://en.wikipedia.org/wiki/Pseudocode">pseudo-code</a>.</p>
+
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="n">Chronic</span> <span class="n">Homeless</span> <span class="n">Individual</span> <span class="o">==</span> 
+                
+                    <span class="n">A</span> <span class="n">person</span> <span class="k">IS</span> <span class="n">Disabled</span> <span class="k">AND</span>
+                    <span class="n">A</span> <span class="n">person</span> <span class="o">&gt;</span> <span class="n">Homeless</span> <span class="mi">364</span> <span class="n">days</span>
+
+                    <span class="k">OR</span>
+
+                    <span class="n">A</span> <span class="n">person</span> <span class="k">IS</span> <span class="n">Disabled</span> <span class="k">AND</span>
+                    <span class="n">A</span> <span class="n">person</span> <span class="n">homeless</span> <span class="o">&gt;</span> <span class="mi">4</span> <span class="n">times</span> <span class="k">AND</span>
+                    <span class="n">A</span> <span class="n">person</span> <span class="o">&gt;</span> <span class="mi">12</span> <span class="n">months</span> <span class="n">homeless</span> <span class="n">within</span> <span class="mi">3</span> <span class="n">years</span></code></pre></figure>
+
+<p>This helps us make sure everything is in place to feed to the computer.  The next step will be actually writing the SQL code.</p>
+
+<p>Below is the following code to get chronically homeless:</p>
+
+<figure class="highlight"><pre><code class="language-r" data-lang="r"><span class="c1">#############################################</span><span class="w">
+</span><span class="c1">##### Get those with Disabling Condition ###</span><span class="w">
+</span><span class="c1">#############################################</span><span class="w">
+</span><span class="n">disablingCondition</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">sqldf</span><span class="p">(</span><span class="s2">"SELECT PersonalID 
+                            FROM clientAndEnrollmentDf 
+                            WHERE DisablingCondition = 1"</span><span class="p">)</span><span class="w">
+
+</span><span class="c1">#############################################</span><span class="w">
+</span><span class="c1">##### Length-of-Stay ########################</span><span class="w">
+</span><span class="c1">#############################################</span><span class="w">
+</span><span class="c1"># Participants who meet the length-of-stay in homelessness requirement</span><span class="w">
+</span><span class="c1"># Either through four or more occurences with cumulative duration exceeding a year</span><span class="w">
+</span><span class="c1"># Or a consequtive year.</span><span class="w">
+</span><span class="c1">#                 113 = "12 Months"</span><span class="w">
+</span><span class="c1">#                 114 = "More than 12 Months"</span><span class="w">
+</span><span class="n">chronicityDf</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">sqldf</span><span class="p">(</span><span class="s2">"SELECT PersonalID, 'Yes' As 'Meets LOS'
+                               FROM activeEnrollment
+                               WHERE (TimesHomelessPastThreeYears = 4
+                                    AND (
+                                          MonthsHomelessPastThreeYears = 113
+                                          OR MonthsHomelessPastThreeYears = 114)
+                                        )
+                               OR (CAST(JULIANDAY('now') - JULIANDAY(DateToStreetESSH) AS Integer) &gt; 364
+                                   AND (DateToStreetESSH != '') 
+                                  )
+                               "</span><span class="p">)</span><span class="w">
+
+</span><span class="c1">#############################################</span><span class="w">
+</span><span class="c1">##### Chronically Homeless ##################</span><span class="w">
+</span><span class="c1">#############################################</span><span class="w">
+</span><span class="c1"># Take the distinct PersonalIDs of individuals who meet both chronicity</span><span class="w">
+</span><span class="c1"># and disabling condition.</span><span class="w">
+</span><span class="n">chronicallyHomeless</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">sqldf</span><span class="p">(</span><span class="s2">"SELECT DISTINCT(a.PersonalID)
+                              FROM chronicityDf a
+                              INNER JOIN disablingCondition b
+                              ON a.PersonalID=b.PersonalID
+                             "</span><span class="p">)</span></code></pre></figure>
+
+<p>This may look overwhelming, but that’ll be the purpose of this week’s Challenge, to demonstrate this is code is actually pretty simple when broke down into its basic parts.</p>
+
+<p>That’s the <em>real</em> lesson here, every complex question may be made <em>extremely</em> simple when taken once piece at a time.  The power of computational-thinking is extraordinary.</p>
+
+<h2 id="the-goal">The Goal</h2>
+<p>We are going to merge the two data sets and to discover the following:</p>
+
+<ol>
+  <li>A list of individuals who are chronically homeless.</li>
+  <li>Export this list to an Excel document.</li>
+</ol>
+
+<p>To get this information we will need to do the following:</p>
+
+<ol>
+  <li>Load the Client.csv into the dataframe clientDf.</li>
+  <li>Load the Enrollment.csv into the dataframe enrollmentDf.</li>
+  <li>Inner join the clientDf to enrollmentDf.</li>
+  <li>Calculate whether someone is chronically homeless.</li>
+  <li>Filter to those who are chronically homeless.</li>
+  <li>Write the by-name-list of individuals to an Excel document.</li>
+</ol>
+
+<h2 id="the-resources">The Resources</h2>
+<p>Below are the resources which should help for each step:</p>
+
+<h3 id="step-1--2">Step 1 &amp; 2</h3>
+<ul>
+  <li>R Programming A-Z – Video 41 – Loading and Importing Data in R</li>
+  <li>R Programming A-Z – Video 21 – Functions in R</li>
+  <li><a href="https://ladvien.com/hmis-sql-r-read-write-csv/">Read and Write CSVs in R</a></li>
+</ul>
+
+<h3 id="step-3">Step 3</h3>
+<ul>
+  <li>The Complete SQL Bootcamp – Video #51 – Overview of Inner Joins</li>
+  <li>The Complete SQL Bootcamp – Video #52 – Example of Inner Joins
+<a href="https://ladvien.com/hmis-r-sql-query/">* HMIS, R, SQL – Basics</a></li>
+</ul>
+
+<h3 id="step-4--5">Step 4 &amp; 5</h3>
+<ul>
+  <li><a href="https://ladvien.com/hmis/hmis-r-sql-query/">HMIS, R, SQL – Queries</a></li>
+  <li><a href="https://www.hudexchange.info/resources/documents/HMIS-Data-Dictionary.pdf">HMIS Data Dictionary</a></li>
+  <li><a href="https://www.essentialsql.com/get-ready-to-learn-sql-4-query-results-using-boolean-logic/">Query Results Using Boolean Logic (all sections and videos)</a></li>
+</ul>
+
+<h3 id="step-6">Step 6</h3>
+<ul>
+  <li>Writing Excel Workbooks – Tutorial Coming</li>
+</ul>
+
+:ET

@@ -1,0 +1,455 @@
+I">�<h2 id="boss">Boss</h2>
+
+<p>A human sends machine learning job to the Boss.  A Job is JSON object containing the the desired machine learning script and the parameters needed for successful execution. The Boss stores the Job and Creates an Order. The Order is another JSON object representing the state of a requested Job.</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>         Job #4
+ 0                        Boss
+/|\ +-----------------&gt;   ____
+/ \                       +""+
+                          +__+
+                         [ ==.]`)
+                   +----+====== 0 +--+
+                   +                 |
+                Order #3           Job #3
+                   |                 |
+                Order #2           Job #2
+                   |                 |
+                Order #1           Job #1
+
+</code></pre></div></div>
+
+<h2 id="worker">Worker</h2>
+<p>The Worker uses <a href="https://www.npmjs.com/package/node-schedule">node-scheduler</a> to fire an HTTP request to the Boss letting it know the Worker is “bored.”  The Boss will then search through the Orders for the oldest unassigned Order, if it finds one, it will return this Order to the Worker as a JSON object.  At this point, the Boss updates the Order’s status to “assigned.”</p>
+
+<p>The Worker sends another HTTP request, this time requesting the Job information associated with the Order the Boss had assigned.</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>          Boss
+          ____
+          +""+
+          +__+
+         [ ==.]`)
+   +----+====== 0 +--+
+   +                 +            If the Boss finds an unassigned
+Order #3           Job #3         Order it is returned. The worker requests the
+   +                 +            related Job. The Boss updates the
+Order #2           Job #2         the Order status to "assigned"
+   +                 +                   Worker
+Order #1           Job #1&lt;-+              ____
+  ^                        +-----------&gt;  +""+
+  |                                       +__+
+  +------------------------------------+ [ ==.]`)
+          The worker checks with
+          the boss periodically
+          for the oldest submitted
+          Order.
+</code></pre></div></div>
+
+<p>The worker passes the Job information into the appropriate machine learning Python script via <code class="highlighter-rouge">stdout</code>.  The script is executed and whether successful or not, an Outcome object is passed back to the Worker Node through <code class="highlighter-rouge">stdout</code>.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Worker
+ ____
+ +""+     Job #1
+ +__+ +---------------&gt;  Python Script
+[ ==.]                         +
+  ^                            |
+  |                            |
+  |                            v
+  +------------------------ Outcome #1
+</code></pre></div></div>
+
+<p>The Worker then makes a <code class="highlighter-rouge">callback</code> API call and passes the Outcome object to the Boss to be stored in the database</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>          Boss                                Worker
+          ____                                 ____
+          +""+                                 +""+
+          +__+                                 +__+
+         [ ==.]`)                             [ ==.]`)
+   +----+====== 0 +------+                       +
+   |         |           |                       |
+Order #3   Job #3     Outcome #1 &lt;---------------+
+   |         |
+Order #2   Job #2
+   |         |
+Order #1   Job #1
+</code></pre></div></div>
+
+<h3 id="mongodb-on-mac">MongoDB on Mac</h3>
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>brew install mongodb
+nano /usr/local/etc/mongod.conf
+</code></pre></div></div>
+
+<p>Your file should look something like this</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>systemLog:
+  destination: file
+  path: /usr/local/var/log/mongodb/mongo.log
+  logAppend: <span class="nb">true
+</span>storage:
+  dbPath: /usr/local/var/mongodb
+net:
+  bindIp: 127.0.0.1
+</code></pre></div></div>
+
+<p>Change the <code class="highlighter-rouge">dbPath</code> to where you’d like Mongo to store your databases.  Then, start and enable Mongo with brew’s services.</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>brew services start mongo
+</code></pre></div></div>
+
+<h2 id="sample-objects">Sample Objects</h2>
+
+<h3 id="order">Order</h3>
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"_id"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"5bcc93d67f0b3f4844c87c7a"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"jobId"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"5bcc93d67f0b3f4844c87c79"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"createdDate"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="err">ISODate(</span><span class="s2">"2018-10-21T14:57:26.980Z"</span><span class="err">)</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"status"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"unassigned"</span><span class="p">,</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+<h3 id="job">Job</h3>
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"_id"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="err">ObjectId(</span><span class="s2">"5bcc93d67f0b3f4844c87c79"</span><span class="err">)</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"hiddenLayers"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> 
+        </span><span class="p">{</span><span class="w">
+            </span><span class="nl">"activation"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"relu"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"widthModifier"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"dropout"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mf">0.2</span><span class="w">
+        </span><span class="p">},</span><span class="w"> 
+        </span><span class="p">{</span><span class="w">
+            </span><span class="nl">"activation"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"relu"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"widthModifier"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mf">2.3</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"dropout"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mf">0.2</span><span class="w">
+        </span><span class="p">},</span><span class="w"> 
+        </span><span class="p">{</span><span class="w">
+            </span><span class="nl">"activation"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"relu"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"widthModifier"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mf">1.3</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"dropout"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mf">0.2</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">],</span><span class="w">
+    </span><span class="nl">"dataFileName"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"wine_data.csv"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"scriptName"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"nn.py"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"projectName"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"wine_data"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"depedentVariable"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"con_lot"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"crossValidateOnly"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"crossValidationCrossingType"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"neg_mean_squared_error"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"batchSize"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">100000</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"epochs"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">3000</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"patienceRate"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mf">0.05</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"slowLearningRate"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mf">0.01</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"loss"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"mse"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"pcaComponents"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">-1</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"extraTreesKeepThreshd"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"saveWeightsOnlyAtEnd"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"optimizer"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"rmsprop"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"lastLayerActivator"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"learningRate"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mf">0.05</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"l1"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mf">0.1</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"l2"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mf">0.1</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"minDependentVarValue"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"maxDependentVarValue"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">1500</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"scalerType"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"standard"</span><span class="p">,</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<h3 id="outcomes">Outcomes</h3>
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"_id"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="err">ObjectId(</span><span class="s2">"5bcc88fa7f0b3f4844c87c78"</span><span class="err">)</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"status"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">200</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"jobId"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"5bcc724d7449f746b5aa6fe8"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"loss"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mf">15109.168650257</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"metric"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mf">14281.4453526111</span><span class="p">,</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<h2 id="code">Code</h2>
+
+<h3 id="worker-1">Worker</h3>
+
+<p>server.js</p>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">express</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">express</span><span class="dl">'</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">bodyParser</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">body-parser</span><span class="dl">'</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">pythonRunner</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">./preprocessing-services/python-runner</span><span class="dl">'</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">schedule</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">node-schedule</span><span class="dl">'</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">axios</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">axios</span><span class="dl">'</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">fs</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">fs</span><span class="dl">'</span><span class="p">);</span>
+<span class="kd">var</span> <span class="p">{</span><span class="nx">Worker</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">./worker/worker</span><span class="dl">'</span><span class="p">);</span>
+
+<span class="c1">// Get Worker Node configuration</span>
+<span class="kd">var</span> <span class="nx">fs</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">fs</span><span class="dl">'</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">config</span> <span class="o">=</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">fs</span><span class="p">.</span><span class="nx">readFileSync</span><span class="p">(</span><span class="dl">'</span><span class="s1">./python-scripts/worker-node-configure.json</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">utf8</span><span class="dl">'</span><span class="p">));</span>
+
+<span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nx">config</span><span class="p">)</span> <span class="p">{</span> 
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">'</span><span class="s1">No configuration file found.</span><span class="dl">'</span><span class="p">)</span>
+    <span class="nx">process</span><span class="p">.</span><span class="nx">exit</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="c1">// Boss' address</span>
+<span class="nx">bossAddress</span> <span class="o">=</span> <span class="nx">config</span><span class="p">.</span><span class="nx">bossAddress</span><span class="p">;</span>
+<span class="nx">nodeName</span> <span class="o">=</span> <span class="nx">config</span><span class="p">.</span><span class="nx">nodeName</span><span class="p">;</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">`Boss's address is </span><span class="p">${</span><span class="nx">bossAddress</span><span class="p">}</span><span class="s2">`</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">`This worker's name is </span><span class="p">${</span><span class="nx">nodeName</span><span class="p">}</span><span class="s2">`</span><span class="p">);</span>
+
+<span class="kd">var</span> <span class="nx">worker</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Worker</span><span class="p">(</span><span class="dl">'</span><span class="s1">bored</span><span class="dl">'</span><span class="p">);</span>
+
+<span class="c1">// Start server and add Middleware</span>
+<span class="kd">var</span> <span class="nx">app</span> <span class="o">=</span> <span class="nx">express</span><span class="p">();</span>
+<span class="kd">const</span> <span class="nx">port</span> <span class="o">=</span> <span class="mi">3000</span><span class="p">;</span>
+<span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">bodyParser</span><span class="p">.</span><span class="nx">json</span><span class="p">())</span>
+
+<span class="c1">// Start checking for Boredom</span>
+<span class="kd">var</span> <span class="nx">j</span> <span class="o">=</span> <span class="nx">schedule</span><span class="p">.</span><span class="nx">scheduleJob</span><span class="p">(</span><span class="dl">'</span><span class="s1">*/1 * * * *</span><span class="dl">'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">worker</span><span class="p">.</span><span class="nx">status</span> <span class="o">===</span> <span class="dl">'</span><span class="s1">bored</span><span class="dl">'</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">'</span><span class="s1">Worker is bored.</span><span class="dl">'</span><span class="p">);</span>
+        <span class="nx">axios</span><span class="p">({</span>
+            <span class="na">method</span><span class="p">:</span> <span class="dl">'</span><span class="s1">post</span><span class="dl">'</span><span class="p">,</span>
+            <span class="na">url</span><span class="p">:</span> <span class="nx">bossAddress</span> <span class="o">+</span> <span class="s2">`/bored/</span><span class="p">${</span><span class="nx">nodeName</span><span class="p">}</span><span class="s2">`</span>
+        <span class="p">}).</span><span class="nx">then</span><span class="p">((</span><span class="nx">response</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+            <span class="kd">let</span> <span class="nx">orderId</span> <span class="o">=</span> <span class="nx">response</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">_id</span>
+            <span class="kd">let</span> <span class="nx">jobId</span> <span class="o">=</span> <span class="nx">response</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">jobId</span><span class="p">;</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">`Boss provided jobID #</span><span class="p">${</span><span class="nx">jobId</span><span class="p">}</span><span class="s2">`</span><span class="p">);</span>
+            <span class="nx">axios</span><span class="p">({</span>
+                <span class="na">method</span><span class="p">:</span> <span class="dl">'</span><span class="s1">get</span><span class="dl">'</span><span class="p">,</span>
+                <span class="na">url</span><span class="p">:</span> <span class="nx">bossAddress</span> <span class="o">+</span> <span class="s2">`/retrieve/job/</span><span class="p">${</span><span class="nx">jobId</span><span class="p">}</span><span class="s2">`</span>
+            <span class="p">}).</span><span class="nx">then</span><span class="p">((</span><span class="nx">response</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+                <span class="kd">let</span> <span class="nx">job</span> <span class="o">=</span> <span class="nx">response</span><span class="p">.</span><span class="nx">data</span><span class="p">;</span>
+                <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">`Worker found the details for jobID #</span><span class="p">${</span><span class="nx">jobId</span><span class="p">}</span><span class="s2">`</span><span class="p">);</span>
+                <span class="nx">job</span><span class="p">.</span><span class="nx">callbackAddress</span> <span class="o">=</span> <span class="nx">bossAddress</span><span class="p">;</span>
+                <span class="nx">job</span><span class="p">.</span><span class="nx">assignmentId</span> <span class="o">=</span> <span class="nx">orderId</span><span class="p">;</span>
+                <span class="nx">pythonRunner</span><span class="p">.</span><span class="nx">scriptRun</span><span class="p">(</span><span class="nx">job</span><span class="p">,</span> <span class="nx">worker</span><span class="p">)</span>
+                <span class="p">.</span><span class="nx">then</span><span class="p">((</span><span class="nx">response</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+                    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">'</span><span class="s1">Worker started job, will let Boss know when finished.</span><span class="dl">'</span><span class="p">);</span>
+                <span class="p">});</span>
+            <span class="p">}).</span><span class="k">catch</span><span class="p">((</span><span class="nx">error</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+                <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">error</span><span class="p">);</span>
+            <span class="p">});</span>
+        <span class="p">}).</span><span class="k">catch</span><span class="p">((</span><span class="nx">error</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">'</span><span class="s1">Failed to find new job.</span><span class="dl">'</span><span class="p">)</span>
+        <span class="p">});</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+
+<span class="c1">// Python script runner interface</span>
+<span class="nx">app</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="dl">'</span><span class="s1">/scripts/run</span><span class="dl">'</span><span class="p">,</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="k">try</span> <span class="p">{</span>
+        <span class="kd">let</span> <span class="nx">pythonJob</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">;</span>
+        <span class="nx">pythonRunner</span><span class="p">.</span><span class="nx">scriptRun</span><span class="p">(</span><span class="nx">pythonJob</span><span class="p">)</span>
+        <span class="p">.</span><span class="nx">then</span><span class="p">((</span><span class="nx">response</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">response</span><span class="p">);</span>
+            <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nx">response</span><span class="p">);</span>
+        <span class="p">});</span>
+    <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="nx">port</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">`Started on port </span><span class="p">${</span><span class="nx">port</span><span class="p">}</span><span class="s2">`</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<p>python-runner.js</p>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">let</span> <span class="p">{</span><span class="nx">PythonShell</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">python-shell</span><span class="dl">'</span><span class="p">)</span>
+<span class="kd">var</span> <span class="nx">fs</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">fs</span><span class="dl">'</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">path</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">path</span><span class="dl">'</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">axios</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">axios</span><span class="dl">'</span><span class="p">);</span>
+
+<span class="kd">var</span> <span class="nx">scriptRun</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">pythonJob</span><span class="p">,</span> <span class="nx">worker</span><span class="p">){</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">worker</span><span class="p">);</span>
+    <span class="nx">worker</span><span class="p">.</span><span class="nx">status</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">busy</span><span class="dl">'</span><span class="p">;</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nb">Promise</span><span class="p">((</span><span class="nx">resolve</span><span class="p">,</span> <span class="nx">reject</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="k">try</span> <span class="p">{</span>
+            <span class="kd">let</span> <span class="nx">callbackAddress</span> <span class="o">=</span> <span class="nx">pythonJob</span><span class="p">.</span><span class="nx">callbackAddress</span><span class="p">;</span>
+            <span class="kd">let</span> <span class="nx">options</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="na">mode</span><span class="p">:</span> <span class="dl">'</span><span class="s1">text</span><span class="dl">'</span><span class="p">,</span>
+                <span class="na">pythonOptions</span><span class="p">:</span> <span class="p">[</span><span class="dl">'</span><span class="s1">-u</span><span class="dl">'</span><span class="p">],</span> <span class="c1">// get print results in real-time</span>
+                <span class="na">scriptPath</span><span class="p">:</span> <span class="nx">path</span><span class="p">.</span><span class="nx">relative</span><span class="p">(</span><span class="nx">process</span><span class="p">.</span><span class="nx">cwd</span><span class="p">(),</span> <span class="dl">'</span><span class="s1">python-scripts/</span><span class="dl">'</span><span class="p">),</span>
+                <span class="na">args</span><span class="p">:</span> <span class="p">[</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">pythonJob</span><span class="p">)]</span>
+            <span class="p">};</span>
+            <span class="nx">PythonShell</span><span class="p">.</span><span class="nx">run</span><span class="p">(</span><span class="nx">pythonJob</span><span class="p">.</span><span class="nx">scriptName</span><span class="p">,</span> <span class="nx">options</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">results</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="k">throw</span> <span class="nx">err</span><span class="p">;</span>
+                <span class="k">try</span> <span class="p">{</span>
+                    <span class="nx">result</span> <span class="o">=</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">results</span><span class="p">.</span><span class="nx">pop</span><span class="p">());</span>
+                    <span class="k">if</span><span class="p">(</span><span class="nx">result</span><span class="p">)</span> <span class="p">{</span>
+                        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">callbackAddress</span> <span class="o">+</span> <span class="dl">'</span><span class="s1">/callback</span><span class="dl">'</span><span class="p">)</span>
+                        <span class="nx">axios</span><span class="p">({</span>
+                            <span class="na">method</span><span class="p">:</span> <span class="dl">'</span><span class="s1">post</span><span class="dl">'</span><span class="p">,</span>
+                            <span class="na">url</span><span class="p">:</span> <span class="nx">callbackAddress</span> <span class="o">+</span> <span class="dl">'</span><span class="s1">/callback</span><span class="dl">'</span><span class="p">,</span>
+                            <span class="na">data</span><span class="p">:</span> <span class="nx">result</span>
+                        <span class="p">}).</span><span class="nx">then</span><span class="p">((</span><span class="nx">response</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+                            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">`Worker let let the Boss know job is complete.`</span><span class="p">);</span>
+                            <span class="nx">worker</span><span class="p">.</span><span class="nx">status</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">bored</span><span class="dl">'</span><span class="p">;</span>
+                        <span class="p">}).</span><span class="k">catch</span><span class="p">((</span><span class="nx">error</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+                            <span class="nx">worker</span><span class="p">.</span><span class="nx">status</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">bored</span><span class="dl">'</span>
+                        <span class="p">});</span>
+                    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                        <span class="nx">worker</span><span class="p">.</span><span class="nx">status</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">bored</span><span class="dl">'</span>
+                    <span class="p">}</span>
+                <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+                   <span class="nx">worker</span><span class="p">.</span><span class="nx">status</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">bored</span><span class="dl">'</span>
+                <span class="p">}</span>
+            <span class="p">});</span>
+            <span class="nx">resolve</span><span class="p">({</span><span class="dl">'</span><span class="s1">message</span><span class="dl">'</span><span class="p">:</span> <span class="dl">'</span><span class="s1">job started</span><span class="dl">'</span><span class="p">});</span>
+        <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">reject</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+            <span class="nx">worker</span><span class="p">.</span><span class="nx">status</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">bored</span><span class="dl">'</span>
+        <span class="p">}</span>
+    <span class="p">});</span>
+<span class="p">}</span>
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="p">{</span><span class="nx">scriptRun</span><span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="boss-1">Boss</h3>
+
+<p>server.js</p>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">express</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">express</span><span class="dl">'</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">bodyParser</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">body-parser</span><span class="dl">'</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">axios</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">axios</span><span class="dl">'</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">timeout</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">connect-timeout</span><span class="dl">'</span><span class="p">)</span>
+
+<span class="kd">const</span> <span class="p">{</span><span class="nx">mongoose</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">./backend/database-services/dl-mongo</span><span class="dl">'</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">workerNode</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">./backend/services/worker-node</span><span class="dl">'</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">work</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">./backend/services/work</span><span class="dl">'</span><span class="p">);</span>
+
+<span class="c1">// Database collection</span>
+<span class="kd">var</span> <span class="p">{</span><span class="nx">Job</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">./backend/database-services/models/job</span><span class="dl">'</span><span class="p">);</span>
+<span class="kd">var</span> <span class="p">{</span><span class="nx">Order</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">./backend/database-services/models/order</span><span class="dl">'</span><span class="p">);</span>
+
+
+<span class="kd">const</span> <span class="nx">bossAddress</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">http://maddatum.com</span><span class="dl">'</span>
+
+<span class="c1">// Server setup.</span>
+<span class="kd">var</span> <span class="nx">app</span> <span class="o">=</span> <span class="nx">express</span><span class="p">();</span>
+<span class="kd">const</span> <span class="nx">port</span> <span class="o">=</span> <span class="mi">3000</span><span class="p">;</span>
+
+<span class="c1">// Add request parameters.</span>
+<span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">((</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="nx">next</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">res</span><span class="p">.</span><span class="nx">setHeader</span><span class="p">(</span><span class="dl">'</span><span class="s1">Access-Control-Allow-Origin</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">*</span><span class="dl">'</span><span class="p">);</span>
+    <span class="nx">res</span><span class="p">.</span><span class="nx">setHeader</span><span class="p">(</span><span class="dl">'</span><span class="s1">Access-Control-Allow-Headers</span><span class="dl">'</span><span class="p">,</span> 
+                  <span class="dl">'</span><span class="s1">Origin, X-Requested-With, Content-Type, Accept</span><span class="dl">'</span><span class="p">);</span> 
+    <span class="nx">res</span><span class="p">.</span><span class="nx">setHeader</span><span class="p">(</span><span class="dl">'</span><span class="s1">Access-Control-Allow-Methods</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">GET, POST, PUT, PATCH, DELETE, OPTIONS</span><span class="dl">'</span><span class="p">);</span>
+    <span class="nx">next</span><span class="p">();</span>
+<span class="p">});</span>
+
+<span class="c1">// Add the middleware.</span>
+<span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">bodyParser</span><span class="p">.</span><span class="nx">json</span><span class="p">())</span>
+
+<span class="cm">/*
+This route is for creating new Jobs on the queue
+*/</span>
+<span class="nx">app</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="dl">'</span><span class="s1">/job/:method</span><span class="dl">'</span><span class="p">,</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="p">{</span> <span class="dl">'</span><span class="s1">message</span><span class="dl">'</span><span class="p">:</span> <span class="dl">'</span><span class="s1">No request provided.</span><span class="dl">'</span> <span class="p">}};</span>
+    <span class="k">try</span> <span class="p">{</span>
+        <span class="k">switch</span> <span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">method</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">case</span> <span class="dl">'</span><span class="s1">create</span><span class="dl">'</span><span class="p">:</span>
+                <span class="nx">work</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">)</span>
+                <span class="p">.</span><span class="nx">then</span><span class="p">((</span><span class="nx">response</span><span class="p">)</span> <span class="o">=&gt;</span><span class="p">{</span>
+                    <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nx">response</span><span class="p">);</span>
+                <span class="p">}).</span><span class="k">catch</span><span class="p">((</span><span class="nx">error</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+                    <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">({</span><span class="dl">'</span><span class="s1">error</span><span class="dl">'</span><span class="p">:</span> <span class="nx">error</span> <span class="p">})</span>
+                <span class="p">});</span>
+                <span class="k">break</span><span class="p">;</span>
+            <span class="nl">default</span><span class="p">:</span>
+                <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">({</span><span class="dl">'</span><span class="s1">error</span><span class="dl">'</span><span class="p">:</span> <span class="dl">'</span><span class="s1">No method selected.</span><span class="dl">'</span><span class="p">})</span>
+        <span class="p">}</span>
+    <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">({</span><span class="dl">'</span><span class="s1">error</span><span class="dl">'</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Error with request shape.</span><span class="dl">'</span><span class="p">,</span> <span class="nx">err</span><span class="p">})</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+
+<span class="cm">/*
+This route is for adding new WorkerNodes to the database.
+*/</span>
+<span class="nx">app</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="dl">'</span><span class="s1">/worker-node/:method</span><span class="dl">'</span><span class="p">,</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="p">{</span> <span class="dl">'</span><span class="s1">message</span><span class="dl">'</span><span class="p">:</span> <span class="dl">'</span><span class="s1">No request provided.</span><span class="dl">'</span> <span class="p">}};</span>
+    <span class="k">try</span> <span class="p">{</span>
+        <span class="k">switch</span> <span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">method</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">case</span> <span class="dl">'</span><span class="s1">create</span><span class="dl">'</span><span class="p">:</span>
+                <span class="nx">workerNode</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">)</span>
+                <span class="p">.</span><span class="nx">then</span><span class="p">((</span><span class="nx">response</span><span class="p">)</span> <span class="o">=&gt;</span><span class="p">{</span>
+                    <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nx">response</span><span class="p">);</span>
+                <span class="p">}).</span><span class="k">catch</span><span class="p">((</span><span class="nx">error</span><span class="p">)</span> <span class="o">=&gt;</span><span class="p">{</span>
+                    <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">({</span><span class="dl">'</span><span class="s1">error</span><span class="dl">'</span><span class="p">:</span> <span class="nx">error</span><span class="p">.</span><span class="nx">message</span><span class="p">});</span>
+                <span class="p">})</span>
+            <span class="k">break</span><span class="p">;</span>
+            <span class="nl">default</span><span class="p">:</span>
+                <span class="k">throw</span> <span class="nx">err</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">({</span><span class="dl">'</span><span class="s1">error</span><span class="dl">'</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Error with request shape.</span><span class="dl">'</span><span class="p">,</span> <span class="nx">err</span> <span class="p">})</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="dl">'</span><span class="s1">/callback</span><span class="dl">'</span><span class="p">,</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="p">{</span> <span class="dl">'</span><span class="s1">message</span><span class="dl">'</span><span class="p">:</span> <span class="dl">'</span><span class="s1">No request provided.</span><span class="dl">'</span> <span class="p">}};</span>
+    <span class="kd">let</span> <span class="nx">outcome</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">;</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">outcome</span><span class="p">);</span>
+    <span class="k">try</span> <span class="p">{</span>
+        <span class="nx">work</span><span class="p">.</span><span class="nx">file</span><span class="p">(</span><span class="nx">outcome</span><span class="p">)</span>
+        <span class="p">.</span><span class="nx">then</span><span class="p">((</span><span class="nx">response</span><span class="p">)</span> <span class="o">=&gt;</span><span class="p">{</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">response</span><span class="p">);</span>
+            <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nx">response</span><span class="p">);</span>
+        <span class="p">})</span>
+    <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">({</span><span class="dl">'</span><span class="s1">error</span><span class="dl">'</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Error with request shape.</span><span class="dl">'</span><span class="p">,</span> <span class="nx">err</span> <span class="p">})</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+
+<span class="cm">/*
+Route for Worker Node to let the Boss know it needs a Job.
+The oldest Job which is unassigned is provided.
+*/</span>
+<span class="nx">app</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="dl">'</span><span class="s1">/bored/:id</span><span class="dl">'</span><span class="p">,</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="p">{</span> <span class="dl">'</span><span class="s1">message</span><span class="dl">'</span><span class="p">:</span> <span class="dl">'</span><span class="s1">No request provided.</span><span class="dl">'</span> <span class="p">}};</span>
+    <span class="k">try</span> <span class="p">{</span>
+        <span class="kd">let</span> <span class="nx">workerNodeId</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">id</span><span class="p">;</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">`</span><span class="p">${</span><span class="nx">workerNodeId</span><span class="p">}</span><span class="s2"> said it's bored.`</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">workerNodeId</span><span class="p">)</span> <span class="p">{</span> <span class="k">throw</span> <span class="p">{</span><span class="dl">'</span><span class="s1">error</span><span class="dl">'</span><span class="p">:</span> <span class="dl">'</span><span class="s1">No id provided.</span><span class="dl">'</span><span class="p">}}</span>
+        <span class="nx">Order</span><span class="p">.</span><span class="nx">findOne</span><span class="p">({</span> <span class="na">status</span><span class="p">:</span> <span class="dl">'</span><span class="s1">unassigned</span><span class="dl">'</span> <span class="p">},</span> <span class="p">{},</span> <span class="p">{</span> <span class="na">sort</span><span class="p">:</span> <span class="p">{</span> <span class="dl">'</span><span class="s1">created_at</span><span class="dl">'</span> <span class="p">:</span> <span class="o">-</span><span class="mi">1</span> <span class="p">}</span> <span class="p">},</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">order</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">`Found a work order, #</span><span class="p">${</span><span class="nx">order</span><span class="p">.</span><span class="nx">_id</span><span class="p">}</span><span class="s2">`</span><span class="p">)</span>
+            <span class="nx">order</span><span class="p">.</span><span class="nx">status</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">assigned</span><span class="dl">'</span><span class="p">;</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">`Provided </span><span class="p">${</span><span class="nx">workerNodeId</span><span class="p">}</span><span class="s2"> with </span><span class="p">${</span><span class="nx">order</span><span class="p">.</span><span class="nx">jobId</span><span class="p">}</span><span class="s2">`</span><span class="p">);</span>
+            <span class="nx">order</span><span class="p">.</span><span class="nx">save</span><span class="p">()</span>
+            <span class="p">.</span><span class="nx">then</span><span class="p">((</span><span class="nx">doc</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+                <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">`Updated the Order #</span><span class="p">${</span><span class="nx">doc</span><span class="p">.</span><span class="nx">id</span><span class="p">}</span><span class="s2">'s status to </span><span class="p">${</span><span class="nx">order</span><span class="p">.</span><span class="nx">status</span><span class="p">}</span><span class="s2">`</span><span class="p">);</span>
+                <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nx">doc</span><span class="p">);</span>
+            <span class="p">});</span>
+        <span class="p">})</span>
+        <span class="p">.</span><span class="k">catch</span><span class="p">((</span><span class="nx">err</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+            <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">({</span><span class="dl">'</span><span class="s1">message</span><span class="dl">'</span><span class="p">:</span> <span class="s2">`No work to do.  Don't get used to it.`</span><span class="p">})</span>
+        <span class="p">});</span>
+    <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">({</span><span class="dl">'</span><span class="s1">error</span><span class="dl">'</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Error with request shape.</span><span class="dl">'</span><span class="p">,</span> <span class="nx">err</span> <span class="p">})</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+
+<span class="cm">/*
+Retrieve Orders or Job
+*/</span>
+<span class="nx">app</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="dl">'</span><span class="s1">/retrieve/:type/:id?/:param1?</span><span class="dl">'</span><span class="p">,</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="p">{</span> <span class="dl">'</span><span class="s1">message</span><span class="dl">'</span><span class="p">:</span> <span class="dl">'</span><span class="s1">No request provided.</span><span class="dl">'</span> <span class="p">}};</span>
+    <span class="k">try</span> <span class="p">{</span>
+        <span class="kd">let</span> <span class="nx">type</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">type</span><span class="p">;</span>
+        <span class="kd">let</span> <span class="nx">id</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">id</span><span class="p">;</span>
+        <span class="kd">let</span> <span class="nx">param1</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">param1</span><span class="p">;</span>
+        <span class="k">switch</span><span class="p">(</span><span class="nx">type</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">case</span> <span class="dl">'</span><span class="s1">order</span><span class="dl">'</span><span class="p">:</span>
+                <span class="nx">Order</span><span class="p">.</span><span class="nx">find</span><span class="p">().</span><span class="nx">then</span><span class="p">((</span><span class="nx">response</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+                    <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nx">response</span><span class="p">);</span>
+                <span class="p">});</span>
+                <span class="k">break</span><span class="p">;</span>
+            <span class="k">case</span> <span class="dl">'</span><span class="s1">job</span><span class="dl">'</span><span class="p">:</span>
+                <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">id</span><span class="p">)</span>  <span class="p">{</span> <span class="k">throw</span> <span class="p">{</span><span class="dl">'</span><span class="s1">error</span><span class="dl">'</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Missing Id</span><span class="dl">'</span><span class="p">}</span> <span class="p">}</span>
+                <span class="nx">Job</span><span class="p">.</span><span class="nx">findOne</span><span class="p">({</span><span class="dl">'</span><span class="s1">_id</span><span class="dl">'</span><span class="p">:</span> <span class="nx">id</span> <span class="p">})</span>
+                <span class="p">.</span><span class="nx">then</span><span class="p">((</span><span class="nx">response</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+                    <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nx">response</span><span class="p">);</span>
+                <span class="p">});</span>
+                <span class="k">break</span><span class="p">;</span>
+            <span class="nl">default</span><span class="p">:</span>
+                <span class="k">throw</span> <span class="nx">error</span>
+        <span class="p">}</span>
+    <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">({</span><span class="dl">'</span><span class="s1">error</span><span class="dl">'</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Error with request shape.</span><span class="dl">'</span><span class="p">,</span> <span class="nx">err</span> <span class="p">})</span>
+    <span class="p">}</span>
+<span class="p">})</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="nx">port</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">`Started on port </span><span class="p">${</span><span class="nx">port</span><span class="p">}</span><span class="s2">`</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre></div></div>
+:ET

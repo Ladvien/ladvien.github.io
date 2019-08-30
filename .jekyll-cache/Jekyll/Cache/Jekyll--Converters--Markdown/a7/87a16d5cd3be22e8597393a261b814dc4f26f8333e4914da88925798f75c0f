@@ -1,0 +1,181 @@
+I"�G<p>Earlier in this article series I showed how to install NodeJS – it was pretty simple with an install script.  However, I thought I better show how I actually worked with NodeJS to create my little 1b1 driver code.</p>
+
+<p>Again, simple, I used others hard work.  Specifically, Michael Hord with Sparkfun’s MiniMoto library.</p>
+
+<ul>
+  <li><a href="https://github.com/sparkfun/SparkFun_MiniMoto_Arduino_Library/tree/V_1.1.0">MiniMoto Arduino Library</a></li>
+</ul>
+
+<p>Really, all I did was tweak the code a little bit to fit JavaScript syntax.</p>
+
+<p>The result</p>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js"><span class="dl">'</span><span class="s1">use strict</span><span class="dl">'</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">i2c</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">i2c-bus</span><span class="dl">'</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">sleep</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">sleep</span><span class="dl">'</span><span class="p">);</span>
+
+<span class="c1">// Commands
+</span>
+<span class="kd">const</span> <span class="nx">FAULT_CMD</span>         <span class="o">=</span> <span class="mh">0x01</span><span class="p">;</span>
+
+<span class="c1">// Fault constants
+</span>
+<span class="kd">const</span> <span class="nx">CLEAR_FAULT</span>       <span class="o">=</span> <span class="mh">0x80</span><span class="p">;</span>
+<span class="kd">const</span> <span class="nx">FAULT</span>             <span class="o">=</span> <span class="mh">0x01</span><span class="p">;</span>
+<span class="kd">const</span> <span class="nx">ILIMIT</span>            <span class="o">=</span> <span class="mh">0x10</span><span class="p">;</span>
+<span class="kd">const</span> <span class="nx">OTS</span>               <span class="o">=</span> <span class="mh">0x08</span><span class="p">;</span>
+<span class="kd">const</span> <span class="nx">UVLO</span>              <span class="o">=</span> <span class="mh">0x04</span><span class="p">;</span>
+<span class="kd">const</span> <span class="nx">OCP</span>               <span class="o">=</span> <span class="mh">0x02</span><span class="p">;</span>
+
+<span class="c1">// Direction bits
+</span>
+<span class="kd">const</span> <span class="nx">FORWARD</span>           <span class="o">=</span> <span class="mb">0b00000010</span><span class="p">;</span>
+<span class="kd">const</span> <span class="nx">REVERSE</span>           <span class="o">=</span> <span class="mb">0b00000001</span><span class="p">;</span>
+<span class="kd">const</span> <span class="nx">HI_Z</span>              <span class="o">=</span> <span class="mb">0b00000000</span><span class="p">;</span>
+<span class="kd">const</span> <span class="nx">BRAKE</span>             <span class="o">=</span> <span class="mb">0b00000011</span><span class="p">;</span>
+
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="kd">class</span> <span class="nx">Motor</span> <span class="p">{</span>
+
+    <span class="cm">/** 1. Add "inverse" motor option
+     *  2. Add option to clear fault on each motor call.
+     *  
+     */</span>
+
+    <span class="kd">constructor</span><span class="p">(</span><span class="nx">address</span><span class="p">,</span> <span class="nx">i2cbus</span><span class="p">,</span> <span class="nx">options</span> <span class="o">=</span> <span class="kc">undefined</span><span class="p">)</span> <span class="p">{</span>        
+        <span class="k">this</span><span class="p">.</span><span class="nx">address</span> <span class="o">=</span> <span class="nx">address</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">i2cbus</span> <span class="o">=</span> <span class="nx">i2cbus</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">options</span> <span class="o">=</span> <span class="nx">options</span>
+    <span class="p">}</span>
+
+    <span class="nx">getFault</span><span class="p">()</span> <span class="p">{</span>
+
+        <span class="kd">var</span> <span class="nx">fault</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="na">message</span><span class="p">:</span> <span class="dl">''</span><span class="p">,</span>
+            <span class="na">code</span><span class="p">:</span> <span class="mi">0</span>
+        <span class="p">}</span>
+    
+        <span class="kd">var</span> <span class="nx">faultCode</span><span class="p">;</span>
+        <span class="k">try</span> <span class="p">{</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">i2cbus</span><span class="p">.</span><span class="nx">readByteSync</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">address</span><span class="p">,</span> <span class="nx">FAULT_CMD</span><span class="p">);</span>
+        <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">`Read fault failed: </span><span class="p">${</span><span class="nx">e</span><span class="p">}</span><span class="s2">`</span><span class="p">)</span>
+        <span class="p">}</span>
+        
+        <span class="nx">fault</span><span class="p">.</span><span class="nx">code</span> <span class="o">=</span> <span class="nx">faultCode</span><span class="p">;</span>
+    
+        <span class="k">if</span> <span class="p">(</span><span class="nx">faultCode</span> <span class="o">!==</span> <span class="kc">undefined</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">faultCode</span><span class="p">);</span>
+            <span class="nx">fault</span><span class="p">.</span><span class="nx">message</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">Unknown fault.</span><span class="dl">'</span><span class="p">;</span>
+            <span class="k">switch</span> <span class="p">(</span><span class="nx">faultCode</span><span class="p">){</span>
+                <span class="k">case</span> <span class="na">FAULT</span><span class="p">:</span>
+                    <span class="nx">fault</span><span class="p">.</span><span class="nx">message</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">Unknown fault.</span><span class="dl">'</span>
+                    <span class="k">break</span><span class="p">;</span>
+                <span class="k">case</span> <span class="na">ILIMIT</span><span class="p">:</span>
+                    <span class="nx">fault</span><span class="p">.</span><span class="nx">message</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">Extended current limit event</span><span class="dl">'</span>
+                    <span class="k">break</span><span class="p">;</span>
+                <span class="k">case</span> <span class="na">OTS</span><span class="p">:</span>
+                    <span class="nx">fault</span><span class="p">.</span><span class="nx">message</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">Over temperature.</span><span class="dl">'</span>
+                    <span class="k">break</span><span class="p">;</span>
+                <span class="k">case</span> <span class="na">UVLO</span><span class="p">:</span>
+                    <span class="nx">fault</span><span class="p">.</span><span class="nx">message</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">Undervoltage lockout.</span><span class="dl">'</span>
+                    <span class="k">break</span><span class="p">;</span>
+                <span class="k">case</span> <span class="na">OCP</span><span class="p">:</span>
+                    <span class="nx">fault</span><span class="p">.</span><span class="nx">message</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">Overcurrent lockout.</span><span class="dl">'</span>
+                    <span class="k">break</span><span class="p">;</span>
+                <span class="nl">default</span><span class="p">:</span>
+                    <span class="nx">fault</span><span class="p">.</span><span class="nx">message</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">Unknown fault.</span><span class="dl">'</span>
+                    <span class="k">break</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="k">return</span> <span class="nx">fault</span><span class="p">;</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="nx">fault</span><span class="p">.</span><span class="nx">message</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">No fault</span><span class="dl">'</span><span class="p">;</span>
+            <span class="k">return</span> <span class="nx">fault</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    
+    <span class="nx">clearFault</span><span class="p">()</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">fault</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">getFault</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">address</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">fault</span><span class="p">.</span><span class="nx">code</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">try</span> <span class="p">{</span>
+                <span class="kd">var</span> <span class="nx">success</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">i2cbus</span><span class="p">.</span><span class="nx">writeByteSync</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">address</span><span class="p">,</span> <span class="nx">FAULT_CMD</span><span class="p">,</span> <span class="nx">CLEAR_FAULT</span><span class="p">);</span>
+                <span class="k">if</span> <span class="p">(</span><span class="nx">success</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="kc">true</span><span class="p">;</span> <span class="p">}</span>
+            <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">`Failed to clear faults: </span><span class="p">${</span><span class="nx">e</span><span class="p">}</span><span class="s2">`</span><span class="p">)</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+    <span class="p">}</span>
+    
+    <span class="nx">drive</span><span class="p">(</span><span class="nx">speed</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">direction</span> <span class="o">=</span> <span class="kc">undefined</span><span class="p">,</span> <span class="nx">checkFault</span> <span class="o">=</span> <span class="kc">false</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// The speed should be 0-63.
+</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">checkFault</span><span class="p">)</span> <span class="p">{</span> <span class="k">this</span><span class="p">.</span><span class="nx">clearFault</span><span class="p">();}</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">direction</span> <span class="o">===</span> <span class="kc">undefined</span><span class="p">)</span> <span class="p">{</span>        
+            <span class="nx">direction</span> <span class="o">=</span> <span class="nx">speed</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">;</span>
+            <span class="nx">speed</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">abs</span><span class="p">(</span><span class="nx">speed</span><span class="p">);</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nx">speed</span> <span class="o">&gt;</span> <span class="mi">63</span><span class="p">)</span> <span class="p">{</span> <span class="nx">speed</span> <span class="o">=</span> <span class="mi">63</span><span class="p">;</span> <span class="p">}</span>
+            <span class="nx">speed</span> <span class="o">=</span> <span class="nx">speed</span> <span class="o">&lt;&lt;</span> <span class="mi">2</span> <span class="p">;</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nx">direction</span><span class="p">)</span> <span class="p">{</span> <span class="nx">speed</span> <span class="o">|=</span> <span class="nx">FORWARD</span><span class="p">;</span> <span class="p">}</span>
+            <span class="k">else</span>           <span class="p">{</span> <span class="nx">speed</span> <span class="o">|=</span> <span class="nx">REVERSE</span><span class="p">;</span> <span class="p">}</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="nx">speed</span> <span class="o">=</span> <span class="nx">speed</span> <span class="o">&lt;&lt;</span> <span class="mi">2</span> <span class="p">;</span>
+            <span class="nx">speed</span> <span class="o">|=</span> <span class="nx">direction</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">try</span> <span class="p">{</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">i2cbus</span><span class="p">.</span><span class="nx">writeByteSync</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">address</span><span class="p">,</span> <span class="mh">0x00</span><span class="p">,</span> <span class="nx">speed</span><span class="p">);</span>
+        <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">e</span><span class="p">){</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">'</span><span class="s1">Drive command failed.</span><span class="dl">'</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    
+    <span class="nx">brake</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">try</span> <span class="p">{</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">drive</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nx">HI_Z</span><span class="p">);</span>
+        <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">'</span><span class="s1">Brake command failed.</span><span class="dl">'</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    
+    
+    <span class="nx">stop</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">try</span> <span class="p">{</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">drive</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nx">BRAKE</span><span class="p">);</span>
+        <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">'</span><span class="s1">Brake command failed.</span><span class="dl">'</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>There’s a lot left to do, but it works.</p>
+
+<p>Todo List:</p>
+<ol>
+  <li>Have the constructor accept an <code class="highlighter-rouge">options</code> object</li>
+  <li>Add <code class="highlighter-rouge">read()</code> to get the current speed which a motor is set.</li>
+  <li>Refactor option to clear faults on write to be determined during construction</li>
+  <li>Add acceleration and deceleration algorithms add functions.</li>
+  <li>Create an async polling of fault codes.</li>
+</ol>
+
+<p>But! For now it works.</p>
+
+<p>Also, or those who are like, “You stole code, dewd! Not cool.”  Mhord’s code has a <a href="https://en.wikipedia.org/wiki/Beerware">beerware</a> license.  I sent this email to Sparkfun in regards to the license and how I might pay Sparkfun back for their work.</p>
+
+<blockquote>
+  <p>Hey Mr. Hord,</p>
+
+  <p>I’m in the process of porting your DRV8830 library to Node–I wanted to make sure I give appropriate credit.</p>
+
+  <blockquote>
+    <p>https://github.com/Ladvien/drv8830</p>
+  </blockquote>
+
+  <p>Also, was going to ship some beer to Sparkfun–in respect of the beerware license.  Just let me know what kind.</p>
+
+  <p>Lastly, I wanted to make sure Sparkfun benefits.  It looks like the DRV8830 TinyMoto board has been discontinued. &gt; Should I recommend people roll their own…or <em>gasp</em> get something off a slow ship from China?
+—Thomas
+aka, Ladvien</p>
+</blockquote>
+
+<p>But I didn’t hear back.  <em>C’est la vie</em></p>
+:ET

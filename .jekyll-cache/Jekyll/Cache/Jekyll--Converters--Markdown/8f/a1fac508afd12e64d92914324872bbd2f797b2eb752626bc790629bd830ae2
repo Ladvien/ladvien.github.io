@@ -1,0 +1,65 @@
+I"�<h2 id="unit-and-integration-testing">Unit and Integration Testing</h2>
+
+<p>I mentioned in an earlier entry that I had the hardest time differentiating between unit and integration tests.  But this distinction was critical for implementing tests which could cover frameworks designed to interact with embedded systems.  At least, in my perspective.  Below is an outline of how I’m structuring tests for the Lumi4 code base.</p>
+
+<h2 id="lumi4tests"><a href="https://github.com/Ladvien/Lumi4/tree/master/Lumi4.Tests" title="Lumi4.Tests">Lumi4.Tests</a></h2>
+
+<p>The unit tests namespace will contain all tests which cover methods which can be operate independtly, without communication of any other system then the program itself.  </p>
+
+<p>For example,</p>
+
+<figure class="highlight"><pre><code class="language-csharp" data-lang="csharp">    <span class="p">[</span><span class="n">TestClass</span><span class="p">]</span>
+    <span class="k">public</span> <span class="k">class</span> <span class="nc">Constructor</span>
+    <span class="p">{</span>
+    	<span class="p">[</span><span class="n">TestMethod</span><span class="p">]</span>
+    	<span class="k">public</span> <span class="k">void</span> <span class="nf">WifiCentralManagerConstructor_Null_Exception</span><span class="p">()</span>
+    	<span class="p">{</span>
+    		<span class="kt">bool</span> <span class="n">ThrewNull</span> <span class="p">=</span> <span class="k">false</span><span class="p">;</span>
+    		<span class="k">try</span>
+    		<span class="p">{</span>
+
+    			<span class="n">WifiCentralManager</span> <span class="n">wifiCentralManager</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">WifiCentralManager</span><span class="p">(</span><span class="k">null</span><span class="p">);</span>
+    		<span class="p">}</span>
+    		<span class="k">catch</span> <span class="p">(</span><span class="n">Exception</span> <span class="n">ex</span><span class="p">)</span>
+    		<span class="p">{</span>
+    			<span class="n">ThrewNull</span> <span class="p">=</span> <span class="k">true</span><span class="p">;</span>
+    		<span class="p">}</span>
+    		<span class="n">Assert</span><span class="p">.</span><span class="nf">IsTrue</span><span class="p">(</span><span class="n">ThrewNull</span><span class="p">);</span>
+    	<span class="p">}</span>
+    <span class="p">}</span></code></pre></figure>
+
+<p>The test above covers a constructor method, which should always be able to execute effectively without any communication with a</p>
+
+<h2 id="lumi4integrationtests"><a href="https://github.com/Ladvien/Lumi4/tree/master/Lumi4.IntegrationTests" title="Lumi4.IntegrationTests">Lumi4.IntegrationTests</a></h2>
+
+<p>In an earlier entry I reviewed the epiphanic difference between intergration and unit tests.  The intergration tests are really meant for code which relies on outside systems; database query result, characters from a filestream, or characters from a UART device.  For Lumi4 there are three systems which the program is depedent.</p>
+
+<ol>
+  <li>Remote Bluetooth Device(s)</li>
+  <li>Remote Wifi Device(s)</li>
+  <li>Intel HEX Filestream</li>
+</ol>
+
+<p>For the first two I’ve decided to focus on integration testing rather than mocks and stubs.  My reasoning is two fold, I will most likely be tweaking the firmware of the remote devices.  Secondly, I don’t understand mocks and stubs yet.  Trying to focus on <a href="https://en.wikipedia.org/wiki/Minimum_viable_product">MVP</a>.  </p>
+
+<p>Of course, when I finally put together a plan of action a new struggle arose.  A lot of my Bluetooth and Wifi handling was depedent on asynchronous callbacks.  And this isn’t the easiest thing to tackle in MSTesting (which is the testing package I’m using for this iteration).  Eventually though, I hacked together the following logic</p>
+
+<figure class="highlight"><pre><code class="language-csharp" data-lang="csharp">    <span class="p">[</span><span class="n">TestMethod</span><span class="p">]</span>
+    <span class="k">public</span> <span class="k">async</span> <span class="n">Task</span> <span class="nf">Search_FindsWebServer_ValidIp</span><span class="p">()</span>
+    <span class="p">{</span>
+    	<span class="kt">var</span> <span class="n">localNetwork</span> <span class="p">=</span> <span class="n">Lumi4IntegrationTestSettings</span><span class="p">.</span><span class="n">LocalIP</span><span class="p">;</span>
+    	<span class="n">WifiCentralManager</span> <span class="n">wifiCentralManager</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">WifiCentralManager</span><span class="p">(</span><span class="n">localNetwork</span><span class="p">);</span>
+    	<span class="kt">bool</span> <span class="n">foundDevice</span> <span class="p">=</span> <span class="k">false</span><span class="p">;</span>
+    	<span class="n">wifiCentralManager</span><span class="p">.</span><span class="n">DiscoveredDevice</span> <span class="p">+=</span> <span class="k">delegate</span> <span class="p">(</span><span class="kt">object</span> <span class="n">obj</span><span class="p">,</span> <span class="n">DiscoveredDeviceEventArgs</span> <span class="n">args</span><span class="p">)</span>
+    	<span class="p">{</span>
+    		<span class="k">if</span> <span class="p">(</span><span class="n">args</span><span class="p">.</span><span class="n">DiscoveredPeripheral</span> <span class="p">!=</span> <span class="k">null</span><span class="p">)</span> <span class="p">{</span> <span class="n">foundDevice</span> <span class="p">=</span> <span class="k">true</span><span class="p">;</span> <span class="p">}</span>
+    	<span class="p">};</span>
+    	<span class="n">wifiCentralManager</span><span class="p">.</span><span class="nf">Search</span><span class="p">(</span><span class="m">90</span><span class="p">,</span> <span class="m">120</span><span class="p">);</span>
+    	<span class="k">await</span> <span class="n">Task</span><span class="p">.</span><span class="nf">Delay</span><span class="p">(</span><span class="n">Lumi4IntegrationTestSettings</span><span class="p">.</span><span class="n">SearchWifiCallbackDelay</span><span class="p">);</span>
+    	<span class="n">Assert</span><span class="p">.</span><span class="nf">IsTrue</span><span class="p">(</span><span class="n">foundDevice</span><span class="p">);</span>
+    <span class="p">}</span></code></pre></figure>
+
+<p>There are a few inputs which most be manually provided to the test, for example, the LocalIP and the target device’s IP.  Scoped at the top of the method is a flag which will identify whether the device was found. It then takes this information, sets up a in method delegate (callback), and attempts to contact the device. Lastly, there is an async delay whose purpose is to allow the search enough time to properly execute. If the test finds the device within the given time, the callback is fired, and the flag set true. Otherwise, it returns failed.</p>
+
+<p>Not sure of the validity, but it’s what I got (so far).</p>
+:ET

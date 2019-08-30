@@ -1,0 +1,87 @@
+I"�<h1 id="creating-a-list-of-domestic-violence-victims">Creating a List of Domestic Violence Victims</h1>
+<p>In this first work challenge you will use R and SQL to get a by-name-list of those who are domestic violence victims from an HMIS data pull (5.1).</p>
+
+<h2 id="data-needed">Data Needed</h2>
+<p>The HMIS Data Pulls are simply a <a href="https://en.wikipedia.org/wiki/Relational_database">relational database</a> which are broken into multiple CSVs.  These CSVs will change in formatting, as stipulated by HUD.  The current version of these CSVs is 5.1.  For this work challenge the focus will be on two CSVs.</p>
+
+<ol>
+  <li>Client.csv</li>
+  <li>HealthAndDV.csv</li>
+</ol>
+
+<p>The <code class="highlighter-rouge">Client</code> file will contain one row per client and only one row.  Each row will contain most of all the Client’s demographic information.</p>
+
+<p>The <code class="highlighter-rouge">HealthAndDV</code> file will contain a row for every HUD Entry Assessment completed on the participant.  Each entry will contain general health information as well the client’s domestic violence information, which the client reported during the HUD Entry Assessment.</p>
+
+<p>What ties the two files together is the <code class="highlighter-rouge">PersonalID</code> column.  This ID is meant to be the grand-mamma of all client IDs.  It is 32 characters long and contain both numbers and letter:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">B7YIOJIGF9CDP6FV7TANQXLMQRMBTVTB</code></pre></figure>
+
+<p>(note, this ID is called the “Enterprise ID” in our HMIS software)</p>
+
+<p>Both the <code class="highlighter-rouge">Client</code> and <code class="highlighter-rouge">HealthAndDV</code> contain the <code class="highlighter-rouge">PersonalID</code> column.  This often referred to as a <code class="highlighter-rouge">key</code> when dealing with relational databases. This unique ID in both files will allow us to merge the two data sets together using something called <strong>joins</strong>.</p>
+
+<p>Now, in the Client.csv the information is readable to us humans.  There will be the <code class="highlighter-rouge">FirstName</code>, <code class="highlighter-rouge">LastName</code>, <code class="highlighter-rouge">SSN</code> columns and many more.  But in the HealthAndDV.csv the information is trickier.  For this challenge we are going to focus on one column <code class="highlighter-rouge">DomesticViolenceVictim</code>. When you open the data set you may notice that instead of “Yes” or “No” answers in the columns you will see “1” or “0”.  That’s because computers understand the 1 and 0 much quicker than Yes or No.</p>
+
+<p>This is an important side note for managing data.  Make the databases easy for computers to understand and report generation will be <em>much</em> faster.  You have to think, if using a 1 instead of Yes could save 0.5 seconds on a calculation, then when you have a dataset which contains 1000 records you just saved 500 seconds 8.3 seconds.  Now, multiply by 1,700,000 records.  Well, you get the picture.</p>
+
+<p>Ok.  Back to the problem at hand.  Just know “1” is equal to “Yes” and “0” is equal to “No”.  So, for this challenge, we will want to find all the clients who have a “1” in the <code class="highlighter-rouge">DomesticViolenceVictim</code> column</p>
+
+<h2 id="the-goal">The Goal</h2>
+<p>We are going to merge the two data sets and to discover the following:</p>
+
+<ol>
+  <li>A list of clients who are victims of domestic violence.</li>
+  <li>A count of how many clients are fleeing domestic violence.</li>
+</ol>
+
+<p>Really, the second piece of information is counting how many people are in the list of those who are victims.</p>
+
+<p>To get this information we will need to do the following:</p>
+
+<ol>
+  <li>Load the Client.csv and HealthAnd.csv</li>
+  <li>Filter the HealthAndDV dataset to the most recent according to the column <code class="highlighter-rouge">DateCreated</code></li>
+  <li>Join (merge) the dataframes where their <code class="highlighter-rouge">PersonalID</code> are the same</li>
+  <li>Filter the merged dataframe to those who’ve reported <code class="highlighter-rouge">1</code> in <code class="highlighter-rouge">DomesticViolenceVictim</code></li>
+  <li>Write this data to a file.</li>
+  <li>Use a function to count how many participants are in this victim list.</li>
+</ol>
+
+<h2 id="the-resources">The Resources</h2>
+<p>Below are the resources which should help you understand each step of the process.</p>
+
+<h3 id="step-1">Step 1</h3>
+<ul>
+  <li>R Programming A-Z – Video 41 – Loading and Importing Data in R</li>
+  <li>R Programming A-Z – Video 21 – Functions in R</li>
+</ul>
+
+<h3 id="step-2">Step 2</h3>
+<ul>
+  <li>The Complete SQL Bootcamp – All Videos in Section 5</li>
+  <li>The Complete SQL Bootcamp – All Videos in Section 6</li>
+  <li><a href="https://ladvien.com/sqldf-dates/">Working with Dates in SQLdf</a></li>
+</ul>
+
+<h3 id="step-3">Step 3</h3>
+<ul>
+  <li>The Complete SQL Bootcamp – All Videos in Section 8</li>
+</ul>
+
+<h3 id="step-4-">Step 4 –</h3>
+<ul>
+  <li><a href="https://ladvien.com/hmis/hmis-r-sql-query/">HMIS, R, SQL – Queries</a></li>
+</ul>
+
+<h3 id="step-5-">Step 5 –</h3>
+<ul>
+  <li><a href="https://ladvien.com/hmis-sql-r-read-write-csv/">Read and Write CSVs</a></li>
+</ul>
+
+<h3 id="step-6-">Step 6 –</h3>
+<ul>
+  <li>The Complete SQL Bootcamp – All Videos in Section 5</li>
+  <li>The Complete SQL Bootcamp – All Videos in Section 6</li>
+</ul>
+:ET

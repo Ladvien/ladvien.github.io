@@ -1,0 +1,35 @@
+I"�<p>This is an R function written to split a dataset into particular sized sets, then write them as a CSV.  Often, our office is need a quick way to split files for uploading purposes, since our HMIS software doesn’t handle large uploads well.</p>
+
+<p>For example:</p>
+
+<figure class="highlight"><pre><code class="language-r" data-lang="r"><span class="n">splitDataAndWriteFiles</span><span class="p">(</span><span class="n">df</span><span class="p">,</span><span class="w"> </span><span class="m">500</span><span class="p">,</span><span class="w"> </span><span class="s2">"My_Data"</span><span class="p">)</span><span class="w">  </span></code></pre></figure>
+
+<p>Will produce X number of files named “My_data_X.csv”</p>
+
+<figure class="highlight"><pre><code class="language-r" data-lang="r"><span class="n">options</span><span class="p">(</span><span class="n">java.parameters</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"-Xmx14336m"</span><span class="p">)</span><span class="w">  </span><span class="c1">## memory set to 14 GB</span><span class="w">
+</span><span class="n">library</span><span class="p">(</span><span class="s2">"XLConnect"</span><span class="p">)</span><span class="w">
+
+</span><span class="c1"># Function to split files.</span><span class="w">
+</span><span class="n">splitDataAndWriteFiles</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="k">function</span><span class="p">(</span><span class="n">df</span><span class="p">,</span><span class="w"> </span><span class="n">chunkSize</span><span class="p">,</span><span class="w"> </span><span class="n">nameOfFiles</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+  </span><span class="n">success</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="kc">FALSE</span><span class="w">
+  </span><span class="n">count</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="m">0</span><span class="w">
+  </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">success</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="c1"># If you want 20 samples, put any range of 20 values within the range of number of rows</span><span class="w">
+    </span><span class="n">s</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">paste</span><span class="p">(((</span><span class="n">count</span><span class="o">*</span><span class="n">chunkSize</span><span class="p">)</span><span class="m">+1</span><span class="p">),</span><span class="w"> </span><span class="s2">"_"</span><span class="p">,</span><span class="w"> </span><span class="p">((</span><span class="n">count</span><span class="m">+1</span><span class="p">)</span><span class="o">*</span><span class="n">chunkSize</span><span class="p">))</span><span class="w">
+    </span><span class="n">print</span><span class="p">(</span><span class="n">s</span><span class="p">)</span><span class="w">
+    </span><span class="n">chunk</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">subset</span><span class="p">(</span><span class="n">df</span><span class="p">[((</span><span class="n">count</span><span class="o">*</span><span class="n">chunkSize</span><span class="p">)</span><span class="m">+1</span><span class="p">)</span><span class="o">:</span><span class="p">((</span><span class="n">count</span><span class="m">+1</span><span class="p">)</span><span class="o">*</span><span class="n">chunkSize</span><span class="p">),])</span><span class="w">
+    </span><span class="c1">#chunk &lt;- sample(df[5:20,])</span><span class="w">
+    </span><span class="c1">## this would contain first 20 rows</span><span class="w">
+    </span><span class="n">fileName</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">paste</span><span class="p">(</span><span class="n">nameOfFiles</span><span class="p">,</span><span class="w"> </span><span class="s2">"_"</span><span class="p">,</span><span class="w"> </span><span class="nf">as.character</span><span class="p">(</span><span class="n">count</span><span class="p">),</span><span class="w"> </span><span class="s2">".csv"</span><span class="p">)</span><span class="w">
+    </span><span class="c1"># Write out all the Active HUD Assessments.</span><span class="w">
+    </span><span class="n">write.csv</span><span class="p">(</span><span class="n">chunk</span><span class="p">,</span><span class="w"> </span><span class="n">file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fileName</span><span class="p">,</span><span class="w"> </span><span class="n">na</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w"> </span><span class="n">row.names</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">FALSE</span><span class="p">,</span><span class="w"> </span><span class="n">fileEncoding</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"utf8"</span><span class="p">)</span><span class="w">
+    </span><span class="n">count</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">count</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="m">1</span><span class="w">
+    </span><span class="n">success</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="p">(</span><span class="n">count</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">chunkSize</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">nrow</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+  </span><span class="nf">return</span><span class="p">(</span><span class="n">success</span><span class="p">)</span><span class="w">
+</span><span class="p">}</span><span class="w">
+
+</span><span class="n">fileToSplit</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">read.csv</span><span class="p">(</span><span class="s2">"UPLOAD -- Sal Men-- TCES Move -- TSA Bed Data Template.csv"</span><span class="p">)</span><span class="w">
+
+</span><span class="n">splitDataAndWriteFiles</span><span class="p">(</span><span class="n">fileToSplit</span><span class="p">,</span><span class="w"> </span><span class="m">5000</span><span class="p">,</span><span class="w"> </span><span class="s2">"Sal_Men_NBN"</span><span class="p">)</span></code></pre></figure>
+:ET

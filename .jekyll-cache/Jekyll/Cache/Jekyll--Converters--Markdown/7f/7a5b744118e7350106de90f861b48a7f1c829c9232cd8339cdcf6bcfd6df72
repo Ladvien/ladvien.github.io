@@ -1,0 +1,369 @@
+I"b�<h2 id="lumi3">Lumi3</h2>
+
+<p>This project is meant as stepping stone to implement Lumi2.  The Lumi projects I’ve been working on are over-the-air uploaders of Arduino / AVR programs to Atmega and Atiny chips which are programmed with the TinySafeBoot bootloader.  The goal is to allow the user to select either WiFi or Bluetooth, create a connection to either an ESP8266 or HM-1X device, and upload whatever program to an AVR connected to the wireless receiving device.</p>
+
+<p>The last iteration of Lumi was written in Windows Universal Apps SDK.  Unfortunately, the code-base turned into spaghetti.  I’ve diagnosed the issues to be due to God-modules, poor understand of object-oriented design, and rushed coding.  Passion got ahead of my ability.  Here’s my history on the project so far:</p>
+
+<ol>
+  <li><a href="https://github.com/Ladvien/LPC1114_Hex_Upload_Reroll">Vorpal Hoff</a> – an attempt at wireless uploading with a HM-11 and LPC1114 combination.  Written in C / C++.</li>
+  <li><a href="https://github.com/Ladvien/HM-1X_Aid_v01">HM-1X Aid</a> – this project was meant to be a GUI on top of the HM-1X modules, allowing “easy” editing of the module’s behavior.  It was my first venture into C#.  (It’s sooo bad;although, the serial communication was asynchoronous.)</li>
+  <li><a href="https://github.com/Ladvien/Lumi_TinySafeBoot_Uploader">Lumi1</a> – this the first succesful TinySafeBoot uploader.  It was written in C# using the .NET WinForms.  Unfortunately, it was synchoronou.  And I was finished with the USB-to-UART uploader before I realized there was no easy BLE support in WinForm’s .NET.</li>
+  <li><a href="https://github.com/Ladvien/Lumi_Windows_App">Lumi2</a> –  this is where things start getting better.  It is the current version of the TSB wireless bootloader.  It works, is asynchronous, and has BLE support.  Unfortunately, the code turned into spaghetti.  This is largely due to my poor understanding of object-oriented design.  It has god-modules, a horrifically implemented SerialEvent response protocol, poor encapsulation, no polymorphism.  It’s just a mess.</li>
+</ol>
+
+<iframe allowfullscreen="" frameborder="0" height="320" scrolling="no" src="//www.youtube.com/embed/mLfFbrijakc" width="640"></iframe>
+
+<p>Now, I’m going for the third attempt.  I’ll attempt to correct for the above errors <em>and</em> implement the WiFi uploading, with the receiving device being the ESP8266.</p>
+
+<p><a href="https://github.com/Ladvien/Lumi3">Lumi3</a></p>
+
+<p>Here is sketch of the design:</p>
+
+<p><img src="/../../images/Lumi2_rough_Sketch_v2.png" alt="Lumi2_rough_Sketch_v2.png" /></p>
+
+<h2 id="esper">ESPER</h2>
+
+<p>ESPER is a mini project to troubleshoot how the Lumi3 program will interact with a remote device.</p>
+
+<p>There are two sets of code below, the first is the C# side of the interaction.  It sets up an HttpClient with POST and GET calls.  The one real variant which makes C# ESPER code a little bit different is the asynchronous polling POST request for data.  This is meant to imitate a serial communication RX line across a WiFi signal.</p>
+
+<p>The other code is Arduino C and sets up the ESP8266 device as an HTTP WebServer.  It can then take data received from the UART and print it to the server.  This allows the C# polling POST call to pick up the data.  Of course, in the same manner, there is a the Arduino code is setup to receive data from the HTTP Client and transmit it across the UART.  <em>Voila!</em> Serial communication across WiFi.  Now all we need is the annoying autobauding sounds and we will be firmly back in the 1990s.</p>
+
+<h2 id="update-272016">Update 2/7/2016</h2>
+
+<p><img src="/../../images/ESPER_ui_1.PNG" alt="ESPER_ui_1.PNG" />I’ve added a search method to the ESPER class.  Basically, this iterates over a range POSTing a name request for the ESPER.  When the C# code discovers an ESPER, then it adds it to an array.  I’m pretty happy with it.</p>
+
+<p>I did run into an issue trying to use Windows.HttpClient, as there doesn’t seem to be a way to adjust the timeout.  The default was like 3 seconds, which is way too long.  Therefore, the System.Net.HttpClient was used, since it has a Timeout property which takes a Timespan.  </p>
+
+<p>C# </p>
+
+<figure class="highlight"><pre><code class="language-csharp" data-lang="csharp"> <span class="k">public</span> <span class="k">async</span> <span class="n">Task</span><span class="p">&lt;</span><span class="n">List</span><span class="p">&lt;</span><span class="n">Uri</span><span class="p">&gt;&gt;</span> <span class="nf">SearchForESPER</span><span class="p">(</span><span class="kt">int</span> <span class="n">startingSub</span><span class="p">,</span> <span class="kt">int</span> <span class="n">endingSub</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="kt">var</span> <span class="n">httpClient</span> <span class="p">=</span> <span class="k">new</span> <span class="n">System</span><span class="p">.</span><span class="n">Net</span><span class="p">.</span><span class="n">Http</span><span class="p">.</span><span class="nf">HttpClient</span><span class="p">();</span>
+            <span class="n">httpClient</span><span class="p">.</span><span class="n">Timeout</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">TimeSpan</span><span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="m">300</span><span class="p">);</span>
+            <span class="kt">var</span> <span class="n">webService</span> <span class="p">=</span> <span class="n">WebServerUrl</span> <span class="p">+</span> <span class="s">"name"</span><span class="p">;</span>
+            <span class="n">List</span><span class="p">&lt;</span><span class="n">Uri</span><span class="p">&gt;</span> <span class="n">discoveredIPs</span> <span class="p">=</span> <span class="k">new</span> <span class="n">List</span><span class="p">&lt;</span><span class="n">Uri</span><span class="p">&gt;();</span>
+            <span class="n">EsperProgressBar</span><span class="p">.</span><span class="n">Maximum</span> <span class="p">=</span> <span class="n">endingSub</span> <span class="p">-</span> <span class="n">startingSub</span><span class="p">;</span>
+
+            <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="p">=</span> <span class="n">startingSub</span><span class="p">;</span> <span class="n">i</span> <span class="p">&lt;</span> <span class="n">endingSub</span><span class="p">;</span> <span class="n">i</span><span class="p">++)</span>
+            <span class="p">{</span>
+                <span class="k">try</span>
+                <span class="p">{</span>
+                    <span class="kt">string</span> <span class="n">ip</span> <span class="p">=</span> <span class="s">"http://192.168.1."</span> <span class="p">+</span> <span class="n">i</span><span class="p">.</span><span class="nf">ToString</span><span class="p">()</span> <span class="p">+</span> <span class="s">"/"</span><span class="p">;</span>
+                    <span class="kt">var</span> <span class="n">resourceUri</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">Uri</span><span class="p">(</span><span class="n">ip</span><span class="p">);</span>
+                    <span class="kt">var</span> <span class="n">response</span> <span class="p">=</span> <span class="k">await</span> <span class="n">httpClient</span><span class="p">.</span><span class="nf">PostAsync</span><span class="p">(</span><span class="n">resourceUri</span><span class="p">,</span> <span class="k">null</span><span class="p">);</span>
+                    <span class="k">if</span><span class="p">(</span><span class="n">response</span><span class="p">.</span><span class="n">IsSuccessStatusCode</span> <span class="p">==</span> <span class="k">true</span><span class="p">)</span>
+                    <span class="p">{</span>
+                        <span class="n">discoveredIPs</span><span class="p">.</span><span class="nf">Add</span><span class="p">(</span><span class="n">resourceUri</span><span class="p">);</span>
+                    <span class="p">}</span>
+                    <span class="n">response</span><span class="p">.</span><span class="nf">Dispose</span><span class="p">();</span>
+                <span class="p">}</span>
+                <span class="k">catch</span> <span class="p">(</span><span class="n">Exception</span> <span class="n">ex</span><span class="p">)</span>
+                <span class="p">{</span>
+
+                <span class="p">}</span>
+                <span class="n">EsperProgressBar</span><span class="p">.</span><span class="n">Value</span> <span class="p">+=</span> <span class="m">1</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="n">EsperProgressBar</span><span class="p">.</span><span class="n">Value</span> <span class="p">=</span> <span class="m">0</span><span class="p">;</span>
+            <span class="n">EsperProgressBar</span><span class="p">.</span><span class="n">IsEnabled</span> <span class="p">=</span> <span class="k">false</span><span class="p">;</span>
+            <span class="k">return</span> <span class="n">discoveredIPs</span><span class="p">;</span>
+        <span class="p">}</span>
+
+<span class="p">.......</span>
+
+        <span class="k">private</span> <span class="k">async</span> <span class="k">void</span> <span class="nf">Search_Click</span><span class="p">(</span><span class="kt">object</span> <span class="n">sender</span><span class="p">,</span> <span class="n">RoutedEventArgs</span> <span class="n">e</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">Esper</span> <span class="n">esper</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">Esper</span><span class="p">(</span><span class="n">ProgressBar</span><span class="p">);</span>
+            <span class="kt">var</span> <span class="n">discoveredIPs</span> <span class="p">=</span> <span class="k">await</span> <span class="n">esper</span><span class="p">.</span><span class="nf">SearchForESPER</span><span class="p">(</span><span class="m">98</span><span class="p">,</span> <span class="m">130</span><span class="p">);</span>
+
+            <span class="k">foreach</span><span class="p">(</span><span class="n">Uri</span> <span class="n">ip</span> <span class="k">in</span> <span class="n">discoveredIPs</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">IPComboBox</span><span class="p">.</span><span class="n">Items</span><span class="p">.</span><span class="nf">Add</span><span class="p">(</span><span class="n">ip</span><span class="p">.</span><span class="n">Host</span><span class="p">);</span>
+            <span class="p">}</span>
+            <span class="n">IPComboBox</span><span class="p">.</span><span class="n">SelectedIndex</span> <span class="p">=</span> <span class="m">0</span><span class="p">;</span>
+        <span class="p">}</span></code></pre></figure>
+
+<p>C# ESPER</p>
+
+<figure class="highlight"><pre><code class="language-csharp" data-lang="csharp">    <span class="k">using</span> <span class="nn">System</span><span class="p">;</span>
+    <span class="k">using</span> <span class="nn">System.Collections.Generic</span><span class="p">;</span>
+    <span class="k">using</span> <span class="nn">System.Diagnostics</span><span class="p">;</span>
+    <span class="k">using</span> <span class="nn">System.Linq</span><span class="p">;</span>
+    <span class="k">using</span> <span class="nn">System.Runtime.InteropServices.WindowsRuntime</span><span class="p">;</span>
+    <span class="k">using</span> <span class="nn">System.Text</span><span class="p">;</span>
+    <span class="k">using</span> <span class="nn">System.Threading</span><span class="p">;</span>
+    <span class="k">using</span> <span class="nn">System.Threading.Tasks</span><span class="p">;</span>
+    <span class="k">using</span> <span class="nn">Windows.Storage.Streams</span><span class="p">;</span>
+    <span class="k">using</span> <span class="nn">Windows.Web.Http</span><span class="p">;</span>
+
+    <span class="k">namespace</span> <span class="nn">ESPER</span>
+    <span class="p">{</span>
+        <span class="k">class</span> <span class="nc">Esper</span>
+        <span class="p">{</span>
+            <span class="k">const</span> <span class="kt">int</span> <span class="n">defaultPollingDelay</span> <span class="p">=</span> <span class="m">50</span><span class="p">;</span> 
+
+            <span class="n">HttpClient</span> <span class="n">httpClient</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">HttpClient</span><span class="p">();</span>
+            <span class="n">CancellationTokenSource</span> <span class="n">PollingForDataCancelToken</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">CancellationTokenSource</span><span class="p">();</span>
+
+            <span class="k">private</span> <span class="kt">string</span> <span class="n">WebServerUrl</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+            <span class="k">private</span> <span class="kt">int</span> <span class="n">PollingDelay</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span> <span class="p">=</span> <span class="n">defaultPollingDelay</span><span class="p">;</span>
+            <span class="k">private</span> <span class="kt">bool</span> <span class="n">PollingActive</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span> <span class="p">=</span> <span class="k">false</span><span class="p">;</span>
+
+            <span class="k">public</span> <span class="nf">Esper</span><span class="p">(</span><span class="kt">string</span> <span class="n">consumerUrl</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">WebServerUrl</span> <span class="p">=</span> <span class="n">consumerUrl</span><span class="p">;</span>
+            <span class="p">}</span>
+
+            <span class="k">public</span> <span class="k">async</span> <span class="k">void</span> <span class="nf">PostByteArray</span><span class="p">(</span><span class="kt">byte</span><span class="p">[]</span> <span class="n">data</span><span class="p">)</span>
+            <span class="p">{</span>
+
+                <span class="kt">var</span> <span class="n">httpClient</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">HttpClient</span><span class="p">();</span>
+                <span class="kt">var</span> <span class="n">webService</span> <span class="p">=</span> <span class="n">WebServerUrl</span> <span class="p">+</span> <span class="s">"data"</span><span class="p">;</span>
+                <span class="kt">var</span> <span class="n">resourceUri</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">Uri</span><span class="p">(</span><span class="n">WebServerUrl</span><span class="p">);</span>
+                <span class="k">try</span>
+                <span class="p">{</span>
+                    <span class="n">IBuffer</span> <span class="n">buffer</span> <span class="p">=</span> <span class="n">data</span><span class="p">.</span><span class="nf">AsBuffer</span><span class="p">();</span>
+                    <span class="k">using</span> <span class="p">(</span><span class="n">HttpBufferContent</span> <span class="n">content</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">HttpBufferContent</span><span class="p">(</span><span class="n">buffer</span><span class="p">))</span>
+                    <span class="p">{</span>
+                        <span class="n">content</span><span class="p">.</span><span class="n">Headers</span><span class="p">.</span><span class="nf">Add</span><span class="p">(</span><span class="s">"Content-Type"</span><span class="p">,</span> <span class="s">"text/html; charset=utf-8"</span><span class="p">);</span>
+                        <span class="n">content</span><span class="p">.</span><span class="n">Headers</span><span class="p">.</span><span class="n">ContentLength</span> <span class="p">=</span> <span class="n">buffer</span><span class="p">.</span><span class="n">Length</span><span class="p">;</span>
+                        <span class="kt">var</span> <span class="n">response</span> <span class="p">=</span> <span class="k">await</span> <span class="n">httpClient</span><span class="p">.</span><span class="nf">PostAsync</span><span class="p">(</span><span class="n">resourceUri</span><span class="p">,</span> <span class="n">content</span><span class="p">);</span>
+                        <span class="n">Debug</span><span class="p">.</span><span class="nf">WriteLine</span><span class="p">(</span><span class="n">response</span><span class="p">);</span>
+                    <span class="p">}</span>
+                <span class="p">}</span>
+                <span class="k">catch</span> <span class="p">(</span><span class="n">TaskCanceledException</span> <span class="n">ex</span><span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="c1">// Handle request being canceled due to timeout.</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+
+            <span class="k">public</span> <span class="k">async</span> <span class="k">void</span> <span class="nf">PostString</span><span class="p">(</span><span class="kt">string</span> <span class="n">str</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="kt">var</span> <span class="n">httpClient</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">HttpClient</span><span class="p">();</span>
+                <span class="kt">var</span> <span class="n">webService</span> <span class="p">=</span> <span class="n">WebServerUrl</span> <span class="p">+</span> <span class="s">"string"</span><span class="p">;</span>
+                <span class="kt">var</span> <span class="n">resourceUri</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">Uri</span><span class="p">(</span><span class="n">webService</span><span class="p">);</span>
+                <span class="k">try</span>
+                <span class="p">{</span>
+                    <span class="k">using</span> <span class="p">(</span><span class="n">HttpStringContent</span> <span class="n">content</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">HttpStringContent</span><span class="p">(</span><span class="n">str</span><span class="p">,</span> <span class="n">Windows</span><span class="p">.</span><span class="n">Storage</span><span class="p">.</span><span class="n">Streams</span><span class="p">.</span><span class="n">UnicodeEncoding</span><span class="p">.</span><span class="n">Utf8</span><span class="p">))</span>
+                    <span class="p">{</span>
+                        <span class="n">content</span><span class="p">.</span><span class="n">Headers</span><span class="p">.</span><span class="n">ContentLength</span> <span class="p">=</span> <span class="p">(</span><span class="kt">ulong</span><span class="p">)</span><span class="n">str</span><span class="p">.</span><span class="n">Length</span><span class="p">;</span>
+                        <span class="k">using</span> <span class="p">(</span><span class="kt">var</span> <span class="n">response</span> <span class="p">=</span> <span class="k">await</span> <span class="n">httpClient</span><span class="p">.</span><span class="nf">PostAsync</span><span class="p">(</span><span class="n">resourceUri</span><span class="p">,</span> <span class="n">content</span><span class="p">))</span> <span class="p">{</span> <span class="p">};</span>
+                    <span class="p">}</span>
+                <span class="p">}</span>
+                <span class="k">catch</span> <span class="p">(</span><span class="n">TaskCanceledException</span> <span class="n">ex</span><span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="c1">// Handle request being canceled due to timeout.</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+
+            <span class="k">public</span> <span class="k">void</span> <span class="nf">Start</span><span class="p">()</span>
+            <span class="p">{</span>
+                <span class="k">if</span><span class="p">(</span><span class="k">false</span> <span class="p">==</span> <span class="n">PollingActive</span><span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="n">PollingActive</span> <span class="p">=</span> <span class="k">true</span><span class="p">;</span>
+                    <span class="n">PollingForDataCancelToken</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">CancellationTokenSource</span><span class="p">();</span>
+                    <span class="nf">PollWebServerDataAvailability</span><span class="p">();</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+
+            <span class="k">public</span> <span class="k">void</span> <span class="nf">End</span><span class="p">()</span>
+            <span class="p">{</span>
+                <span class="n">PollingActive</span> <span class="p">=</span> <span class="k">false</span><span class="p">;</span>
+                <span class="n">PollingForDataCancelToken</span><span class="p">.</span><span class="nf">Cancel</span><span class="p">();</span>
+            <span class="p">}</span>
+
+            <span class="k">public</span> <span class="k">void</span> <span class="nf">SetPollingDelay</span><span class="p">(</span><span class="kt">int</span> <span class="n">delayInMilliseconds</span><span class="p">)</span> <span class="p">{</span> <span class="n">PollingDelay</span> <span class="p">=</span> <span class="n">delayInMilliseconds</span><span class="p">;</span> <span class="p">}</span>
+
+            <span class="k">private</span> <span class="k">void</span> <span class="nf">PollWebServerDataAvailability</span><span class="p">()</span>
+            <span class="p">{</span>   
+                <span class="k">try</span>
+                <span class="p">{</span>
+                    <span class="n">Task</span><span class="p">.</span><span class="nf">Run</span><span class="p">(</span><span class="k">async</span> <span class="p">()</span> <span class="p">=&gt;</span>
+                    <span class="p">{</span>
+                        <span class="k">while</span> <span class="p">(</span><span class="k">true</span><span class="p">)</span>
+                        <span class="p">{</span>
+                            <span class="k">if</span> <span class="p">(</span><span class="n">PollingForDataCancelToken</span><span class="p">.</span><span class="n">IsCancellationRequested</span><span class="p">)</span>
+                            <span class="p">{</span>
+                                <span class="n">PollingForDataCancelToken</span><span class="p">.</span><span class="n">Token</span><span class="p">.</span><span class="nf">ThrowIfCancellationRequested</span><span class="p">();</span>
+                            <span class="p">}</span>
+                            <span class="k">await</span> <span class="nf">GetData</span><span class="p">();</span>
+                            <span class="k">await</span> <span class="n">Task</span><span class="p">.</span><span class="nf">Delay</span><span class="p">(</span><span class="n">PollingDelay</span><span class="p">);</span>
+                        <span class="p">}</span>
+                    <span class="p">},</span> <span class="n">PollingForDataCancelToken</span><span class="p">.</span><span class="n">Token</span><span class="p">);</span>
+                <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="n">TaskCanceledException</span><span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="c1">// TODO: Add cancelation callback here.</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+
+            <span class="k">public</span> <span class="k">async</span> <span class="n">Task</span><span class="p">&lt;</span><span class="kt">string</span><span class="p">&gt;</span> <span class="nf">GetData</span><span class="p">()</span>
+            <span class="p">{</span>
+                <span class="kt">var</span> <span class="n">cts</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">CancellationTokenSource</span><span class="p">();</span>
+                <span class="n">cts</span><span class="p">.</span><span class="nf">CancelAfter</span><span class="p">(</span><span class="n">TimeSpan</span><span class="p">.</span><span class="nf">FromSeconds</span><span class="p">(</span><span class="m">30</span><span class="p">));</span>
+
+                <span class="kt">var</span> <span class="n">webService</span> <span class="p">=</span> <span class="n">WebServerUrl</span> <span class="p">+</span> <span class="s">"buffer"</span><span class="p">;</span>
+                <span class="kt">var</span> <span class="n">resourceUri</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">Uri</span><span class="p">(</span><span class="n">webService</span><span class="p">);</span>
+                <span class="k">try</span>
+                <span class="p">{</span>
+                    <span class="n">HttpResponseMessage</span> <span class="n">response</span> <span class="p">=</span> <span class="k">await</span> <span class="n">httpClient</span><span class="p">.</span><span class="nf">PostAsync</span><span class="p">(</span><span class="n">resourceUri</span><span class="p">,</span> <span class="k">null</span><span class="p">);</span>
+                    <span class="kt">var</span> <span class="n">message</span> <span class="p">=</span> <span class="k">await</span> <span class="n">response</span><span class="p">.</span><span class="n">Content</span><span class="p">.</span><span class="nf">ReadAsStringAsync</span><span class="p">();</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="n">message</span> <span class="p">!=</span> <span class="s">""</span><span class="p">)</span> <span class="p">{</span> <span class="n">Debug</span><span class="p">.</span><span class="nf">WriteLine</span><span class="p">(</span><span class="n">message</span><span class="p">);</span> <span class="p">}</span>
+                    <span class="n">response</span><span class="p">.</span><span class="nf">Dispose</span><span class="p">();</span>
+                    <span class="n">cts</span><span class="p">.</span><span class="nf">Dispose</span><span class="p">();</span>
+                    <span class="k">return</span> <span class="n">message</span><span class="p">;</span>
+                <span class="p">}</span>
+                <span class="k">catch</span> <span class="p">(</span><span class="n">TaskCanceledException</span> <span class="n">ex</span><span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="c1">// Handle request being canceled due to timeout.</span>
+                    <span class="k">return</span> <span class="s">""</span><span class="p">;</span>
+                <span class="p">}</span>
+                <span class="k">return</span> <span class="s">""</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span></code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-c" data-lang="c">  
+<span class="n">Arduino</span> <span class="n">ESPER</span><span class="err">​</span> <span class="n">WebServer</span>
+
+    <span class="cm">/*
+     * This code has been adapted from:
+     *    "SDWebServer - Example WebServer with SD Card backend for esp8266
+     *    Copyright (c) 2015 Hristo Gochkov. All rights reserved.
+     *    This file is part of the ESP8266WebServer library for Arduino environment."
+     * 
+    */</span>
+
+    <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">ssid</span> <span class="o">=</span> <span class="s">"SSID"</span><span class="p">;</span>
+    <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">password</span> <span class="o">=</span> <span class="s">"password"</span><span class="p">;</span>
+
+    <span class="c1">// Gross.  Global variables.  These are used for collecting Serial Data.</span>
+    <span class="n">String</span> <span class="n">inputBuffer</span> <span class="o">=</span> <span class="s">""</span><span class="p">;</span>         
+
+    <span class="cp">#include &lt;ESP8266WiFi.h&gt;
+</span>    <span class="cp">#include &lt;WiFiClient.h&gt;
+</span>    <span class="cp">#include &lt;ESP8266WebServer.h&gt;
+</span>    <span class="cp">#include &lt;ESP8266mDNS.h&gt;
+</span>
+    <span class="k">const</span> <span class="kt">int</span> <span class="n">ledPin</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+    <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">host</span> <span class="o">=</span> <span class="s">"esp8266sd"</span><span class="p">;</span>
+
+    <span class="n">ESP8266WebServer</span> <span class="nf">server</span><span class="p">(</span><span class="mi">80</span><span class="p">);</span>
+
+    <span class="kt">void</span> <span class="nf">returnOK</span><span class="p">()</span> <span class="p">{</span>
+      <span class="n">server</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="s">"text/plain"</span><span class="p">,</span> <span class="s">""</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="nf">returnFail</span><span class="p">(</span><span class="n">String</span> <span class="n">msg</span><span class="p">)</span> <span class="p">{</span>
+      <span class="n">server</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="mi">500</span><span class="p">,</span> <span class="s">"text/plain"</span><span class="p">,</span> <span class="n">msg</span> <span class="o">+</span> <span class="s">"</span><span class="se">\r\n</span><span class="s">"</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="nf">debugWebRequest</span><span class="p">(){</span>
+      <span class="n">String</span> <span class="n">message</span> <span class="o">=</span> <span class="s">""</span><span class="p">;</span>
+      <span class="n">message</span> <span class="o">+=</span> <span class="s">"URI: "</span><span class="p">;</span>
+      <span class="n">message</span> <span class="o">+=</span> <span class="n">server</span><span class="p">.</span><span class="n">uri</span><span class="p">();</span>
+      <span class="n">message</span> <span class="o">+=</span> <span class="s">"</span><span class="se">\n</span><span class="s">Method: "</span><span class="p">;</span>
+      <span class="n">message</span> <span class="o">+=</span> <span class="p">(</span><span class="n">server</span><span class="p">.</span><span class="n">method</span><span class="p">()</span> <span class="o">==</span> <span class="n">HTTP_GET</span><span class="p">)</span><span class="o">?</span><span class="s">"GET"</span><span class="o">:</span><span class="s">"POST"</span><span class="p">;</span>
+      <span class="n">message</span> <span class="o">+=</span> <span class="s">"</span><span class="se">\n</span><span class="s">Arguments: "</span><span class="p">;</span>
+      <span class="n">message</span> <span class="o">+=</span> <span class="n">server</span><span class="p">.</span><span class="n">args</span><span class="p">();</span>
+      <span class="n">message</span> <span class="o">+=</span> <span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span>
+      <span class="k">for</span> <span class="p">(</span><span class="kt">uint8_t</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">server</span><span class="p">.</span><span class="n">args</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">){</span>
+        <span class="n">message</span> <span class="o">+=</span> <span class="s">" NAME:"</span><span class="o">+</span><span class="n">server</span><span class="p">.</span><span class="n">argName</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">+</span> <span class="s">"</span><span class="se">\n</span><span class="s"> VALUE:"</span> <span class="o">+</span> <span class="n">server</span><span class="p">.</span><span class="n">arg</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">+</span> <span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span>
+      <span class="p">}</span>
+      <span class="n">server</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="mi">404</span><span class="p">,</span> <span class="s">"text/plain"</span><span class="p">,</span> <span class="n">message</span><span class="p">);</span>
+      <span class="n">Serial</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="n">message</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="nf">getSerialBuffer</span><span class="p">(){</span>
+      <span class="n">Serial</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">"Sent data: "</span><span class="p">);</span>
+      <span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="n">inputBuffer</span><span class="p">);</span>
+      <span class="n">server</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="s">"text/plain"</span><span class="p">,</span> <span class="n">inputBuffer</span><span class="p">);</span>
+      <span class="n">inputBuffer</span> <span class="o">=</span> <span class="s">""</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="nf">handleUnknownPost</span><span class="p">(){</span>
+      <span class="n">returnOK</span><span class="p">();</span>
+      <span class="c1">//debugWebRequest();  </span>
+      <span class="n">Serial</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">"Unknown POST."</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="nf">handleStringPost</span><span class="p">(){</span>
+      <span class="n">returnOK</span><span class="p">();</span>
+      <span class="c1">//debugWebRequest();</span>
+      <span class="n">Serial</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">"Got data: "</span><span class="p">);</span>
+      <span class="n">Serial</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="n">server</span><span class="p">.</span><span class="n">arg</span><span class="p">(</span><span class="mi">0</span><span class="p">));</span>
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="nf">handleDataPost</span><span class="p">(){</span>
+      <span class="n">returnOK</span><span class="p">();</span>
+      <span class="c1">//debugWebRequest();</span>
+      <span class="n">Serial</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">"Data POST."</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="nf">handleNotFound</span><span class="p">(){</span>
+      <span class="n">returnOK</span><span class="p">();</span>
+      <span class="c1">//debugWebRequest();</span>
+      <span class="n">Serial</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">"Resource not found POST."</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="nf">setup</span><span class="p">(</span><span class="kt">void</span><span class="p">){</span>
+      <span class="n">pinMode</span><span class="p">(</span><span class="n">ledPin</span><span class="p">,</span> <span class="n">OUTPUT</span><span class="p">);</span>
+
+      <span class="n">Serial</span><span class="p">.</span><span class="n">begin</span><span class="p">(</span><span class="mi">115200</span><span class="p">);</span>
+      <span class="n">Serial</span><span class="p">.</span><span class="n">setDebugOutput</span><span class="p">(</span><span class="nb">true</span><span class="p">);</span>
+      <span class="n">Serial</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+      <span class="n">WiFi</span><span class="p">.</span><span class="n">begin</span><span class="p">(</span><span class="n">ssid</span><span class="p">,</span> <span class="n">password</span><span class="p">);</span>
+      <span class="n">Serial</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">"Connecting to "</span><span class="p">);</span>
+      <span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="n">ssid</span><span class="p">);</span>
+
+      <span class="n">digitalWrite</span><span class="p">(</span><span class="n">ledPin</span><span class="p">,</span> <span class="n">HIGH</span><span class="p">);</span>
+      <span class="n">bool</span> <span class="n">isLedPinOn</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+
+      <span class="c1">// Wait for connection</span>
+      <span class="kt">uint8_t</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+      <span class="k">while</span> <span class="p">(</span><span class="n">WiFi</span><span class="p">.</span><span class="n">status</span><span class="p">()</span> <span class="o">!=</span> <span class="n">WL_CONNECTED</span> <span class="o">&amp;&amp;</span> <span class="n">i</span><span class="o">++</span> <span class="o">&lt;</span> <span class="mi">20</span><span class="p">)</span> <span class="p">{</span><span class="c1">//wait 10 seconds</span>
+        <span class="n">delay</span><span class="p">(</span><span class="mi">500</span><span class="p">);</span>
+        <span class="n">Serial</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">"."</span><span class="p">);</span>
+        <span class="n">isLedPinOn</span> <span class="o">=</span> <span class="o">!</span><span class="n">isLedPinOn</span><span class="p">;</span>  
+
+      <span class="p">}</span>
+      <span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s">""</span><span class="p">);</span>
+      <span class="k">if</span><span class="p">(</span><span class="n">i</span> <span class="o">==</span> <span class="mi">21</span><span class="p">){</span>
+        <span class="n">digitalWrite</span><span class="p">(</span><span class="n">ledPin</span><span class="p">,</span> <span class="n">HIGH</span><span class="p">);</span>
+        <span class="n">Serial</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">"Could not connect to"</span><span class="p">);</span>
+        <span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="n">ssid</span><span class="p">);</span>
+        <span class="k">while</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span> 
+          <span class="n">digitalWrite</span><span class="p">(</span><span class="n">ledPin</span><span class="p">,</span> <span class="n">isLedPinOn</span> <span class="o">?</span> <span class="n">HIGH</span> <span class="o">:</span> <span class="n">LOW</span><span class="p">);</span>
+          <span class="n">delay</span><span class="p">(</span><span class="mi">200</span><span class="p">);</span> 
+        <span class="p">}</span>
+      <span class="p">}</span>
+
+      <span class="n">digitalWrite</span><span class="p">(</span><span class="n">ledPin</span><span class="p">,</span> <span class="n">LOW</span><span class="p">);</span>  
+
+      <span class="n">Serial</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">"Connected! IP address: "</span><span class="p">);</span>
+      <span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="n">WiFi</span><span class="p">.</span><span class="n">localIP</span><span class="p">());</span>
+
+      <span class="k">if</span> <span class="p">(</span><span class="n">MDNS</span><span class="p">.</span><span class="n">begin</span><span class="p">(</span><span class="n">host</span><span class="p">))</span> <span class="p">{</span>
+        <span class="n">MDNS</span><span class="p">.</span><span class="n">addService</span><span class="p">(</span><span class="s">"http"</span><span class="p">,</span> <span class="s">"tcp"</span><span class="p">,</span> <span class="mi">80</span><span class="p">);</span>
+        <span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s">"MDNS responder started"</span><span class="p">);</span>
+        <span class="n">Serial</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">"You can now connect to http://"</span><span class="p">);</span>
+        <span class="n">Serial</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="n">host</span><span class="p">);</span>
+        <span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s">".local"</span><span class="p">);</span>
+      <span class="p">}</span>
+
+      <span class="n">server</span><span class="p">.</span><span class="n">on</span><span class="p">(</span><span class="s">"/"</span><span class="p">,</span> <span class="n">HTTP_POST</span><span class="p">,</span> <span class="n">handleUnknownPost</span><span class="p">);</span>
+      <span class="n">server</span><span class="p">.</span><span class="n">on</span><span class="p">(</span><span class="s">"/string"</span><span class="p">,</span> <span class="n">HTTP_POST</span><span class="p">,</span> <span class="n">handleStringPost</span><span class="p">);</span>
+      <span class="n">server</span><span class="p">.</span><span class="n">on</span><span class="p">(</span><span class="s">"/data"</span><span class="p">,</span> <span class="n">HTTP_POST</span><span class="p">,</span> <span class="n">handleDataPost</span><span class="p">);</span>
+      <span class="n">server</span><span class="p">.</span><span class="n">on</span><span class="p">(</span><span class="s">"/buffer"</span><span class="p">,</span> <span class="n">HTTP_POST</span><span class="p">,</span> <span class="n">getSerialBuffer</span><span class="p">);</span>
+      <span class="n">server</span><span class="p">.</span><span class="n">onNotFound</span><span class="p">(</span><span class="n">handleNotFound</span><span class="p">);</span>
+
+      <span class="n">server</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span>
+      <span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s">"HTTP server started"</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="nf">loop</span><span class="p">(</span><span class="kt">void</span><span class="p">){</span>
+      <span class="n">server</span><span class="p">.</span><span class="n">handleClient</span><span class="p">();</span>
+      <span class="k">while</span> <span class="p">(</span><span class="n">Serial</span><span class="p">.</span><span class="n">available</span><span class="p">())</span> <span class="p">{</span>
+        <span class="kt">char</span> <span class="n">inChar</span> <span class="o">=</span> <span class="p">(</span><span class="kt">char</span><span class="p">)</span><span class="n">Serial</span><span class="p">.</span><span class="n">read</span><span class="p">();</span>
+        <span class="n">inputBuffer</span> <span class="o">+=</span> <span class="n">inChar</span><span class="p">;</span>
+      <span class="p">}</span>
+    <span class="p">}</span></code></pre></figure>
+:ET

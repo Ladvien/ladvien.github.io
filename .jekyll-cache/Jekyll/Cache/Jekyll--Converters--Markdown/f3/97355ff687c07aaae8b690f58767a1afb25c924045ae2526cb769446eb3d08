@@ -1,0 +1,346 @@
+I"\n<p>Previously, I wrote about training a CNN to detect toxic comments from text alone.  But, I realized, even if one has a nice little NN to solve all the world’s problems it doesn’t help unless it is in production.</p>
+
+<p>This article is going to cover how to prepare a server and needed word embeddings to mechanize the NN in a Flask webservice.</p>
+
+<h3 id="server-setup-preamble">Server Setup: Preamble</h3>
+<p>For this project I’m using a small server from Linode–called a “Nanode.”  At the time of writing these servers are only $5 a month.  The catch? They only have 1GB of RAM.  It’s definitely going to be tricky to deploy our CNN there, but let’s see it through.</p>
+
+<ul>
+  <li>https://www.linode.com/pricing</li>
+</ul>
+
+<p>As for setting up the server, I’ve written about it elsewhere:</p>
+
+<ul>
+  <li><a href="https://ladvien.com/creating-jekyll-website/">Setting Up Nginx on Linode (step 3-5)</a></li>
+</ul>
+
+<p>For this particular project, I decided to go with a CentOS 7 distribution.</p>
+
+<p>For those of you who know me; I’m not betraying Arch Linxu, however, this project will be using MongoDB and there’s a bit of <a href="https://lists.archlinux.org/pipermail/arch-dev-public/2019-January/029430.html">drama going on</a>.  I will leave some Arch Linux instructions in the Appendix, in case it is ever resolved.</p>
+
+<p>I chose CentOS because it is the distro we use at work and I hoped to get some experience using it.</p>
+
+<h3 id="setup-user-on-centos">Setup User on Centos</h3>
+<p>Login as root and update the system</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yum update -y
+</code></pre></div></div>
+<p>Let’s add another user; setting up the system as root is not a best practice.</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>useradd my_user
+passwd my_user
+</code></pre></div></div>
+<p>Set the password for the <code class="highlighter-rouge">my_user</code></p>
+
+<p>Now, let’s give the <code class="highlighter-rouge">my_user</code> sudo powers</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>EDITOR=nano visudo
+</code></pre></div></div>
+<p>Find line with:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root    ALL=(ALL)    ALL
+</code></pre></div></div>
+<p>And add the exact same entry for <code class="highlighter-rouge">my_user</code>.  It should look like this when done</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root    ALL=(ALL)    ALL
+my_user    ALL=(ALL)    ALL
+</code></pre></div></div>
+<p>Save the file and exit.</p>
+
+<p>Let’s login as our new user.  Exit your shell and login back in as the <code class="highlighter-rouge">my_user</code>.  It should look something like this, typed on your local computer command line.</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ssh my_user@erver_ip_address
+</code></pre></div></div>
+<p>Once logged in, let’s test the <code class="highlighter-rouge">my_user</code>’s sudo powers</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo ls
+</code></pre></div></div>
+<p>If you are greeted with:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>We trust you have received the usual lecture from the local System
+Administrator. It usually boils down to these three things:
+
+    #1) Respect the privacy of others.
+    #2) Think before you type.
+    #3) With great power comes great responsibility.
+
+[sudo] password for my_user: 
+</code></pre></div></div>
+<p>Then task complete!  Otherwise, feel free to ask questions in the comments.</p>
+
+<h3 id="setup-miniconda-on-centos">Setup Miniconda on Centos</h3>
+<p>Anaconda is a great package system for Python data analyst tools.  It takes care of a lot of silly stuff.  Miniconda is the commandline version fo Anaconda, which we will be using.</p>
+
+<p>Install it by entering the following and agreeing to the terms.</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>yum <span class="nb">install</span> <span class="nt">-y</span> wget bzip2
+wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+<span class="nb">chmod</span> +x Miniconda3-latest-Linux-x86_64.sh
+./Miniconda3-latest-Linux-x86_64.sh
+<span class="nb">source</span> .bashrc
+</code></pre></div></div>
+<p>Side note here, if you install Miniconda and have trouble executing <code class="highlighter-rouge">conda</code>, most likely it didn’t add the executable path to your <code class="highlighter-rouge">PATH</code> variables.</p>
+
+<p>This should add the path for both your user and root:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>echo "export PATH='/usr/local/miniconda/bin:$PATH'" &amp;&gt;&gt; /home/my_user/.bashrc
+echo "export PATH='/usr/local/miniconda/bin:$PATH'" &amp;&gt;&gt; /root/.bashrc
+</code></pre></div></div>
+<p>You will need to make sure to reload your shell (log out and back in or run <code class="highlighter-rouge">source .bashrc</code>) after adding the <code class="highlighter-rouge">conda</code> path.</p>
+
+<p>As of this writing Tensorflow only supports Python as late as 3.6, while Miniconda sets up your environment to use 3.7.  To rectify this we can set Python to 3.6.8 by using the Miniconda installer <code class="highlighter-rouge">conda</code>.</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>conda install -y -vv python=3.6.8
+</code></pre></div></div>
+<p>Also, we need to install a few Python packages.</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>conda install -y -vv tensorflow scikit-learn keras pandas
+</code></pre></div></div>
+<p>Ok, one last important step: <strong>Reboot and log back in.</strong></p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo reboot now
+</code></pre></div></div>
+
+<h3 id="create-mongodb-tokenizer-collection">Create MongoDB Tokenizer Collection</h3>
+<p>Here’s where we get clever.  We are trying to fit our model into less than 1GB of RAM, to do this, we are going to need to find a way to access the word-embeddings’ <code class="highlighter-rouge">index2word</code> and <code class="highlighter-rouge">word2index</code> lookup objects without loading them in RAM, like we did in training.  We are going to shove them into a database to be loaded into RAM only when a specific word is needed.</p>
+
+<p>Disk access is slower, but hey! I don’t want to pay $40 a month for a hobby server, do you?</p>
+
+<p>To move the <code class="highlighter-rouge">word-embeddings</code> will take a few steps.  First, we’ll run a Python script to save the embeddings matching the context of our original training.  Then, we will export those embeddings from our local MongoDB.  Next, we’ll move them to the remote server and import them into the MongoDB there.  Simple!</p>
+
+<h4 id="install-mongodb-locally">Install MongoDB Locally</h4>
+<p>To create the local word-embedding databases we will need to install MongoDB locally.  This could vary based upon your OS.  I’ve used homebrew to install on the Mac.</p>
+
+<ul>
+  <li>https://brew.sh/</li>
+</ul>
+
+<p>Here are instructions on installing MongoDB on the Mac:</p>
+<ul>
+  <li><a href="https://treehouse.github.io/installation-guides/mac/mongo-mac.html">Install MongoDB</a></li>
+</ul>
+
+<p>Don’t forget you’ll need to start the MonogDB service before starting the next step.</p>
+
+<p>On the Mac, using Homebrew, it can be started with:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>brew services start mongodb
+</code></pre></div></div>
+
+<h4 id="create-a-word-embedding-database">Create a Word Embedding Database</h4>
+<p>Once you’ve installed it locally, here’s the script I used to convert the <code class="highlighter-rouge">word_embeddings</code> into a MongoDB database.  It loads the word-embeddings  using <code class="highlighter-rouge">gensim</code>, tokenizes them.</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+</span><span class="s">"""
+Created on Tue Jan 22 05:19:35 2019
+@author: cthomasbrittain
+"""</span>
+<span class="kn">import</span> <span class="nn">pymongo</span>
+<span class="kn">import</span> <span class="nn">gensim.downloader</span> <span class="k">as</span> <span class="n">api</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="n">pd</span>
+<span class="kn">from</span> <span class="nn">keras.preprocessing.text</span> <span class="kn">import</span> <span class="n">Tokenizer</span>
+
+<span class="c1"># Convenience Macros
+</span><span class="n">word_embedding_name</span> <span class="o">=</span> <span class="s">"glove-wiki-gigaword-50"</span>
+
+<span class="n">BASE_DIR</span> <span class="o">=</span> <span class="s">'/path/to/embeddings'</span>
+<span class="n">TRAIN_TEXT_DATA_DIR</span> <span class="o">=</span> <span class="n">BASE_DIR</span> <span class="o">+</span> <span class="s">'train.csv'</span>
+<span class="n">MAX_NUM_WORDS</span> <span class="o">=</span> <span class="mi">20000</span>
+
+<span class="c1"># Load embeddings
+</span><span class="n">info</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">info</span><span class="p">()</span> <span class="c1"># show info about available models/datasets
+</span><span class="n">embedding_model</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">word_embedding_name</span><span class="p">)</span> <span class="c1"># download the model and return as object ready for use
+</span>
+<span class="n">vocab_size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">embedding_model</span><span class="o">.</span><span class="n">vocab</span><span class="p">)</span>
+
+<span class="n">index2word</span> <span class="o">=</span> <span class="n">embedding_model</span><span class="o">.</span><span class="n">index2word</span>
+<span class="n">word2idx</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">vocab_size</span><span class="p">):</span>
+    <span class="n">word2idx</span><span class="p">[</span><span class="n">embedding_model</span><span class="o">.</span><span class="n">index2word</span><span class="p">[</span><span class="n">index</span><span class="p">]]</span> <span class="o">=</span> <span class="n">index</span>
+    
+<span class="c1"># Get labels
+</span><span class="k">print</span><span class="p">(</span><span class="s">'Loading Toxic Comments data.'</span><span class="p">)</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">TRAIN_TEXT_DATA_DIR</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">toxic_comments</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">TRAIN_TEXT_DATA_DIR</span><span class="p">)</span>
+
+<span class="c1"># Convert Toxic Comments to Sequences
+</span><span class="k">print</span><span class="p">(</span><span class="s">'Processing text dataset'</span><span class="p">)</span>
+
+<span class="n">tokenizer</span> <span class="o">=</span> <span class="n">Tokenizer</span><span class="p">(</span><span class="n">num_words</span><span class="o">=</span><span class="n">MAX_NUM_WORDS</span><span class="p">)</span>
+<span class="n">tokenizer</span><span class="o">.</span><span class="n">fit_on_texts</span><span class="p">(</span><span class="n">toxic_comments</span><span class="p">[</span><span class="s">'comment_text'</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="s">"DUMMY_VALUE"</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+<span class="n">sequences</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">texts_to_sequences</span><span class="p">(</span><span class="n">toxic_comments</span><span class="p">[</span><span class="s">'comment_text'</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="s">"DUMMY_VALUE"</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+<span class="n">word_index</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">word_index</span>
+
+<span class="c1"># Save Embeddings to MongoDB
+</span><span class="n">mong</span> <span class="o">=</span> <span class="n">pymongo</span><span class="o">.</span><span class="n">MongoClient</span><span class="p">(</span><span class="s">'127.0.0.1'</span><span class="p">,</span> <span class="mi">27017</span><span class="p">)</span>
+
+<span class="c1"># Create collection database
+</span><span class="n">mongdb</span> <span class="o">=</span> <span class="n">mong</span><span class="p">[</span><span class="s">"word_embeddings"</span><span class="p">]</span>
+
+<span class="c1"># Create this word_embeddings 
+</span><span class="n">coll</span> <span class="o">=</span> <span class="n">mongdb</span><span class="p">[</span><span class="n">word_embedding_name</span><span class="p">]</span>
+
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">word</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">index2word</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">i</span> <span class="o">%</span> <span class="mi">1000</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">'Saved: '</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">+</span> <span class="s">' out of '</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">index2word</span><span class="p">)))</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">embedding_vector</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">embedding_model</span><span class="o">.</span><span class="n">get_vector</span><span class="p">(</span><span class="n">word</span><span class="p">)))</span>
+        <span class="n">post</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s">'word'</span><span class="p">:</span> <span class="n">word</span><span class="p">,</span>
+                <span class="s">'index'</span><span class="p">:</span> <span class="n">word_index</span><span class="p">[</span><span class="n">word</span><span class="p">],</span>
+                <span class="s">'vector'</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">embedding_vector</span><span class="p">)</span>
+         <span class="p">}</span>
+        <span class="n">posts</span> <span class="o">=</span> <span class="n">coll</span><span class="o">.</span><span class="n">posts</span>
+        <span class="n">post_id</span> <span class="o">=</span> <span class="n">posts</span><span class="o">.</span><span class="n">insert_one</span><span class="p">(</span><span class="n">post</span><span class="p">)</span><span class="o">.</span><span class="n">inserted_id</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="k">continue</span>
+</code></pre></div></div>
+<p>One note here, you <em>could</em> set the database directly to your remote.  However, I found saving the &gt;2 GB enteries one at a time across a 38.8bps SSH connection took most of the day.  So, I’ve opted to create them locally and then copy them in bulk.</p>
+
+<h3 id="install-mongodb-remote-server">Install MongoDB Remote Server</h3>
+<p>MongoDB has license with some strict redistribution clauses.  Most distros no longer include it in the package repos.  However, MongoDB has several distro repos of their own–luckily, REHL and Centos are included. But not Arch Linux? Really? :|</p>
+
+<p>Ok, to install MongoDB from the private repo we need to add it to the local repo addresses.</p>
+
+<p>We can create the file by typing:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo nano /etc/yum.repos.d/mongodb-org-4.0.repo
+</code></pre></div></div>
+
+<p>One word of caution, the following text was copied from the MongoDB website.</p>
+
+<ul>
+  <li><a href="https://docs.mongodb.com/manual/tutorial/install-mongodb-on-red-hat/">MongoDB Install Instructions</a></li>
+</ul>
+
+<p>It’s probably best to copy the repo information directly from the link above, in case there is a newer version.</p>
+
+<p>Or, here’s what I put in the file:</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>mongodb-org-4.0]
+<span class="nv">name</span><span class="o">=</span>MongoDB Repository
+<span class="nv">baseurl</span><span class="o">=</span>https://repo.mongodb.org/yum/redhat/<span class="nv">$releasever</span>/mongodb-org/4.0/x86_64/
+<span class="nv">gpgcheck</span><span class="o">=</span>1
+<span class="nv">enabled</span><span class="o">=</span>1
+<span class="nv">gpgkey</span><span class="o">=</span>https://www.mongodb.org/static/pgp/server-4.0.asc
+</code></pre></div></div>
+<p>Save the file.</p>
+
+<p>Run</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo yum install -y mongodb-org
+</code></pre></div></div>
+<p>Yum should now find the private repo and install MongoDB.</p>
+
+<h4 id="setup-mongodb">Setup MongoDB</h4>
+<p>We need to enable the mongod.service.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo systemctl enable mongod.service
+</code></pre></div></div>
+<p>And reboot</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo reboot now
+</code></pre></div></div>
+<p>I’ll be setting up MongoDB to <em>only</em> for local access.  This enables it to be accessed by our Flask program, but not remotely.  This is a best practice in securing your server.  However, if you’d like to enable remote access to the MongoDB I’ve included instructions in the Appendix.</p>
+
+<h3 id="move-the-model-to-server">Move the Model to Server</h3>
+<p>Since we trained the model locally, let’s move it to the server.  Open your terminal in the directory where the model was stored.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>scp toxic_comment_detector.h5 my_user@my_server_ip:/home/my_user
+</code></pre></div></div>
+<p>Replace <code class="highlighter-rouge">my_user</code> with the user name we created earlier and <code class="highlighter-rouge">my_server_ip</code> with the address of your server.  It should then prompt you to enter the server password, as if you were ssh’ing into the server.  Once entered, the model should be copied to the server.</p>
+
+<h4 id="move-word_embeddings-database-to-server">Move word_embeddings Database to Server</h4>
+<p>Once ou’ve created the local <code class="highlighter-rouge">word_embeddings</code> DB, at local the terminal type the following to make a copy:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mongodump --out /directory_to_save
+</code></pre></div></div>
+<p>Now, copy this DB backup to your remote server</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>scp -r /directory_to_save/name_of_output_folder user_name@remote_ip_address:/home/user_name/
+</code></pre></div></div>
+<p>Now, log in to your remote server and create a DB from the data dumps.</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mkdir /home/user_name/word_embeddings
+mongorestore --db word_embeddings /home/user_name/word_embeddings
+</code></pre></div></div>
+<p>We also need to restart the MongoDB service</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo systemctl restart mongod.service
+</code></pre></div></div>
+
+<p>If you would like to enable access to the database remotely (see instructions in Appendix) you could use <a href="https://robomongo.org/">Robo3T</a> to make sure everything is in place.  But if you didn’t get any errors, we’re probably good to go.</p>
+
+<h3 id="test-the-model">Test the Model</h3>
+<p>Log into your server.  We are going to test the model, since it needs to fit in the RAM available.  The <code class="highlighter-rouge">my_user</code> in the script should be replaced with the user name you created while setting up your server and proejct.</p>
+
+<p>Type:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python
+</code></pre></div></div>
+<p>Now, enter the following into the Python interpreter.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">keras.models</span> <span class="kn">import</span> <span class="n">load_model</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">load_model</span><span class="p">(</span><span class="s">'/home/my_user/toxic_comment_detector.h5'</span><span class="p">)</span>
+</code></pre></div></div>
+<p>If all goes well it will mention it’s using the Tensorflow backend and return you to the interpreter prompt.</p>
+
+<p>If you trained your network like me, then the following will allow you to fully test the model deployed remotely.</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import numpy as np
+test_prediction = np.array([[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, 1873,147,6, 3476,324, 15, 29,141]])
+model.predict(test_prediction)
+</code></pre></div></div>
+<p>If you get back something similar to:</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">array</span><span class="p">([[</span><span class="mf">0.97645617</span><span class="p">,</span> <span class="mf">0.21598859</span><span class="p">,</span> <span class="mf">0.92201746</span><span class="p">,</span> <span class="mf">0.01897666</span><span class="p">,</span> <span class="mf">0.7753273</span><span class="p">,</span>
+<span class="mf">0.11565485</span><span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">float32</span><span class="p">)</span>
+</code></pre></div></div>
+<p>We’re in good shape.  These are the predictions for the the following respectively:</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">[</span><span class="s">"toxic"</span><span class="p">,</span> <span class="s">"severe_toxic"</span><span class="p">,</span> <span class="s">"obscene"</span><span class="p">,</span> <span class="s">"threat"</span><span class="p">,</span> <span class="s">"insult"</span><span class="p">,</span> <span class="s">"identity_hate"</span><span class="p">]</span>
+</code></pre></div></div>
+<p>The <code class="highlighter-rouge">test_prediction</code> was the following text sequence pre-encoded.</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">"C*#</span><span class="si">%</span><span class="s">`SUCKER BEFORE YOU PISS AROUND ON MY WORK"</span>
+</code></pre></div></div>
+<p>So, the <code class="highlighter-rouge">toxic</code> and <code class="highlighter-rouge">obscene</code> label should definitely be close to <code class="highlighter-rouge">1</code>.  Looks like we’re in good shape.</p>
+
+<p>In the next article I’ll show how to create a Flask webservice to access the model.  Well, at least I hope, not sure how to do that yet.</p>
+
+<h3 id="appendix">Appendix</h3>
+
+<h4 id="arch-linux-miniconda-setup">Arch Linux Miniconda Setup</h4>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo pacman -Syu
+sudo pacman -S git wget tk valgrind gcc make
+adduser -m user_name
+passwd user_name
+EDITOR=nano visudo
+(add user_name to sudo)
+su user_name
+
+wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
+bash Miniconda3-latest-Linux-x86_64.sh
+source .bashrc
+conda install keras h5py pillow flask numpy gensim pandas scikit-learn matplotlib
+conda install tensorflow=1.8
+</code></pre></div></div>
+
+<h4 id="setup-mongodb-on-arch-linux">Setup MongoDB on Arch Linux</h4>
+<p>Apparently MongoDB’s license change means the Arch Linux official repos cannot distribute it.  So, we have to compile from source. <em>Waaawaaah</em>.</p>
+
+<p><strong>Note, it took more than 1GB of RAM to compile from source.</strong></p>
+
+<ul>
+  <li>https://lists.archlinux.org/pipermail/arch-dev-public/2019-January/029430.html</li>
+  <li>https://techcrunch.com/2018/10/16/mongodb-switches-up-its-open-source-license/</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>pacman <span class="nt">-S</span> fakeroots automake autoconf gcc make snappy <span class="se">\ </span>
+            yaml-cpp lsb-release  gperftools <span class="se">\</span>
+            libstemmer scons python2-setuptools python2-regex <span class="se">\</span>
+            python2-cheetah python2-typing python2-requests <span class="se">\</span>
+            python2-yaml python2-pymongo 
+git clone https://aur.archlinux.org/wiredtiger.git
+<span class="nb">cd </span>wiredtiger
+makepkg <span class="nt">-i</span>
+git clone https://aur.archlinux.org/mongodb.git
+<span class="nb">cd </span>mongodb
+makepkg <span class="nt">-i</span>
+</code></pre></div></div>
+
+<h4 id="enabling-remote-access-to-mongodb">Enabling Remote Access to MongoDB</h4>
+<p>To enable remote connections edit the <code class="highlighter-rouge">mongod.conf</code> file:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo nano /etc/mongod.conf
+</code></pre></div></div>
+<p>Find the following lines in the file and comment out <code class="highlighter-rouge">bindIp</code>.</p>
+
+<p>Your file should look like this:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># network interfaces
+net:
+  port: 27017
+  #bindIp: 127.0.0.1  # Enter 0.0.0.0,:: to bind to all IPv4 and IPv6 addresses or, alternatively, us$
+</code></pre></div></div>
+<p>This allows us to connect to the MongoDB from any IP address.  If we’d left this line, then we could only connect to the database from within the server itself (127.0.0.1 = local).</p>
+
+<h3 id="monitoring-system-resources">Monitoring System Resources</h3>
+<p>I like using <code class="highlighter-rouge">htop</code> for this, but you’ve gotta build it from source on Centos</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>wget dl.fedoraproject.org/pub/epel/7/x86_64/Packages/e/epel-release-7-11.noarch.rpm
+sudo rpm -ihv epel-release-7-11.noarch.rpm
+sudo yum install -y htop
+</code></pre></div></div>
+:ET

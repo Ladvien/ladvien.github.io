@@ -1,0 +1,249 @@
+I"�L<p>This is a jumpstart guide to connecting a Raspberry Pi Zero W to the Google Vision API.</p>
+
+<h2 id="1-get-an-account">1. Get an Account</h2>
+<p>Sadly, Google Vision API is not a completely free service.  At the time of writing an API account provides 1000 free Google Vision API calls a month.  Then, it’s a $1.00 for each 1000 calls.</p>
+
+<p>I know, I know, not too bad.  But this isn’t a commercial project.  I’m wanting to use it for a puttering little house bot.  If my wife gets a bill for $40 because I decided to stream images to the API, well, it’ll be a dead bot. Anyway, I thought I’d still explore the service for poo-and-giggles.</p>
+
+<p>To get an account visit</p>
+
+<ul>
+  <li><a href="https://console.cloud.google.com/">Google Console</a></li>
+</ul>
+
+<p>And sign-in with an existing Google account or create one.</p>
+
+<h2 id="2-enter-billing-information">2. Enter Billing Information</h2>
+<p>Now, here’s the scary part, you’ve must enter your billing information before getting going.  <strong>Remember, you will be charged if you go over 1000 calls.</strong></p>
+
+<p><img src="../images/google-vision-billing.png" alt="" /></p>
+
+<p>Again, if you exceed your 1,000 free calls you will be charged. (What? I said that already? Oh.)</p>
+
+<h2 id="2-enable-cloud-vision-api">2. Enable Cloud Vision API</h2>
+<p>After setting up billing information we still need to enable the Cloud Vision API.  This is a security feature, essentially, all Google APIs are disabled by default so if someone accidentally gets access they don’t unleash hell everywhere.</p>
+
+<p><img src="../images/enable-cloud-vision.png" alt="" /></p>
+
+<p>Now search for <code class="highlighter-rouge">Vision</code> and click the button.  Here there should be a glaring <code class="highlighter-rouge">Enable</code> button.  Press it.</p>
+
+<p><img src="../images/cloud-vision-enable-button.png" alt="" /></p>
+
+<p>The last thing we need to do is get the API key.  This needs to be included in the API call headers for authentication.</p>
+
+<p><strong>Do not let anyone get your API key. And do not hardcode it in your code.  Trust me, this will bite you.</strong>  If this accidentally gets pushed onto the web, a web crawler will find it quickly and you will be paying bajillions of dollars.</p>
+
+<p>Let this article scare you a bit.</p>
+
+<ul>
+  <li><a href="https://www.theregister.co.uk/2015/01/06/dev_blunder_shows_github_crawling_with_keyslurping_bots/">Dev Puts AWS Keys on Github</a></li>
+</ul>
+
+<p>Let’s go get your API Key.  Find the <code class="highlighter-rouge">Credentials</code> section</p>
+
+<p><img src="https:/ladvien.com/images/google-cloud-vision-credentials.png" alt="" /></p>
+
+<p>You probably wont see any credentials created, as you’ve probably have not created any yet.</p>
+
+<p>Let’s create a new API Key.
+<img src="../images/google-vision-create-credentials.png" alt="" /></p>
+
+<p>I’d name the key something meaningful and limit it to only the Google Cloud API.</p>
+
+<p><img src="../images/cloud-vision-create-api-key.png" alt="" /></p>
+
+<p>Go ahead and copy your API key, as we will need it in the next step.</p>
+
+<h2 id="3-raspberry-pi-side-setup">3. Raspberry Pi Side Setup</h2>
+<p>The articles listed at the top of this one will help you setup the Raspberry Pi for this step.  But if you are doing things different, most of this should still work for you.  However, when we get to the part of about environment variables, that’ll be different for other Linux flavors.</p>
+
+<p>Start by SSH’ing into your Pi.</p>
+
+<p>And update all packages</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo pacman -Syu
+</code></pre></div></div>
+
+<p>We’re going to create an environment variable for the Google Cloud Vision API.  This is to avoid hardcoding your API key into the code further down.  <em>That will work</em>, but I highly recommend you stick with me and setup an environment variable manager to handle the API.</p>
+
+<p>Switch to the root user by typing</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>su
+</code></pre></div></div>
+<p>Enter your password.</p>
+
+<p>The next thing we do is add your Google Vision API Key as an environment variable to the <code class="highlighter-rouge">/etc/profile</code> file, this should cause it to be intialized at boot.</p>
+
+<p>Type, replacing <code class="highlighter-rouge">YOUR_API_KEY</code> with your actual API Key.</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>echo 'export GOOGLE_CLOUD_VISION_API_KEY=YOUR_API_KEY' &gt;&gt; /etc/profile
+</code></pre></div></div>
+
+<p>Now reboot the Pi so that takes effect.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo reboot
+</code></pre></div></div>
+
+<p>Log back in.  Let’s check to make sure it’s loading the API key.</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>echo $GOOGLE_CLOUD_VISION_API_KEY
+</code></pre></div></div>
+<p>If your API key is echoed back, you should be good to go.</p>
+
+<h2 id="4-project-setup">4. Project Setup</h2>
+
+<p>Let’s create a project directory.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mkdir google-vis
+cd google-vis
+</code></pre></div></div>
+
+<p>Now let’s initialize a new Node project.</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>npm init
+</code></pre></div></div>
+<p>Feel free to customize the package details if you like.  If you’re lazy like me, hit enter until you are back to the command prompt.</p>
+
+<p>Let’s add the needed Node libraries.  It’s one.  The <a href="https://www.npmjs.com/package/axios">axios</a> library, which enables async web requests.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>npm axios
+</code></pre></div></div>
+
+<p><img src="../images/hepburn.png" alt="" class="float-left" />
+Also, let’s create a resource directory and download our lovely test image.  Ah, miss Hepburn!</p>
+<div style="clear: both;"></div>
+<p>Make sure you are in the <code class="highlighter-rouge">google-vis/resources</code> project directory when downloading the image.</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mkdir resources
+cd resources
+wget ../images/hepburn.png
+</code></pre></div></div>
+
+<h2 id="5-nodejs-code">5. NodeJS Code</h2>
+
+<p>Create a file in the <code class="highlighter-rouge">go-vis</code> directory called <code class="highlighter-rouge">app.js</code></p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nano app.js
+</code></pre></div></div>
+
+<p>Then paste in the code below and save the file by typing CTRL+O and exiting using CTRL+X.</p>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js"><span class="c1">// https://console.cloud.google.com/
+</span>
+<span class="kd">const</span> <span class="nx">axios</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">axios</span><span class="dl">'</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">fs</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">fs</span><span class="dl">'</span><span class="p">);</span>
+
+<span class="kd">const</span> <span class="nx">API_KEY</span> <span class="o">=</span> <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">GOOGLE_CLOUD_VISION_API_KEY</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">API_KEY</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">'</span><span class="s1">No API key provided</span><span class="dl">'</span><span class="p">)</span>
+<span class="p">}</span> 
+
+<span class="kd">function</span> <span class="nx">base64_encode</span><span class="p">(</span><span class="nx">file</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// read binary data
+</span>
+    <span class="kd">var</span> <span class="nx">bitmap</span> <span class="o">=</span> <span class="nx">fs</span><span class="p">.</span><span class="nx">readFileSync</span><span class="p">(</span><span class="nx">file</span><span class="p">);</span>
+    <span class="c1">// convert binary data to base64 encoded string
+</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nx">Buffer</span><span class="p">(</span><span class="nx">bitmap</span><span class="p">).</span><span class="nx">toString</span><span class="p">(</span><span class="dl">'</span><span class="s1">base64</span><span class="dl">'</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="kd">var</span> <span class="nx">base64str</span> <span class="o">=</span> <span class="nx">base64_encode</span><span class="p">(</span><span class="dl">'</span><span class="s1">./resources/audrey.jpg</span><span class="dl">'</span><span class="p">);</span>
+
+<span class="kd">const</span> <span class="nx">apiCall</span> <span class="o">=</span> <span class="s2">`https://vision.googleapis.com/v1/images:annotate?key=</span><span class="p">${</span><span class="nx">API_KEY</span><span class="p">}</span><span class="s2">`</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">reqObj</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="na">requests</span><span class="p">:[</span>
+        <span class="p">{</span>
+          <span class="dl">"</span><span class="s2">image</span><span class="dl">"</span><span class="p">:{</span>
+            <span class="dl">"</span><span class="s2">content</span><span class="dl">"</span><span class="p">:</span> <span class="nx">base64str</span>
+          <span class="p">},</span>
+          <span class="dl">"</span><span class="s2">features</span><span class="dl">"</span><span class="p">:[</span>
+                <span class="p">{</span>
+                    <span class="dl">"</span><span class="s2">type</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">LABEL_DETECTION</span><span class="dl">"</span><span class="p">,</span>
+                    <span class="dl">"</span><span class="s2">maxResults</span><span class="dl">"</span><span class="p">:</span><span class="mi">5</span>
+                <span class="p">},</span>
+                <span class="p">{</span>
+                    <span class="dl">"</span><span class="s2">type</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">FACE_DETECTION</span><span class="dl">"</span><span class="p">,</span>
+                    <span class="dl">"</span><span class="s2">maxResults</span><span class="dl">"</span><span class="p">:</span><span class="mi">5</span>            
+                <span class="p">},</span>
+                <span class="p">{</span>
+                    <span class="dl">"</span><span class="s2">type</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">IMAGE_PROPERTIES</span><span class="dl">"</span><span class="p">,</span>
+                    <span class="dl">"</span><span class="s2">maxResults</span><span class="dl">"</span><span class="p">:</span><span class="mi">5</span>
+                <span class="p">}</span>
+            <span class="p">]</span>
+        <span class="p">}</span>
+      <span class="p">]</span>
+<span class="p">}</span>
+
+<span class="nx">axios</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="nx">apiCall</span><span class="p">,</span> <span class="nx">reqObj</span><span class="p">).</span><span class="nx">then</span><span class="p">((</span><span class="nx">response</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">response</span><span class="p">);</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">response</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">responses</span><span class="p">,</span> <span class="kc">undefined</span><span class="p">,</span> <span class="mi">4</span><span class="p">));</span>
+<span class="p">}).</span><span class="k">catch</span><span class="p">((</span><span class="nx">e</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">response</span><span class="p">);</span>
+<span class="p">});</span></code></pre></figure>
+
+<p>This code grabs the API key environment variable and creates a program constant from it.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>const API_KEY = process.env.GOOGLE_CLOUD_VISION_API_KEY
+</code></pre></div></div>
+
+<p>This is how we avoid hardcoding the API key.</p>
+
+<h2 id="6-run">6. Run</h2>
+<p>Let’s run the program.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>node app.js
+</code></pre></div></div>
+
+<p>If all went well you should get similar output to below</p>
+
+<figure class="highlight"><pre><code class="language-json" data-lang="json"><span class="err">data:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="err">responses:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="p">[</span><span class="err">Object</span><span class="p">]</span><span class="w"> </span><span class="p">]</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="err">}</span><span class="w">
+</span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"labelAnnotations"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+            </span><span class="p">{</span><span class="w">
+                </span><span class="nl">"mid"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/m/03q69"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"hair"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"score"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.9775374</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"topicality"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.9775374</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+            </span><span class="p">{</span><span class="w">
+                </span><span class="nl">"mid"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/m/027n3_"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"eyebrow"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"score"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.90340185</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"topicality"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.90340185</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+            </span><span class="p">{</span><span class="w">
+                </span><span class="nl">"mid"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/m/01ntw3"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"human hair color"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"score"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.8986981</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"topicality"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.8986981</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+            </span><span class="p">{</span><span class="w">
+                </span><span class="nl">"mid"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/m/0ds4x"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"hairstyle"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"score"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.8985265</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"topicality"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.8985265</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+            </span><span class="p">{</span><span class="w">
+                </span><span class="nl">"mid"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/m/01f43"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"beauty"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"score"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.87356544</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"topicality"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.87356544</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+        </span><span class="p">],</span><span class="w">
+  </span><span class="err">....</span><span class="w">
+</span><span class="err">]</span></code></pre></figure>
+
+<h2 id="6-and-so-much-more">6. And so much more…</h2>
+<p>This article is short–a jump start.  However, there is lots of potential here.  For example, sending your own images using the Raspberry Pi Camera</p>
+
+<ul>
+  <li><a href="https://www.npmjs.com/package/raspicam">raspicam</a></li>
+  <li><a href="https://www.npmjs.com/package/pi-camera">pi-camera</a></li>
+</ul>
+
+<p>Please feel free to ask any questions regarding how to use the output.</p>
+
+<p>There are other feature detection requests.</p>
+
+<ul>
+  <li><a href="https://cloud.google.com/vision/docs/other-features">Google Vision API – Other Features</a></li>
+</ul>
+
+<p>However, I’m going to end the article and move on to rolling my on vision detection systems.  As soon as I figure out stochastic gradient descent.</p>
+:ET

@@ -1,0 +1,453 @@
+I"1�<p>Originally posted on <a href="www.letsmakerobots.com">www.letsmakerobots.com</a></p>
+
+<p><a class="btn" href="/files/facedetectv10.zip" target="">Code</a></p>
+
+<div class="flex-video">
+<iframe width="560" height="315" src="https://www.youtube.com/embed/Uo0NFRkdIWc" frameborder="0" allowfullscreen=""></iframe>
+</div>
+
+<p>No longer afeared of frying my Pi, I’ve moved on to trying to implement some of my bot goals.  Like many, I want my bot to be able to interact with people, but I didn’t realize that I’d stumble on this ability.</p>
+
+<p>I’ve looked at many visual processing boards like the <a href="https://www.sparkfun.com/products/10032">CMUcam v4</a>, but I’m not paying $100 for any board.  I looked into making one, it looks possible, but not much cheaper.  So, I got curious as to what alternatives there are.  I stumbled on Hack-a-Day’s recommended article: <a href="http://www.technolabsz.com/2013/03/how-to-easily-install-opencv-on.html">OpenCV on Raspberry Pi</a>.</p>
+
+<p>Anyway, he provided instructions on setting up OpenCV (open source computer vision) on Raspberry Pi.  Of course, it was about 20 minutes later I had the code working on my Pi.</p>
+
+<p>I had been skeptical of the Pi’s ability to run any computer vision software, and morever, it’s usefulness given the Pi’s processing constraints.  But once I had it up and running, I noticed it actually ran smoother than I had hoped.  Don’t get me wrong, I think it is less than 10FPS, but I could tell it would work for many robot applications  More than that, if the Raspberry Pi was used <em>only</em> for the computer vision, then it would still be cheaper than many other hardware driven CV boards.</p>
+
+<p>Basic Raspberry Pi and WiFi Dongle</p>
+
+<ul>
+  <li>WiFi Dongle: $6.17</li>
+  <li>Raspberry Pi: $35.00</li>
+  <li>SD Card (4g): $2.50</li>
+  <li>Web cam: $8.00</li>
+  <li>Total for Basic RPi: $51.67</li>
+</ul>
+
+<p>Therefore, I went to work on hacking his code.</p>
+
+<p>Many hours later, I ended up with a _very crude _ Raspberry Pi, Ardy, Camera, and Servo orchestration to track my face.  Mind you, this is a proof of concept, nothing more at this point.  But I hope to eventually have my bot wandering around looking for faces.</p>
+
+<p>Image of Pi VNC.  The box outline is being written through <a href="http://letsmakerobots.com/node/36847">i2c</a>.</p>
+
+<p><img src="../images/FaceTracking_1355x768.jpg" alt="" /></p>
+
+<p>Pulling apart a little $8 eBay camera.</p>
+
+<p><img src="../images/IMG_0634_1024x768.jpg" alt="" /></p>
+
+<p><strong>To Setup the Raspberry Pi:</strong></p>
+
+<p>If you’re setting it up from sratch, start with these <a href="http://letsmakerobots.com/node/36884">instructions</a>.</p>
+
+<p>But if you’re already setup, I think all you need is OpenCV.</p>
+
+<p>$ sudo apt-get install python-opencv</p>
+
+<p><strong>The Code:</strong></p>
+
+<p>The Arduino code reads bytes from the i2c, converts them to characters, then places the characters into an integer array.  The Pi is sending 4 numbers, 2 coordinates, x1, y1, x2, y2.</p>
+
+<p>The Python code is “facetracker.py” by Roman Stanchak and James Bowman, I’ve merely added lines 101-105, which load the coordinates of the box around your face into a a string, converts that to a string array.  I also added function txrx_i2c().  This function converts the string array into bytes and sends it to the i2c bus.</p>
+
+<p>To change this setup from i2c to UART, focus on the txrx_i2c() in the Python code and the onRead() in the Arduino code.  I assure you, UART would be much easier.</p>
+
+<p>If anyone has any questions hollar at me.  Oh! And if someone can tell me ways I could optimize this code, I’m all ears</p>
+
+<figure class="highlight"><pre><code class="language-c" data-lang="c"><span class="cp">#include &lt;Wire.h&gt;
+#define SLAVE_ADDRESS 0x2A
+#include &lt;Servo.h&gt;
+</span>
+<span class="n">Servo</span> <span class="n">CamServoX</span><span class="p">;</span> <span class="c1">//Attach the pan servo.</span>
+<span class="n">Servo</span> <span class="n">CamServoY</span><span class="p">;</span> <span class="c1">//Attach the tilt servo.</span>
+
+<span class="kt">int</span> <span class="n">ServoTimer</span> <span class="o">=</span> <span class="mi">250</span><span class="p">;</span> <span class="c1">// Change to adjust how quickly the servos respond.</span>
+
+<span class="kt">int</span> <span class="n">SmallXJump</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span> <span class="c1">//Sets the movement amount for small pan jumps</span>
+<span class="kt">int</span> <span class="n">LargeXJump</span> <span class="o">=</span> <span class="mi">7</span><span class="p">;</span> <span class="c1">//Sets the movement amount for large pan jumps</span>
+
+
+<span class="kt">int</span> <span class="n">SmallYJump</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="c1">//Sets the movement amount for small pan jumps</span>
+<span class="kt">int</span> <span class="n">LargeYJump</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span> <span class="c1">//Sets the movement amount for large pan jumps</span>
+
+<span class="c1">//How close your face is to the edge to trigger a jump.</span>
+<span class="kt">int</span> <span class="n">SmallYLimit</span> <span class="o">=</span> <span class="mi">40</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">LargeYLimit</span> <span class="o">=</span> <span class="mi">20</span><span class="p">;</span>
+
+<span class="kt">int</span> <span class="n">SmallXLimit</span> <span class="o">=</span> <span class="mi">40</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">LargeXLimit</span> <span class="o">=</span> <span class="mi">20</span><span class="p">;</span>
+
+<span class="c1">//Set servos to initial position.</span>
+<span class="kt">int</span> <span class="n">posX</span> <span class="o">=</span> <span class="mi">90</span><span class="p">;</span> <span class="c1">//Servo position.</span>
+<span class="kt">int</span> <span class="n">posY</span> <span class="o">=</span> <span class="mi">90</span><span class="p">;</span> <span class="c1">//Servo position.</span>
+
+<span class="kt">int</span> <span class="n">x1</span><span class="p">;</span> <span class="kt">int</span> <span class="n">y1</span><span class="p">;</span><span class="kt">int</span> <span class="n">x2</span><span class="p">;</span> <span class="kt">int</span> <span class="n">y2</span><span class="p">;</span> <span class="c1">//Holders for frame dimesions.</span>
+
+<span class="c1">// Indexes for getting i2c bytes, then, converting them to integers.</span>
+<span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">varI</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+<span class="c1">//Sets flag to trigger ServoWrite() from the main loop.</span>
+<span class="c1">//I tried to put this under 'onRequest' call, but the Raspberry Pi kept giving me errors.</span>
+<span class="c1">//This flagging was a work around.</span>
+<span class="kt">int</span> <span class="n">NoServoData</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+<span class="kt">int</span> <span class="n">dim</span><span class="p">[</span><span class="mi">12</span><span class="p">];</span> <span class="c1">//Char array for char[] ---&gt; int conversion.</span>
+<span class="kt">char</span> <span class="n">d</span><span class="p">[</span><span class="mi">8</span><span class="p">];</span> <span class="c1">// Char holder array for byte--&gt;char conversion.</span>
+
+<span class="kt">void</span> <span class="nf">setup</span><span class="p">()</span> <span class="p">{</span>
+    <span class="c1">// initialize i2c as slave</span>
+    <span class="n">Wire</span><span class="p">.</span><span class="n">begin</span><span class="p">(</span><span class="n">SLAVE_ADDRESS</span><span class="p">);</span>
+    <span class="n">Wire</span><span class="p">.</span><span class="n">onRequest</span><span class="p">(</span><span class="n">sendData</span><span class="p">);</span>
+    <span class="n">Wire</span><span class="p">.</span><span class="n">onReceive</span><span class="p">(</span><span class="n">readData</span><span class="p">);</span>
+    <span class="n">Serial</span><span class="p">.</span><span class="n">begin</span><span class="p">(</span><span class="mi">9600</span><span class="p">);</span>
+
+    <span class="c1">//Attach servos</span>
+    <span class="n">CamServoX</span><span class="p">.</span><span class="n">attach</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span> <span class="c1">//Tilt (Y)</span>
+    <span class="n">CamServoY</span><span class="p">.</span><span class="n">attach</span><span class="p">(</span><span class="mi">9</span><span class="p">);</span> <span class="c1">//Pan (X)</span>
+
+    <span class="c1">//Write initial servo position.</span>
+    <span class="n">CamServoX</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="n">posX</span><span class="p">);</span>
+    <span class="n">CamServoY</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="n">posY</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">loop</span><span class="p">()</span> <span class="p">{</span>
+
+<span class="c1">//Again, this is the work around.  The flag "NoServoData" is set under the i2c onReceive.</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">NoServoData</span><span class="o">==</span><span class="mi">1</span><span class="p">){</span>
+  <span class="n">ServoWrite</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="p">}</span>
+
+<span class="c1">//This is just to show the RPi can be written to.  </span>
+<span class="c1">//Replace with stuff you want to write to the Pi.</span>
+<span class="kt">char</span> <span class="n">data</span><span class="p">[]</span> <span class="o">=</span> <span class="s">"Pasta"</span><span class="p">;</span>  
+<span class="kt">int</span> <span class="n">index</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+<span class="c1">// callback for sending data</span>
+<span class="kt">void</span> <span class="nf">sendData</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">Wire</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">index</span><span class="p">]);</span>
+    <span class="o">++</span><span class="n">index</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">index</span> <span class="o">&gt;=</span> <span class="mi">5</span><span class="p">)</span> <span class="p">{</span>
+         <span class="n">index</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="p">}</span>
+ <span class="p">}</span>
+
+<span class="c1">// callback for receiving data.</span>
+<span class="kt">void</span> <span class="nf">readData</span><span class="p">(</span><span class="kt">int</span> <span class="n">numbytes</span><span class="p">)</span> <span class="p">{</span>
+
+<span class="c1">//Holds the chars</span>
+<span class="kt">int</span> <span class="n">c</span><span class="p">;</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="n">Wire</span><span class="p">.</span><span class="n">available</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">){</span>
+  <span class="k">while</span><span class="p">(</span><span class="n">Wire</span><span class="p">.</span><span class="n">available</span><span class="p">())</span>    <span class="c1">// slave may send less than requested</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">Wire</span><span class="p">.</span><span class="n">read</span><span class="p">();</span>
+<span class="p">}</span>
+  <span class="c1">//Add each integer to a char array.</span>
+  <span class="c1">//Skip commas ',' and keep adding the integers until char '\0' is received.</span>
+  <span class="c1">//Then print out the complete string.</span>
+
+  <span class="k">if</span> <span class="p">(</span><span class="n">c</span> <span class="o">!=</span> <span class="sc">','</span><span class="p">){</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">c</span> <span class="o">!=</span> <span class="sc">'\0'</span><span class="p">){</span>
+      <span class="n">d</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">c</span><span class="p">;</span>  <span class="c1">//Appends the characters to an array.</span>
+      <span class="n">i</span><span class="o">++</span><span class="p">;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+  <span class="k">else</span><span class="p">{</span>
+    <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="c1">//Reset the d char array index.</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">varI</span> <span class="o">&lt;</span> <span class="mi">7</span><span class="p">){</span>  <span class="c1">//We only want to get integers until we get all four numbers (x1, y1, x2, y2) plus</span>
+      <span class="n">dim</span><span class="p">[</span><span class="n">varI</span><span class="p">]</span><span class="o">=</span><span class="n">atoi</span><span class="p">(</span><span class="n">d</span><span class="p">);</span> <span class="c1">//Convert the d int into ASCII and store it in the dim array.</span>
+      <span class="n">d</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">d</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">d</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">d</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">d</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">d</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="c1">//Clear the d array (i2c doesn't like for loops in this function</span>
+      <span class="n">varI</span><span class="o">++</span><span class="p">;</span> <span class="c1">//Increase dim index.</span>
+    <span class="p">}</span>
+    <span class="k">else</span><span class="p">{</span>
+      <span class="c1">//We now have all four numbers, load them into the variables.</span>
+      <span class="n">x1</span><span class="o">=</span><span class="kt">int</span><span class="p">(</span><span class="n">dim</span><span class="p">[</span><span class="mi">4</span><span class="p">]);</span>
+      <span class="n">y1</span><span class="o">=</span><span class="kt">int</span><span class="p">(</span><span class="n">dim</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+      <span class="n">x2</span><span class="o">=</span><span class="kt">int</span><span class="p">(</span><span class="n">dim</span><span class="p">[</span><span class="mi">2</span><span class="p">]);</span>
+      <span class="n">y2</span><span class="o">=</span><span class="kt">int</span><span class="p">(</span><span class="n">dim</span><span class="p">[</span><span class="mi">3</span><span class="p">]);</span>
+
+      <span class="n">NoServoData</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>  <span class="c1">//Set the WriteServo() call flag.</span>
+      <span class="n">varI</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="c1">//Reset the dim index to prepare for next set of numbers.</span>
+      <span class="p">}</span>
+   <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="c1">//Reset some</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">ServoWrite</span><span class="p">(){</span>
+  <span class="kt">int</span> <span class="n">x3</span> <span class="o">=</span> <span class="mi">160</span> <span class="o">-</span> <span class="n">x2</span><span class="p">;</span> <span class="c1">// Calculate the distance from the right edge of the screen</span>
+  <span class="kt">int</span> <span class="n">y3</span> <span class="o">=</span> <span class="mi">120</span> <span class="o">-</span> <span class="n">y2</span><span class="p">;</span> <span class="c1">// Calcualte the distance</span>
+
+
+  <span class="c1">//For X Axis</span>
+  <span class="k">if</span><span class="p">(</span><span class="n">x1</span> <span class="o">&lt;</span> <span class="n">SmallXLimit</span> <span class="p">){</span>  <span class="c1">//Only do small jumps, since not too far away from the edge.</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">posX</span><span class="o">&gt;</span><span class="mi">1</span><span class="p">){</span> <span class="c1">//If the pan servo is at its edge, do nothing.</span>
+          <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">LargeXJump</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">){</span>
+            <span class="n">posX</span><span class="o">++</span><span class="p">;</span>  <span class="c1">// Set the new position</span>
+            <span class="n">CamServoX</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="n">posX</span><span class="p">);</span> <span class="c1">//Make the adjustment.</span>
+            <span class="n">delay</span><span class="p">(</span><span class="n">ServoTimer</span><span class="p">);</span> <span class="c1">//Delay between servo increments.</span>
+          <span class="p">}</span>
+      <span class="p">}</span>
+  <span class="p">}</span>
+
+  <span class="k">if</span><span class="p">(</span><span class="n">x3</span> <span class="o">&lt;</span> <span class="n">SmallXLimit</span><span class="p">){</span>
+      <span class="k">if</span><span class="p">(</span><span class="n">posX</span><span class="o">&lt;</span><span class="mi">180</span><span class="p">){</span>
+          <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">LargeXJump</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">){</span>
+            <span class="n">posX</span><span class="o">--</span><span class="p">;</span>
+            <span class="n">CamServoX</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="n">posX</span><span class="p">);</span>
+            <span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="n">posX</span><span class="p">);</span>
+            <span class="n">delay</span><span class="p">(</span><span class="n">ServoTimer</span><span class="p">);</span>
+          <span class="p">}</span>  
+      <span class="p">}</span>
+  <span class="p">}</span>
+
+
+  <span class="k">if</span><span class="p">(</span><span class="n">x1</span> <span class="o">&lt;</span> <span class="n">LargeXLimit</span><span class="p">){</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">posX</span><span class="o">&gt;</span><span class="mi">1</span><span class="p">){</span>
+          <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">SmallXJump</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">){</span>
+            <span class="n">posX</span><span class="o">++</span><span class="p">;</span>
+            <span class="n">CamServoX</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="n">posX</span><span class="p">);</span>
+            <span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="n">posX</span><span class="p">);</span>
+            <span class="n">delay</span><span class="p">(</span><span class="n">ServoTimer</span><span class="p">);</span>
+          <span class="p">}</span>
+      <span class="p">}</span>
+  <span class="p">}</span>
+
+  <span class="k">if</span><span class="p">(</span><span class="n">x3</span> <span class="o">&lt;</span> <span class="n">LargeXLimit</span><span class="p">){</span>
+      <span class="k">if</span><span class="p">(</span><span class="n">posX</span><span class="o">&lt;</span><span class="mi">180</span><span class="p">){</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">SmallXJump</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">){</span>
+            <span class="n">posX</span><span class="o">--</span><span class="p">;</span>
+            <span class="n">CamServoX</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="n">posX</span><span class="p">);</span>
+            <span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="n">posX</span><span class="p">);</span>
+            <span class="n">delay</span><span class="p">(</span><span class="n">ServoTimer</span><span class="p">);</span>
+        <span class="p">}</span>
+     <span class="p">}</span>
+  <span class="p">}</span>
+
+
+  <span class="c1">//For Y Axis</span>
+  <span class="k">if</span><span class="p">(</span><span class="n">y1</span> <span class="o">&lt;</span> <span class="n">SmallYLimit</span> <span class="p">){</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">posY</span><span class="o">&gt;</span><span class="mi">1</span><span class="p">){</span>
+          <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">SmallYJump</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">){</span>
+            <span class="n">posY</span><span class="o">--</span><span class="p">;</span>
+            <span class="n">CamServoY</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="n">posY</span><span class="p">);</span>
+            <span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="n">posY</span><span class="p">);</span>
+            <span class="n">delay</span><span class="p">(</span><span class="n">ServoTimer</span><span class="p">);</span>
+          <span class="p">}</span>
+        <span class="p">}</span>
+  <span class="p">}</span>
+
+  <span class="k">if</span><span class="p">(</span><span class="n">y3</span> <span class="o">&lt;</span> <span class="n">SmallYLimit</span><span class="p">){</span>
+      <span class="k">if</span><span class="p">(</span><span class="n">posY</span><span class="o">&lt;</span><span class="mi">180</span><span class="p">){</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">SmallYJump</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">){</span>
+          <span class="n">posY</span><span class="o">++</span><span class="p">;</span>
+          <span class="n">CamServoY</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="n">posY</span><span class="p">);</span>
+          <span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="n">posY</span><span class="p">);</span>
+          <span class="n">delay</span><span class="p">(</span><span class="n">ServoTimer</span><span class="p">);</span>
+        <span class="p">}</span>
+     <span class="p">}</span>
+  <span class="p">}</span>
+
+
+  <span class="k">if</span><span class="p">(</span><span class="n">y1</span> <span class="o">&lt;</span> <span class="n">LargeYLimit</span><span class="p">){</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">posY</span><span class="o">&gt;</span><span class="mi">1</span><span class="p">){</span>
+          <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">LargeYJump</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">){</span>
+            <span class="n">posY</span><span class="o">--</span><span class="p">;</span>
+            <span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="n">posY</span><span class="p">);</span>
+            <span class="n">CamServoY</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="n">posY</span><span class="p">);</span>
+            <span class="n">delay</span><span class="p">(</span><span class="n">ServoTimer</span><span class="p">);</span>
+          <span class="p">}</span>
+      <span class="p">}</span>
+  <span class="p">}</span>
+
+  <span class="k">if</span><span class="p">(</span><span class="n">y3</span> <span class="o">&lt;</span> <span class="n">LargeYLimit</span><span class="p">){</span>
+      <span class="k">if</span><span class="p">(</span><span class="n">posY</span><span class="o">&lt;</span><span class="mi">180</span><span class="p">){</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">LargeYJump</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">){</span>
+          <span class="n">posY</span><span class="o">++</span><span class="p">;</span>
+          <span class="n">CamServoY</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="n">posY</span><span class="p">);</span>
+          <span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="n">posY</span><span class="p">);</span>
+          <span class="n">delay</span><span class="p">(</span><span class="n">ServoTimer</span><span class="p">);</span>
+        <span class="p">}</span>
+      <span class="p">}</span>
+  <span class="p">}</span>
+
+<span class="c1">//Reset servo write flag.</span>
+<span class="n">NoServoData</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span></code></pre></figure>
+
+<p><strong>Now for the Python Code:</strong></p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="c1">#!/usr/bin/python
+</span><span class="s">"""
+Have to execute using "sudo python facedetect.py --cascade=face.xml 0"
+(Normal build sudo python "</span><span class="si">%</span><span class="s">f")
+This program is demonstration for face and object detection using haar-like features.
+The program finds faces in a camera image or video stream and displays a red box around them.
+
+Original C implementation by:  ?
+Python implementation by: Roman Stanchak, James Bowman
+"""</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">cv2.cv</span> <span class="k">as</span> <span class="n">cv</span>
+<span class="kn">from</span> <span class="nn">optparse</span> <span class="kn">import</span> <span class="n">OptionParser</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">threading</span>
+<span class="kn">import</span> <span class="nn">readline</span>
+<span class="kn">import</span> <span class="nn">pygame</span>
+<span class="kn">from</span> <span class="nn">pygame.locals</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">smbus</span>
+
+<span class="c1"># Parameters for haar detection
+# From the API:
+# The default parameters (scale_factor=2, min_neighbors=3, flags=0) are tuned
+# for accurate yet slow object detection. For a faster operation on real video
+# images the settings are:
+# scale_factor=1.2, min_neighbors=2, flags=CV_HAAR_DO_CANNY_PRUNING,
+# min_size=&lt;minimum possible face size
+</span>
+<span class="n">min_size</span> <span class="o">=</span> <span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+<span class="n">image_scale</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">haar_scale</span> <span class="o">=</span> <span class="mf">1.2</span>
+<span class="n">min_neighbors</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">haar_flags</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="s">"""i2c Code"""</span>
+<span class="n">bus</span> <span class="o">=</span> <span class="n">smbus</span><span class="o">.</span><span class="n">SMBus</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># Open up a i@C bus.
+</span><span class="n">address</span> <span class="o">=</span> <span class="mh">0x2a</span> <span class="c1"># Setup Arduino address
+</span>
+<span class="n">sendstring</span> <span class="o">=</span> <span class="s">""</span> <span class="c1"># This will be my send variable (RPI-to-Arduino)
+</span><span class="n">bytearraytowrite</span> <span class="o">=</span> <span class="p">[]</span> <span class="c1">#Actual array for holding bytes after conversion from string.
+</span>
+<span class="c1">#This function actually does the writing to the I2C bus.
+</span><span class="k">def</span> <span class="nf">toWrite</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
+	<span class="k">global</span> <span class="n">sendstring</span>
+	<span class="k">global</span> <span class="n">bytearraytowrite</span>
+	<span class="n">bytearraytowrite</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="nb">ord</span><span class="p">,</span> <span class="n">sendstring</span><span class="p">)</span> <span class="c1">#This rewrites the string as bytes.
+</span>	<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">a</span><span class="p">:</span>
+		<span class="n">bus</span><span class="o">.</span><span class="n">write_byte</span><span class="p">(</span><span class="n">address</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">txrx_i2c</span><span class="p">():</span>
+	<span class="k">global</span> <span class="n">sendstring</span>
+	<span class="c1">#while True:
+</span>	<span class="n">sdata</span> <span class="o">=</span> <span class="s">""</span>
+	<span class="n">rdata</span> <span class="o">=</span> <span class="s">""</span>
+	<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">):</span>
+			<span class="n">rdata</span> <span class="o">+=</span> <span class="nb">chr</span><span class="p">(</span><span class="n">bus</span><span class="o">.</span><span class="n">read_byte</span><span class="p">(</span><span class="n">address</span><span class="p">));</span>
+	<span class="c1">#print rdata
+</span>	<span class="c1">#print bytearraytowrite
+</span>	<span class="c1">#print "".join(map(chr, bytearraytowrite)) #Will convert bytearray to string.
+</span>
+	<span class="c1">#Writes the key commands to the i2c bus.
+</span>	<span class="n">toWrite</span><span class="p">(</span><span class="n">bytearraytowrite</span><span class="p">)</span>
+
+
+	<span class="c1">#time.sleep(.6);
+</span>
+<span class="k">def</span> <span class="nf">detect_and_draw</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">cascade</span><span class="p">):</span>
+    <span class="k">global</span> <span class="n">sendstring</span>
+
+    <span class="c1"># allocate temporary images
+</span>    <span class="n">gray</span> <span class="o">=</span> <span class="n">cv</span><span class="o">.</span><span class="n">CreateImage</span><span class="p">((</span><span class="n">img</span><span class="o">.</span><span class="n">width</span><span class="p">,</span><span class="n">img</span><span class="o">.</span><span class="n">height</span><span class="p">),</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">small_img</span> <span class="o">=</span> <span class="n">cv</span><span class="o">.</span><span class="n">CreateImage</span><span class="p">((</span><span class="n">cv</span><span class="o">.</span><span class="n">Round</span><span class="p">(</span><span class="n">img</span><span class="o">.</span><span class="n">width</span> <span class="o">/</span> <span class="n">image_scale</span><span class="p">),</span>
+			       <span class="n">cv</span><span class="o">.</span><span class="n">Round</span> <span class="p">(</span><span class="n">img</span><span class="o">.</span><span class="n">height</span> <span class="o">/</span> <span class="n">image_scale</span><span class="p">)),</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># convert color input image to grayscale
+</span>    <span class="n">cv</span><span class="o">.</span><span class="n">CvtColor</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">gray</span><span class="p">,</span> <span class="n">cv</span><span class="o">.</span><span class="n">CV_BGR2GRAY</span><span class="p">)</span>
+
+    <span class="c1"># scale input image for faster processing
+</span>    <span class="n">cv</span><span class="o">.</span><span class="n">Resize</span><span class="p">(</span><span class="n">gray</span><span class="p">,</span> <span class="n">small_img</span><span class="p">,</span> <span class="n">cv</span><span class="o">.</span><span class="n">CV_INTER_LINEAR</span><span class="p">)</span>
+
+    <span class="n">cv</span><span class="o">.</span><span class="n">EqualizeHist</span><span class="p">(</span><span class="n">small_img</span><span class="p">,</span> <span class="n">small_img</span><span class="p">)</span>
+
+    <span class="k">if</span><span class="p">(</span><span class="n">cascade</span><span class="p">):</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="n">cv</span><span class="o">.</span><span class="n">GetTickCount</span><span class="p">()</span>
+        <span class="n">faces</span> <span class="o">=</span> <span class="n">cv</span><span class="o">.</span><span class="n">HaarDetectObjects</span><span class="p">(</span><span class="n">small_img</span><span class="p">,</span> <span class="n">cascade</span><span class="p">,</span> <span class="n">cv</span><span class="o">.</span><span class="n">CreateMemStorage</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span>
+                                     <span class="n">haar_scale</span><span class="p">,</span> <span class="n">min_neighbors</span><span class="p">,</span> <span class="n">haar_flags</span><span class="p">,</span> <span class="n">min_size</span><span class="p">)</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="n">cv</span><span class="o">.</span><span class="n">GetTickCount</span><span class="p">()</span> <span class="o">-</span> <span class="n">t</span>
+        <span class="k">print</span> <span class="s">"detection time = </span><span class="si">%</span><span class="s">gms"</span> <span class="o">%</span> <span class="p">(</span><span class="n">t</span><span class="o">/</span><span class="p">(</span><span class="n">cv</span><span class="o">.</span><span class="n">GetTickFrequency</span><span class="p">()</span><span class="o">*</span><span class="mf">1000.</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">faces</span><span class="p">:</span>
+            <span class="k">for</span> <span class="p">((</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">),</span> <span class="n">n</span><span class="p">)</span> <span class="ow">in</span> <span class="n">faces</span><span class="p">:</span>
+                <span class="c1"># the input to cv.HaarDetectObjects was resized, so scale the
+</span>                <span class="c1"># bounding box of each face and convert it to two CvPoints
+</span>                <span class="n">pt1</span> <span class="o">=</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span> <span class="o">*</span> <span class="n">image_scale</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">y</span> <span class="o">*</span> <span class="n">image_scale</span><span class="p">))</span>
+                <span class="n">pt2</span> <span class="o">=</span> <span class="p">(</span><span class="nb">int</span><span class="p">((</span><span class="n">x</span> <span class="o">+</span> <span class="n">w</span><span class="p">)</span> <span class="o">*</span> <span class="n">image_scale</span><span class="p">),</span> <span class="nb">int</span><span class="p">((</span><span class="n">y</span> <span class="o">+</span> <span class="n">h</span><span class="p">)</span> <span class="o">*</span> <span class="n">image_scale</span><span class="p">))</span>
+                <span class="n">cv</span><span class="o">.</span><span class="n">Rectangle</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">pt1</span><span class="p">,</span> <span class="n">pt2</span><span class="p">,</span> <span class="n">cv</span><span class="o">.</span><span class="n">RGB</span><span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+                <span class="n">x1</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">x</span> <span class="o">*</span> <span class="n">image_scale</span><span class="p">)</span>
+                <span class="n">y1</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">y</span> <span class="o">*</span> <span class="n">image_scale</span><span class="p">)</span>
+                <span class="n">x2</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">x</span> <span class="o">+</span> <span class="n">w</span><span class="p">)</span> <span class="o">*</span> <span class="n">image_scale</span><span class="p">)</span>
+                <span class="n">y2</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">y</span> <span class="o">+</span> <span class="n">h</span><span class="p">)</span> <span class="o">*</span> <span class="n">image_scale</span><span class="p">)</span>
+                <span class="n">sendstring</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">x1</span><span class="p">)</span> <span class="o">+</span> <span class="s">","</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">y1</span><span class="p">)</span> <span class="o">+</span> <span class="s">","</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">x2</span><span class="p">)</span> <span class="o">+</span> <span class="s">","</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">y2</span><span class="p">)</span> <span class="o">+</span> <span class="s">","</span>
+                <span class="n">sendstring</span> <span class="o">=</span> <span class="n">sendstring</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="s">'() '</span><span class="p">)</span>
+                <span class="k">print</span> <span class="n">sendstring</span>
+                <span class="n">txrx_i2c</span><span class="p">()</span>
+                <span class="n">sendstring</span> <span class="o">=</span> <span class="s">""</span>
+    <span class="n">cv</span><span class="o">.</span><span class="n">ShowImage</span><span class="p">(</span><span class="s">"result"</span><span class="p">,</span> <span class="n">img</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span>
+
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">OptionParser</span><span class="p">(</span><span class="n">usage</span> <span class="o">=</span> <span class="s">"usage: </span><span class="si">%</span><span class="s">prog [options] [filename|camera_index]"</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">"-c"</span><span class="p">,</span> <span class="s">"--cascade"</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">"store"</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">"cascade"</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s">"str"</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s">"Haar cascade file, default </span><span class="si">%</span><span class="s">default"</span><span class="p">,</span> <span class="n">default</span> <span class="o">=</span> <span class="s">"../data/haarcascades/haarcascade_frontalface_alt.xml"</span><span class="p">)</span>
+    <span class="p">(</span><span class="n">options</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+
+    <span class="n">cascade</span> <span class="o">=</span> <span class="n">cv</span><span class="o">.</span><span class="n">Load</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">cascade</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">print_help</span><span class="p">()</span>
+        <span class="n">sys</span><span class="o">.</span><span class="nb">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="n">input_name</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">input_name</span><span class="o">.</span><span class="n">isdigit</span><span class="p">():</span>
+        <span class="c1">#Where the image is actually captured from camera. "capture" is the variable holding image.
+</span>        <span class="n">capture</span> <span class="o">=</span> <span class="n">cv</span><span class="o">.</span><span class="n">CreateCameraCapture</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">input_name</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">capture</span> <span class="o">=</span> <span class="bp">None</span>
+
+    <span class="n">cv</span><span class="o">.</span><span class="n">NamedWindow</span><span class="p">(</span><span class="s">"result"</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="n">width</span> <span class="o">=</span> <span class="mi">160</span> <span class="c1">#leave None for auto-detection
+</span>    <span class="n">height</span> <span class="o">=</span> <span class="mi">120</span> <span class="c1">#leave None for auto-detection
+</span>
+    <span class="k">if</span> <span class="n">width</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+    	<span class="n">width</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">cv</span><span class="o">.</span><span class="n">GetCaptureProperty</span><span class="p">(</span><span class="n">capture</span><span class="p">,</span> <span class="n">cv</span><span class="o">.</span><span class="n">CV_CAP_PROP_FRAME_WIDTH</span><span class="p">))</span> <span class="c1">#Gets the width of the image.
+</span>    <span class="k">else</span><span class="p">:</span>
+    	<span class="n">cv</span><span class="o">.</span><span class="n">SetCaptureProperty</span><span class="p">(</span><span class="n">capture</span><span class="p">,</span><span class="n">cv</span><span class="o">.</span><span class="n">CV_CAP_PROP_FRAME_WIDTH</span><span class="p">,</span><span class="n">width</span><span class="p">)</span> <span class="c1">#Gets the width of the image.
+</span>
+    <span class="k">if</span> <span class="n">height</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+	<span class="n">height</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">cv</span><span class="o">.</span><span class="n">GetCaptureProperty</span><span class="p">(</span><span class="n">capture</span><span class="p">,</span> <span class="n">cv</span><span class="o">.</span><span class="n">CV_CAP_PROP_FRAME_HEIGHT</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+	<span class="n">cv</span><span class="o">.</span><span class="n">SetCaptureProperty</span><span class="p">(</span><span class="n">capture</span><span class="p">,</span><span class="n">cv</span><span class="o">.</span><span class="n">CV_CAP_PROP_FRAME_HEIGHT</span><span class="p">,</span><span class="n">height</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">capture</span><span class="p">:</span> <span class="c1">#If "capture" actually got an image.
+</span>        <span class="n">frame_copy</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+
+            <span class="n">frame</span> <span class="o">=</span> <span class="n">cv</span><span class="o">.</span><span class="n">QueryFrame</span><span class="p">(</span><span class="n">capture</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">frame</span><span class="p">:</span>
+                <span class="n">cv</span><span class="o">.</span><span class="n">WaitKey</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+                <span class="k">break</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">frame_copy</span><span class="p">:</span>
+                <span class="n">frame_copy</span> <span class="o">=</span> <span class="n">cv</span><span class="o">.</span><span class="n">CreateImage</span><span class="p">((</span><span class="n">frame</span><span class="o">.</span><span class="n">width</span><span class="p">,</span><span class="n">frame</span><span class="o">.</span><span class="n">height</span><span class="p">),</span>
+                                            <span class="n">cv</span><span class="o">.</span><span class="n">IPL_DEPTH_8U</span><span class="p">,</span> <span class="n">frame</span><span class="o">.</span><span class="n">nChannels</span><span class="p">)</span>
+
+<span class="c1">#                frame_copy = cv.CreateImage((frame.width,frame.height),
+#                                            cv.IPL_DEPTH_8U, frame.nChannels)
+</span>
+            <span class="k">if</span> <span class="n">frame</span><span class="o">.</span><span class="n">origin</span> <span class="o">==</span> <span class="n">cv</span><span class="o">.</span><span class="n">IPL_ORIGIN_TL</span><span class="p">:</span>
+                <span class="n">cv</span><span class="o">.</span><span class="n">Copy</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="n">frame_copy</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">cv</span><span class="o">.</span><span class="n">Flip</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="n">frame_copy</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+            <span class="n">detect_and_draw</span><span class="p">(</span><span class="n">frame_copy</span><span class="p">,</span> <span class="n">cascade</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">cv</span><span class="o">.</span><span class="n">WaitKey</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">break</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">image</span> <span class="o">=</span> <span class="n">cv</span><span class="o">.</span><span class="n">LoadImage</span><span class="p">(</span><span class="n">input_name</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">detect_and_draw</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">cascade</span><span class="p">)</span>
+        <span class="n">cv</span><span class="o">.</span><span class="n">WaitKey</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="n">cv</span><span class="o">.</span><span class="n">DestroyWindow</span><span class="p">(</span><span class="s">"result"</span><span class="p">)</span></code></pre></figure>
+
+:ET

@@ -1,0 +1,57 @@
+I"n<h3 id="setup-the-arch-linux-sd-card">Setup the Arch Linux SD Card</h3>
+
+<p>This article will be building off a previous article, where I walked through a headless setup of Arch Linux on the Raspberry Pi Zero W (rp0w).  And if you aren’t familiar with the term “headless setup,” essentially, we are talking about setting up the SD card so you don’t have to plug it into a monitor.  You can plug it in to your rp0w, boot it, and SSH in.</p>
+
+<ul>
+  <li><a href="https://ladvien.com/installing-arch-linux-raspberry-pi-zero-w/">Installing Arch Linux on a Raspberry Pi with Immediate WiFi Access</a></li>
+</ul>
+
+<p>Now you’ve setup the Arch Linux card and SSH’ed lets go through setting up a NodeJS environment on the rp0w.  Luckily, there have been people smarter than me who’ve already done some heavy lifting for us.</p>
+
+<p>Alright, start by SSH’ing into your Raspberry Pi.</p>
+
+<h3 id="running-a-nodejs-install-script">Running a NodeJS Install Script</h3>
+<p>Now we are at the Raspberry Pi command prompt we are going to run a script which will pull down the latest version of NodeJS built for ARM and install it to the Raspberry Pi.</p>
+
+<p>But before we can do that we need to install a few helper programs</p>
+
+<p>At the command prompt type and say “yes” when prompted.</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo pacman -S wget
+</code></pre></div></div>
+<p>Wget is a package which allows direct download of Internet content from the command prompt.</p>
+
+<p>Now, we will run a command which pulls a NodeJS installation script of the Internet and run it.  This script was written by <code class="highlighter-rouge">audstanley</code> and can be found at</p>
+
+<ul>
+  <li><a href="https://github.com/audstanley/NodeJs-Raspberry-Pi">NodeJS Raspberry Pi Github</a></li>
+</ul>
+
+<p>If you like the script, you should go buy <code class="highlighter-rouge">audstanley</code> a coffee – the link to do so is the Github page.</p>
+
+<p>As of this writing, the script downloads the latest version of NodeJS for your architecture (that’s the tricky part), installs it, then creates the appropriate symbolic links for NodeJS and <a href="https://www.npmjs.com/">npm</a> to work correctly.</p>
+
+<p>Ok, enough preamble.</p>
+
+<p>To install NodeJS type</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo wget -O - https://raw.githubusercontent.com/audstanley/NodeJs-Raspberry-Pi/master/Install-Node.sh | sudo bash
+node -v
+</code></pre></div></div>
+
+<p>That’s it!</p>
+
+<p>We can now create a new node project by typing</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mkdir my_node_project
+cd my_node_project
+npm init
+</code></pre></div></div>
+
+<p>If you want to learn more about NodeJS, I recommend the Udemy course:</p>
+
+<ul>
+  <li><a href="https://www.udemy.com/the-complete-nodejs-developer-course-2/">The Complete NodeJS Developer Course</a></li>
+</ul>
+
+<p>I’m not getting kick backs; it’s the course I used to get and liked it.  I actually used the Raspberry Pi for the code he walks through building and didn’t have a problem.</p>
+
+:ET

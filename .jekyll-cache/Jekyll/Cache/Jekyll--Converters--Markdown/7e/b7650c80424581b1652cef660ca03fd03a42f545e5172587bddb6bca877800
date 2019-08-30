@@ -1,0 +1,136 @@
+I"<7<h2 id="i-love-our-software-i-love-our-software">“I love our software, I love our software.”</h2>
+
+<p>I’m a HMIS Database Manager for a living.  It’s a dream job–all the nerdy stuff, plus, there is a possibility I’m helping people.  Currently, one area our software really lacks is quickly generating complex reports. It has the ability, but the servers are laggy, it crashes often, and a project which should take 20 minutes will take 50 minutes to 40 hours depending on the “report weather.”  These issues are probably caused by the reporting platform being web-based and calculations done server-side.  Regardless, given the amount of time the staff are eating on report projects I’ve decided to explore alternative systems for generating some of our needed reports.</p>
+
+<p>Luckily, HUD has dictated a HMIS data format.  This is often known as the “CSV version.”  The specification of these data sets are outlined in HUD’s document:</p>
+
+<ul>
+  <li><a href="https://www.hudexchange.info/resources/documents/HMIS-Data-Dictionary.pdf">HMIS Data Dictionary</a></li>
+</ul>
+
+<p>These data standards are currently on version 5.1, however, HUD issues tweaks to these standards every October 1st.  Point is, if the data is standardized it should make it easy to manipulate using local tools.</p>
+
+<p>Here are a few pros to explore local reporting tools:</p>
+
+<ul>
+  <li>Software vendor ambivalent</li>
+  <li>No bottleneck due to routing issues</li>
+  <li>Greater flexibility of reporting</li>
+  <li>No outage concerns</li>
+  <li>More control on optimization of queries</li>
+</ul>
+
+<p>And the cons:</p>
+
+<ul>
+  <li>Somewhat more difficult to deploy to end-users (integration would probably be through batch files or Excel-VB)</li>
+</ul>
+
+<p>Before jumping in to the alternatives it is important to point out HUD requires all HMIS software vendors have the ability to export a set of CSV files which contain all the HUD manadated data elements (also known as universal data elements).  This export process is reliable, fast, and predictable–at least, from my experience.  As the alternative tools are explored the data sets being used will most often be these HMIS CSVs, however, there will probably be other data our COC reports locally which will be joined to these CSVs using each participant’s unique ID.</p>
+
+<p>Ok! Let’s take a look.</p>
+
+<h2 id="r">R</h2>
+
+<p><a href="https://en.wikipedia.org/wiki/R_(programming_language)">R</a> gets me excited.  It is programming language for data miners.  It is primarily C under the hood, which potentially makes it blazingly fast. R is meant to be a command-line interface, but I’m using RStudio as convenient overaly.  R studio has a few limitations, for example only 15 columns may be view inside the IDE, but nothing show stopping.</p>
+
+<p>This entry is not meant to be a course in R, however, I’ll add some of my favorite links:</p>
+
+<ol>
+  <li><a href="https://www.coursera.org/courses?languages=en&amp;query=R">Coursera’s R Courses</a></li>
+  <li><a href="https://www.coursera.org/learn/r-programming">John Hopkins – R Programming</a></li>
+</ol>
+
+<p>Here’s the toolchains:</p>
+
+<ol>
+  <li><a href="https://cran.r-project.org/mirrors.html">Mirror List for R Download</a> (the CLI)</li>
+  <li><a href="https://www.rstudio.com/products/rstudio/download3/">RStudio</a> (the R IDE used)</li>
+</ol>
+
+<p>Alright, now we’ve got R going!</p>
+
+<p><img src="/../../images/Screenshot%202016-12-26%2007.46.49.png" alt="" /></p>
+
+<p>Ok, let’s dig into some code.</p>
+
+<p>First it is important to be able to read in CSV and Excel files.  The ability to read in CSVs is built into R.  To start loading Excel documents the <a href="https://cran.r-project.org/web/packages/readxl/readxl.pdf">read_excel</a> package will need to be installed. R has a package manager, allowing method libraries to be easily added.  Pretty much any package can be installed from the CLI using install.package(“name_of_package”).  For example:</p>
+
+<figure class="highlight"><pre><code class="language-r" data-lang="r"><span class="w">    </span><span class="c1"># Installs the readxl package, which allows Excel files to be</span><span class="w">
+    </span><span class="c1"># read in as data-frames</span><span class="w">
+    </span><span class="n">install.package</span><span class="p">(</span><span class="s2">"readxl"</span><span class="p">)</span><span class="w">
+    </span></code></pre></figure>
+
+<p>A package only needs to be installed once, however, every R session will need to refer to the library before making calls to its methods.  For example,</p>
+
+<figure class="highlight"><pre><code class="language-r" data-lang="r"><span class="w">    </span><span class="c1"># Adds the readxl methods to this session.</span><span class="w">
+    </span><span class="n">library</span><span class="p">(</span><span class="s2">"readxl"</span><span class="p">)</span></code></pre></figure>
+
+<p> After this package has been installed and added to the session, then we should be able to import all sorts of data into R using the following:</p>
+
+<figure class="highlight"><pre><code class="language-r" data-lang="r"><span class="w">    </span><span class="c1"># Load data</span><span class="w">
+    </span><span class="n">read.csv</span><span class="p">(</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">read_excel</span><span class="p">(</span><span class="s2">"DRC PoS Check In for October 2016.xlsx"</span><span class="p">)</span><span class="w">
+    </span><span class="n">csvData</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">read.csv</span><span class="p">(</span><span class="s2">"My_CSV_file.csv"</span><span class="p">)</span></code></pre></figure>
+
+<p> This creates two data-frames.  One thing action I found to be necessary for later functions the ability to rename column headers.  This can be done using the following:</p>
+
+<figure class="highlight"><pre><code class="language-r" data-lang="r"><span class="w">    </span><span class="c1"># Make the disability column easier to work with.</span><span class="w">
+    </span><span class="n">colnames</span><span class="p">(</span><span class="n">data_frame</span><span class="p">)[</span><span class="n">col_number_to_rename</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="s2">"new_name"</span><span class="w">
+
+    </span><span class="c1"># For example, renames the header of column 8 to "ethnicity"</span><span class="w">
+    </span><span class="n">colnames</span><span class="p">(</span><span class="n">client</span><span class="p">)[</span><span class="m">8</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="s2">"ethnicity"</span></code></pre></figure>
+
+<p>This is important later when SQL functions are used inside of R, as speciali characters SQLite doesn’t like and workarounds make the SQL code verbose.</p>
+
+<p>The most important thing which can be done by data people is merging datasets.  I’ve only started on this journey, but it looks to be an art which requires mastery to be effective.  But to get us going, here’s how to perform a <a href="http://www.w3schools.com/sql/sql_join_left.asp">left join</a> in R.</p>
+
+<figure class="highlight"><pre><code class="language-r" data-lang="r"><span class="w">    </span><span class="c1"># Join data_frame_2 to data_frame_1 where the "key" column matches.</span><span class="w">
+    </span><span class="c1"># Do not keep any data which doesn't match the keys in data_frame_1</span><span class="w">
+    </span><span class="n">combined_data_frames</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">merge</span><span class="p">(</span><span class="n">data_frame_1</span><span class="p">,</span><span class="w"> </span><span class="n">data_frame_2</span><span class="p">,</span><span class="w"> </span><span class="n">by</span><span class="o">=</span><span class="s2">"key"</span><span class="p">)</span><span class="w">
+
+    </span><span class="c1"># Here's a real example, using HUD HMIS CSVs</span><span class="w">
+    </span><span class="n">client</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">read.csv</span><span class="p">(</span><span class="s2">"Client.csv"</span><span class="p">)</span><span class="w">
+    </span><span class="n">enrollments</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">read.csv</span><span class="p">(</span><span class="s2">"Enrollments.csv"</span><span class="p">)</span><span class="w">
+    </span><span class="n">client_and_hud_assessments</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">merge</span><span class="p">(</span><span class="n">client</span><span class="p">,</span><span class="w"> </span><span class="n">enrollments</span><span class="p">,</span><span class="w"> </span><span class="n">by</span><span class="o">=</span><span class="s2">"PersonalID"</span><span class="p">)</span></code></pre></figure>
+
+<p>If you’re pretty sharp–or a data scientist–you might notice the flaw in the in the merger above.  The HMIS Client.csv should only have one record per participant, but the relationship from Client.csv to Enrollments.csv is one-to-many.  Meaning, each client could have mutiple project enrollments.  This makes the above code somewhat unpredictable–and I’ve no time to explore the results.  Instead, I’ve focused on taking the most recent entry from Enrollments.csv.  This can be done using some SQL code.</p>
+
+<h2 id="the-sql-to-r">The SQL to R</h2>
+
+<p>Professional data folk may wonder why I’ve chosen to mix R and SQL.  Well, it may not be the best reason or explanation, but here goes.  R is a powerful tool, but often, the syntax is boggish.  It is hard to read and figure out what’s going on.  SQL on the other hand, it’s pretty intuitive.  For me, I’m looking to solve problems as quickly as possible and I’ve found by mixing the two I get to solutions much more quickly.  Often, it is a trade off, if a SQL query is running too slow, I look for an R solution.  And if I’ve re-read an R statement twenty times without being able to spot a bug, then I find a SQL solution.  For me, it’s about getting to the result as quickly as possible</p>
+
+<p>A second reason to mix SQL is about respect and marketability.  R seems to be gaining ground in a lot of data sciences, and seems to be <em>the</em> tool when it comes to economics and statistics, however, most data exchanges have SQL at their heart.  Therefore, when I can use my work as an excuse to develop a marketable skill, I’m going to do it.  </p>
+
+<p>If someone still has problems with those assertions, feel free to hate away in the comments below.</p>
+
+<p>Alright, how does one mix SQL into R?  It centers around the package <a href="https://cran.r-project.org/web/packages/sqldf/sqldf.pdf">sqldf</a>.  This package can be installed and added to a session with the following:</p>
+
+<figure class="highlight"><pre><code class="language-r" data-lang="r"><span class="w">    </span><span class="c1"># Install SQLdf package (run once)</span><span class="w">
+    </span><span class="n">install.package</span><span class="p">(</span><span class="s2">"sqldf"</span><span class="p">)</span><span class="w">
+
+    </span><span class="c1"># Adds sqldf to the current R session</span><span class="w">
+    </span><span class="n">library</span><span class="p">(</span><span class="s2">"sqldf"</span><span class="p">)</span></code></pre></figure>
+
+<p>Underneath the hood of sqldf is <a href="https://sqlite.org/">SQLite</a>, this important to note when it comes to debugging SQL queries in R–as we will see in a moment.</p>
+
+<p>But, to get us kicked off, let’s look at how sqldf works in R.</p>
+
+<figure class="highlight"><pre><code class="language-r" data-lang="r"><span class="w">    </span><span class="n">result_df</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">sqldf</span><span class="p">(</span><span class="s2">"YOUR SQL QUERY HERE"</span><span class="p">)</span></code></pre></figure>
+
+<p>This is a sample of how sqldf works.  Basically, the sqldf() makes a SQLite query call and returns the results.  Here, all of the vector for PersonalIDs was taken from the Client.csv and put into a dataframe called personalIDs.  And that’s pretty much it.</p>
+
+<p>Here’s an example in the context of HMIS CSV data.</p>
+
+<figure class="highlight"><pre><code class="language-r" data-lang="r"><span class="w">    </span><span class="c1"># Add the SQLdf library</span><span class="w">
+    </span><span class="n">library</span><span class="p">(</span><span class="s2">"sqldf)
+    # Load Client CSV data
+    client &lt;- read.csv("</span><span class="n">Client.csv</span><span class="s2">")
+    # Get a vector of the client IDs from the Client.csv
+    personalIDs &lt;- sqldf("</span><span class="n">SELECT</span><span class="w"> </span><span class="n">DISTINCT</span><span class="w"> </span><span class="n">PersonalID</span><span class="w"> </span><span class="n">FROM</span><span class="w"> </span><span class="n">client</span><span class="err">"</span><span class="p">)</span></code></pre></figure>
+
+<p>Alright, from here on in I’m going to outline SQL queries seperately, just know, the SQL query will need to be insert into the sqldf(“”) call.</p>
+
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql">    <span class="k">SELECT</span> <span class="k">DISTINCT</span> <span class="n">PersonalID</span> <span class="k">FROM</span> <span class="n">client</span></code></pre></figure>
+
+<p>Ok – I’m going to stop this article here, since it seems to have gotten us going.  However, I’ll continue adding to this series as I write useful queries for HMIS data.</p>
+:ET

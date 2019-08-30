@@ -1,0 +1,240 @@
+I"„–
+<figure class="highlight"><pre><code class="language-r" data-lang="r"><span class="c1"># Mac PC</span><span class="w">
+</span><span class="n">nameOfReport</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="s2">"Homebase_Report.R"</span><span class="w">
+</span><span class="n">hmisDataPath</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="s2">"C:/Users/Ladvien/Dropbox/HMIS/Warehouse/All Projects 2016 -- 10-01-2013 to 02-17-2017 -- HMIS CSV 5.1"</span><span class="w">
+</span><span class="n">vispdatDataPath</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="s2">"C:/Users/Ladvien/Dropbox/HMIS/Coordinated_Entry_Report/VI-SPDAT and HUD Flat Export for SQL -- 3-6-2017.xlsx"</span><span class="w">
+</span><span class="n">staffInfoDataPath</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="s2">"C:/Users/Ladvien/Dropbox/HMIS/Coordinated_Entry_Report/Staff Contact Info for SQL -- 3-6-2017.xlsx"</span><span class="w">
+</span><span class="n">executionPath</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="s2">"C:/Users/Ladvien/Dropbox/HMIS/Coordinated_Entry_Report"</span><span class="w">
+</span><span class="n">hmisFunctions</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="s2">"C:/Users/Ladvien/Dropbox/HMIS/HMIS_R_Functions/HMIS_R_Functions.R"</span><span class="w">
+</span><span class="n">hmisGraphsPath</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="s2">"C:/Users/Ladvien/Dropbox/HMIS/Warehouse/TX-601_Graphs"</span><span class="w">
+</span><span class="n">source</span><span class="p">(</span><span class="n">hmisFunctions</span><span class="p">)</span><span class="w">
+
+</span><span class="n">enrollment</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">loadEnrollment</span><span class="p">(</span><span class="n">hmisDataPath</span><span class="p">)</span><span class="w">
+
+</span><span class="c1">##############################################</span><span class="w">
+</span><span class="c1">############## Point Map #####################</span><span class="w">
+</span><span class="c1">##############################################</span><span class="w">
+
+</span><span class="c1"># https://thedhrelay.wordpress.com/2014/04/08/creating-a-density-map-in-r-with-zipcodes/</span><span class="w">
+
+</span><span class="n">library</span><span class="p">(</span><span class="n">plyr</span><span class="p">)</span><span class="w">
+</span><span class="n">library</span><span class="p">(</span><span class="n">ggmap</span><span class="p">)</span><span class="w">
+</span><span class="n">library</span><span class="p">(</span><span class="n">zipcode</span><span class="p">)</span><span class="w">
+
+</span><span class="n">personalIDsAndZips</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">sqldf</span><span class="p">(</span><span class="s2">"SELECT PersonalID, LastPermanentZIP FROM enrollment"</span><span class="p">)</span><span class="w">
+</span><span class="n">rm</span><span class="p">(</span><span class="n">list</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s2">"enrollment"</span><span class="p">))</span><span class="w">
+
+</span><span class="c1"># Clean zips</span><span class="w">
+</span><span class="n">data</span><span class="p">(</span><span class="n">zipcode</span><span class="p">)</span><span class="w">
+</span><span class="n">personalIDsAndZips</span><span class="o">$</span><span class="n">LastPermanentZIP</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">clean.zipcodes</span><span class="p">(</span><span class="n">personalIDsAndZips</span><span class="o">$</span><span class="n">LastPermanentZIP</span><span class="p">)</span><span class="w">
+</span><span class="n">personalIDsAndZips</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">merge</span><span class="p">(</span><span class="n">personalIDsAndZips</span><span class="p">,</span><span class="w"> </span><span class="n">zipcode</span><span class="p">,</span><span class="w"> </span><span class="n">by.x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'LastPermanentZIP'</span><span class="p">,</span><span class="w"> </span><span class="n">by.y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'zip'</span><span class="p">)</span><span class="w">
+
+</span><span class="c1"># Get density</span><span class="w">
+</span><span class="n">zipCount</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">sqldf</span><span class="p">(</span><span class="s2">"SELECT LastPermanentZIP, COUNT(LastPermanentZIP) As Count FROM personalIDsAndZips GROUP BY LastPermanentZIP"</span><span class="p">)</span><span class="w">
+</span><span class="n">personalIDsAndZips</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">sqldf</span><span class="p">(</span><span class="s2">"SELECT * FROM personalIDsAndZips a LEFT JOIN zipCount b ON a.LastPermanentZIP=b.LastPermanentZIP "</span><span class="p">)</span><span class="w">
+</span><span class="n">personalIDsAndZips</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">subset</span><span class="p">(</span><span class="n">personalIDsAndZips</span><span class="p">)</span><span class="w">
+</span><span class="n">zipCounts</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">sqldf</span><span class="p">(</span><span class="s2">"SELECT DISTINCT LastPermanentZIP, longitude, latitude, COUNT(LastPermanentZIP) As 'Count' FROM personalIDsAndZips GROUP BY LastPermanentZIP"</span><span class="p">)</span><span class="w">
+
+</span><span class="n">texas</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">get_map</span><span class="p">(</span><span class="n">location</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s2">"dfw"</span><span class="p">),</span><span class="w"> </span><span class="n">zoom</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">9</span><span class="p">)</span><span class="w">
+</span><span class="n">mapOfEntrants</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">ggmap</span><span class="p">(</span><span class="n">texas</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+    </span><span class="n">geom_point</span><span class="p">(</span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">zipCounts</span><span class="p">,</span><span class="w">
+    </span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">longitude</span><span class="p">,</span><span class="w">
+        </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">latitude</span><span class="p">,</span><span class="w">
+        </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Count</span><span class="p">,</span><span class="w">
+        </span><span class="n">alpha</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Count</span><span class="p">),</span><span class="w"> </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"red"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+    </span><span class="n">ylab</span><span class="p">(</span><span class="s2">"Latitude"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+    </span><span class="n">xlab</span><span class="p">(</span><span class="s2">"Longitude"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+    </span><span class="n">labs</span><span class="p">(</span><span class="n">title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Residence Prior to Project Entry"</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Entrants"</span><span class="p">,</span><span class="w"> </span><span class="n">alpha</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Entrants"</span><span class="p">)</span><span class="w">
+
+</span><span class="n">svg</span><span class="p">(</span><span class="n">filename</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">paste</span><span class="p">(</span><span class="n">hmisGraphsPath</span><span class="p">,</span><span class="w"> </span><span class="s2">"/ResidencePriorToProjectEntry.svg"</span><span class="p">,</span><span class="w"> </span><span class="n">sep</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">""</span><span class="p">),</span><span class="w">
+    </span><span class="n">width</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">5</span><span class="p">,</span><span class="w">
+    </span><span class="n">height</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">4</span><span class="p">,</span><span class="w">
+    </span><span class="n">pointsize</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">12</span><span class="p">)</span><span class="w">
+</span><span class="n">plot</span><span class="p">(</span><span class="n">mapOfEntrants</span><span class="p">)</span><span class="w">
+</span><span class="n">dev.off</span><span class="p">()</span><span class="w">
+
+</span><span class="c1">##############################################</span><span class="w">
+</span><span class="c1">############## Heat Map ######################</span><span class="w">
+</span><span class="c1">############## County Partition ##############</span><span class="w">
+</span><span class="c1">##############################################</span><span class="w">
+</span><span class="n">library</span><span class="p">(</span><span class="n">ggmap</span><span class="p">)</span><span class="w"> </span><span class="c1">#Load libraries</span><span class="w">
+</span><span class="n">library</span><span class="p">(</span><span class="n">ggplot2</span><span class="p">)</span><span class="w">
+</span><span class="n">hpars</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">read.table</span><span class="p">(</span><span class="s2">"https://sites.google.com/site/arunsethuraman1/teaching/hpars.dat?revision=1"</span><span class="p">)</span><span class="w"> </span><span class="c1">#Read in the density data</span><span class="w">
+
+</span><span class="n">ggmap</span><span class="p">(</span><span class="n">texas</span><span class="p">,</span><span class="w"> </span><span class="n">extent</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"device"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+</span><span class="n">geom_density2d</span><span class="p">(</span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">zipCounts</span><span class="p">,</span><span class="w"> </span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">longitude</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">latitude</span><span class="p">),</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0.3</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+</span><span class="n">stat_density2d</span><span class="p">(</span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">zipCounts</span><span class="p">,</span><span class="w">
+                 </span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">longitude</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">latitude</span><span class="p">,</span><span class="w"> </span><span class="n">fill</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">..level..</span><span class="p">,</span><span class="w"> </span><span class="n">alpha</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">),</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0.01</span><span class="p">,</span><span class="w">
+                 </span><span class="n">bins</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">16</span><span class="p">,</span><span class="w"> </span><span class="n">geom</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"polygon"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">scale_fill_gradient</span><span class="p">(</span><span class="n">low</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"green"</span><span class="p">,</span><span class="w"> </span><span class="n">high</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"red"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">scale_alpha</span><span class="p">(</span><span class="n">range</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="w"> </span><span class="m">0.3</span><span class="p">),</span><span class="w"> </span><span class="n">guide</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">FALSE</span><span class="p">)</span><span class="w"> </span><span class="c1">#Plot</span><span class="w">
+
+</span><span class="c1">##############################################</span><span class="w">
+</span><span class="c1">############## Choropleth Map ################</span><span class="w">
+</span><span class="c1">##############################################</span><span class="w">
+
+</span><span class="c1"># https://blogs.uoregon.edu/rclub/2015/10/27/map-maker-map-maker-make-me-a-map/</span><span class="w">
+</span><span class="c1"># https://www.gislounge.com/mapping-county-demographic-data-in-r/</span><span class="w">
+</span><span class="n">install.packages</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="s2">"choroplethr"</span><span class="p">,</span><span class="w"> </span><span class="s2">"choroplethrMaps"</span><span class="p">))</span><span class="w">
+</span><span class="n">library</span><span class="p">(</span><span class="n">choroplethr</span><span class="p">)</span><span class="w">
+</span><span class="n">library</span><span class="p">(</span><span class="n">choroplethrMaps</span><span class="p">)</span><span class="w">
+
+</span><span class="c1"># Clean up zipcodes.</span><span class="w">
+</span><span class="n">valid</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">read.csv</span><span class="p">(</span><span class="s2">"C:/Users/Ladvien/Dropbox/HMIS/Warehouse/ValidZips.csv"</span><span class="p">)</span><span class="w">
+</span><span class="n">zipsAndCount</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">sqldf</span><span class="p">(</span><span class="s2">"SELECT DISTINCT(LastPermanentZIP) As 'region', COUNT(LastPermanentZIP) As 'value' FROM personalIDsAndZips GROUP BY LastPermanentZIP"</span><span class="p">)</span><span class="w">
+</span><span class="n">zipsAndCount</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">na.omit</span><span class="p">(</span><span class="n">zipsAndCount</span><span class="p">)</span><span class="w">
+</span><span class="n">zipsAndCount</span><span class="o">$</span><span class="n">value</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">clean.zipcodes</span><span class="p">(</span><span class="n">zipsAndCount</span><span class="o">$</span><span class="n">value</span><span class="p">)</span><span class="w">
+</span><span class="n">zipsAndCount</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">sqldf</span><span class="p">(</span><span class="s2">"SELECT a.* FROM zipsAndCount a INNER JOIN valid b ON a.region=b.ValidZip"</span><span class="p">)</span><span class="w">
+</span><span class="n">zipsAndCount</span><span class="o">$</span><span class="n">value</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">as.numeric</span><span class="p">(</span><span class="n">zipsAndCount</span><span class="o">$</span><span class="n">value</span><span class="p">)</span><span class="w">
+</span><span class="c1">#zipsAndCount$region &lt;- as.numeric(zipsAndCount$region)</span><span class="w">
+
+</span><span class="c1"># http://stackoverflow.com/questions/30787877/making-a-zip-code-choropleth-in-r-using-ggplot2-and-ggmap</span><span class="w">
+</span><span class="n">install.packages</span><span class="p">(</span><span class="s2">"devtools"</span><span class="p">)</span><span class="w">
+</span><span class="n">library</span><span class="p">(</span><span class="n">devtools</span><span class="p">)</span><span class="w">
+</span><span class="n">install_github</span><span class="p">(</span><span class="s1">'arilamstein/choroplethrZip@v1.5.0'</span><span class="p">)</span><span class="w">
+</span><span class="n">library</span><span class="p">(</span><span class="n">choroplethrZip</span><span class="p">)</span><span class="w">
+
+</span><span class="n">dallas_zips</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s2">"75019"</span><span class="p">,</span><span class="w"> </span><span class="s2">"75039"</span><span class="p">,</span><span class="w"> </span><span class="s2">"75038"</span><span class="p">,</span><span class="w"> </span><span class="s2">"75041"</span><span class="p">,</span><span class="w"> </span><span class="s2">"75040"</span><span class="p">,</span><span class="w"> </span><span class="s2">"75043"</span><span class="p">,</span><span class="w"> </span><span class="s2">"75042"</span><span class="p">,</span><span class="w"> </span><span class="s2">"75044"</span><span class="p">,</span><span class="w"> </span><span class="s2">"75049"</span><span class="p">,</span><span class="w"> </span><span class="s2">"75048"</span><span class="p">,</span><span class="w"> </span><span class="s2">"75051"</span><span class="p">,</span><span class="w"> </span><span class="s2">"75050"</span><span class="p">,</span><span class="w"> </span><span class="s2">"75052"</span><span class="p">,</span><span class="w"> </span><span class="s2">"75054"</span><span class="p">,</span><span class="w"> </span><span class="s2">"75061"</span><span class="p">,</span><span class="w"> </span><span class="s2">"75060"</span><span class="p">,</span><span class="w"> </span><span class="s2">"75063"</span><span class="p">,</span><span class="w"> </span><span class="s2">"75062"</span><span class="p">,</span><span class="w"> </span><span class="s2">"75080"</span><span class="p">,</span><span class="w"> </span><span class="s2">"75082"</span><span class="p">,</span><span class="w"> </span><span class="s2">"75081"</span><span class="p">,</span><span class="w"> </span><span class="s2">"75089"</span><span class="p">,</span><span class="w"> </span><span class="s2">"75088"</span><span class="p">,</span><span class="w"> </span><span class="s2">"75099"</span><span class="p">,</span><span class="w"> </span><span class="s2">"75104"</span><span class="p">,</span><span class="w"> </span><span class="s2">"75106"</span><span class="p">,</span><span class="w"> </span><span class="s2">"75115"</span><span class="p">,</span><span class="w"> </span><span class="s2">"75116"</span><span class="p">,</span><span class="w"> </span><span class="s2">"75125"</span><span class="p">,</span><span class="w"> </span><span class="s2">"75134"</span><span class="p">,</span><span class="w"> </span><span class="s2">"75137"</span><span class="p">,</span><span class="w"> </span><span class="s2">"75141"</span><span class="p">,</span><span class="w"> </span><span class="s2">"75146"</span><span class="p">,</span><span class="w"> </span><span class="s2">"75150"</span><span class="p">,</span><span class="w"> </span><span class="s2">"75149"</span><span class="p">,</span><span class="w"> </span><span class="s2">"75154"</span><span class="p">,</span><span class="w"> </span><span class="s2">"75159"</span><span class="p">,</span><span class="w"> </span><span class="s2">"75172"</span><span class="p">,</span><span class="w"> </span><span class="s2">"75181"</span><span class="p">,</span><span class="w"> </span><span class="s2">"75180"</span><span class="p">,</span><span class="w"> </span><span class="s2">"75182"</span><span class="p">,</span><span class="w"> </span><span class="s2">"75202"</span><span class="p">,</span><span class="w"> </span><span class="s2">"75201"</span><span class="p">,</span><span class="w"> </span><span class="s2">"75204"</span><span class="p">,</span><span class="w"> </span><span class="s2">"75203"</span><span class="p">,</span><span class="w"> </span><span class="s2">"75206"</span><span class="p">,</span><span class="w"> </span><span class="s2">"75205"</span><span class="p">,</span><span class="w"> </span><span class="s2">"75208"</span><span class="p">,</span><span class="w"> </span><span class="s2">"75207"</span><span class="p">,</span><span class="w"> </span><span class="s2">"75210"</span><span class="p">,</span><span class="w"> </span><span class="s2">"75209"</span><span class="p">,</span><span class="w"> </span><span class="s2">"75212"</span><span class="p">,</span><span class="w"> </span><span class="s2">"75211"</span><span class="p">,</span><span class="w"> </span><span class="s2">"75215"</span><span class="p">,</span><span class="w"> </span><span class="s2">"75214"</span><span class="p">,</span><span class="w"> </span><span class="s2">"75217"</span><span class="p">,</span><span class="w"> </span><span class="s2">"75216"</span><span class="p">,</span><span class="w"> </span><span class="s2">"75219"</span><span class="p">,</span><span class="w"> </span><span class="s2">"75218"</span><span class="p">,</span><span class="w"> </span><span class="s2">"75220"</span><span class="p">,</span><span class="w"> </span><span class="s2">"75223"</span><span class="p">,</span><span class="w"> </span><span class="s2">"75222"</span><span class="p">,</span><span class="w"> </span><span class="s2">"75225"</span><span class="p">,</span><span class="w"> </span><span class="s2">"75224"</span><span class="p">,</span><span class="w"> </span><span class="s2">"75227"</span><span class="p">,</span><span class="w"> </span><span class="s2">"75226"</span><span class="p">,</span><span class="w"> </span><span class="s2">"75229"</span><span class="p">,</span><span class="w"> </span><span class="s2">"75228"</span><span class="p">,</span><span class="w"> </span><span class="s2">"75231"</span><span class="p">,</span><span class="w"> </span><span class="s2">"75230"</span><span class="p">,</span><span class="w"> </span><span class="s2">"75233"</span><span class="p">,</span><span class="w"> </span><span class="s2">"75232"</span><span class="p">,</span><span class="w"> </span><span class="s2">"75235"</span><span class="p">,</span><span class="w"> </span><span class="s2">"75234"</span><span class="p">,</span><span class="w"> </span><span class="s2">"75237"</span><span class="p">,</span><span class="w"> </span><span class="s2">"75236"</span><span class="p">,</span><span class="w"> </span><span class="s2">"75238"</span><span class="p">,</span><span class="w"> </span><span class="s2">"75241"</span><span class="p">,</span><span class="w"> </span><span class="s2">"75240"</span><span class="p">,</span><span class="w"> </span><span class="s2">"75243"</span><span class="p">,</span><span class="w"> </span><span class="s2">"75242"</span><span class="p">,</span><span class="w"> </span><span class="s2">"75244"</span><span class="p">,</span><span class="w"> </span><span class="s2">"75247"</span><span class="p">,</span><span class="w"> </span><span class="s2">"75246"</span><span class="p">,</span><span class="w"> </span><span class="s2">"75249"</span><span class="p">,</span><span class="w"> </span><span class="s2">"75248"</span><span class="p">,</span><span class="w"> </span><span class="s2">"75251"</span><span class="p">,</span><span class="w"> </span><span class="s2">"75250"</span><span class="p">,</span><span class="w"> </span><span class="s2">"75253"</span><span class="p">,</span><span class="w"> </span><span class="s2">"75254"</span><span class="p">,</span><span class="w"> </span><span class="s2">"75260"</span><span class="p">,</span><span class="w"> </span><span class="s2">"75275"</span><span class="p">,</span><span class="w"> </span><span class="s2">"75283"</span><span class="p">,</span><span class="w"> </span><span class="s2">"75284"</span><span class="p">,</span><span class="w"> </span><span class="s2">"75326"</span><span class="p">,</span><span class="w"> </span><span class="s2">"75359"</span><span class="p">,</span><span class="w"> </span><span class="s2">"75381"</span><span class="p">,</span><span class="w"> </span><span class="s2">"75001"</span><span class="p">,</span><span class="w"> </span><span class="s2">"75390"</span><span class="p">,</span><span class="w"> </span><span class="s2">"75006"</span><span class="p">,</span><span class="w"> </span><span class="s2">"75007"</span><span class="p">,</span><span class="w"> </span><span class="s2">"75397"</span><span class="p">,</span><span class="w"> </span><span class="s2">"75015"</span><span class="p">,</span><span class="w"> </span><span class="s2">"75014"</span><span class="p">,</span><span class="w"> </span><span class="s2">"75016"</span><span class="p">)</span><span class="w">
+</span><span class="n">dallas_zips</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">unique</span><span class="p">(</span><span class="n">dallas_zips</span><span class="p">)</span><span class="w">
+</span><span class="c1"># ec = east coast</span><span class="w">
+</span><span class="n">texas</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s2">"texas"</span><span class="p">)</span><span class="w">
+</span><span class="n">zip_choropleth</span><span class="p">(</span><span class="n">zipsAndCount</span><span class="p">,</span><span class="w">
+               </span><span class="n">state_zoom</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">texas</span><span class="p">,</span><span class="w">
+               </span><span class="n">title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Residence Prior to Entry"</span><span class="p">,</span><span class="w">
+               </span><span class="n">legend</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Entrants"</span><span class="p">,</span><span class="w">
+               </span><span class="n">num_color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">5</span><span class="p">,</span><span class="w">
+               </span><span class="n">reference_map</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="w">
+               </span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+               </span><span class="n">coord_map</span><span class="p">()</span><span class="w">
+
+</span><span class="c1">############## Get Dallas ZIP codes ######################</span><span class="w">
+</span><span class="n">dallasClients</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">sqldf</span><span class="p">(</span><span class="s2">"SELECT * FROM enrollment 
+                        WHERE 
+        LastPermanentZIP = '75019' OR
+        LastPermanentZIP = '75039' OR
+        LastPermanentZIP = '75038' OR
+        LastPermanentZIP = '75041' OR
+        LastPermanentZIP = '75040' OR
+        LastPermanentZIP = '75043' OR
+        LastPermanentZIP = '75042' OR
+        LastPermanentZIP = '75044' OR
+        LastPermanentZIP = '75049' OR
+        LastPermanentZIP = '75048' OR
+        LastPermanentZIP = '75051' OR
+        LastPermanentZIP = '75050' OR
+        LastPermanentZIP = '75052' OR
+        LastPermanentZIP = '75054' OR
+        LastPermanentZIP = '75061' OR
+        LastPermanentZIP = '75060' OR
+        LastPermanentZIP = '75063' OR
+        LastPermanentZIP = '75062' OR
+        LastPermanentZIP = '75080' OR
+        LastPermanentZIP = '75082' OR
+        LastPermanentZIP = '75081' OR
+        LastPermanentZIP = '75089' OR
+        LastPermanentZIP = '75088' OR
+        LastPermanentZIP = '75099' OR
+        LastPermanentZIP = '75104' OR
+        LastPermanentZIP = '75106' OR
+        LastPermanentZIP = '75115' OR
+        LastPermanentZIP = '75116' OR
+        LastPermanentZIP = '75125' OR
+        LastPermanentZIP = '75134' OR
+        LastPermanentZIP = '75137' OR
+        LastPermanentZIP = '75141' OR
+        LastPermanentZIP = '75146' OR
+        LastPermanentZIP = '75150' OR
+        LastPermanentZIP = '75149' OR
+        LastPermanentZIP = '75154' OR
+        LastPermanentZIP = '75159' OR
+        LastPermanentZIP = '75172' OR
+        LastPermanentZIP = '75181' OR
+        LastPermanentZIP = '75180' OR
+        LastPermanentZIP = '75182' OR
+        LastPermanentZIP = '75202' OR
+        LastPermanentZIP = '75201' OR
+        LastPermanentZIP = '75204' OR
+        LastPermanentZIP = '75203' OR
+        LastPermanentZIP = '75206' OR
+        LastPermanentZIP = '75205' OR
+        LastPermanentZIP = '75208' OR
+        LastPermanentZIP = '75207' OR
+        LastPermanentZIP = '75210' OR
+        LastPermanentZIP = '75209' OR
+        LastPermanentZIP = '75212' OR
+        LastPermanentZIP = '75211' OR
+        LastPermanentZIP = '75215' OR
+        LastPermanentZIP = '75214' OR
+        LastPermanentZIP = '75217' OR
+        LastPermanentZIP = '75216' OR
+        LastPermanentZIP = '75219' OR
+        LastPermanentZIP = '75218' OR
+        LastPermanentZIP = '75220' OR
+        LastPermanentZIP = '75223' OR
+        LastPermanentZIP = '75222' OR
+        LastPermanentZIP = '75225' OR
+        LastPermanentZIP = '75224' OR
+        LastPermanentZIP = '75227' OR
+        LastPermanentZIP = '75226' OR
+        LastPermanentZIP = '75229' OR
+        LastPermanentZIP = '75228' OR
+        LastPermanentZIP = '75231' OR
+        LastPermanentZIP = '75230' OR
+        LastPermanentZIP = '75233' OR
+        LastPermanentZIP = '75232' OR
+        LastPermanentZIP = '75235' OR
+        LastPermanentZIP = '75234' OR
+        LastPermanentZIP = '75237' OR
+        LastPermanentZIP = '75236' OR
+        LastPermanentZIP = '75238' OR
+        LastPermanentZIP = '75241' OR
+        LastPermanentZIP = '75240' OR
+        LastPermanentZIP = '75243' OR
+        LastPermanentZIP = '75242' OR
+        LastPermanentZIP = '75244' OR
+        LastPermanentZIP = '75247' OR
+        LastPermanentZIP = '75246' OR
+        LastPermanentZIP = '75249' OR
+        LastPermanentZIP = '75248' OR
+        LastPermanentZIP = '75251' OR
+        LastPermanentZIP = '75250' OR
+        LastPermanentZIP = '75253' OR
+        LastPermanentZIP = '75254' OR
+        LastPermanentZIP = '75260' OR
+        LastPermanentZIP = '75275' OR
+        LastPermanentZIP = '75283' OR
+        LastPermanentZIP = '75284' OR
+        LastPermanentZIP = '75326' OR
+        LastPermanentZIP = '75359' OR
+        LastPermanentZIP = '75381' OR
+        LastPermanentZIP = '75001' OR
+        LastPermanentZIP = '75390' OR
+        LastPermanentZIP = '75006' OR
+        LastPermanentZIP = '75007' OR
+        LastPermanentZIP = '75397' OR
+        LastPermanentZIP = '75015' OR
+        LastPermanentZIP = '75014' OR
+        LastPermanentZIP = '75016'
+"</span><span class="p">)</span><span class="w">
+
+</span><span class="c1"># Clean up zipcodes.</span><span class="w">
+</span><span class="n">valid</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">read.csv</span><span class="p">(</span><span class="s2">"C:/Users/Ladvien/Dropbox/HMIS/Warehouse/ValidZips.csv"</span><span class="p">)</span><span class="w">
+</span><span class="n">zipsAndCount</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">sqldf</span><span class="p">(</span><span class="s2">"SELECT DISTINCT(LastPermanentZIP) As 'region', COUNT(LastPermanentZIP) As 'value' FROM dallasClients GROUP BY LastPermanentZIP"</span><span class="p">)</span><span class="w">
+</span><span class="n">zipsAndCount</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">na.omit</span><span class="p">(</span><span class="n">zipsAndCount</span><span class="p">)</span><span class="w">
+</span><span class="n">zipsAndCount</span><span class="o">$</span><span class="n">value</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">clean.zipcodes</span><span class="p">(</span><span class="n">zipsAndCount</span><span class="o">$</span><span class="n">value</span><span class="p">)</span><span class="w">
+</span><span class="n">zipsAndCount</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">sqldf</span><span class="p">(</span><span class="s2">"SELECT DISTINCT a.* FROM zipsAndCount a INNER JOIN valid b ON a.region=b.ValidZip"</span><span class="p">)</span><span class="w">
+</span><span class="n">zipsAndCount</span><span class="o">$</span><span class="n">value</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">as.numeric</span><span class="p">(</span><span class="n">zipsAndCount</span><span class="o">$</span><span class="n">value</span><span class="p">)</span><span class="w">
+
+</span><span class="n">zipsOfInterest</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">sqldf</span><span class="p">(</span><span class="s2">"SELECT DISTINCT(region) FROM zipsAndCount"</span><span class="p">)</span><span class="w">
+</span><span class="n">zipsOfInterest</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">unique</span><span class="p">(</span><span class="n">zipsOfInterest</span><span class="o">$</span><span class="n">region</span><span class="p">)</span><span class="w">
+
+</span><span class="n">library</span><span class="p">(</span><span class="n">choroplethrZip</span><span class="p">)</span><span class="w">
+</span><span class="c1"># ec = east coast</span><span class="w">
+</span><span class="n">texas</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s2">"dallas"</span><span class="p">)</span><span class="w">
+</span><span class="n">zip_choropleth</span><span class="p">(</span><span class="n">zipsAndCount</span><span class="p">,</span><span class="w">
+               </span><span class="n">zip_zoom</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">zipsOfInterest</span><span class="p">,</span><span class="w">
+               </span><span class="n">title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Residence Prior to Entry"</span><span class="p">,</span><span class="w">
+               </span><span class="n">legend</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Entrants"</span><span class="p">,</span><span class="w">
+               </span><span class="n">num_color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">5</span><span class="p">,</span><span class="w">
+               </span><span class="n">reference_map</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="w">
+               </span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">coord_map</span><span class="p">()</span></code></pre></figure>
+:ET

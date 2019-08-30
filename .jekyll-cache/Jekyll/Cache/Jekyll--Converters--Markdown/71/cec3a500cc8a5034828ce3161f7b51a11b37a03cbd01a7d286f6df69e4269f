@@ -1,0 +1,403 @@
+I"_d<p>This is a continuation of my <a href="http://letsmakerobots.com/node/39996">Robot Metallurgy 101 – AVR Lesson Journal</a></p>
+
+<p>This is the second part of my Kossel Mini build log</p>
+
+<ul>
+  <li><a href="http://letsmakerobots.com/robot/projects/kossel-build-log">Kossel Mini Build Log – Physical Build</a></li>
+</ul>
+
+<p>When I made my mind up to build a 3D Printer I knew I was in for a ride.  I knew I was going to spend an insane amount of time calibrating the damned thing.  Well, my overestimation was nowhere near the truth.  I’ve spent literally days calibrating this damned machine.  Mind you, a lot of it was because I refused to “RTFM.”   But the other part was because there doesn’t to seem to be a manual on calibrating the Kossel Mini.  Therefore, I’m going to attempt to present what I’ve learned for delta printer posterity.</p>
+
+<p>Note, this guide will focus on the “holes” other sources of documentation have, more specifically, holes in:</p>
+
+<ul>
+  <li><a href="http://www.builda3dprinter.eu/build-manuals/">builda3dprinter’s Kossel Build Guide</a></li>
+  <li><a href="http://blomker.com/Kossel_Mini_Assembly_Guide_V1.0.pdf">Blokmer’s Kossel Build Guide</a></li>
+</ul>
+
+<p>Let’s start with getting the firmware and software.</p>
+
+<p>I mentioned in the physical build of my printer, I bought most of my stuff as a kit from builda3dprinter.eu.  I’ve been pleased with the kit.  Most of my frustration with the physical build was me not understanding how the pieces work together (for instance, the auto-probe).  Anyway, Ardon Camp from B3DP has provided some starting firmware for his kits, which is listed on his “<a href="http://www.builda3dprinter.eu/build-manuals/kossel_mini/initial-set-up/">Initial set-up</a>” page</p>
+
+<ol>
+  <li><a href="http://www.builda3dprinter.eu/Firmware.zip">Marlin Arduino firmware for B3DP Kossel Mini kit</a></li>
+  <li><a href="http://koti.kapsi.fi/~kliment/printrun/">Pronterface</a></li>
+  <li><a href="http://www.kisslicer.com/">KISSlicer</a></li>
+</ol>
+
+<p>As of now, I switched Proterface out with Repetier and KISSlicer with Slic3r.</p>
+
+<ol>
+  <li><a href="http://www.repetier.com/download/">Repetier</a></li>
+  <li><a href="http://slic3r.org/download">Slic3r</a></li>
+</ol>
+
+<p>We should have firmware (Marlin) and a host (Repetier or Pronterface).  What now?</p>
+
+<p>Well, hind-sight is 20/20, so here are my suggestions.</p>
+
+<p>1. <strong>Get familiar with G-Code</strong></p>
+
+<p>Most 3D printer firmware operates on a standard set of instructions called G-Code, which are sent to the printer via serial connection.  There is a code for everything, turning the heater on, going to an end-stop, writting settings to the EEPROM.  My recommendation, before you start moving any part of your printer, read through <em>all</em> the G-Codes.  This will give you an idea how your software talks to the printer.</p>
+
+<ul>
+  <li><a href="http://reprap.org/wiki/G-code">G-Code wiki</a></li>
+</ul>
+
+<p><img src="../images/G-Code.png" alt="" /></p>
+
+<p>2. <strong>Check, re-check End-Stops connection before testing motors</strong></p>
+
+<p>Now that we’ve read up on G-Code, we know the code to check and see if the End-stops are triggered is M119.  Check this a few times before you attempt moving anything electronically.  If everything is connected correctly it should look like this,</p>
+
+<p><strong>No Buttons Pressed:</strong></p>
+
+<ol>
+  <li>Y_MAX: Open</li>
+  <li>X_MAX: Open</li>
+  <li>Z_Min: Triggered</li>
+  <li>Z_Max: Open</li>
+</ol>
+
+<p><strong>All Buttons Pressed:</strong></p>
+
+<ol>
+  <li>Y_MAX: Triggered</li>
+  <li>X_MAX: Triggered</li>
+  <li>Z_Min: Open</li>
+  <li>Z_Max: Triggered</li>
+</ol>
+
+<p>It is important to have these trigger correctly, otherwise, your hot-end will go crashing into something.  For example, if one the end-stops isn’t triggering then the connected carriage will continue trying to pull past the end-stop, which will result in the your belt-link coming apart.</p>
+
+<p><img src="../images/Link_Info.jpg" alt="" /></p>
+
+<p>Expect for your links to come apart a few times as you make adjustments.</p>
+
+<p>Being forthright and humble, I made so many mistakes calibrating my Kossel that my links began to stretch out and were unable to hold the belt properly.</p>
+
+<p>I was able to bend them back into place by clamping them with pliers while heating the bottom side with a lighter.</p>
+
+<p><img src="../images/IMG_0738.jpg" alt="" /></p>
+
+<p>3. <strong>Fans</strong></p>
+
+<p>The Kossel Mini has a small 40x40mm fan that blows directly on the hot-end, <em>all the time</em>.</p>
+
+<p><img src="../images/IMG_0679.png" alt="" /></p>
+
+<p>This is required because the hot-end holder is actually a printed part, meaning it is plastic, therefore, if the hot-end exterior isn’t constantly cooled, it will melt the holder and come crashing down on your print plate in a neat heap of defeat.</p>
+
+<p>The fan should operate on 12V.  You have several options.You can tie the fan into the PSU itself, which would cause the fan to be on everytime the printer is on.  Or, you can tie the fan into the Ramps board.</p>
+
+<p>I chose the Ramps.  Don’t ask me, probably because I intuitively find a way to do something through hardest means possible.</p>
+
+<p>Anyway, here is how I have all my fans, (1) on the hotend, (2) cooling my extruder stepper, (3) an 80mm cooling the print bed.</p>
+
+<p><img src="../images/Ramps_14_D9.png" alt="" /><strong>I then connected all these fans to D9.</strong></p>
+
+<p>I’d like to take a sidetrail a moment.  Power terminals D8, D9, D10 are simply high-power N-Channel MOSFETs controlled by PWM from the Arduino Mega’s D8, D9, and D10 pins.  If you’d like the exact specs, here’s the <a href="http://www.st.com/web/en/resource/technical/document/datasheet/CD00002690.pdf">datasheet</a>.</p>
+
+<p>Ok. Now we have a few things to set in firmware to get the fans to act correctly.  First, make sure you are using the option under Configuration.h</p>
+
+<ul>
+  <li><strong>#define MOTHERBOARD 33</strong></li>
+</ul>
+
+<p>This sets the three power channels on the Ramps to function as the following:</p>
+
+<ol>
+  <li><strong>D10 = Extruder Heater (hot-end)</strong></li>
+  <li><strong>D9 = Fans</strong></li>
+  <li><strong>D8 = Heated Bed</strong></li>
+</ol>
+
+<p>Now that is setup, then everything should work hunky-dorky, right?  Well, kinda.</p>
+
+<p>I was having two problems.  First, the fan didn’t come on automatically, I had to send the G-Code command “M106 SXXX” to get it to turn on, the XXX being a number between 0-255 to set the PWM of the fan (also, the command M107 used to be to turn it off, but now we just send “M106 S0”).</p>
+
+<p>Second problem, my fan didn’t like to kick on with PWM.  Sometimes it did, sometimes it didn’t.  Often, I’d start a print only to find my hot-end melting the effector plastic.  Sigh.</p>
+
+<p>Now, some people who know Marlin better than me will probably point out the option under the <strong>Configuration_adv.h,</strong></p>
+
+<ul>
+  <li><strong>#define FAN_KICKSTART_TIME 100</strong></li>
+</ul>
+
+<p>The number is the number of milliseconds to drive the fan at full speed before switching to a temperature based PWM.  Now, I tried tweaking this number a bit, but I found my fan would still lock up during times it would slow.  Eh.  That is one reason I write this, if others have solutions, please add them in comments. :)</p>
+
+<p><img src="../images/Auto_Fan_Config2.png" alt="" />What I ended up doing was finding the option to have my D9 channel to run at full power all the time.</p>
+
+<p>Under the <strong>Configuration_adv.h</strong> file I found the options to define the extruder fan’s behavior.  First, I setup the D9 channel as our fan channel by setting</p>
+
+<ul>
+  <li><strong>#define EXTRUDER_0_AUTO_FAN_PIN 9</strong></li>
+</ul>
+
+<p>Then, I changed the kick-on temperature to -1, meaning the hot-end would need to be below freezing for the fan to turn off.  So, a hackish always on switch.</p>
+
+<p><strong>4. Physical Print Calibration</strong></p>
+
+<p>“But I bought a Kossel ‘cause it’s got an <em>Auto-_Probe!”  Ya, I’m humble enough to state those words did run through my mind.   Yet, I’ve learned, the auto-probe is like many things in electronics, nice to have, but does not replace the ability or the understanding behind it.  I’ll go as far as stating, the auto-probe _is meant to keep your physical calibration on track, even after heavy use,</em> rather than compensate for poor calibration_._</p>
+
+<p>Alright, to calibration.</p>
+
+<p>I couldn’t find any Kossel Mini specific guides on how to calibrate the machine, but I found a lot of scattered information in the</p>
+
+<ul>
+  <li><a href="https://groups.google.com/forum/#!forum/deltabot">Delta Printers Google Group </a></li>
+</ul>
+
+<p>After going through many posts I pieced together my own method for calibration.  But the standard blog on the issue is:</p>
+
+<ul>
+  <li><a href="http://minow.blogspot.com/index.html#4918805519571907051">On 3D Delta Printers</a></li>
+</ul>
+
+<p>Before we begin calibration, let’s define and agree on what we will be calibrating.</p>
+
+<p><img src="../images/Calibration_Variables_v01.png" alt="" /></p>
+
+<p>(Image shamelessly, and maybe illegally? Copied from <a href="http://blomker.com/Kossel_Mini_Assembly_Guide_V1.0.pdf">Blokmer’s Kossel Build</a> guide)</p>
+
+<p>Ok, here we go:</p>
+
+<p><strong>Step #1 – Calibrate ZMax</strong></p>
+
+<p>This takes care.  Go to <strong>Configuration.h</strong> and set,</p>
+
+<ul>
+  <li><strong>#define MANUAL_Z_HOME_POS 270</strong></li>
+</ul>
+
+<p>This is going to tell your printer you have a build volume larger than you do, but we do this so the firmware wont stop us as we try to move the hot-end as close to the bed as possible.  Now, perform the paper-test.</p>
+
+<p>For the sake of brevity, I’m going to define the paper-test once, then simply refer to it as the paper-test.</p>
+
+<p>The idea is eventually you want about a paper’s width space between the hot-end and the printer bed, when the printer is told to go to **Z0.  **The paper-test consists of putting a piece of paper on the print bed, then lower your hot-end manually, 10mm steps at first, but as you get closer, 0.1mm steps.  At the point the hot-end is putting just enough pressure to create a little drag on the paper, you stop going down.  This is the paper-test.</p>
+
+<p>Ok.  You lower the hot-end carefully until it passes the paper-test.  Then, send the G-Code for getting the Z position.</p>
+
+<ul>
+  <li><strong>M114</strong></li>
+</ul>
+
+<p>The printer will respond with the current value for the X, Y, Z, and E (extruder).  You only want the Z-value you right now.  Take the Z-value and subtract it from the 270, this will be your new MANUAL_Z_HOME_POS.  That is,</p>
+
+<ul>
+  <li>MANUAL_Z_HOME_POS = 270 - Z_Value obtained by paper-test.</li>
+</ul>
+
+<p><strong>If my explanation sucks, refer to <a href="http://blomker.com/Kossel_Mini_Assembly_Guide_V1.0.pdf">Blokmer H07</a></strong></p>
+
+<p><strong>Step #2 – Calibrate Physical Center</strong></p>
+
+<p>Now, there is a way to set the center of your build plate in your Marlin firmware, but it is better only to tweak it there <em>after</em> you have the physical part set pretty damn close to center.  This is what I did.</p>
+
+<p><img src="../images/IMG_0781.jpg" alt="" />I used Eagle Cad to make a 170mm diameter circle, with exact center marked (provided below).  Then, I printed it to scale on a piece of paper.  I cut this paper out and centered it on my build plate, then taped it down.</p>
+
+<p><img src="../images/IMG_0782.jpg" alt="" /></p>
+
+<ul>
+  <li><a href="../images/Kossel_Calibration.pdf">170mm Diameter Circle Template</a></li>
+</ul>
+
+<p>Next, I lowered my hotend until it was near to center.</p>
+
+<p>Using the controls, I attempted to center the hot-end above the circle the best I could.  It helps to change your angle several times before each move.  Once it is center we are going to take a measurement, but something important to know before we do.  The stepper motors will timeout from their held position, going into an idle position.  Be careful not to let them timeout on the next two steps, since you’ll lose a little time by needing to start over.  To keep them engaged, simply micro step one direction, then right back.</p>
+
+<p><strong><img src="../images/IMG_0783.jpg" alt="" /></strong>Ok, measure from the top of one of the carriages to the bottom of the plastic on an end-stop, basically, where the end-stop button would be if it was pressed.   Also, the end-stop doesn’t matter since our goal is to get them all the same.</p>
+
+<p>Alright, at this part you need a saw that will give you a square cut.  I used a speed-square and a circular saw.  Also, smaller board, like a piece of trim board.  Cut a piece of wood the same length as you measured.</p>
+
+<p><img src="../images/IMG_0786.jpg" alt="" />Take the piece of wood to the printer.  Lower the hot-end to Z0.  Then, re-center using the target-template.  Now, take the cut wood and put it between each end-stop and the top of its respective carriage, being careful not to let the motors go idle.  If the end-stop is too high, lower it until it is flush against the wood.  If the wood will not fit, raise the end-stop until it does, making sure it is flush.  In this manner you are assuring each arm is equidistant from the print bed, while maintaining the hot-end centeredness.</p>
+
+<p><strong>After this is complete, you must repeat Step 1.  This sets centeredness <em>and</em> Z-Offset.</strong></p>
+
+<p>Now, test this by sending the G-Code:</p>
+
+<ul>
+  <li><strong>G X0 Y0 Z15</strong></li>
+</ul>
+
+<p>If all worked, the hot-end will magically find its way to the center of the print bed, while staying 15mm above the surface.  If that goes well, microstep the hot-end back down to the surface to assure we maintained the correct Z-Offset (aka, print volume).</p>
+
+<p><strong>Step #3 – Flat Print Surface</strong></p>
+
+<p>Even after all this, we still aren’t done. There is another variable to calibrate on the Kossel, the flatness of the plate.</p>
+
+<p>We have already calibrated the Kossel’s print volume height.  This means if we send the command <strong>G X0 Y0 Z0</strong> then the hotend-should come to rest at the center of the print bed, about .1mm above the surface.  But, delta printers have an additional variable of <strong>flatness.</strong> Consider the two following images:</p>
+
+<p><img src="../images/Concave.png" alt="" /></p>
+
+<p><img src="../images/Convex.png" alt="" />In this image the blue line is the print surface according to the Marlin firmware.</p>
+
+<p>Do you see how this could create a problem?  The center Z offset may be correct, but as the hot-end moves towards the edges, it gradually rises until the hot-end is resting 2-10mm away from the print surface.</p>
+
+<p>Let’s look at the other, possibly more damaging, scenario.</p>
+
+<p>If the print bed, according to firmware, is convex, then the hot-end might be correct when at center, but as you get to the edges, the machine tries burying your hot-end into the glass plate.</p>
+
+<p>This is why Johann’s auto-probe was such a nifty addition to the Kossel build.  But let’s not get ahead of ourselves, physical calibration first.</p>
+
+<p>Well, that’s sort of a lie.  To correct for flatness we are going to adjust the firmware.  The flatness of a Kossel is reliant on the variable <strong>DELTA_RADIUS</strong> and it is the sum of several variables.  So, to adjust DELTA_RADIUS we focus in on either increasing or decreasing one of the variables.  I picked <strong>DELTA_SMOOTH_ROD_OFFSET</strong> at random.</p>
+
+<p>Ok, the adjustment is pretty straight forward, but requres tinkering to get it right.  But before we make an adjustment we need to know what direction to go.  We can determine this by visually comparing difference between the distance between the hotend and the print surface when the hotend is at the center, and the distance between the hotend and the print surface when near one of the towers.  Let’s go back to pictures.</p>
+
+<p><img src="../images/Kossel_Flatness.png" alt="" /></p>
+
+<p>This image is to give you an idea what points we want to compare for flatness.  For instance, if Kossel passes the paper-test at point A, then it should at points B, C, and D.</p>
+
+<p>But if the <strong>Kossel passes the paper-test at point A, and is too high at B, C, and D then you have a concave print surface.</strong></p>
+
+<p>Likewise, if the <strong>Kossel passes the paper-test at point A, and is too low at B, C, and D then you have a convex print surface.</strong></p>
+
+<ul>
+  <li><strong>B Height &gt; A Height = Concave</strong></li>
+  <li><strong>B Height &lt; A Height = Convex</strong></li>
+</ul>
+
+<p>One more bit, you maybe asking how to find the spots B, C, and D.  Well, I used the following calculations</p>
+
+<ul>
+  <li><strong>Xb = (Build Radius) * COS * (Angle of B tower)</strong></li>
+  <li><strong>Yb = (Build Radius) * SIN * (Angle of B Tower)</strong></li>
+</ul>
+
+<p>Also, know your towers should be at angles: <strong>90, 210, 330</strong></p>
+
+<p>If you have the same build radius as me, 170, then your points should be.</p>
+
+<ol>
+  <li><strong>Y70, X0</strong></li>
+  <li><strong>Y-35, X-60</strong></li>
+  <li><strong>Y-35, X60.62</strong></li>
+</ol>
+
+<p>But remember, we are really looking that all four points pass the paper-test.</p>
+
+<p>Let’s move on to how to make the adjustment.  I will not go into the math explaining how adjusting DELTA_RADIUS affects flatness, mainly because I don’t understand it.  But secondly, because we don’t need to understand it to adjust it.  Just know the following,</p>
+
+<ol>
+  <li><strong>Increasing DELTA_SMOOTH_ROD_OFFSET lowers the hotend.</strong></li>
+  <li><strong>Decreasing DELTA_SMOOTH_ROD_OFFSET raises the hotend.</strong></li>
+</ol>
+
+<p>Really, it is changing the firmware’s idea of flatness.</p>
+
+<p>Now, make the adjust from the visual information you collected by comparing point A to point B, C, and D.  Then, comparing them again, adjust again.  Compare, adjust.  <em>Ad infinitium.</em></p>
+
+<p>Please, don’t think your done. Making these last adjustments means you really need to go back and start from Step #1 and work through them a second time, since any adjustment throws the previous adjustments off alittle. <strong>So, it is true, adjustment is an infinite process of error reduction and perfection will never be achieved.  Be happy with pretty damn close :)</strong></p>
+
+<p><strong>6. Auto-Probe</strong></p>
+
+<p>Physical calibration is done, now let’s examine what makes us Kossel users, our respective auto-probes.</p>
+
+<p>The auto-probe is meant to keep Kossel Mini printing flat.  That is, it is meant to adjust for <em>slight</em> inconsistencies in the print bed or <em>minor</em> mechanical disproportions.</p>
+
+<p>Alright, as the rest of this article, I don’t plan to re-hash stuff that has already been covered.  Such as setting up the auto-probe.  Just refer back to <a href="http://blomker.com/Kossel_Mini_Assembly_Guide_V1.0.pdf">Blokmer</a>, or <a href="http://www.builda3dprinter.eu/build-manuals/">B3DP</a>.  But here are a few things I feel they missed:</p>
+
+<p><strong>#1 – G28 CANCELS G29 DATA</strong></p>
+
+<p><strong>This I feel is the most important omission from the calibration guides</strong>.  G28 is the G-Code to home the tower end-stops, just know whenever you do this, it will cancel the readings you took from the auto-probe.  <strong>And beware, Slic3r adds a G28 command before every print.</strong></p>
+
+<p><img src="../images/Auto-probe_reset2.png" alt="" />To remove this from Slic3r,</p>
+
+<ol>
+  <li>Go to “Printer Settings”</li>
+  <li>Under “Start G-Code” delete “G28; home all axes” line.</li>
+  <li>Under “End G-Code” delete “G28 X0; home X-axis” and replace it with, “G1 X0 Y0 Z220 F5000”</li>
+</ol>
+
+<p>Step number three is just a suggestion, but you do want your hotend to back away from the print when done, so you don’t catch anything on fire.  You just don’t want to reset your auto-probe data.</p>
+
+<p>And yes, I spent 20 hours or so adjusting my auto-level and scratching my head everytime my print didn’t adjust respectively. (If it wasn’t for <a href="http://letsmakerobots.com/user/18659">Hoff70</a>, I’d still be scratching my head).</p>
+
+<p><strong>I’m <em>not</em> smart, just obessive.</strong></p>
+
+<p><strong>#2 Finding the X, Y, Z Offset of the Z-probe from Extruder.</strong></p>
+
+<p>The Z-probe doesn’t sit directly over the tip of the hot-end, so we have to adjust for this offset.  To find this number, I did the following.</p>
+
+<ol>
+  <li>Place and center the <a href="../images/Kossel_Calibration.pdf">paper-template</a>.</li>
+  <li>Send the command: <strong>G X0 Y0 Z10</strong></li>
+  <li>Put the auto-probe in its active position (as if to take readings).</li>
+  <li>Using Repetier or Pronterface, move the effector from the hotend being centered, until the tip of the Z-probe is centered.</li>
+  <li>Then lower the effector until the Z-probe passes the paper-test.</li>
+  <li>After, send G-Code: <strong>M114</strong>.  The output is our auto-probe offset.</li>
+</ol>
+
+<p>Take your readings and put them into the three defines in Marlin</p>
+
+<ul>
+  <li><strong>#define X_PROBE_OFFSET_FROM_EXTRUDER</strong></li>
+  <li><strong>#define Y_PROBE_OFFSET_FROM_EXTRUDER</strong></li>
+  <li><strong>#define Z_PROBE_OFFSET_FROM_EXTRUDER</strong></li>
+</ul>
+
+<p>As for directionality, <strong>I found if my X or Y numbers were negative, I was telling the firmware my auto-probe was offset into the -X or -Y regions</strong>.  Of course, the Z-probe offset is always negative, or you’d be in trouble.</p>
+
+<p><strong>#3 – Visualizing Auto-Probe readings</strong></p>
+
+<p>This is another important piece I feel guides leave out.  What does the auto-probe data mean?</p>
+
+<p>Don’t ask me, that’d take math.  I’d much rather look at pictures.  So, how do we turn the data into a picture?  Well, there are several methods, but really, any program that will turn a set of points into a plane.</p>
+
+<p>One of the guys from the Delta Google Group wrote this Python script for MATLAB.</p>
+
+<ul>
+  <li><a href="http://www.mathworks.com/products/matlab/">MATLAB</a></li>
+  <li><a href="https://github.com/brandonheller/delta_calibration">Plane Visualizer</a></li>
+</ul>
+
+<p><em>Buuut</em>, I don’t have MATLAB and I’m not currently tied to a university, so I had to think of another way.  Well, my profession is mental health and I use Excel for a lot of statistical analysis (hey, SPSS costs money, too). Anyway, here are the steps I took to visualize the data in Excel.</p>
+
+<p><strong>1. Run Auto-Probe.</strong>  Once auto-probe is done, it’ll send back a set of points.  Copy them.</p>
+
+<p><img src="../images/Excel_auto_probe1.png" alt="" /></p>
+
+<p>2. <strong>Paste the points into Excel.</strong>  It’ll complain about formatting, press OK.</p>
+
+<p><img src="../images/Excel_auto_probe2.png" alt="" /></p>
+
+<p><strong>3. If you click on the formating options and select “Text Import Wizard.”</strong>  You can then select a “Space Delimited” pasting option.  Basically, this will cause Excel to translate th</p>
+
+<p><img src="../images/Excel_auto_probe3.png" alt="" /></p>
+
+<p><strong>4. Once you have your data in Excel correctly, let’s make a graph. Select your data set then go to the graph type “Surface.”</strong></p>
+
+<p><img src="../images/Excel_auto_probe4.png" alt="" /></p>
+
+<p><strong>5. There’s the graph.</strong></p>
+
+<p><img src="../images/Excel_auto_probe5.png" alt="" /></p>
+
+<p>6. There are several things you can do with this data, but only if you have a point of orientation.  That is, what area on the graph represent the area on the print surface.  To find the auto-probe data orientation, I built a lump on my print surface near one of the towers, like this:</p>
+
+<p><img src="../images/IMG_0792.jpg" alt="" /></p>
+
+<p>Be careful, if your Z-probe doesn’t retract far enough, it’ll knock your lump into the belt.</p>
+
+<p>You can adjust how far your Z-probe retracts between probing in the Marlin firmware. Under <strong>Configuration.h</strong> adjust,</p>
+
+<ul>
+  <li><strong>#define Z_RAISE_BETWEEN_PROBING</strong></li>
+</ul>
+
+<p>If all goes well, when you run your auto-probe data  you’ll get a nice lump on the graphed surface.  This will allow you to make intelligent decisions regarding adjustment.</p>
+
+<ol>
+  <li>
+    <p>One last bit I’d like to point out.  <strong>None of this is going to help if your auto-probe is not mechanically reliable</strong>.  But how do you tell if it is?  Well, until someone corrects me, I did the following.</p>
+  </li>
+  <li>Ran the auto-probe about twenty times.</li>
+  <li>After each, I took the mean of the data.</li>
+  <li>Then, after I had about twenty means, I ran the standard deviation on those means.</li>
+  <li>This number is a fair indicator of how reliable your auto-probe is mechanically.  That is, are the readings it is giving you reliable.  The smaller the number, the more reliable.</li>
+</ol>
+
+<p>Of course, I’m not great with math and I’m pure hack, so someone with more understanding of the logic let me know if that is incorrect.</p>
+
+<p>And with that I’ll close by saying: <strong>I’m a hack.  I wrote this article not to point out everything I know, but rather, what I’ve learned.  If anyone finds incorrect information, please comment; I’ll make changes quickly. The last thing I’d like to do is steer someone wrong.</strong></p>
+:ET

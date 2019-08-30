@@ -1,0 +1,324 @@
+I"ue<p>Originally posted on <a href="www.letsmakerobots.com">www.letsmakerobots.com</a></p>
+
+<ul>
+  <li>UPDATE: 7/6/14 – Silkscreen corrections.</li>
+  <li>UPDATE: 6/1/14 BOM Corrections.</li>
+  <li>UPDATE: 4/2/14 – Corrected information and linked the new breakout board, v.9.9</li>
+</ul>
+
+<ul class="th-grid" data-clearing="">
+  <li><a href="https://ladvien.com../images/IMG_0356.jpg"><img src="../images/IMG_0356.jpg" /></a></li>
+</ul>
+
+<p><strong>Also, this fellow is working on <a href="http://blog.p-dev.net/">open-source firmware for the HM-10</a>.</strong></p>
+
+<p>UPDATE (2/514): I split this post, since it’s getting a little sluggish.  I’ve updated the breakout board versioÂn v.9.9, have instructions for updating the firmware, and added some research notes on a pseudo-Star-Network.</p>
+
+<ul>
+  <li><a href="http://letsmakerobots.com/node/40237">Avandced(ish) HM-10</a></li>
+</ul>
+
+<p>UPDATE (11/23/13): <strong>I’ve added research notes on networking the HM-10s and an ATtiny 85 serial filter (at bottom).</strong></p>
+
+<p>OLD:</p>
+
+<p>I know there are few Bluetooth 4.0 and Arduino solutions coming out.  Redbear Labs’ <a href="http://www.seeedstudio.com/depot/bluetooth-40-low-energy-ble-shield-p-1255.html">BLE Shield</a>, the <a href="http://www.kickstarter.com/projectss/kytelabs/bleduino-bluetooth-40-ble-made-easy-arduino-compat">BLEDuinoe</a> Kickstarter projects, and the <a href="http://www.seeedstudio.com/depot/bleshield-based-on-bluegigas-ble112-module-p-1367.html">Bluegiga Shield</a>.  But I didn’t really like these due primarily to the price:</p>
+
+<ul>
+  <li>Redbear’s Mini: $39.95 (Note: This is a uC and BLE combo).</li>
+  <li>Redbear’s Uno Shield: $29.95</li>
+  <li>BLEDuino: $19.95 (if part of Kickstarter)</li>
+  <li>Bluegiga Shield: $69.95</li>
+</ul>
+
+<p>These are out of my price range for a single module.  So, in the end, I created a breakout for a cheap module and got it interfaced with the Arduino for  approximately <strong>$10.03 a module.  </strong>Although, this price will be higher if you don’t buy components in bulk.</p>
+
+<p><strong>Here’s a Video Summary</strong>:</p>
+
+<div class="flex-video">
+  <iframe width="560" height="315" src="https://www.youtube.com/embed/-vp8rDSz8OU" frameborder="0" allowfullscreen=""></iframe>
+</div>
+
+<p>Now, <span style="text-decoration: line-through;"><strong>I’ve not interfaced these with iOS or Droid devices, they are simply a Bluetooth 4.0 solution for a wireless serial connection</strong><strong>.  I’ve interfaced these devices in a limited way with iOS.  I used the LightBlue App on my iPad Mini to open a rough serial interface.  </strong>Though, I’ll probably do this later with Jellybean 4.3’s Bluetooth 4.0 API.  UPDATE: I’ve discovered jnhuamoa provides <a href="http://www.jnhuamao.cn/HMSoft_ios7.zip">sample iOS 7.0 interface code for the HM-10</a>.</span></p>
+
+<p><strong>Proof of Concept Video</strong></p>
+
+<div class="flex-video">
+  <iframe width="560" height="315" src="https://www.youtube.com/embed/1a9xLfBH-hc" frameborder="0" allowfullscreen=""></iframe>
+</div>
+
+<p>Now, if only I had the $99 to pay for an App store publisher license, I’d make us all a nice little robot interface :)</p>
+
+<p>The modules I used were these <a href="http://www.fasttech.com/products/0/10004051/1292002-ti-cc2540-bluetooth-40-ble-2540-transparent-serial">HM-10’s</a>.  I won’t go into making the breakout board, since I did <a href="http://letsmakerobots.com/node/37815">that already</a>.  I will state, though, the last iteration of the breakout boards I made had mistakes that I was able to correct for home use, and I’ve corrected them in the Eagle files I’ll put up, so <strong>the board files I put up are untested</strong>, though, they are on the way and when I’ve confirmed they work I’ll post a confirmation.  Also, the images I have of the boards I’m using are different, since I corrected the board files. <strong>UPDATE:</strong> It has come to my attention the traffic LEDs on the RX/TX lines are always on due to the level converter pulling the lines high. <strong>The board still functions as intended if the LEDs are left unpopulated.</strong></p>
+
+<p>Ok. Let’s make a breakout…</p>
+
+<p><strong>1.  This is the v .9.9 of my breakout.  I do not swear it is bug free, but it seems stable.  Working traffic LEDs and it uses a linear voltage regulator</strong><strong>:</strong></p>
+
+<p>OSHPark link: <a href="https://oshpark.com/shared_projectss/aWRbRvyh">Breadboard Footprint</a><a href="https://oshpark.com/shared_projectss/aWRbRvyh"> </a>(~$6.35 for three)</p>
+
+<p>Github: <a href="https://github.com/Ladvien/HM-10">HM-10 Breakout Eagle Files</a></p>
+
+<ul class="th-grid" data-clearing="">
+  <li><a href="https://ladvien.com../images/i.png"><img src="../images/i.png" /></a></li>
+  <li><a href="https://ladvien.com../images/i_2.png"><img src="../images/i_2.png" /></a></li>
+</ul>
+
+<p><strong>2. Order the boards from <a href="http://www.oshpark.com">OSHPark</a>.</strong></p>
+
+<p><img src="../images/500x364xOSHParksplash.jpg" alt="" /></p>
+
+<p><strong>3. Order the SMD pieces you’ll need.</strong>  </p>
+
+<p>The bill-of-materials (BOM):</p>
+
+<ol>
+  <li><a href="http://www.fasttech.com/products/0/10004051/1292002-ti-cc2540-bluetooth-40-ble-2540-transparent-serial">HM-10</a> x 1</li>
+  <li><a href="http://www.ebay.com/itm/261117507960?ssPageName=STRK:MEWNX:IT&amp;_trksid=p3984.m1439.l2649">BS1138 x 1</a></li>
+  <li><a href="http://www.ebay.com/itm/15pcs-Red-0603-Super-Bright-SMD-LED-/121111954334?pt=LH_DefaultDomain_0&amp;hash=item1c32d5c39e">0603 LEDs x 3 (2 must have voltage drop of at least 3v; usually, green or blue)</a></li>
+  <li><a href="http://www.digikey.com">0805 Resistors 10k x 3</a></li>
+  <li><a href="http://www.digikey.com/product-detail/en/RMCF0805JT20K0/RMCF0805JT20K0CT-ND/1942580">0805 Resistor 20k x 1</a></li>
+  <li><a href="http://www.digikey.com">0805 Resistors 470 x  3</a></li>
+  <li><a href="http://www.digikey.com/product-detail/en/CGA4J3X7R1E105K125AB/445-5687-1-ND/2443727">0805 1uF capacitor x 2</a></li>
+  <li>(OPTIONAL) <a href="http://www.digikey.com/scripts/DKSearch/dksus.dll?Detail&amp;itemSeq=134171489&amp;uq=635111280363769983">SOT-23 LDO Voltage Regulator</a> (it doesn’t make sense to use this, but I put the option on the board just in case. I’ll explain).</li>
+</ol>
+
+<p>Again, I bought pieces in bulk, since I know I’ll use them on other projectss; my price per module is $10.03.  Of course, you can buy all these components on DigiKey but the price will be bit more.</p>
+
+<p>Ok.  Let me explain the 3.3 linear regulator.  I added this option to the board in case there is no pre-regulated 3.3v source, but it inherently contradicts the purpose of using a Bluetooth 4.0 module: <strong>extremely low power consumption.</strong>  I tried to get a reading on the milliamps the HM-10 pulls, but my multi-meter only goes to the tenths (ma) and the module wouldn’t show at all, even during active use.  And as many (all?) probably already know, the linear regulator is <em>extremely</em> inefficient.  So, it’s much better to solder the jumper that bypasses the regulator and leave it un-populated. UPDATE: I’ve found info on <a href="http://item.taobao.com/item.htm?spm=a1z10.1.w1004-2840095810.3.7QjFDu&amp;id=21367443311">power consumption</a>:</p>
+
+<ul>
+  <li>Sleep mode 400~800uA</li>
+  <li>Search Mode for Master: 19.6mA</li>
+  <li>Transmission (Slave or Master): 8.5mA.</li>
+</ul>
+
+<p><strong>4.  Populate the breakout board.</strong></p>
+
+<p>A few notes on soldering the SMD pieces:</p>
+
+<ul>
+  <li><strong>DON’T BE SCARED.  </strong>It’s <em>really</em> not that hard.</li>
+  <li>There are <strong>three musts</strong> to SMD, at least from my perspective: <strong>a <a href="http://www.amazon.com/ZITRADE-5pcs-Soldering-tips-ZITRADES/dp/B009YSPGAS/ref=sr_1_2?s=hi&amp;ie=UTF8&amp;qid=1375550915&amp;sr=1-2&amp;keywords=soldering+tip+.5">small iron tip</a>, sharp pointed <a href="http://www.fasttech.com/products/0/10002626/1195600-precision-tweezers-3-piece-set">tweezers</a>, thread-like solder</strong> (at least <a href="http://www.mouser.com/ProductDetail/MG-Chemicals/4890-18G/?qs=SUQPjvP5usX%252b2A7zEBV6SQ%3D%3D&amp;gclid=CJOzp-_m4bgCFcbm7AodxDMALg">.022” solder wire</a>).</li>
+  <li>Other important soldering tools: A <a href="http://www.all-spec.com/products/52241999.html?gclid=CKuG3YDo4bgCFY5r7AodUVgAnQ">wet sponge</a> and <a href="http://www.fasttech.com/product/1212100-soldering-remover-ball">brass-ball</a> will keep your fine soldering tip _fine.  _Sponge the solder tip, then run it through the brass-ball after each component to prevent build-up.  </li>
+  <li>To speak blasphemy: Flux is ok, but I find the tweezers often take place of the flux.</li>
+  <li>Practice using <em>both</em> hands during soldering. Tweezers in one and solder-iron in the other.</li>
+</ul>
+
+<p><img src="../images/HM-10SolderJumperExplain.jpg" alt="" /></p>
+
+<p><strong>5. Wire it up to serial port.</strong></p>
+
+<p><img src="../images/IMG_9049.jpg" alt="" /></p>
+
+<p>So, this is the board I screwed up on.  Basically, like a dumb-ass I was trying to regulate 3.3v with a voltage divider.  Of course, <a href="https://www.youtube.com/watch?v=XxLKfAZrhbM">I know better now</a>.  Still, given the HM-10 pulls fewer than 10ma, I’ll probably go back and run the math to see if as voltage-divider is, in fact, a feasible solution.</p>
+
+<p>Anyway, the hookup is pretty simple.</p>
+
+<ul>
+  <li>BT-3.3v &lt;—&gt; 3.3v</li>
+  <li>BT-RX &lt;—&gt; FTDI-TX</li>
+  <li>BT-TX &lt;—&gt; FTDI-RX</li>
+  <li>BT-IO1 &lt;–&gt; LED &lt;–&gt; 220 Res. &lt;–&gt; GND</li>
+  <li>BT-GND &lt;—&gt; FTDI GND</li>
+  <li>
+    <p>(For the 3.3v I used a regulator and tied my grounds).</p>
+  </li>
+  <li>A few notes, the RX and TX lines are translated from 3.3v to 5v by way of a voltage divider and the BS1138.  <strong>All other lines will die at &gt;3.3v</strong>.</li>
+</ul>
+
+<p>Now, as I’ve stated, I’m connecting two modules together, so you have to set one module as the slave.</p>
+
+<p>I used <a href="http://realterm.sourceforge.net/">RealTerm</a> to access the HM-10s firmware via AT commands (<a href="http://www.ubermentis.com/files/HM-10_English.pdf">full list in the manual</a>).</p>
+
+<h5 id="hm-10-setup-instructions">HM-10 Setup Instructions</h5>
+
+<ol>
+  <li>Under the “Port” tab</li>
+  <li>Baud: 9600</li>
+  <li>Parity: None</li>
+  <li>Data Bits: 8</li>
+  <li>Stop Bits: 1</li>
+  <li>Hardware Flow Control: RTS/CTS</li>
+  <li>Software Flow Control: Receive–Yes, Transmit–Yes</li>
+  <li>Under the “Echo Port” tab</li>
+  <li>Echo On: Yes</li>
+  <li>Monitor: Yes</li>
+</ol>
+
+<p>Then, under the “Send” tab type in AT commands and hit “Send ASCII”:</p>
+
+<ul>
+  <li>Send: AT</li>
+  <li>Response: OK</li>
+</ul>
+
+<p>Now, setup one unit as the slave (they default as master).</p>
+
+<ul>
+  <li>Send: AT+ROLE1</li>
+  <li>Response: OK+Role:Slave</li>
+</ul>
+
+<p>That should be all we need to do to setup the connection.  Now, whenever they power on they will automatically try to mate.  <strong>You’ll know if they are connected if the LED goes from blinking to solid.</strong></p>
+
+<p><strong>7. Wire the modules to the target devices.</strong></p>
+
+<p><img src="../images/IMG_9039.jpg" alt="" /></p>
+
+<ul>
+  <li>BT-3.3v &lt;—&gt; Arduino 3.3</li>
+  <li>BT-RX &lt;—&gt; Arduino TX</li>
+  <li>BT-TX &lt;—&gt; Arduino RX</li>
+  <li>BT-IO1 &lt;–&gt; LED &lt;–&gt; 220 Res. &lt;–&gt; GND (or if you’ve soldered on the 0603s you can skip that connection).</li>
+</ul>
+
+<p>Notice the mistakes routing my board? :(</p>
+
+<p>It was salvageable though.</p>
+
+<p><strong>10. Turn on the devices and make sure the LEDs go solid.</strong></p>
+
+<p><strong>(10a. Yell at me if it doesn’t work.)</strong></p>
+
+<p><strong>11.  If the LEDs go solid, then you have a serial connection between the devices.  Have fun :)</strong></p>
+
+<p>Some things I’ve discovered:</p>
+
+<ol>
+  <li>They have much better range than I would have thought.  I’m getting around 30ft indoors.  I’ve not tried them outside.  For those of you who’ve read my developing post: <strong>Yes, having the copper planes underneath the antenna is what caused the range issue.  They’ve got super range now :)</strong> UPDATE: I found info on <a href="http://item.taobao.com/item.htm?spm=a1z10.1.w1004-2840095810.3.7QjFDu&amp;id=21367443311">range</a>: 60 feet indoors, 300 feet line-of-sight.</li>
+  <li>They connect <em>much</em> faster than older Bluetooth devices.</li>
+  <li>Actively sending or receiving draws fewer than 10mAs :)</li>
+  <li>I love these little guys over Xbees :)</li>
+</ol>
+
+<p><strong>Research Towards a Hub and Node network using the HM-10s:</strong></p>
+
+<p><strong>11/18/2013</strong></p>
+
+<p><strong>The Theory:</strong></p>
+
+<p>So, I’ve been working on putting an ATtiny 85 at the end of the HM-10’s serial line to allow for remote control of AT commands.  It goes something like this:</p>
+
+<p><img src="../images/ATtiny_and_BLE_0.jpg" alt="" /></p>
+
+<p>Using Software Serial to setup two serial lines.  Basically, the ATtiny 85 acts as a filter on the serial line.  If it is a regular message it passes from TX1 to TX2.  But the code in the Tiny will be looking for serial data that begins with “AT+” and if it sees something, it will instead write that command to RX1.</p>
+
+<p>Now, stick with me a minute.</p>
+
+<p>The Master has a mode called Remote, which is setup with the command AT+MODE2.  While in Remote mode the HM-10 will transmit serial data but also accept AT commands.  Sadly, <strong>this seems to only work on the Master.</strong>  So, we must have a different setup for the slaves.  </p>
+
+<p>In the case of the slaves we use the reset line.  Each slave will have the ATtiny filter, but when it gets an “AT+” command in the serial data it will pull the reset line low.  This resets the HM-10.  We do this because the HM-10 has a command AT+IMME1 and this will put the HM-10 Slave into a mode where it wont automatically seek to pair.  Instead, it will accept AT commands until given the command “AT+WORK” whch will send it into pairing/transmission mode.</p>
+
+<p>Ok.  Going back to our Slave setup.  So, when we setup our HM-10/ATtiny combos as Slaves, we put them all in the mode where they don’t seek to pair until given the command AT+WORK.  Of course, we program the ATtiny to send the HM-10 into pairing mode whenever it is turned on.  Then, once it pairs with our Master we can send a serial message through the Master to the Slave with the string, “AT+RESET&amp;AT+PIO11&amp;AT+WORK”  When the ATtiny gets this code it will pull the reset line low, putting the Slave back in AT mode.  Then, the ATtiny connected to the slave will send the command AT+PIO11 which puts pin 1 on the HM-10 high.  After, the ATtiny gives the command to the Slave to re-enter transmission mode. <em>Voila</em>.</p>
+
+<p>Alright, so far, I’ve got all that coded and the hardware worked out–most everything above I can confirm works.</p>
+
+<p>But, I’ve been skeptical as to whether or not the HM-10 will connect quick enough for a Master to have a seemingly seamless transmission between Slaves.  I derived this skepticism from watching the blinking connection LED everytime I reset one of the HM-10s that was formerly paired.  Then it hit me. They weren’t <em>immediately</em> reconnecting because the Slave still thought it was connected, therefore, the HM-10 firmware had not re-initialized pairing protocol.  I tested it.  And sure enough, if a Master and Slave are paired, one loses power, then the other will hang for 3 seconds before trying to pair again.  But, if one loses power and the other one is reset at the same time, when they both power back on (&lt;100ms) they will almost <em>immediately</em> pair.</p>
+
+<p>Booyah!</p>
+
+<p>So, all we have to do is setup a code where a Master connects to a node, tells it what it needs to, then tells it to reset itself,.  Afterwards, the Master changes its own pairing pin, then resets itself, whenever the Master comes back up it should almost immediately connect to the new node.</p>
+
+<p>And there we go.  A viable Bluetooth 4.0 Star Network.  I hope to have this fully tested before the Holidays.</p>
+
+<p><strong>11/23/13</strong></p>
+
+<p><strong>(Warning: Lots of vehement expression towards datasheet-writers)</strong></p>
+
+<p>Ok. So here is what’ve I learned.</p>
+
+<p>Alright, I’m beginning this article by saying; I love the HM-10.  Excellent device.  However! I want to beat the ever loving poo out of their datasheet writer.  To begin, I’ve ordered several HM-10s from www.fasttech.com over the course of several months.  And it never dawned on me they were upgrading the firmware quicker than I could buy them.  This wouldn’t be too bad, but it’s like the HM-10 monster took a poo and the datasheets are the result: actual commands for listed firmware versions don’t match the datasheets, there is different information in the Chinese datasheets than the English, some AT commands have been merged without being stated.  It’s just fubar.</p>
+
+<p>So, some of the issues I’ve had trying to network the little devices I believe has come from firmware versions not playing nice.  </p>
+
+<p>For example, the HM-10 V303 has a command AT+IMME1 (0 to turn it off) for the Master only that keeps it in AT mode until given the command <strong>AT+WORK.  </strong>I discovered that stupid-ass <a href="http://www.jnhuamao.cn/index_en.asp?ID=49">jnhuamao</a> changed the firmware at some point (in the 4xx range) and this command merged with AT+START, which in my V303 datasheet is a command for something else. F’in poor translation.</p>
+
+<p>Now, I have 2 boards with firmware V303 and 1 board with V502.  I also have 2 modules that I bought later which more than likely have something greater than V502.  <em><strong>I’m praying they are V508 or greater; at V508 they added the feature to <a href="http://www.jnhuamao.cn/download_rom_en.asp?id=49">upgrade the firmware</a> through the serial line.</strong>  ‘Bout damn time.</em></p>
+
+<p>I can’t find the datasheets (in either language) for V502, but looking at the V508 I can see the AT+TYPE command now has three options.  The V303 lists only two options for AT+TYPE.  Yet, somehow, my V303 boards actually take this third option (AT+TYPE2). Bizarre.</p>
+
+<p>Moving on from the firmware and datasheet mess: Using the ATtiny 85 does work, but to get the HM-10 to take the commands it requires:</p>
+
+<ul>
+  <li>TinySerial.<strong>write</strong>(“AT+xxxxx”);</li>
+</ul>
+
+<p>So, in theory, to get a HM-10 Master setup to only enter transmission mode when given a command, it goes something like this:</p>
+
+<ol>
+  <li>TinySerial.write(“AT+RENEW”); //Reset to factory settings.</li>
+  <li>TinySerial.write(“AT+ROLE0”); // Be the Master.</li>
+  <li>TinySerial.write(“AT+IMME1”); // Don’t enter transmission mode until told.</li>
+  <li>TinySerial.write(“AT+RESET”); // IMME takes effect after reset.</li>
+  <li>TinySerial.write(“AT+”START”); // Ok, try to connect to something.</li>
+</ol>
+
+<p>This resets it to factory settings, tells it not to connect until given the command, then it gives the command to start trying to connect.</p>
+
+<p><strong>Here’s example code I use on the ATtiny 85:</strong></p>
+
+<figure class="highlight"><pre><code class="language-c" data-lang="c">  <span class="cm">/*
+  This code has been modified for use on an ATtiny.
+  Created by Matthew on June 11, 2013
+  http://projectssfromtech.blogspot.com/
+
+   This example code is in the public domain.
+
+   */</span>
+
+
+  <span class="cp">#include
+</span>  <span class="n">SoftwareSerial</span> <span class="nf">TinySerial</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">);</span> <span class="c1">// RX, TX</span>
+  <span class="n">SoftwareSerial</span> <span class="nf">TinySerial2</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span> <span class="c1">// RX, TX</span>
+
+  <span class="n">String</span> <span class="n">blah</span><span class="p">;</span>
+  <span class="kt">int</span> <span class="n">incomingByte</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+  <span class="kt">void</span> <span class="nf">setup</span><span class="p">()</span>  
+  <span class="p">{</span>
+    <span class="c1">// Open serial communications and let us know we are connected</span>
+    <span class="n">TinySerial</span><span class="p">.</span><span class="n">begin</span><span class="p">(</span><span class="mi">9600</span><span class="p">);</span> <span class="c1">//Serial line for the ATtiny85 to read/write from/to the HM-10.</span>
+    <span class="n">TinySerial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s">"Tiny Serial Connected via SoftwareSerial Library"</span><span class="p">);</span>
+    <span class="n">TinySerial2</span><span class="p">.</span><span class="n">begin</span><span class="p">(</span><span class="mi">9600</span><span class="p">);</span> <span class="c1">//Serial line for the ATtiny85 to print to a serial port.</span>
+    <span class="n">TinySerial2</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s">"Tiny Serial Connected via SoftwareSerial Library"</span><span class="p">);</span>  
+
+    <span class="n">TinySerial</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="s">"AT+RENEW"</span><span class="p">);</span> <span class="c1">// Reset all settings.</span>
+    <span class="n">delay</span><span class="p">(</span><span class="mi">300</span><span class="p">);</span>  
+    <span class="n">TinySerial</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="s">"AT+ROLE0"</span><span class="p">);</span> <span class="c1">// Slave mode ("AT+ROLE1" is slave and "AT+ROLE0" is master)</span>
+    <span class="n">delay</span><span class="p">(</span><span class="mi">300</span><span class="p">);</span>
+    <span class="c1">//TinySerial.write("AT+PASS001111"); // "AT+PASS001111" sets the password.</span>
+    <span class="c1">//delay(300);</span>
+    <span class="c1">//The work mode only works for the Master HM-10.</span>
+    <span class="n">TinySerial</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="s">"AT+MODE2"</span><span class="p">);</span> <span class="c1">//"AT+MODE0" = Transmission Mode, "AT+MODE1" = Remote Control Mode, "AT+MODE2" = Modes 0 + 1.</span>
+    <span class="n">delay</span><span class="p">(</span><span class="mi">300</span><span class="p">);</span>
+    <span class="n">TinySerial</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="s">"AT+IMME1"</span><span class="p">);</span> <span class="c1">// Don't enter transmission mode until told. ("AT+IMME0" is wait until "AT+START" to work. "AT+WORK1" is connect right away.).</span>
+    <span class="n">delay</span><span class="p">(</span><span class="mi">300</span><span class="p">);</span>
+    <span class="n">TinySerial</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="s">"AT+START"</span><span class="p">);</span> <span class="c1">// Ok, go ahead and enter. BULLSHIT! Apparently "AT+WORK" is not what we use, it's "AT+START"</span>
+    <span class="n">delay</span><span class="p">(</span><span class="mi">300</span><span class="p">);</span>
+
+  <span class="p">}</span>
+
+  <span class="kt">void</span> <span class="nf">loop</span><span class="p">()</span>
+  <span class="p">{</span>
+
+  <span class="p">}</span></code></pre></figure>
+
+<p>Ok.  I also learned a little more about PIN command.  To begin, “AT+PASS000001” will set the PIN, <em><strong>not</strong></em> “AT+PIN000001”.  Of course, it must be a 6 digit number, so, fill the others with zeros.  Now, depending on the firmware version there are 3 different settings for PIN pairing, all set by AT+TYPEx</p>
+
+<ol>
+  <li>AT+TYPE0 – this is supposed to be “Connect without password mode”</li>
+  <li>AT+TYPE1 – “Simple pairing” (no explaination).</li>
+  <li>AT+TYPE2 – “Requires PIN for pairing”</li>
+</ol>
+
+<p>Alright.  So, this was the key to my switching between modules. I thought I would set a unique PIN for each slave and the ATtiny 85 connected to my Master would switch the PIN on my Master depending on which node I wanted to connect.  <strong>Well, this feature is broken.  </strong>I played with it for several hours and no matter how I set the PIN or TYPE settings, the modules <strong>would pair even without the correct pin</strong>.  I could find no answer for this behavior.  <strong><em>Until</em>, I read through the <em>Chinese</em> version of the datasheet and came across this gem.</strong></p>
+
+<ul>
+  <li><strong>“IMPORTANT: V515 previous versions, the directive no practical effect, after setting causes not connect, please do not use.”</strong></li>
+</ul>
+
+<p>Of course, this is a Google translation.  But I’m pretty sure I read that, “<strong>This feature on versions under V515 does not work.</strong>”</p>
+
+<p>And that’s where I am at the moment. I wanted to make sure I wrote some of this stuff down in case others were running into problems.  My next projects will be writing to <a href="http://www.jnhuamao.cn/index_en.asp?ID=49">jnhuamao</a> and get some questions answered (e.g., “Any way to get upgrade the firmware on versions less than V508 so I’m not left with 5 unsecure HM-10s; maybe through the SPI interface?).</p>
+:ET

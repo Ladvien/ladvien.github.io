@@ -1,0 +1,379 @@
+I"��<p>I’ve started designing a system to manage data analysis tools I build.</p>
+
+<ol>
+  <li>An illegitimate REST interface</li>
+  <li>Interface for existing Python scripts</li>
+  <li>Process for creating micro-services from Python scripts</li>
+  <li>Interface for creating machine learning jobs to be picked up my free machines.</li>
+  <li>Manage a job queue for work machines to systematically tackle machine learning jobs</li>
+  <li>Data storage and access</li>
+  <li>Results access and job meta data</li>
+  <li>A way to visualize results</li>
+</ol>
+
+<p>I’ve landed on a fairly complicated process of handling the above.  I’ve tried cutting frameworks, as I know it’ll be a nightmare to maintain, but I’m not seeing it.</p>
+
+<ul>
+  <li>Node for creating RESTful interfaces between the <code class="highlighter-rouge">HQ Machine</code> and the <code class="highlighter-rouge">Worker Nodes</code></li>
+  <li>Node on the workers to ping the HQ machine periodically to see if their are jobs to run</li>
+  <li>MongoDB on the <code class="highlighter-rouge">HQ Machine</code> to store the job results data, paths to datasets, and possibly primary data</li>
+  <li>Angular to interact with the <code class="highlighter-rouge">HQ Node</code> for creating job creation and results viewing UI.</li>
+  <li><a href="https://github.com/swimlane/ngx-datatable">ngx-datatables</a> for viewing tabular results.</li>
+  <li><a href="https://github.com/swimlane/ngx-charts">ngx-charts</a> for viewing job results (e.g., visualizing variance and linearity )</li>
+  <li>Python for access to all the latest awesome ML frameworks</li>
+  <li><a href="https://www.npmjs.com/package/python-shell">python-shell (npm)</a> for creating an interface between Node and Python.</li>
+</ul>
+
+<h3 id="utilizing-all-machines-in-the-house">Utilizing all Machines in the House</h3>
+<p>Machine learning is a new world for me.  But, it’s pretty dern cool. I like making machines do the hard stuff while I’m off doing other work.  It makes me feel extra productive–like, “I created that machine, so any work it does I get credit for.  <em>And</em>! The work I did while it as doing its work.”  This is the reason I own two 3D-printers.</p>
+
+<p>I’m noticing there is a possibility of utilizing old computers I’ve lying around the house for the same effect.  The plan is to abstract a neural network script, install it on all the computers lying about, and  create a <code class="highlighter-rouge">HQ Computer</code> where I can create a sets of hyperparameters passed to the <code class="highlighter-rouge">Worker Nodes</code> throughout the house.</p>
+
+<p>Why?  Glad I asked for you. I feel guilty there are computers used.  There’s an old AMD desktop with a GFX1060 in it, a 2013 MacBook Pro (my son’s), and my 2015 MacBook Pro.  These don’t see much use anymore, since my employer has provided an iMac to work on.  They need to earn their keep.</p>
+
+<p>How? Again, glad to ask for you.  I’ll create a system to make deep-learning jobs from hyperparameter sets and send them to these idle machines, thus, trying to get them to solve problems while I’m working on paying the bills.  This comes from the power of neural networks.  They need little manual tweaking.  You simply provide them with hyperparameters and let them run.</p>
+
+<p>Here are the napkin-doodles:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>+-Local------------------------------------------------------+
+|                                                            |
+|        ____                   ____      Each machine runs  |
+|        |""|                   |""|      Node and Express   |
+|  HQ    |__|             #1    |__|      server, creating   |
+|       [ ==.]`)               [ ==.]`)   routes to Python   |
+|       ====== 0               ====== 0   scripts using      |
+|  The HQ machine runs          ____      stdin and stdout   |
+|  Node and Express, but        |""|                         |
+|  the routes are for     #2    |__|                         |
+|  storing results in a        [ ==.]`)                      |
+|  database.                   ====== 0                      |
+|                               ____                         |
+|                               |""|                         |
+|                         #3    |__|        Worker           |
+|                              [ ==.]`)     Nodes            |
+|                              ====== 0                      |
+|                                                            |
++------------------------------------------------------------+
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>+-Local------------------------------------------------------+
+|                 Each worker Node checks         Workers    |
+|        ____    with HQ on a set interval         ____      |
+|        |""|       for jobs to run                |""|      |
+|  HQ    |__|   &lt;--------------------------+ #1    |__|      |
+|       [ ==.]`)                                  [ ==.]`)   |
+|       ====== 0                                  ====== 0   |
+|       ^ |                                        ____      |
+|       | |                                  #2    |""|      |
+|       | +---------------------------------------&gt;|__|      |
+|       |             If there is a job, the      [ ==.]`)   |
+|       |             Worker will send a GET      ====== 0   |
+|       |              request for the job         ____      |
+|       |                  parameters              |""|      |
+|       |                                    #3    |__|      |
+|       +-----------------------------------------[ ==.]`)   |
+|         Once completed, the Worker updates HQ   ====== 0   |
+|              with the job results.                         |
++------------------------------------------------------------+
+</code></pre></div></div>
+
+<h3 id="worker-nodes">Worker Nodes</h3>
+<p>The <code class="highlighter-rouge">Worker Nodes</code> code is pretty straightforward.  It uses Node, Express, and python-shell to create a bastardized REST interface to create simple interactions between the <code class="highlighter-rouge">HQ Node</code> controlling the job queue.</p>
+
+<h4 id="node-side">Node Side</h4>
+<p>Here’s the proof-of-concept NodeJS code.</p>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">express</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">express</span><span class="dl">'</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">bodyParser</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">body-parser</span><span class="dl">'</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">pythonRunner</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">./preprocessing-services/python-runner</span><span class="dl">'</span><span class="p">);</span>
+
+<span class="kd">var</span> <span class="nx">app</span> <span class="o">=</span> <span class="nx">express</span><span class="p">();</span>
+<span class="kd">const</span> <span class="nx">port</span> <span class="o">=</span> <span class="mi">3000</span><span class="p">;</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">bodyParser</span><span class="p">.</span><span class="nx">json</span><span class="p">())</span>
+
+<span class="c1">// Python script runner interface</span>
+<span class="nx">app</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="dl">'</span><span class="s1">/scripts/run</span><span class="dl">'</span><span class="p">,</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="k">try</span> <span class="p">{</span>
+        <span class="kd">let</span> <span class="nx">pythonJob</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">;</span>
+        <span class="nx">pythonRunner</span><span class="p">.</span><span class="nx">scriptRun</span><span class="p">(</span><span class="nx">pythonJob</span><span class="p">)</span>
+        <span class="p">.</span><span class="nx">then</span><span class="p">((</span><span class="nx">response</span><span class="p">,</span> <span class="nx">rejection</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+            <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nx">response</span><span class="p">);</span>
+        <span class="p">});</span>
+    <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="nx">port</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">`Started on port </span><span class="p">${</span><span class="nx">port</span><span class="p">}</span><span class="s2">`</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<p>The above code is a dead simple NodeJS server using Express. It is using <code class="highlighter-rouge">body-parser</code> middleware to shape JSON objects.  The <code class="highlighter-rouge">pythonJob</code> object looks something like this (real paths names have been changed to help protect their anonymity).</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"scriptsPath"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/Users/hinky-dink/dl-principal/python-scripts/"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"scriptName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"union.py"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"jobParameters"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    	</span><span class="nl">"dataFileName"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"dataPath"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/Users/hinky-dink/bit-dl/data/lot-data/wine_encoded/"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"writePath"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/Users/hinky-dink/bit-dl/data/lot-data/wine_encoded/"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"execution"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        	</span><span class="nl">"dataFileOne"</span><span class="p">:</span><span class="w"> </span><span class="s2">"wine_2017_encoded.csv"</span><span class="p">,</span><span class="w">
+        	</span><span class="nl">"dataFileTwo"</span><span class="p">:</span><span class="w"> </span><span class="s2">"wine_2018_encoded.csv"</span><span class="p">,</span><span class="w">
+        	</span><span class="nl">"outputFilename"</span><span class="p">:</span><span class="w"> </span><span class="s2">"wine_17-18.csv"</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+<p>Each of these attributes will be passed to the Python shell in order to execute <code class="highlighter-rouge">data_prep.py</code>.  They are passed to the shell as system arguments.</p>
+
+<p>Here’s the <code class="highlighter-rouge">python-runner.js</code></p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">let</span> <span class="p">{</span><span class="nx">PythonShell</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">python-shell</span><span class="dl">'</span><span class="p">)</span>
+ 
+<span class="kd">var</span> <span class="nx">scriptRun</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">pythonJob</span><span class="p">){</span>    
+    <span class="k">return</span> <span class="k">new</span> <span class="nb">Promise</span><span class="p">((</span><span class="nx">resolve</span><span class="p">,</span> <span class="nx">reject</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">pythonJob</span><span class="p">)</span>
+        <span class="k">try</span> <span class="p">{</span>
+            <span class="kd">let</span> <span class="nx">options</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="na">mode</span><span class="p">:</span> <span class="dl">'</span><span class="s1">text</span><span class="dl">'</span><span class="p">,</span>
+                <span class="na">pythonOptions</span><span class="p">:</span> <span class="p">[</span><span class="dl">'</span><span class="s1">-u</span><span class="dl">'</span><span class="p">],</span> <span class="c1">// get print results in real-time</span>
+                <span class="na">scriptPath</span><span class="p">:</span> <span class="nx">pythonJob</span><span class="p">.</span><span class="nx">scriptsPath</span><span class="p">,</span>
+                <span class="na">args</span><span class="p">:</span> <span class="p">[</span><span class="nx">pythonJob</span><span class="p">.</span><span class="nx">jobParameters</span><span class="p">.</span><span class="nx">dataFileName</span><span class="p">,</span> 
+                       <span class="nx">pythonJob</span><span class="p">.</span><span class="nx">jobParameters</span><span class="p">.</span><span class="nx">dataPath</span><span class="p">,</span> 
+                       <span class="nx">pythonJob</span><span class="p">.</span><span class="nx">jobParameters</span><span class="p">.</span><span class="nx">writePath</span><span class="p">,</span>
+                       <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">pythonJob</span><span class="p">.</span><span class="nx">jobParameters</span><span class="p">.</span><span class="nx">execution</span><span class="p">)]</span>
+            <span class="p">};</span>
+            <span class="nx">PythonShell</span><span class="p">.</span><span class="nx">run</span><span class="p">(</span><span class="nx">pythonJob</span><span class="p">.</span><span class="nx">scriptName</span><span class="p">,</span> <span class="nx">options</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">results</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="k">throw</span> <span class="nx">err</span><span class="p">;</span>
+                <span class="k">try</span> <span class="p">{</span>
+                    <span class="nx">result</span> <span class="o">=</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">results</span><span class="p">.</span><span class="nx">pop</span><span class="p">());</span>
+                    <span class="k">if</span><span class="p">(</span><span class="nx">result</span><span class="p">)</span> <span class="p">{</span>
+                        <span class="nx">resolve</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
+                    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                        <span class="nx">reject</span><span class="p">({</span><span class="dl">'</span><span class="s1">err</span><span class="dl">'</span><span class="p">:</span> <span class="dl">''</span><span class="p">})</span>
+                    <span class="p">}</span>
+                <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="nx">reject</span><span class="p">({</span><span class="dl">'</span><span class="s1">error</span><span class="dl">'</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Failed to parse Python script return object.</span><span class="dl">'</span><span class="p">})</span>
+                <span class="p">}</span>
+            <span class="p">});</span>
+        <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">reject</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">});</span>
+<span class="p">}</span>
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="p">{</span><span class="nx">scriptRun</span><span class="p">}</span>
+</code></pre></div></div>
+
+<h4 id="python-side">Python Side</h4>
+<p>Here’s the Python script in the above example.  It is meant to detect what type of data is in a table.  If it’s is continuous it leaves it alone (I’ll probably add normalization option as some point), if it is categorical, it converts it to a <a href="https://en.wikipedia.org/wiki/Dummy_variable_(statistics)">dummy variable</a>.  It then saves this encoded data on the <code class="highlighter-rouge">Worker Node</code> side (right now).  Lastly, it returns a <code class="highlighter-rouge">JSON</code> string back to the <code class="highlighter-rouge">node</code> side.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">"""
+Created on Mon Jun 11 21:12:10 2018
+@author: cthomasbrittain
+"""</span>
+
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="c1">#
+</span><span class="n">filename</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">filepath</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+<span class="n">pathToWriteProcessedFile</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+
+<span class="n">request</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
+<span class="n">request</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">cols_to_remove</span> <span class="o">=</span> <span class="n">request</span><span class="p">[</span><span class="s">'columnsToRemove'</span><span class="p">]</span>
+    <span class="n">unreasonable_increase</span> <span class="o">=</span> <span class="n">request</span><span class="p">[</span><span class="s">'unreasonableIncreaseThreshold'</span><span class="p">]</span>
+<span class="k">except</span><span class="p">:</span>
+    <span class="c1"># If columns aren't contained or no columns, exit nicely
+</span>    <span class="n">result</span> <span class="o">=</span> <span class="p">{</span><span class="s">'status'</span><span class="p">:</span> <span class="mi">400</span><span class="p">,</span> <span class="s">'message'</span><span class="p">:</span> <span class="s">'Expected script parameters not found.'</span><span class="p">}</span>
+    <span class="k">print</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">result</span><span class="p">)))</span>
+    <span class="n">quit</span><span class="p">()</span>
+
+<span class="n">pathToData</span> <span class="o">=</span> <span class="n">filepath</span> <span class="o">+</span> <span class="n">filename</span>
+
+
+<span class="c1"># Clean Data --------------------------------------------------------------------
+# -------------------------------------------------------------------------------
+</span>
+<span class="c1"># Importing data transformation libraries
+</span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="n">pd</span>
+
+<span class="c1"># The following method will do the following:a
+#   1. Add a prefix to columns based upon datatypes (cat and con)
+#   2. Convert all continuous variables to numeric (float64)
+#   3. Convert all categorical variables to objects
+#   4. Rename all columns with prefixes, convert to lower-case, and replace
+#      spaces with underscores.
+#   5. Continuous blanks are replaced with 0 and categorical 'not collected'
+# This method will also detect manually assigned prefixes and adjust the 
+# columns and data appropriately.  
+# Prefix key:
+# a) con = continuous
+# b) cat = categorical
+# c) rem = removal (discards entire column)
+</span>
+<span class="k">def</span> <span class="nf">add_datatype_prefix</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">date_to_cont</span> <span class="o">=</span> <span class="bp">True</span><span class="p">):</span>    
+    <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="n">pd</span>
+    <span class="c1"># Get a list of current column names.
+</span>    <span class="n">column_names</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+    <span class="c1"># Encode each column based with a three letter prefix based upon assigned datatype.
+</span>    <span class="c1"># 1. con = continuous
+</span>    <span class="c1"># 2. cat = categorical
+</span>    
+    <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">column_names</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">df</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="s">'object'</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">df</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">name</span><span class="p">])</span>
+                <span class="k">if</span><span class="p">(</span><span class="n">date_to_cont</span><span class="p">):</span>
+                    <span class="n">new_col_names</span> <span class="o">=</span> <span class="s">"con_"</span> <span class="o">+</span> <span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">" "</span><span class="p">,</span> <span class="s">"_"</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">"/"</span><span class="p">,</span> <span class="s">"_"</span><span class="p">)</span>
+                    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="n">name</span><span class="p">:</span> <span class="n">new_col_names</span><span class="p">})</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">new_col_names</span> <span class="o">=</span> <span class="s">"date_"</span> <span class="o">+</span> <span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">" "</span><span class="p">,</span> <span class="s">"_"</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">"/"</span><span class="p">,</span> <span class="s">"_"</span><span class="p">)</span>
+                    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="n">name</span><span class="p">:</span> <span class="n">new_col_names</span><span class="p">})</span>                    
+            <span class="k">except</span> <span class="nb">ValueError</span><span class="p">:</span>
+                <span class="k">pass</span>
+    
+    <span class="n">column_names</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+    
+    <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">column_names</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">name</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span> <span class="o">==</span> <span class="s">"rem"</span> <span class="ow">or</span> <span class="s">"con"</span> <span class="ow">or</span> <span class="s">"cat"</span> <span class="ow">or</span> <span class="s">"date"</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">if</span> <span class="n">df</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="s">'object'</span><span class="p">:</span>
+            <span class="n">new_col_names</span> <span class="o">=</span> <span class="s">"cat_"</span> <span class="o">+</span> <span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">" "</span><span class="p">,</span> <span class="s">"_"</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">"/"</span><span class="p">,</span> <span class="s">"_"</span><span class="p">)</span>
+            <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="n">name</span><span class="p">:</span> <span class="n">new_col_names</span><span class="p">})</span>
+        <span class="k">elif</span> <span class="n">df</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="s">'float64'</span> <span class="ow">or</span> <span class="n">df</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="s">'int64'</span> <span class="ow">or</span> <span class="n">df</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="s">'datetime64[ns]'</span><span class="p">:</span>
+            <span class="n">new_col_names</span> <span class="o">=</span> <span class="s">"con_"</span> <span class="o">+</span> <span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">" "</span><span class="p">,</span> <span class="s">"_"</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">"/"</span><span class="p">,</span> <span class="s">"_"</span><span class="p">)</span>
+            <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="n">name</span><span class="p">:</span> <span class="n">new_col_names</span><span class="p">})</span>
+    <span class="n">column_names</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+    
+    <span class="c1"># Get lists of coolumns for conversion
+</span>    <span class="n">con_column_names</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">cat_column_names</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">rem_column_names</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">date_column_names</span> <span class="o">=</span> <span class="p">[]</span>
+    
+    <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">column_names</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">name</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span> <span class="o">==</span> <span class="s">"cat"</span><span class="p">:</span>
+            <span class="n">cat_column_names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">name</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span> <span class="o">==</span> <span class="s">"con"</span><span class="p">:</span>
+            <span class="n">con_column_names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">name</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span> <span class="o">==</span> <span class="s">"rem"</span><span class="p">:</span>
+            <span class="n">rem_column_names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">name</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">4</span><span class="p">]</span> <span class="o">==</span> <span class="s">"date"</span><span class="p">:</span>
+            <span class="n">date_column_names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+            
+    <span class="c1"># Make sure continuous variables are correct datatype. (Otherwise, they'll be dummied).
+</span>    <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">con_column_names</span><span class="p">:</span>
+        <span class="n">df</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">name</span><span class="p">],</span> <span class="n">errors</span><span class="o">=</span><span class="s">'coerce'</span><span class="p">)</span>
+        <span class="n">df</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    
+    <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">cat_column_names</span><span class="p">:</span>
+        <span class="n">df</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="nb">apply</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+        <span class="n">df</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="s">'not_collected'</span><span class="p">)</span>
+    
+    <span class="c1"># Remove unwanted columns    
+</span>    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">rem_column_names</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">df</span>
+
+<span class="c1"># ------------------------------------------------------
+# Encoding Categorical variables
+# ------------------------------------------------------
+</span>
+<span class="c1"># The method below creates dummy variables from columns with
+# the prefix "cat".  There is the argument to drop the first column
+# to avoid the Dummy Variable Trap.
+</span><span class="k">def</span> <span class="nf">dummy_categorical</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">drop_first</span> <span class="o">=</span> <span class="bp">True</span><span class="p">):</span>
+    <span class="c1"># Get categorical data columns.
+</span>    <span class="n">columns</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+    <span class="n">columnsToEncode</span> <span class="o">=</span> <span class="n">columns</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span> 
+
+    <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">columns</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">name</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span> <span class="o">!=</span> <span class="s">'cat'</span><span class="p">:</span>          
+            <span class="n">columnsToEncode</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+
+    <span class="c1"># if there are no columns to encode, return unmutated.
+</span>    <span class="k">if</span> <span class="ow">not</span> <span class="n">columnsToEncode</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">df</span>
+
+
+    <span class="c1"># Encode categories
+</span>    <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">columnsToEncode</span><span class="p">:</span>
+
+        <span class="k">if</span> <span class="n">name</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span> <span class="o">!=</span> <span class="s">'cat'</span><span class="p">:</span>
+            <span class="k">continue</span>
+
+        <span class="n">tmp</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">get_dummies</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">name</span><span class="p">],</span> <span class="n">drop_first</span> <span class="o">=</span> <span class="n">drop_first</span><span class="p">)</span>
+        <span class="n">names</span> <span class="o">=</span> <span class="p">{}</span>
+        
+        <span class="c1"># Get a clean column name.
+</span>        <span class="n">clean_name</span> <span class="o">=</span> <span class="n">name</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">" "</span><span class="p">,</span> <span class="s">"_"</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">"/"</span><span class="p">,</span> <span class="s">"_"</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="c1"># Get a dictionary for renaming the dummay variables in the scheme of old_col_name + response_string
+</span>        <span class="k">if</span> <span class="n">clean_name</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span> <span class="o">==</span> <span class="s">"cat"</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">tmp_name</span> <span class="ow">in</span> <span class="n">tmp</span><span class="p">:</span>
+                <span class="n">tmp_name</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">tmp_name</span><span class="p">)</span>
+                <span class="n">new_tmp_name</span> <span class="o">=</span> <span class="n">tmp_name</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">" "</span><span class="p">,</span> <span class="s">"_"</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">"/"</span><span class="p">,</span> <span class="s">"_"</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+                <span class="n">new_tmp_name</span> <span class="o">=</span> <span class="n">clean_name</span> <span class="o">+</span> <span class="s">"_"</span> <span class="o">+</span> <span class="n">new_tmp_name</span>
+                <span class="n">names</span><span class="p">[</span><span class="n">tmp_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_tmp_name</span>
+        
+        <span class="c1"># Rename the dummy variable dataframe
+</span>        <span class="n">tmp</span> <span class="o">=</span> <span class="n">tmp</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">names</span><span class="p">)</span>
+        
+        <span class="c1"># join the dummy variable back to original dataframe.
+</span>        <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tmp</span><span class="p">)</span>
+    
+    <span class="c1"># Drop all old categorical columns
+</span>    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">columnsToEncode</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">df</span>
+
+<span class="c1"># Read the file
+</span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">pathToData</span><span class="p">)</span>
+
+<span class="c1"># Drop columns such as unique IDs
+</span><span class="k">try</span><span class="p">:</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">cols_to_remove</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="k">except</span><span class="p">:</span>
+    <span class="c1"># If columns aren't contained or no columns, exit nicely
+</span>    <span class="n">result</span> <span class="o">=</span> <span class="p">{</span><span class="s">'status'</span><span class="p">:</span> <span class="mi">404</span><span class="p">,</span> <span class="s">'message'</span><span class="p">:</span> <span class="s">'Problem with columns to remove.'</span><span class="p">}</span>
+    <span class="k">print</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">result</span><span class="p">)))</span>
+    <span class="n">quit</span><span class="p">()</span>
+    
+<span class="c1"># Get the number of columns before hot encoding
+</span><span class="n">num_cols_before</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="c1"># Encode the data.
+</span><span class="n">df</span> <span class="o">=</span> <span class="n">add_datatype_prefix</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">dummy_categorical</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+<span class="c1"># Get the new dataframe shape.
+</span><span class="n">num_cols_after</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+
+<span class="n">percentage_increase</span> <span class="o">=</span> <span class="n">num_cols_after</span> <span class="o">/</span> <span class="n">num_cols_before</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="s">""</span>
+
+<span class="k">if</span> <span class="n">percentage_increase</span> <span class="o">&gt;</span> <span class="n">unreasonable_increase</span><span class="p">:</span>
+    <span class="n">message</span> <span class="o">=</span> <span class="s">"</span><span class="se">\"</span><span class="s">error</span><span class="se">\"</span><span class="s">: </span><span class="se">\"</span><span class="s">Feature increase is greater than unreasonableIncreaseThreshold, most likely a unique id was included."</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="p">{</span><span class="s">'status'</span><span class="p">:</span> <span class="mi">400</span><span class="p">,</span> <span class="s">'message'</span><span class="p">:</span> <span class="n">message</span><span class="p">}</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">filename</span> <span class="o">=</span> <span class="n">filename</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">".csv"</span><span class="p">,</span> <span class="s">""</span><span class="p">)</span>
+    <span class="kn">import</span> <span class="nn">os</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">pathToWriteProcessedFile</span><span class="p">):</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">pathToWriteProcessedFile</span><span class="p">)</span>
+        
+    
+    <span class="n">writeFile</span> <span class="o">=</span> <span class="n">pathToWriteProcessedFile</span> <span class="o">+</span> <span class="n">filename</span> <span class="o">+</span> <span class="s">"_encoded.csv"</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">path_or_buf</span><span class="o">=</span><span class="n">writeFile</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s">','</span><span class="p">)</span>
+    
+    
+    <span class="c1"># Process the results and return JSON results object
+</span>    <span class="n">result</span> <span class="o">=</span> <span class="p">{</span><span class="s">'status'</span><span class="p">:</span> <span class="mi">200</span><span class="p">,</span> <span class="s">'message'</span><span class="p">:</span> <span class="s">'encoded data'</span><span class="p">,</span> <span class="s">'path'</span><span class="p">:</span> <span class="n">writeFile</span><span class="p">}</span>
+ 
+<span class="k">print</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">result</span><span class="p">)))</span>
+</code></pre></div></div>
+
+<p>That’s the premise.  I’ll be adding more services to as a series of articles.</p>
+:ET

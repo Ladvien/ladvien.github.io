@@ -1,0 +1,94 @@
+I"�<p>Originally posted on [www.letsmakerobots.com](www.letsmakerobots.com</p>
+<ol>
+  <li><strong>Get over to Analog Devices and sign-up for a</strong> <strong><a href="http://www.analog.com/en/content/samples/fca.html">sample account.</a></strong> They seem to be pretty nice and let you order several samples every month, I believe.</li>
+</ol>
+
+<p><a href="http://www.analog.com/en/content/samples/fca.html"></a>2. <strong>Order a few samples of the ADXL345 chip from</strong> <a href="http://www.analog.com/en/mems-sensors/mems-inertial-sensors/adxl345/products/product.html">Analog Devices.</a></p>
+
+<p><img src="../images/samplerequest.jpg" alt="" /></p>
+
+<ol>
+  <li><strong>Download the Eagle files from Sparkfun:</strong>  <a href="http://www.sparkfun.com/datasheets/Sensors/Accelerometer/ADXL345-BreakoutBoard-v13.zip">ADXL345</a> (Note the price).</li>
+</ol>
+
+<p><img src="../images/adxl345sparkfun.jpg" alt="" /></p>
+
+<ol>
+  <li>**Sign up for an <a href="http://www.oshpark.com/">OSHPark</a> account.  **Then, upload the .brd found in the Eagle files.</li>
+</ol>
+
+<p><img src="../images/OSHParksplash.jpg" alt="" /></p>
+
+<ol>
+  <li><strong>Order the capacitors.</strong></li>
+</ol>
+
+<p><a href="http://www.ebay.com/itm/160318833833?ssPageName=STRK:MEWNX:IT&amp;_trksid=p3984.m1439.l2649">2 x 0.1uF</a></p>
+
+<p><a href="http://www.ebay.com/itm/281056801982?ssPageName=STRK:MEWNX:IT&amp;_trksid=p3984.m1439.l2649">1 x 10uF</a></p>
+
+<ol>
+  <li><strong>Try to learn Python while the mail peoples do their magics.</strong></li>
+</ol>
+
+<p>**<img src="../images/3236811556_e470493eef.jpg" alt="" />
+**</p>
+
+<ol>
+  <li>
+    <p>Flip-off your Python code and get the mail.</p>
+  </li>
+  <li>
+    <p>Take everything out.  ADXL breakout board, ADXL345 chip, and caps.</p>
+  </li>
+  <li>
+    <p>Populate your board.  At this point, a good iron will do you well.  But as a general rule, start with the largest chip when soldering SMDs.  In our case, it is the ADXL345.  Paint some solder flux all over the exposed pads.  Now, take a very fine solder, such as .022 and put some on the tip of your iron.  Drag the droplet of solder across the exposed pads of where the ADXL will go.  Now, after the beads have cooled, paint your solder flux over the hardened beads.  The idea is to have the chip floating on this flux.</p>
+  </li>
+</ol>
+
+<p><img src="../images/IMG_0543-Optimized_1200x900.jpg" alt="" /></p>
+
+<ol>
+  <li><strong>Place the ADXL345 on the invisible flux, hovering over the pads.  Make sure the small white dot on the the corner of the chip is in the same place the red is below.</strong></li>
+</ol>
+
+<p><img src="../images/IMG_0550_4000x3000_0.jpg" alt="" /></p>
+
+<ol>
+  <li><strong>Put the board on an over turned iron.  **This is the most important part: **Watch the chip.</strong>  What you are hoping to see is the chip magically float in place as the solder flux flows out from under the chip, leading to the solder beads bonding with the exposed copper of the ADXL345.  **Seriously, don’t look away :).  **If for some reason you don’t feel the chip has bonded at each pad, then very lightly press down in the middle of the chip.  I said lightly!</li>
+</ol>
+
+<p><strong><img src="../images/IMG_0547_4000x3000.jpg" alt="" /></strong></p>
+
+<p><strong>12. Cap that B.  Erm, populate the capacitors.</strong></p>
+
+<p>**<img src="../images/IMG_8697_1150x768.jpg" alt="" />
+**</p>
+
+<p>**<img src="../images/IMG_8705_1150x768.jpg" alt="" />
+**</p>
+
+<p><strong>13. Plug and pray.</strong></p>
+
+<p><strong>14. Realize it doesn’t work because you suck at life.</strong></p>
+
+<p><strong>15. Pull the ADXL back off, clean the pads with solder wick, and try again.</strong></p>
+
+<p><strong><img src="../images/IMG_0555_1024x768.jpg" alt="" /></strong></p>
+
+<p><strong>16. Repeat step 11, but this time, watch the chip, no seriously.</strong></p>
+
+<p>**17. Hook it up and check it out.  **The chip is both SPI/I2C ready, but I prefer I2C.  So, hook that sucker up to the Arduino and see if it works.  This fellow provided code and instructions on connecting are in the code’s comments at the top.</p>
+
+<p><a href="https://github.com/jenschr/Arduino-libraries/blob/master/ADXL345/examples/ADXL345_no_library/BareBones_ADXL345.pde">Arduino Code for ADXL345 I2C</a></p>
+
+<p><strong>18. Watch as your one dollar(ish) ADXL345 does witchery.</strong></p>
+
+<p><strong><img src="../images/ADXL345_Running.jpg" alt="" /></strong></p>
+
+<p><strong>19.</strong> Ponder the ethics of sampling chips, borrowing board layouts from SparkFun, and buying underpriced capacitors from China; all leading to saving you around $12~25–<strong>or have a beer.</strong></p>
+
+<p><strong>20. Try not to abuse the sampling previlige.</strong></p>
+
+<p><strong>If you have any questions, I’ll do my ignorant best.</strong></p>
+:ET

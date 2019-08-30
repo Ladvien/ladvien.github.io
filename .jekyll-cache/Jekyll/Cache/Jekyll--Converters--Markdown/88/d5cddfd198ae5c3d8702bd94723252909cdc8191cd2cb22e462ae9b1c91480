@@ -1,0 +1,53 @@
+I"�<p>I wanted to take a a moment and write out how I plan to document future Swift projectss.</p>
+
+<h3 id="step-one-install">Step One: Install</h3>
+<p>I found <a href="https://github.com/Realm/jazzy">Jazzy</a>.  It’s a command line utility for documenting Xcode projectss.  Nifty thing is, it is one of the few which works with Swift 2+. Anyway, it is pretty painless to get up and going.</p>
+
+<p>The one catch I found was Swift is changing versions often, so you may have to wait a bit for the developers to catch up.  However, when the updates are released it is pretty easy to get things working again, simply run, <code class="highlighter-rouge">sudo gem update</code> in the terminal.</p>
+
+<h3 id="step-two-running">Step Two: Running</h3>
+<p>To run Jazzy you simply open a terminal window on your Mac, navigate to the top folder of your Xcode projects, and run <code class="highlighter-rouge">jazzy</code>.  You should get something like the following,</p>
+
+<figure class="highlight"><pre><code class="language-xml" data-lang="xml">Running xcodebuild
+Parsing ViewController.swift (1/3)
+Parsing bleTableViewController.swift (2/3)
+Parsing AppDelegate.swift (3/3)
+building site
+jam out ♪♫ to your fresh new docs in `docs`</code></pre></figure>
+
+<p>One super important note here.  By default Jazzy <em>only</em> documents public methods.  Therefore, you <em>must</em> pass Jazzy the flag</p>
+
+<figure class="highlight"><pre><code class="language-xml" data-lang="xml">jazzy --min-acl internal private</code></pre></figure>
+
+<p>This is the only way you will get everything.  If not, you will end up with an empty projects, most likely.  Had to find this out the hard way.  <a href="https://github.com/realm/jazzy/issues/255">Reference to the solution</a>.</p>
+
+<p>If jazzy parsed everything correctly you will have a <code class="highlighter-rouge">docs</code> folder in your projects folder.  This docs folder is a pseudo-website build.</p>
+
+<h3 id="step-three-push-to-pages">Step Three: Push to Pages</h3>
+<p>To get your documentation online, copy the <code class="highlighter-rouge">docs</code> folder to your an appropriate directory in your Jekyll site map.  Commit and push.  Now your projects’s documentation is apparent of the global singleton known as human knowledge.  To get a link to the index of your documentation add the following,</p>
+
+<p><code class="highlighter-rouge">[Test](director_you_chose_to_put_docs_folder/docs/index.html)</code></p>
+
+<p>Here’s an example: <a href="/jazzy/behavioralBluetooth/index.html">behavioralBluetooth Docs</a></p>
+
+<h3 id="step-four-document-your-projects">Step Four: Document your projects</h3>
+
+<p>I wont rehash Jazzy instructions.  In short, you can put Markdown in your comments within the code and the parser will pick up the comments and associate them with the methods etc they are close.</p>
+
+<p><a href="http://ericasadun.com/2015/06/14/swift-header-documentation-in-xcode-7/">Jazzy Instructions</a></p>
+
+<h3 id="addendum">Addendum</h3>
+<p>Apparently excluding files from the documentation process is a little tricky.</p>
+
+<figure class="highlight"><pre><code class="language-xml" data-lang="xml">jazzy  --exclude /Users/Ladvien/Desktop/behavioralBluetooth/behavioralBluetooth/AppDelegate.swift,/Users/Ladvien/Desktop/behavioralBluetooth/deviceState.swift</code></pre></figure>
+
+<p>It should look like above, “–exclude” (not the double dash) followed by the <em>absolute</em> path of the file to be excluded.  Then a comma (“,”), no space, and then the absolute path of the second file you wish to exclude.  It’s pretty easy to make this into a script by doing the following.</p>
+
+<figure class="highlight"><pre><code class="language-xml" data-lang="xml">1. From the terminal type: nano my_jazzy_script
+2. Paste the finished command, such as the one listed above.
+3. "Write-Out" the changes.
+4. Exit nano.
+5. At the terminal type: chmod +x my_jazzy_script (this makes the file executable).
+6. To run the script type: ./my_jazzy_script</code></pre></figure>
+
+:ET

@@ -1,0 +1,400 @@
+I"�*<h2 id="hacker-introduction">Hacker Introduction</h2>
+
+<p><img src="/../../images/Screenshot%202016-12-27%2007.39.30.png" alt="" />I’m a <em>hacker</em>.  If you find errors, please leave comments below.  If you have an opinion I’ll hear it, but I’m often not likely to agree without some argument.</p>
+
+<h3 id="joins-merging-data">Joins (Merging Data)</h3>
+
+<p>Probably the best part of R and SQL is their ability to quickly combine data around a key.  For example, in HMIS CSVs the Client.csv contains a lot of demographic information and the Enrollment.csv contains a lot of assessment information.  This makes it difficult when needing a count of the total participants who are veterans and disabled, since the veteran information is in Client.csv and disability information is in the Enrollment.csv.  However, both R and SQL contain the join functions.  </p>
+
+<p>Joins are a hughely expansive topic; I’m not going to try to cover all their quirks, but here’s some videos I found helpful:</p>
+
+<iframe allowfullscreen="" frameborder="0" height="180" src="//www.youtube.com/embed/KTvYHEntvn8" width="320"></iframe>
+
+<p>The two useful joins for HMIS data are LEFT JOIN and INNER JOIN.  The left join keeps all the data in the left table and data matching from the right table and the inner join keeps only data which matches.</p>
+
+<p>Here’s an example in the context of the Client.csv and Enrollment.csv:</p>
+
+<p>Client.csv</p>
+
+<table border="1" cellpadding="1" cellspacing="1" style="width: 312px;">
+
+<tbody>
+<tr>
+<td>PersonalID</td>
+<td>FirstName</td>
+<td>VeteranStatus</td>
+</tr>
+<tr>
+<td>12345</td>
+<td>Jane</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>54321</td>
+<td>Joe</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+
+<p>Enrollment.csv</p>
+<table border="1" cellpadding="1" cellspacing="1" style="width: 312px;">
+<tbody>
+<tr>
+<td>PersonalID</td>
+<td>FirstName</td>
+<td>DisablingCondition</td>
+</tr>
+<tr>
+<td>12345</td>
+<td>Jane</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>54321</td>
+<td>Joe</td>
+<td>No</td>
+</tr>
+<tr>
+<td>45321</td>
+<td>Sven</td>
+<td>Yes</td>
+</tr>
+</tbody>
+</table>
+
+<p>Here are the two join statements and their results for the data above</p>
+
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">SELECT</span> <span class="o">*</span> 
+   <span class="k">FROM</span> <span class="n">client</span> <span class="n">a</span> 
+   <span class="k">LEFT</span> <span class="k">JOIN</span> <span class="n">enrollment</span> <span class="n">b</span> <span class="k">ON</span> <span class="n">a</span><span class="p">.</span><span class="n">Personal</span><span class="o">=</span><span class="n">b</span><span class="p">.</span><span class="n">PersonalID</span></code></pre></figure>
+
+<p>This join should result in the following:</p>
+
+<table border="1" cellpadding="1" cellspacing="1" style="width: 312px;">
+
+<tbody>
+
+<tr>
+
+<td>PersonalID</td>
+
+<td>FirstName</td>
+
+<td>VeteranStatus</td>
+
+<td>DisablingCondition</td>
+
+</tr>
+
+<tr>
+
+<td>12345</td>
+
+<td>Jane</td>
+
+<td>Yes</td>
+
+<td>Yes</td>
+
+</tr>
+
+<tr>
+
+<td>54321</td>
+
+<td>Joe</td>
+
+<td>No</td>
+
+<td>No</td>
+
+</tr>
+
+<tr>
+
+<td>45321</td>
+
+<td>Sven</td>
+
+<td>NULL</td>
+
+<td>Yes</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+<p>Notice Sven was kept, even though he had no entry the Client.csv.  After the join, since he had no <br />
+And the inner join would look like this:</p>
+
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">SELECT</span> <span class="o">*</span> 
+       <span class="k">FROM</span> <span class="n">client</span> <span class="n">a</span> 
+       <span class="k">INNER</span> <span class="k">JOIN</span> <span class="n">enrollment</span> <span class="n">b</span> <span class="k">ON</span> <span class="n">a</span><span class="p">.</span><span class="n">Personal</span><span class="o">=</span><span class="n">b</span><span class="p">.</span><span class="n">PersonalID</span></code></pre></figure>
+
+<p>This join should result in the following:</p>
+
+<table border="1" cellpadding="1" cellspacing="1" style="width: 312px;">
+
+<tbody>
+
+<tr>
+
+<td>PersonalID</td>
+
+<td>FirstName</td>
+
+<td>VeteranStatus</td>
+
+<td>DisablingCondition</td>
+
+</tr>
+
+<tr>
+
+<td>12345</td>
+
+<td>Jane</td>
+
+<td>Yes</td>
+
+<td>Yes</td>
+
+</tr>
+
+<tr>
+
+<td>54321</td>
+
+<td>Joe</td>
+
+<td>No</td>
+
+<td>No</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+<h3 id="counts">Counts</h3>
+
+<figure class="highlight"><pre><code class="language-r" data-lang="r"><span class="n">PersonalID</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">sqldf</span><span class="p">(</span><span class="s2">"SELECT DISTINCT PersonalID FROM client"</span><span class="p">)</span></code></pre></figure>
+
+<p>Method above creates a vector of all the PersonalIDs in the client data-frame, which came from the Client.csv.  The DISTINCT command takes only one ID if there are more than two which are identical.  In short, it create a de-duplicaed list of participants.</p>
+
+<p>For example,</p>
+
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;">
+
+<tbody>
+
+<tr>
+
+<td>PersonalID</td>
+
+<td> OtherData</td>
+
+</tr>
+
+<tr>
+
+<td>12345</td>
+
+<td>xxxxxxxxx</td>
+
+</tr>
+
+<tr>
+
+<td>56839</td>
+
+<td>xxxxxxxxx</td>
+
+</tr>
+
+<tr>
+
+<td>12345</td>
+
+<td>xxxxxxxxx</td>
+
+</tr>
+
+<tr>
+
+<td>32453</td>
+
+<td>xxxxxxxxx</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+<p>Should result in the following,</p>
+
+<table border="1" cellpadding="1" cellspacing="1" style="width: 253px;">
+
+<tbody>
+
+<tr>
+
+<td style="width: 245px;">PersonalID</td>
+
+</tr>
+
+<tr>
+
+<td style="width: 245px;">12345</td>
+
+</tr>
+
+<tr>
+
+<td style="width: 245px;">56839</td>
+
+</tr>
+
+<tr>
+
+<td style="width: 245px;">32453</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+<p>This is useful in creating a key vector, given other CSVs have a one-to-many relationship for the PersonalID.  For example,</p>
+
+<p>The Enrollment.csv looks something like this</p>
+
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;">
+
+<tbody>
+
+<tr>
+
+<td>PersonalID</td>
+
+<td>ProjectEntryID</td>
+
+<td> EntryDate</td>
+
+</tr>
+
+<tr>
+
+<td>12345</td>
+
+<td>34523</td>
+
+<td>2016-12-01</td>
+
+</tr>
+
+<tr>
+
+<td>56839</td>
+
+<td>24523</td>
+
+<td>2015-09-23</td>
+
+</tr>
+
+<tr>
+
+<td>12345</td>
+
+<td>23443</td>
+
+<td>2014-01-10</td>
+
+</tr>
+
+<tr>
+
+<td>32453</td>
+
+<td>32454</td>
+
+<td>2015-12-30</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+<p>This reflects a client (i.e., 12345) entering a project twice, once on 2014-01-10 and the other 2016-12-01.</p>
+
+<h3 id="count-of-total-participants">Count of Total Participants:</h3>
+
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">SELECT</span> <span class="k">COUNT</span><span class="p">(</span><span class="n">PersonalID</span><span class="p">)</span> <span class="k">as</span> <span class="s1">'Total Participants'</span> <span class="k">FROM</span> <span class="n">client</span></code></pre></figure>
+
+<p>This query should give a on row output, counting the number of clients in the data-frame.</p>
+
+<table border="1" cellpadding="1" cellspacing="1" style="width: 181px;">
+
+<tbody>
+
+<tr>
+
+<td style="width: 121px;">Total Participants</td>
+
+</tr>
+
+<tr>
+
+<td>1</td>
+
+<td class="rtecenter" style="width: 121px;">1609</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+<p>However, if there are duplicate PersonalIDs it’ll count each entry as an ID.  To get a count of unique clients in a data-frame add the DISTINCT command.</p>
+
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">SELECT</span> <span class="k">COUNT</span><span class="p">(</span><span class="k">DISTINCT</span><span class="p">(</span><span class="n">PersonalID</span><span class="p">))</span> <span class="k">as</span> <span class="s1">'Unique Total Participants'</span> <span class="k">FROM</span> <span class="n">client</span></code></pre></figure>
+
+<h3 id="conditional-data">Conditional Data</h3>
+
+<p>Often in HMIS data it is necessary to find a collection of participants which meet a specific requirement.  For example, “How many people in this data-set are disabled?”  This is where the WHERE statement helps a lot.</p>
+
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">SELECT</span> <span class="n">PersonlID</span> <span class="k">FROM</span> <span class="n">clientAndEnrollment</span> <span class="k">WHERE</span> <span class="n">disability</span> <span class="o">=</span> <span class="s1">'Yes'</span></code></pre></figure>
+
+<p>This statement will return a vector of all the PersonalID’s of participants who stated they were disabled.  The total participant query could be used, but there is an alternative method.</p>
+
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">SELECT</span> <span class="k">SUM</span><span class="p">(</span><span class="k">CASE</span> <span class="k">WHEN</span> 
+               <span class="n">disability</span> <span class="o">=</span> <span class="s1">'Yes'</span> <span class="k">THEN</span> <span class="mi">1</span> <span class="k">ELSE</span> <span class="mi">0</span> 
+           <span class="k">END</span><span class="p">)</span> <span class="k">as</span> <span class="n">DisabledCount</span></code></pre></figure>
+
+<p>The above statement uses the CASE WHEN END statement, which I understand as SQL’s version of the IF statement.  Here’s C equivalent:</p>
+
+<figure class="highlight"><pre><code class="language-c" data-lang="c"><span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">total_participants</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">disability</span> <span class="o">==</span> <span class="nb">true</span><span class="p">){</span>
+       <span class="n">disabilityCounter</span><span class="o">++</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="err">}</span></code></pre></figure>
+
+<h3 id="bool">BOOL!</h3>
+
+<p>Boolean operaters can be used to get more complex conditional data:</p>
+
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">SELECT</span> <span class="n">PersonalID</span> <span class="k">FROM</span> <span class="n">clientAndEnrollment</span> 
+       <span class="k">WHERE</span> <span class="n">disability</span> <span class="o">=</span> <span class="s1">'Yes'</span> 
+       <span class="k">AND</span> <span class="n">gender</span> <span class="o">=</span> <span class="s1">'Female'</span></code></pre></figure>
+
+<p>This statement will provide a vector of all the PersonalID’s for clients who are disabled and female.</p>
+
+<p>Ok, good stopping point for now.</p>
+:ET

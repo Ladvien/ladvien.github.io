@@ -1,0 +1,216 @@
+I"�6<h2 id="churning-data-into-information">Churning Data into Information</h2>
+<p>I work with a lot of data on the behalf of an agency without a lot of money.  Exploring free-to-use and open-source tools is key to being effective in my job.</p>
+
+<p>Recently, I’ve written a a couple of series on how to use R and SQL to sort through Homeless Management Information System data.</p>
+
+<ul>
+  <li><a href="https://ladvien.com/hmis-r-sql-introduction/">HMIS, R, and SQL</a></li>
+  <li><a href="https://ladvien.com/attachment-iii-aka-the-zombie/">HMIS SQL-R Script Snippets</a></li>
+</ul>
+
+<p>These data are essential to local governments helping individuals experiencing homelessness to be housed quickly and appropriately.</p>
+
+<p>But one area R and SQL have not delivered is on-line interactive dashboards.  Data is one thing, but easy to digest information is really key to informing stakeholders how the system is working to end homelessness.</p>
+
+<p>In other projects I’ve attempted to generate graphs as images and upload to a static link.  Then, each time the data change re-generate replace the image.  But, most website servers cache the images so it is not ideal.</p>
+
+<p>This has pushed me to try to learn D3.</p>
+
+<ul>
+  <li><a href="https://d3js.org/">D3.js</a></li>
+</ul>
+
+<p>I’m not going to lie, I’ve felt confused by languages, IDEs, and libraries.  And I’ve overcome most of the these challenges.  But I’ve never been so confused as by the layout and syntax of D3. The dyslexic feeling I get trying to work in D3 has discouraged me from spending too much time on it.</p>
+
+<p>But recently I decided to take another stab at it– this time I lucked out and found the C3.js.</p>
+
+<ul>
+  <li><a href="http://c3js.org/">C3.js</a></li>
+</ul>
+
+<p>Essentially, C3 is a library which <em>greatly</em> simplifies D3.  It boils down building a graph into a set of options passed to the C3 graph builder as a JSON object.</p>
+
+<p>This code:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">chart</span> <span class="o">=</span> <span class="nx">c3</span><span class="p">.</span><span class="nx">generate</span><span class="p">({</span>
+    <span class="na">data</span><span class="p">:</span> <span class="p">{</span>
+        <span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Date</span><span class="dl">'</span><span class="p">,</span>
+        <span class="na">y</span><span class="p">:</span> <span class="dl">'</span><span class="s1"># Individuals</span><span class="dl">'</span><span class="p">,</span>
+        <span class="na">xFormat</span><span class="p">:</span> <span class="dl">'</span><span class="s1">%Y-%m-%d</span><span class="dl">'</span><span class="p">,</span>
+        <span class="na">url</span><span class="p">:</span> <span class="dl">'</span><span class="s1">https://ladvien.com/projects/d3/data/trendsInTX601.csv</span><span class="dl">'</span><span class="p">,</span>
+        <span class="na">type</span><span class="p">:</span> <span class="dl">'</span><span class="s1">line</span><span class="dl">'</span><span class="p">,</span>
+        <span class="c1">// colors: {</span>
+        <span class="c1">//     Count: '#990000'</span>
+        <span class="c1">// }</span>
+        <span class="na">names</span><span class="p">:</span> <span class="p">{</span>
+            <span class="na">NumberHomeless</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Homeless</span><span class="dl">"</span><span class="p">,</span>
+            <span class="na">NumberInRRH</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Rapid Rehousing</span><span class="dl">"</span><span class="p">,</span>
+            <span class="na">NumberInPSH</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Permanent Supportive Housing</span><span class="dl">"</span>
+        <span class="p">}</span>
+    <span class="p">},</span>
+    
+    <span class="na">title</span><span class="p">:</span> <span class="p">{</span>
+        <span class="na">text</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Homeless or Formerly Homeless in TX-601</span><span class="dl">"</span>
+    <span class="p">},</span>
+
+    <span class="na">legend</span><span class="p">:</span> <span class="p">{</span>
+        <span class="na">show</span><span class="p">:</span> <span class="kc">true</span>
+    <span class="p">},</span>
+
+    <span class="na">axis</span><span class="p">:</span> <span class="p">{</span>
+        <span class="na">x</span><span class="p">:</span> <span class="p">{</span>
+            <span class="na">type</span><span class="p">:</span> <span class="dl">'</span><span class="s1">timeseries</span><span class="dl">'</span><span class="p">,</span>
+            <span class="na">tick</span><span class="p">:</span> <span class="p">{</span>
+                <span class="na">count</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+                <span class="na">format</span><span class="p">:</span> <span class="dl">'</span><span class="s1">%Y-%m-%d</span><span class="dl">'</span><span class="p">,</span>
+                <span class="c1">// rotate: 90,</span>
+                <span class="na">multiline</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+                
+                <span class="na">culling</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="na">max</span><span class="p">:</span><span class="mi">5</span> 
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">},</span>
+        <span class="na">y</span><span class="p">:</span> <span class="p">{</span>
+            <span class="na">max</span><span class="p">:</span> <span class="mi">3000</span><span class="p">,</span>
+            <span class="na">min</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="na">label</span><span class="p">:</span> <span class="dl">"</span><span class="s2"># Individuals</span><span class="dl">"</span>
+            <span class="c1">// Range includes padding, set 0 if no padding needed</span>
+            <span class="c1">// padding: {top:0, bottom:0}</span>
+        <span class="p">},</span>
+    <span class="p">},</span>
+    
+    <span class="na">point</span><span class="p">:</span> <span class="p">{</span>
+        <span class="na">r</span><span class="p">:</span> <span class="mi">0</span>
+    <span class="p">}</span>
+<span class="p">});</span></code></pre></figure>
+
+<p>Using this CSV:</p>
+
+<ul>
+  <li><a href="https://ladvien.com/projects/d3/data/trendsInTX601.csv">trendsInTX601.csv</a></li>
+</ul>
+
+<p>Produces the following graph:</p>
+<link href="https://ladvien.com/projects/d3/practice/c3-0.4.15/c3.css" rel="stylesheet" />
+
+<script src="https://d3js.org/d3.v3.min.js"></script>
+
+<script src="https://ladvien.com/projects/d3/practice/c3-0.4.15/c3.min.js"></script>
+
+<script src="https://ladvien.com/projects/d3/tx-601/trends-tx-601.js"></script>
+
+<div id="chartOne"></div>
+
+<h2 id="one-hiccup">One Hiccup</h2>
+
+<p>I did run into a one hiccup in setup.  It seems the most recent version of d3 (version 4.0) has had much of its API overhauled.  In such, it will not work with C3.  But D3 v3 is still available from the D3 CDN:</p>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js"><span class="o">&lt;</span><span class="nx">script</span> <span class="nx">src</span><span class="o">=</span><span class="dl">"</span><span class="s2">https://d3js.org/d3.v3.min.js</span><span class="dl">"</span><span class="o">&gt;&lt;</span><span class="sr">/script&gt;</span></code></pre></figure>
+
+<p>Calling this library and following the instructions outlined by the C3 site, you can be generating graphs in little time.</p>
+
+<ul>
+  <li><a href="http://c3js.org/gettingstarted.html">C3 – Getting Started</a></li>
+</ul>
+
+<h2 id="updating-data-securely-and-on-schedule">Updating Data Securely and On Schedule</h2>
+
+<p>Now that I’ve the ability to use R and SQL to sort through my data, and I could quickly generate graphs using D3 and C3, it’d be really nice if a lot of this could be automated.  And luckily, I’d run into a few other tools which made it pretty easy to replace the data on my C3 graphs.</p>
+
+<h3 id="rsync">Rsync</h3>
+
+<p>Rsync is primarily a Linux tool, but it is available on Windows as well.  It is nice since it will allow you to quickly reconcile two file-trees (think of a manual Dropbox).</p>
+
+<p>It will also allow you to sync a local file tree with a server file tree across an SSH connection.  For example, I use the following command to sync the data mentioned above to the server</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">rsync <span class="nt">-avz</span> /Users/user/data/js-practice/d3/<span class="k">*</span> ladvien@ladvien.com:/usr/share/nginx/html/projects/d3/</code></pre></figure>
+
+<p>After running this command it will prompt for a password to access the server.  Then, it will proceed to sync the two file-trees.  Nifty!</p>
+
+<p>This allows me to quickly update the data on the graph.  Now, if only there were a way to automatically insert my password, then I could write a script to automate the whole process.</p>
+
+<h4 id="python-keyring">Python Keyring</h4>
+
+<p>Python Keyring is a tool which allows you to save and retrieve passwords from your PC’s keyring.</p>
+
+<ul>
+  <li><a href="https://pypi.python.org/pypi/keyring">Python Keyring</a></li>
+</ul>
+
+<p>It is compatible with:</p>
+
+<ul>
+  <li>Mac OS X Keychain</li>
+  <li>Freedesktop Secret Service (requires secretstorage)</li>
+  <li>KWallet (requires dbus)</li>
+  <li>Windows Credential Vault</li>
+</ul>
+
+<p>If you have Python installed you can install the Keyring tool with Pip:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$pip</span> <span class="nb">install </span>keyring</code></pre></figure>
+
+<p>After, you can store a password in the keyring by using the command-line tool.  You will need to replace <code class="highlighter-rouge">username</code> with the name of your server login.</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$keyring</span> <span class="nb">set </span>system username</code></pre></figure>
+
+<p>And retrieve it with:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$keyring</span> get system username</code></pre></figure>
+
+<p>This is great.  It means we can store our password in the keyring and retrieve it securely from a script.</p>
+
+<p>Great! Now we could write a script to have Rsync sync the any data changes locally with the server.  Right?  Well, almost.  We needed one more tool.</p>
+
+<h3 id="sshpass">SSHPass</h3>
+
+<p>There is a problem with using Rsync to sync files remotely from a script.  When Rsync is called from a script it will not wait for parameters to be passed to the tool.  Sigh.</p>
+
+<p>Luckily, I’m not the only with this problem and a tool was created to solve this problem.</p>
+
+<ul>
+  <li><a href="https://linux.die.net/man/1/sshpass">SSHPass</a></li>
+</ul>
+
+<p>If you are on a Mac you’ll need to use Brew to install SSHPass.</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">brew <span class="nb">install </span>https://raw.githubusercontent.com/kadwanev/bigboybrew/master/Library/Formula/sshpass.rb </code></pre></figure>
+
+<p>There we go! Now we can automate the whole process.</p>
+
+<p>I wrote this script to do the dirty work:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c">#!/bin/sh</span>
+<span class="nv">PASSWORD</span><span class="o">=(</span><span class="s2">"</span><span class="si">$(</span>keyring get system ladvien.com<span class="si">)</span><span class="s2">"</span><span class="o">)</span>
+ECHO <span class="s2">""</span>
+ECHO <span class="s2">"****************************"</span>
+ECHO <span class="s2">"* Updating D3 Projects     *"</span>
+ECHO <span class="s2">"****************************"</span>
+ECHO <span class="s2">""</span>
+sshpass <span class="nt">-p</span> <span class="s2">"</span><span class="nv">$PASSWORD</span><span class="s2">"</span> rsync <span class="nt">-avz</span> /Users/user/data/js-practice/d3/<span class="k">*</span> root@ladvien.com:/usr/share/nginx/html/projects/d3/</code></pre></figure>
+
+<h3 id="cron">Cron</h3>
+
+<p>Ok! One last bit of sugar on this whole process.  Let’s create a Cron job.  This will run the script in the background at an interval of our choosing.</p>
+
+<p>For me, I’ve a staff who pulls data and runs a master script every Monday.  So, I’ll set my automated script to update my C3 graph data on Tuesday, when I know new data is available.</p>
+
+<ul>
+  <li><a href="https://ole.michelsen.dk/blog/schedule-jobs-with-crontab-on-mac-osx.html">How to Create a Cron Job on a Mac</a></li>
+</ul>
+
+<p>You can use Nano to edit your Cron job list.</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nb">env </span><span class="nv">EDITOR</span><span class="o">=</span>nano crontab <span class="nt">-e</span></code></pre></figure>
+
+<p>To run a Cron job on Tuesday we would set the fifth asterisk to 2.</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="k">*</span> <span class="k">*</span> <span class="k">*</span> <span class="k">*</span> 2 /the/path/to/our/update_script.sh</code></pre></figure>
+
+<p>And don’t forget to make the <code class="highlighter-rouge">update_script.sh</code> executable.</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nb">chmod</span> +x update_script.sh</code></pre></figure>
+
+<p>I’m a hacker hacking with a hacksaw!</p>
+:ET

@@ -1,0 +1,427 @@
+I"��<ol>
+  <li>Unwrap SSOAuthToken.  Else, handle error.</li>
+  <li>Create request from webservice and SSOAuthToken.</li>
+  <li>Make a GET request.</li>
+  <li>Async-wait for response</li>
+  <li>Unwrap response data.</li>
+  <li>If GET request returned 200-299, request was success. If failed, handle.</li>
+  <li>When successful, convert the return JSON data.  If failed, handle.</li>
+  <li>Get Enterprise Names and enterpriseGUUID string from JSON data.</li>
+  <li>Add the enterpriseGUUID string to a Dictionary using the Enterprise Names as the Key</li>
+  <li>Call completion callback meothd with parameter “Success”</li>
+</ol>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="kd">public</span> <span class="kd">func</span> <span class="nf">getListOfEnterprisesAvailable</span><span class="p">(</span><span class="nv">currentSessionInfo</span><span class="p">:</span> <span class="kt">SessionInfo</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="n">_</span> <span class="nv">response</span><span class="p">:</span> <span class="kt">ReturnInfoWithDictionary</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">){</span>
+
+    <span class="k">let</span> <span class="nv">SSOAuthToken</span> <span class="o">=</span> <span class="n">currentSessionInfo</span><span class="o">.</span><span class="kt">SSOAuthToken</span><span class="o">!</span>
+
+    <span class="k">var</span> <span class="nv">returnInfo</span> <span class="o">=</span> <span class="kt">ReturnInfoWithDictionary</span><span class="p">()</span>
+    <span class="k">var</span> <span class="nv">enterpriseDictionary</span> <span class="o">=</span> <span class="kt">Dictionary</span><span class="o">&lt;</span><span class="kt">String</span><span class="p">,</span> <span class="kt">String</span><span class="o">&gt;</span><span class="p">()</span>
+
+    <span class="k">let</span> <span class="nv">GetSSOEnterprisesService</span> <span class="o">=</span> <span class="s">"https://services.etosoftware.com/API/Security.svc/GetSSOEnterprises/</span><span class="se">\(</span><span class="kt">SSOAuthToken</span><span class="se">)</span><span class="s">"</span>
+
+    <span class="k">let</span> <span class="nv">request</span> <span class="o">=</span> <span class="kt">Alamofire</span><span class="o">.</span><span class="nf">request</span><span class="p">(</span><span class="kt">GetSSOEnterprisesService</span><span class="p">,</span> <span class="nv">method</span><span class="p">:</span> <span class="o">.</span><span class="k">get</span><span class="p">,</span> <span class="nv">parameters</span><span class="p">:</span> <span class="kc">nil</span><span class="p">,</span> <span class="nv">encoding</span><span class="p">:</span> <span class="kt">URLEncoding</span><span class="o">.</span><span class="k">default</span><span class="p">)</span><span class="o">.</span><span class="nf">validate</span><span class="p">()</span><span class="o">.</span><span class="n">responseJSON</span> <span class="p">{</span> <span class="n">response</span> <span class="k">in</span>
+
+        <span class="k">switch</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">result</span><span class="p">){</span>
+            <span class="k">case</span> <span class="o">.</span><span class="nv">success</span><span class="p">:</span>
+                <span class="k">if</span> <span class="k">let</span> <span class="nv">jsonData</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">data</span> <span class="p">{</span>
+                    <span class="k">let</span> <span class="nv">enterprisesList</span> <span class="o">=</span> <span class="kt">JSON</span><span class="p">(</span><span class="nv">data</span><span class="p">:</span> <span class="n">jsonData</span><span class="p">)</span>
+                    <span class="k">for</span> <span class="n">i</span> <span class="k">in</span> <span class="mi">0</span><span class="o">..&lt;</span><span class="n">enterprisesList</span><span class="o">.</span><span class="n">count</span> <span class="p">{</span>
+                        <span class="k">let</span> <span class="nv">key</span> <span class="o">=</span> <span class="n">enterprisesList</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s">"Key"</span><span class="p">]</span><span class="o">.</span><span class="n">string</span><span class="o">!</span>
+                        <span class="k">let</span> <span class="nv">value</span> <span class="o">=</span> <span class="n">enterprisesList</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s">"Value"</span><span class="p">]</span><span class="o">.</span><span class="n">string</span><span class="o">!</span>
+                        <span class="n">enterpriseDictionary</span><span class="o">.</span><span class="nf">updateValue</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="nv">forKey</span><span class="p">:</span> <span class="n">value</span><span class="p">)</span>
+                    <span class="p">}</span>
+                    <span class="n">returnInfo</span><span class="o">.</span><span class="n">dictionary</span> <span class="o">=</span> <span class="n">enterpriseDictionary</span>
+                    <span class="n">returnInfo</span><span class="o">.</span><span class="n">callback</span> <span class="o">=</span> <span class="k">self</span><span class="o">.</span><span class="nf">prepareResponse</span><span class="p">(</span><span class="nv">targetResponse</span><span class="p">:</span> <span class="o">.</span><span class="kt">Success</span><span class="p">)</span>
+                    <span class="nf">completion</span><span class="p">(</span><span class="n">returnInfo</span><span class="p">)</span>
+                <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                    <span class="n">returnInfo</span><span class="o">.</span><span class="n">callback</span> <span class="o">=</span> <span class="k">self</span><span class="o">.</span><span class="nf">prepareResponse</span><span class="p">(</span><span class="nv">targetResponse</span><span class="p">:</span> <span class="o">.</span><span class="kt">FailedToGetEnterpriseList</span><span class="p">)</span>
+                    <span class="nf">completion</span><span class="p">(</span><span class="n">returnInfo</span><span class="p">)</span>
+                <span class="p">}</span>
+                <span class="k">break</span><span class="p">;</span>
+            <span class="k">case</span> <span class="o">.</span><span class="nv">failure</span><span class="p">:</span>
+                <span class="n">returnInfo</span><span class="o">.</span><span class="n">callback</span> <span class="o">=</span> <span class="k">self</span><span class="o">.</span><span class="nf">prepareResponse</span><span class="p">(</span><span class="nv">targetResponse</span><span class="p">:</span> <span class="o">.</span><span class="kt">HTTPRequestFail</span><span class="p">)</span>
+                <span class="nf">completion</span><span class="p">(</span><span class="n">returnInfo</span><span class="p">)</span>
+                <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">if</span><span class="p">(</span><span class="kt">DebugMode</span><span class="p">){</span>
+        <span class="nf">debugPrint</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">public</span> <span class="kd">func</span> <span class="nf">setEnterprise</span><span class="p">(</span><span class="nv">currentSessionInfo</span><span class="p">:</span> <span class="kt">SessionInfo</span><span class="p">,</span> <span class="nv">selectedEnterprise</span><span class="p">:</span> <span class="kt">String</span><span class="p">){</span>
+    <span class="k">let</span> <span class="nv">etoUserDefaults</span> <span class="o">=</span> <span class="kt">ETOUserDefaults</span><span class="p">()</span>
+    <span class="n">etoUserDefaults</span><span class="o">.</span><span class="nf">setUserDefault</span><span class="p">(</span><span class="nv">key</span><span class="p">:</span> <span class="o">.</span><span class="n">enterpriseID</span><span class="p">,</span> <span class="nv">value</span><span class="p">:</span> <span class="n">selectedEnterprise</span><span class="p">)</span>
+    <span class="n">currentSessionInfo</span><span class="o">.</span><span class="nf">setEnterprise</span><span class="p">(</span><span class="nv">chosenEnterprise</span><span class="p">:</span> <span class="n">selectedEnterprise</span><span class="p">)</span>
+<span class="p">}</span></code></pre></figure>
+
+<ol>
+  <li>Unwrap SSOAuthToken.  Else, handle error.</li>
+  <li>Unwrap selectedEnterpriseGuuid.  Else, handle error.</li>
+  <li>Create request from  webservice URL, SSOAuthToken, Enterprise GUUID.</li>
+  <li>Make a GET request.</li>
+  <li>Async-wait for response</li>
+  <li>Unwrap response data.</li>
+  <li>If GET request returned 200-299, request was success. If failed, handle.</li>
+  <li>When successful, convert the return JSON data.  If failed, handle.</li>
+  <li>Get Site Name and Site Number from JSON data.</li>
+  <li>Add the Site Number to a Dictionary using the Site Name as the Key</li>
+  <li>Call completion callback meothd with parameter “Success”</li>
+</ol>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="kd">public</span> <span class="kd">func</span> <span class="nf">getListOfSites</span><span class="p">(</span><span class="nv">currentSessionInfo</span><span class="p">:</span> <span class="kt">SessionInfo</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="n">_</span> <span class="nv">response</span><span class="p">:</span> <span class="kt">ReturnInfoWithDictionary</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">){</span>
+
+    <span class="k">var</span> <span class="nv">returnInfo</span> <span class="o">=</span> <span class="kt">ReturnInfoWithDictionary</span><span class="p">()</span>
+
+    <span class="k">let</span> <span class="nv">SSOAuthToken</span> <span class="o">=</span> <span class="n">currentSessionInfo</span><span class="o">.</span><span class="kt">SSOAuthToken</span> <span class="p">??</span> <span class="s">""</span>
+    <span class="k">let</span> <span class="nv">selectedEnterpriseGuuid</span> <span class="o">=</span> <span class="n">currentSessionInfo</span><span class="o">.</span><span class="nf">selectedEnterprise</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="s">""</span> <span class="o">==</span> <span class="kt">SSOAuthToken</span> <span class="p">{</span>
+        <span class="n">returnInfo</span><span class="o">.</span><span class="n">callback</span> <span class="o">=</span> <span class="nf">prepareResponse</span><span class="p">(</span><span class="nv">targetResponse</span><span class="p">:</span> <span class="o">.</span><span class="kt">NoSSOAuthToken</span><span class="p">)</span>
+        <span class="nf">completion</span><span class="p">(</span><span class="n">returnInfo</span><span class="p">)</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="s">""</span> <span class="o">==</span> <span class="n">selectedEnterpriseGuuid</span> <span class="p">{</span>
+        <span class="n">returnInfo</span><span class="o">.</span><span class="n">callback</span> <span class="o">=</span> <span class="nf">prepareResponse</span><span class="p">(</span><span class="nv">targetResponse</span><span class="p">:</span> <span class="o">.</span><span class="kt">NoEnterpriseIDSelected</span><span class="p">)</span>
+        <span class="nf">completion</span><span class="p">(</span><span class="n">returnInfo</span><span class="p">)</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+
+        <span class="k">let</span> <span class="nv">GetSSOSitesService</span> <span class="o">=</span> <span class="s">"https://services.etosoftware.com/API/Security.svc/GetSSOSites/</span><span class="se">\(</span><span class="kt">SSOAuthToken</span><span class="se">)</span><span class="s">/</span><span class="se">\(</span><span class="n">selectedEnterpriseGuuid</span><span class="se">)</span><span class="s">"</span>
+
+        <span class="k">let</span> <span class="nv">request</span> <span class="o">=</span> <span class="kt">Alamofire</span><span class="o">.</span><span class="nf">request</span><span class="p">(</span><span class="kt">GetSSOSitesService</span><span class="p">,</span> <span class="nv">method</span><span class="p">:</span> <span class="o">.</span><span class="k">get</span><span class="p">,</span> <span class="nv">parameters</span><span class="p">:</span> <span class="kc">nil</span><span class="p">,</span> <span class="nv">encoding</span><span class="p">:</span> <span class="kt">URLEncoding</span><span class="o">.</span><span class="k">default</span><span class="p">)</span><span class="o">.</span><span class="nf">validate</span><span class="p">()</span><span class="o">.</span><span class="n">responseJSON</span> <span class="p">{</span> <span class="n">response</span> <span class="k">in</span>
+
+            <span class="k">switch</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">result</span><span class="p">){</span>
+            <span class="k">case</span> <span class="o">.</span><span class="nv">success</span><span class="p">:</span>
+                <span class="k">if</span> <span class="k">let</span> <span class="nv">jsonData</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">data</span> <span class="p">{</span>
+                    <span class="k">let</span> <span class="nv">siteList</span> <span class="o">=</span> <span class="kt">JSON</span><span class="p">(</span><span class="nv">data</span><span class="p">:</span> <span class="n">jsonData</span><span class="p">)</span>
+                    <span class="k">for</span> <span class="n">i</span> <span class="k">in</span> <span class="mi">0</span><span class="o">..&lt;</span><span class="n">siteList</span><span class="o">.</span><span class="n">count</span> <span class="p">{</span>
+                        <span class="k">let</span> <span class="nv">keyInt</span> <span class="o">=</span> <span class="n">siteList</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s">"Key"</span><span class="p">]</span><span class="o">.</span><span class="n">int</span><span class="o">!</span>
+                        <span class="k">let</span> <span class="nv">key</span> <span class="o">=</span> <span class="kt">String</span><span class="p">(</span><span class="n">keyInt</span><span class="p">)</span>
+                        <span class="k">let</span> <span class="nv">value</span> <span class="o">=</span> <span class="n">siteList</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s">"Value"</span><span class="p">]</span><span class="o">.</span><span class="n">string</span><span class="o">!</span>
+                        <span class="n">returnInfo</span><span class="o">.</span><span class="n">dictionary</span><span class="o">.</span><span class="nf">updateValue</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="nv">forKey</span><span class="p">:</span> <span class="n">value</span><span class="p">)</span>
+                    <span class="p">}</span>
+                    <span class="n">returnInfo</span><span class="o">.</span><span class="n">callback</span> <span class="o">=</span> <span class="k">self</span><span class="o">.</span><span class="nf">prepareResponse</span><span class="p">(</span><span class="nv">targetResponse</span><span class="p">:</span> <span class="o">.</span><span class="kt">Success</span><span class="p">)</span>
+                    <span class="nf">completion</span><span class="p">(</span><span class="n">returnInfo</span><span class="p">)</span>
+                <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                    <span class="n">returnInfo</span><span class="o">.</span><span class="n">callback</span> <span class="o">=</span> <span class="k">self</span><span class="o">.</span><span class="nf">prepareResponse</span><span class="p">(</span><span class="nv">targetResponse</span><span class="p">:</span> <span class="o">.</span><span class="kt">FailedToGetSiteList</span><span class="p">)</span>
+                    <span class="nf">completion</span><span class="p">(</span><span class="n">returnInfo</span><span class="p">)</span>
+                <span class="p">}</span>
+                <span class="k">break</span><span class="p">;</span>
+            <span class="k">case</span> <span class="o">.</span><span class="nv">failure</span><span class="p">:</span>
+                <span class="n">returnInfo</span><span class="o">.</span><span class="n">callback</span> <span class="o">=</span> <span class="k">self</span><span class="o">.</span><span class="nf">prepareResponse</span><span class="p">(</span><span class="nv">targetResponse</span><span class="p">:</span> <span class="o">.</span><span class="kt">HTTPRequestFail</span><span class="p">)</span>
+                <span class="nf">completion</span><span class="p">(</span><span class="n">returnInfo</span><span class="p">)</span>
+                <span class="k">break</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="k">if</span><span class="p">(</span><span class="kt">DebugMode</span><span class="p">){</span>
+            <span class="nf">debugPrint</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">}</span>       
+<span class="p">}</span></code></pre></figure>
+
+<ol>
+  <li>Unwrap SSOAuthToken.  Else, handle error.</li>
+  <li>Unwrap selectedEnterpriseGuuid.  Else, handle error.</li>
+  <li>Create request from webservice, SSOAuthToken, and Enterprise GUUID.</li>
+  <li>Make a GET request.</li>
+  <li>Async-wait for response</li>
+  <li>Unwrap response data.</li>
+  <li>If GET request returned 200-299, request was success. If failed, handle.</li>
+  <li>When successful, convert the returned JSON data.  If failed, handle.</li>
+  <li>Assign the Site sessionSecurityToken from the token in JSON data.</li>
+  <li>Call completion callback method with parameter “Success”</li>
+</ol>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="kd">public</span> <span class="kd">func</span> <span class="nf">setSelectedSite</span><span class="p">(</span><span class="nv">currentSessionInfo</span><span class="p">:</span> <span class="kt">SessionInfo</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="n">_</span> <span class="nv">response</span><span class="p">:</span> <span class="kt">ReturnInfoWithString</span><span class="p">)</span><span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">){</span>
+
+  <span class="k">let</span> <span class="nv">etoUserDefault</span> <span class="o">=</span> <span class="kt">ETOUserDefaults</span><span class="p">()</span>
+  <span class="k">var</span> <span class="nv">returnInfo</span> <span class="o">=</span> <span class="kt">ReturnInfoWithString</span><span class="p">()</span>
+
+  <span class="k">let</span> <span class="nv">SSOAuthToken</span> <span class="o">=</span> <span class="n">currentSessionInfo</span><span class="o">.</span><span class="kt">SSOAuthToken</span> <span class="p">??</span> <span class="s">""</span>
+  <span class="k">let</span> <span class="nv">selectedEnterpriseGuuid</span> <span class="o">=</span> <span class="n">currentSessionInfo</span><span class="o">.</span><span class="nf">selectedEnterprise</span><span class="p">()</span>
+  <span class="k">let</span> <span class="nv">selectedSite</span> <span class="o">=</span> <span class="n">currentSessionInfo</span><span class="o">.</span><span class="nf">selectedSite</span><span class="p">()</span>
+
+  <span class="n">etoUserDefault</span><span class="o">.</span><span class="nf">setUserDefault</span><span class="p">(</span><span class="nv">key</span><span class="p">:</span> <span class="o">.</span><span class="n">siteID</span><span class="p">,</span> <span class="nv">value</span><span class="p">:</span> <span class="n">selectedSite</span><span class="p">)</span>
+
+  <span class="k">var</span> <span class="nv">secondsFromGMT</span><span class="p">:</span> <span class="kt">Int</span> <span class="p">{</span> <span class="k">return</span> <span class="kt">NSTimeZone</span><span class="o">.</span><span class="n">local</span><span class="o">.</span><span class="nf">secondsFromGMT</span><span class="p">()</span> <span class="p">}</span>
+  <span class="k">let</span> <span class="nv">utcOffsetInHours</span> <span class="o">=</span> <span class="kt">String</span><span class="p">(</span><span class="n">secondsFromGMT</span> <span class="o">/</span> <span class="mi">60</span><span class="p">)</span>
+
+  <span class="k">if</span> <span class="s">""</span> <span class="o">==</span> <span class="kt">SSOAuthToken</span> <span class="p">{</span>
+      <span class="n">returnInfo</span><span class="o">.</span><span class="n">callback</span> <span class="o">=</span> <span class="nf">prepareResponse</span><span class="p">(</span><span class="nv">targetResponse</span><span class="p">:</span> <span class="o">.</span><span class="kt">NoSSOAuthToken</span><span class="p">)</span>
+      <span class="nf">completion</span><span class="p">(</span><span class="n">returnInfo</span><span class="p">)</span>
+  <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="s">""</span> <span class="o">==</span> <span class="n">selectedEnterpriseGuuid</span> <span class="p">{</span>
+      <span class="n">returnInfo</span><span class="o">.</span><span class="n">callback</span> <span class="o">=</span> <span class="nf">prepareResponse</span><span class="p">(</span><span class="nv">targetResponse</span><span class="p">:</span> <span class="o">.</span><span class="kt">NoEnterpriseIDSelected</span><span class="p">)</span>
+      <span class="nf">completion</span><span class="p">(</span><span class="n">returnInfo</span><span class="p">)</span>
+  <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="s">""</span> <span class="o">==</span> <span class="n">utcOffsetInHours</span> <span class="p">{</span>
+      <span class="n">returnInfo</span><span class="o">.</span><span class="n">callback</span> <span class="o">=</span> <span class="nf">prepareResponse</span><span class="p">(</span><span class="nv">targetResponse</span><span class="p">:</span> <span class="o">.</span><span class="kt">InvalidUTC</span><span class="p">)</span>
+      <span class="nf">completion</span><span class="p">(</span><span class="n">returnInfo</span><span class="p">)</span>
+  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+      <span class="k">let</span> <span class="nv">body</span> <span class="o">=</span> <span class="s">"https://services.etosoftware.com/API/Security.svc/SSOSiteLogin/</span><span class="se">\(</span><span class="n">selectedSite</span><span class="se">)</span><span class="s">/</span><span class="se">\(</span><span class="n">selectedEnterpriseGuuid</span><span class="se">)</span><span class="s">/</span><span class="se">\(</span><span class="kt">SSOAuthToken</span><span class="se">)</span><span class="s">/"</span>
+          <span class="o">+</span> <span class="n">utcOffsetInHours</span>
+      <span class="k">let</span> <span class="nv">request</span> <span class="o">=</span> <span class="kt">Alamofire</span><span class="o">.</span><span class="nf">request</span><span class="p">(</span><span class="n">body</span><span class="p">,</span> <span class="nv">method</span><span class="p">:</span> <span class="o">.</span><span class="k">get</span><span class="p">,</span> <span class="nv">encoding</span><span class="p">:</span> <span class="kt">URLEncoding</span><span class="o">.</span><span class="k">default</span><span class="p">)</span><span class="o">.</span><span class="nf">validate</span><span class="p">()</span><span class="o">.</span><span class="n">responseJSON</span> <span class="p">{</span> <span class="n">response</span> <span class="k">in</span>
+
+          <span class="k">switch</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">result</span><span class="p">){</span>
+          <span class="k">case</span> <span class="o">.</span><span class="nv">success</span><span class="p">:</span>
+              <span class="k">if</span> <span class="k">let</span> <span class="nv">jsonData</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">data</span> <span class="p">{</span>
+                  <span class="k">let</span> <span class="nv">sessionSecurityToken</span> <span class="o">=</span> <span class="kt">JSON</span><span class="p">(</span><span class="nv">data</span><span class="p">:</span> <span class="n">jsonData</span><span class="p">)</span>
+                  <span class="n">currentSessionInfo</span><span class="o">.</span><span class="n">sessionSecurityToken</span> <span class="o">=</span> <span class="n">sessionSecurityToken</span><span class="o">.</span><span class="n">string</span><span class="o">!</span>
+                  <span class="n">returnInfo</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">sessionSecurityToken</span><span class="o">.</span><span class="n">string</span><span class="o">!</span>
+                  <span class="n">returnInfo</span><span class="o">.</span><span class="n">callback</span> <span class="o">=</span> <span class="k">self</span><span class="o">.</span><span class="nf">prepareResponse</span><span class="p">(</span><span class="nv">targetResponse</span><span class="p">:</span> <span class="o">.</span><span class="kt">Success</span><span class="p">)</span>
+                  <span class="nf">completion</span><span class="p">(</span><span class="n">returnInfo</span><span class="p">)</span>
+              <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                  <span class="n">returnInfo</span><span class="o">.</span><span class="n">callback</span> <span class="o">=</span> <span class="k">self</span><span class="o">.</span><span class="nf">prepareResponse</span><span class="p">(</span><span class="nv">targetResponse</span><span class="p">:</span> <span class="o">.</span><span class="kt">FailedToGetSiteList</span><span class="p">)</span>
+                  <span class="nf">completion</span><span class="p">(</span><span class="n">returnInfo</span><span class="p">)</span>
+              <span class="p">}</span>
+              <span class="k">break</span><span class="p">;</span>
+          <span class="k">case</span> <span class="o">.</span><span class="nv">failure</span><span class="p">:</span>
+              <span class="n">returnInfo</span><span class="o">.</span><span class="n">callback</span> <span class="o">=</span> <span class="k">self</span><span class="o">.</span><span class="nf">prepareResponse</span><span class="p">(</span><span class="nv">targetResponse</span><span class="p">:</span> <span class="o">.</span><span class="kt">HTTPRequestFail</span><span class="p">)</span>
+              <span class="nf">completion</span><span class="p">(</span><span class="n">returnInfo</span><span class="p">)</span>
+              <span class="k">break</span><span class="p">;</span>
+          <span class="p">}</span>
+      <span class="p">}</span>
+      <span class="k">if</span><span class="p">(</span><span class="kt">DebugMode</span><span class="p">){</span>
+          <span class="nf">debugPrint</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+      <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+<ol>
+  <li>Unwrap selectedEnterpriseGuuid.  Else, handle error.</li>
+  <li>Create request from webservice URL, sessionSecurityToken, and EnterpriseGUUID</li>
+  <li>Make a GET request.</li>
+  <li>Async-wait for response</li>
+  <li>Unwrap response data.</li>
+  <li>If GET request returned 200-299, request was success. If failed, handle.</li>
+  <li>When successful, convert the return JSON data.  If failed, handle.</li>
+  <li>Get Program Name and Program Number from JSON data.</li>
+  <li>Add the Program Number to a Dictionary using the Program Name as the Key</li>
+  <li>Call completion callback meothd with parameter “Success”</li>
+</ol>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="kd">public</span> <span class="kd">func</span> <span class="nf">getListOfPrograms</span><span class="p">(</span><span class="nv">currentSessionInfo</span><span class="p">:</span> <span class="kt">SessionInfo</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="n">_</span> <span class="nv">response</span><span class="p">:</span> <span class="kt">ReturnInfoWithDictionary</span><span class="p">)</span>  <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">){</span>
+
+     <span class="k">var</span> <span class="nv">returnInfo</span> <span class="o">=</span> <span class="kt">ReturnInfoWithDictionary</span><span class="p">()</span>
+
+     <span class="k">let</span> <span class="nv">headers</span> <span class="o">=</span> <span class="nf">headersWithEnterpriseIDAndSecurityToken</span><span class="p">(</span><span class="nv">currentSessionInfo</span><span class="p">:</span> <span class="n">sessionInfo</span><span class="p">)</span>
+
+     <span class="k">let</span> <span class="nv">selectedSite</span> <span class="o">=</span> <span class="n">currentSessionInfo</span><span class="o">.</span><span class="nf">selectedSite</span><span class="p">()</span>
+
+     <span class="k">if</span> <span class="s">""</span> <span class="o">==</span> <span class="n">currentSessionInfo</span><span class="o">.</span><span class="kt">SSOAuthToken</span> <span class="p">{</span>
+         <span class="n">returnInfo</span><span class="o">.</span><span class="n">callback</span> <span class="o">=</span> <span class="nf">prepareResponse</span><span class="p">(</span><span class="nv">targetResponse</span><span class="p">:</span> <span class="o">.</span><span class="kt">NoSSOAuthToken</span><span class="p">)</span>
+         <span class="nf">completion</span><span class="p">(</span><span class="n">returnInfo</span><span class="p">)</span>
+     <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="s">""</span> <span class="o">==</span> <span class="n">currentSessionInfo</span><span class="o">.</span><span class="nf">selectedEnterprise</span><span class="p">()</span> <span class="p">{</span>
+         <span class="n">returnInfo</span><span class="o">.</span><span class="n">callback</span> <span class="o">=</span> <span class="nf">prepareResponse</span><span class="p">(</span><span class="nv">targetResponse</span><span class="p">:</span> <span class="o">.</span><span class="kt">NoEnterpriseIDSelected</span><span class="p">)</span>
+         <span class="nf">completion</span><span class="p">(</span><span class="n">returnInfo</span><span class="p">)</span>
+     <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="s">""</span> <span class="o">==</span> <span class="n">selectedSite</span> <span class="p">{</span>
+         <span class="n">returnInfo</span><span class="o">.</span><span class="n">callback</span> <span class="o">=</span> <span class="nf">prepareResponse</span><span class="p">(</span><span class="nv">targetResponse</span><span class="p">:</span> <span class="o">.</span><span class="kt">NoSiteIDSelected</span><span class="p">)</span>
+         <span class="nf">completion</span><span class="p">(</span><span class="n">returnInfo</span><span class="p">)</span>
+     <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+         <span class="k">let</span> <span class="nv">body</span> <span class="o">=</span> <span class="s">"https://services.etosoftware.com/API/Form.svc/Forms/Program/GetPrograms/"</span> <span class="o">+</span> <span class="n">selectedSite</span>
+
+         <span class="k">let</span> <span class="nv">request</span> <span class="o">=</span> <span class="kt">Alamofire</span><span class="o">.</span><span class="nf">request</span><span class="p">(</span><span class="n">body</span><span class="p">,</span> <span class="nv">method</span><span class="p">:</span> <span class="o">.</span><span class="k">get</span><span class="p">,</span> <span class="nv">encoding</span><span class="p">:</span> <span class="kt">URLEncoding</span><span class="o">.</span><span class="k">default</span><span class="p">,</span> <span class="nv">headers</span><span class="p">:</span> <span class="n">headers</span><span class="p">)</span><span class="o">.</span><span class="nf">validate</span><span class="p">()</span><span class="o">.</span><span class="n">responseJSON</span> <span class="p">{</span> <span class="n">response</span> <span class="k">in</span>
+
+             <span class="k">switch</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">result</span><span class="p">){</span>
+             <span class="k">case</span> <span class="o">.</span><span class="nv">success</span><span class="p">:</span>
+                 <span class="k">if</span> <span class="k">let</span> <span class="nv">jsonData</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">data</span> <span class="p">{</span>
+                     <span class="k">let</span> <span class="nv">programList</span> <span class="o">=</span> <span class="kt">JSON</span><span class="p">(</span><span class="nv">data</span><span class="p">:</span> <span class="n">jsonData</span><span class="p">)</span><span class="o">.</span><span class="n">arrayValue</span>
+                     <span class="k">for</span> <span class="n">i</span> <span class="k">in</span> <span class="mi">0</span><span class="o">..&lt;</span><span class="n">programList</span><span class="o">.</span><span class="n">count</span> <span class="p">{</span>
+                         <span class="k">let</span> <span class="nv">programIDInt</span> <span class="o">=</span> <span class="n">programList</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s">"ID"</span><span class="p">]</span><span class="o">.</span><span class="n">int</span>
+                         <span class="k">let</span> <span class="nv">disabled</span> <span class="o">=</span> <span class="n">programList</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s">"Disabled"</span><span class="p">]</span><span class="o">.</span><span class="n">boolValue</span> <span class="c1">//TODO: Make an option.</span>
+                         <span class="k">if</span> <span class="o">!</span><span class="n">disabled</span> <span class="p">{</span>
+                             <span class="k">if</span> <span class="k">let</span> <span class="nv">programIDInt</span> <span class="o">=</span> <span class="n">programIDInt</span> <span class="p">{</span>
+                                 <span class="n">returnInfo</span><span class="o">.</span><span class="n">dictionary</span><span class="o">.</span><span class="nf">updateValue</span><span class="p">(</span><span class="kt">String</span><span class="p">(</span><span class="n">programIDInt</span><span class="p">),</span> <span class="nv">forKey</span><span class="p">:</span> <span class="n">programList</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s">"Name"</span><span class="p">]</span><span class="o">.</span><span class="n">string</span><span class="o">!</span><span class="p">)</span>
+                             <span class="p">}</span>
+                         <span class="p">}</span>
+                     <span class="p">}</span>
+                     <span class="n">currentSessionInfo</span><span class="o">.</span><span class="n">programsDictionary</span> <span class="o">=</span> <span class="n">returnInfo</span><span class="o">.</span><span class="n">dictionary</span>
+                     <span class="n">returnInfo</span><span class="o">.</span><span class="n">callback</span> <span class="o">=</span> <span class="k">self</span><span class="o">.</span><span class="nf">prepareResponse</span><span class="p">(</span><span class="nv">targetResponse</span><span class="p">:</span> <span class="o">.</span><span class="kt">Success</span><span class="p">)</span>
+                     <span class="nf">completion</span><span class="p">(</span><span class="n">returnInfo</span><span class="p">)</span>
+                 <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                     <span class="n">returnInfo</span><span class="o">.</span><span class="n">callback</span> <span class="o">=</span> <span class="k">self</span><span class="o">.</span><span class="nf">prepareResponse</span><span class="p">(</span><span class="nv">targetResponse</span><span class="p">:</span> <span class="o">.</span><span class="kt">FailedToGetSiteList</span><span class="p">)</span>
+                 <span class="p">}</span>
+                 <span class="k">break</span><span class="p">;</span>
+             <span class="k">case</span> <span class="o">.</span><span class="nv">failure</span><span class="p">:</span>
+                 <span class="n">returnInfo</span><span class="o">.</span><span class="n">callback</span> <span class="o">=</span> <span class="k">self</span><span class="o">.</span><span class="nf">prepareResponse</span><span class="p">(</span><span class="nv">targetResponse</span><span class="p">:</span> <span class="o">.</span><span class="kt">HTTPRequestFail</span><span class="p">)</span>
+                 <span class="nf">completion</span><span class="p">(</span><span class="n">returnInfo</span><span class="p">)</span>
+                 <span class="k">break</span><span class="p">;</span>
+             <span class="p">}</span>
+         <span class="p">}</span>
+         <span class="k">if</span><span class="p">(</span><span class="kt">DebugMode</span><span class="p">){</span>
+             <span class="nf">debugPrint</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+         <span class="p">}</span>
+     <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+<ol>
+  <li>Unwrap selectedProgram.  Else, handle error.</li>
+  <li>Unwrap selectedEnterpriseGuuid.  Else, handle error.</li>
+  <li>Create request from webservice, selectedProgram, SSOAuthToken, and Enterprise GUUID.</li>
+  <li>Make a GET request.</li>
+  <li>Async-wait for response</li>
+  <li>Unwrap response data.</li>
+  <li>If GET request returned 200-299, request was success. If failed, handle.</li>
+  <li>
+    <p>When successful, convert the returned JSON data.  If failed, handle.</p>
+  </li>
+  <li>Call completion callback method with parameter “Success”</li>
+</ol>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="kd">public</span> <span class="kd">func</span> <span class="nf">setSelectedProgram</span><span class="p">(</span><span class="nv">currentSessionInfo</span><span class="p">:</span> <span class="kt">SessionInfo</span><span class="p">,</span> <span class="nv">setToProgramID</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span><span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="n">_</span> <span class="nv">response</span><span class="p">:</span> <span class="kt">ReturnInfoWithJSON</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">){</span>
+
+  <span class="k">var</span> <span class="nv">etoUserDefaults</span> <span class="o">=</span> <span class="kt">ETOUserDefaults</span><span class="p">()</span>
+  <span class="k">var</span> <span class="nv">returnInfo</span><span class="p">:</span> <span class="kt">ReturnInfoWithJSON</span> <span class="o">=</span> <span class="kt">ReturnInfoWithJSON</span><span class="p">()</span>
+
+  <span class="n">etoUserDefaults</span><span class="o">.</span><span class="nf">setUserDefault</span><span class="p">(</span><span class="nv">key</span><span class="p">:</span> <span class="o">.</span><span class="n">programID</span><span class="p">,</span> <span class="nv">value</span><span class="p">:</span> <span class="n">setToProgramID</span><span class="p">)</span>
+
+  <span class="k">if</span> <span class="s">""</span> <span class="o">==</span> <span class="n">currentSessionInfo</span><span class="o">.</span><span class="kt">SSOAuthToken</span> <span class="p">{</span>
+      <span class="n">returnInfo</span><span class="o">.</span><span class="n">callback</span> <span class="o">=</span> <span class="nf">prepareResponse</span><span class="p">(</span><span class="nv">targetResponse</span><span class="p">:</span> <span class="o">.</span><span class="kt">NoSSOAuthToken</span><span class="p">)</span>
+      <span class="nf">completion</span><span class="p">(</span><span class="n">returnInfo</span><span class="p">)</span>
+  <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="s">""</span> <span class="o">==</span> <span class="n">currentSessionInfo</span><span class="o">.</span><span class="nf">selectedEnterprise</span><span class="p">()</span> <span class="p">{</span>
+      <span class="n">returnInfo</span><span class="o">.</span><span class="n">callback</span> <span class="o">=</span> <span class="nf">prepareResponse</span><span class="p">(</span><span class="nv">targetResponse</span><span class="p">:</span> <span class="o">.</span><span class="kt">NoEnterpriseIDSelected</span><span class="p">)</span>
+      <span class="nf">completion</span><span class="p">(</span><span class="n">returnInfo</span><span class="p">)</span>
+  <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="s">""</span> <span class="o">==</span> <span class="n">setToProgramID</span> <span class="p">{</span>
+      <span class="n">returnInfo</span><span class="o">.</span><span class="n">callback</span> <span class="o">=</span> <span class="nf">prepareResponse</span><span class="p">(</span><span class="nv">targetResponse</span><span class="p">:</span> <span class="o">.</span><span class="kt">NoProgramIDSelected</span><span class="p">)</span>
+      <span class="nf">completion</span><span class="p">(</span><span class="n">returnInfo</span><span class="p">)</span>
+  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+      <span class="k">let</span> <span class="nv">parameters</span><span class="p">:</span> <span class="kt">Parameters</span> <span class="o">=</span> <span class="p">[</span>
+          <span class="s">"ProgramID"</span><span class="p">:</span> <span class="n">setToProgramID</span>
+      <span class="p">];</span>
+
+      <span class="k">let</span> <span class="nv">headers</span> <span class="o">=</span> <span class="nf">headersWithEnterpriseIDAndSecurityToken</span><span class="p">(</span><span class="nv">currentSessionInfo</span><span class="p">:</span> <span class="n">currentSessionInfo</span><span class="p">)</span>
+
+      <span class="k">let</span> <span class="nv">body</span> <span class="o">=</span> <span class="s">"https://services.etosoftware.com/API/Security.svc/UpdateCurrentProgram/"</span>
+
+      <span class="k">let</span> <span class="nv">request</span> <span class="o">=</span> <span class="kt">Alamofire</span><span class="o">.</span><span class="nf">request</span><span class="p">(</span><span class="n">body</span><span class="p">,</span> <span class="nv">method</span><span class="p">:</span> <span class="o">.</span><span class="n">post</span><span class="p">,</span> <span class="nv">parameters</span><span class="p">:</span> <span class="n">parameters</span><span class="p">,</span> <span class="nv">encoding</span><span class="p">:</span> <span class="kt">JSONEncoding</span><span class="o">.</span><span class="k">default</span><span class="p">,</span> <span class="nv">headers</span><span class="p">:</span> <span class="n">headers</span><span class="p">)</span><span class="o">.</span><span class="nf">validate</span><span class="p">()</span><span class="o">.</span><span class="n">responseJSON</span> <span class="p">{</span> <span class="n">response</span> <span class="k">in</span>
+
+          <span class="k">switch</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">result</span><span class="p">){</span>
+          <span class="k">case</span> <span class="o">.</span><span class="nv">success</span><span class="p">:</span>
+              <span class="k">if</span> <span class="k">let</span> <span class="nv">responseData</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">data</span> <span class="p">{</span>
+                  <span class="k">let</span> <span class="nv">jsonData</span> <span class="o">=</span> <span class="kt">JSON</span><span class="p">(</span><span class="nv">data</span><span class="p">:</span> <span class="n">responseData</span><span class="p">)</span>
+                  <span class="n">currentSessionInfo</span><span class="o">.</span><span class="n">selectedProgramInfo</span> <span class="o">=</span> <span class="n">jsonData</span>
+                  <span class="n">currentSessionInfo</span><span class="o">.</span><span class="nf">setProgram</span><span class="p">(</span><span class="nv">chosenProgram</span><span class="p">:</span> <span class="n">setToProgramID</span><span class="p">)</span>
+                  <span class="n">returnInfo</span><span class="o">.</span><span class="n">json</span> <span class="o">=</span> <span class="n">jsonData</span>
+                  <span class="n">returnInfo</span><span class="o">.</span><span class="n">callback</span> <span class="o">=</span> <span class="k">self</span><span class="o">.</span><span class="nf">prepareResponse</span><span class="p">(</span><span class="nv">targetResponse</span><span class="p">:</span> <span class="o">.</span><span class="kt">Success</span><span class="p">)</span>
+                  <span class="nf">completion</span><span class="p">(</span><span class="n">returnInfo</span><span class="p">)</span>
+              <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                  <span class="n">returnInfo</span><span class="o">.</span><span class="n">callback</span> <span class="o">=</span> <span class="k">self</span><span class="o">.</span><span class="nf">prepareResponse</span><span class="p">(</span><span class="nv">targetResponse</span><span class="p">:</span> <span class="o">.</span><span class="kt">FailedToGetSiteList</span><span class="p">)</span>
+              <span class="p">}</span>
+              <span class="k">break</span><span class="p">;</span>
+          <span class="k">case</span> <span class="o">.</span><span class="nv">failure</span><span class="p">:</span>
+              <span class="n">returnInfo</span><span class="o">.</span><span class="n">callback</span> <span class="o">=</span> <span class="k">self</span><span class="o">.</span><span class="nf">prepareResponse</span><span class="p">(</span><span class="nv">targetResponse</span><span class="p">:</span> <span class="o">.</span><span class="kt">HTTPRequestFail</span><span class="p">)</span>
+              <span class="nf">completion</span><span class="p">(</span><span class="n">returnInfo</span><span class="p">)</span>
+              <span class="k">break</span><span class="p">;</span>
+          <span class="p">}</span>
+      <span class="p">}</span>
+      <span class="k">if</span><span class="p">(</span><span class="kt">DebugMode</span><span class="p">){</span>
+          <span class="nf">debugPrint</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+      <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="kd">public</span> <span class="kd">func</span> <span class="nf">headersWithEnterpriseIDAndSecurityToken</span><span class="p">(</span><span class="nv">currentSessionInfo</span><span class="p">:</span> <span class="kt">SessionInfo</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">HTTPHeaders</span><span class="p">{</span>
+    <span class="k">let</span> <span class="nv">selectedEnterpriseGuuid</span> <span class="o">=</span> <span class="n">currentSessionInfo</span><span class="o">.</span><span class="nf">selectedEnterprise</span><span class="p">()</span>
+    <span class="k">let</span> <span class="nv">sessionSecurityToken</span> <span class="o">=</span> <span class="n">currentSessionInfo</span><span class="o">.</span><span class="n">sessionSecurityToken</span>
+
+    <span class="k">let</span> <span class="nv">headers</span><span class="p">:</span> <span class="kt">HTTPHeaders</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s">"Content-Type"</span><span class="p">:</span> <span class="s">"application/json"</span><span class="p">,</span>
+        <span class="s">"Accept"</span><span class="p">:</span> <span class="s">"application/json"</span><span class="p">,</span>
+        <span class="s">"enterpriseGuid"</span><span class="p">:</span> <span class="n">selectedEnterpriseGuuid</span><span class="p">,</span>
+        <span class="s">"securityToken"</span><span class="p">:</span> <span class="n">sessionSecurityToken</span><span class="p">,</span>
+        <span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">headers</span>
+<span class="p">}</span>
+
+<span class="kd">public</span> <span class="kd">func</span> <span class="nf">sortDictionary</span><span class="p">(</span><span class="nv">dictionaryToSort</span><span class="p">:</span> <span class="kt">Dictionary</span><span class="o">&lt;</span><span class="kt">String</span><span class="p">,</span> <span class="kt">String</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Dictionary</span><span class="o">&lt;</span><span class="kt">String</span><span class="p">,</span> <span class="kt">String</span><span class="o">&gt;</span><span class="p">{</span>
+    <span class="k">var</span> <span class="nv">dictionaryToReturn</span> <span class="o">=</span> <span class="kt">Dictionary</span><span class="o">&lt;</span><span class="kt">String</span><span class="p">,</span> <span class="kt">String</span><span class="o">&gt;</span><span class="p">()</span>
+
+    <span class="k">let</span> <span class="nv">sortedKeys</span> <span class="o">=</span> <span class="kt">Array</span><span class="p">(</span><span class="n">dictionaryToSort</span><span class="o">.</span><span class="n">keys</span><span class="p">)</span><span class="o">.</span><span class="nf">sorted</span><span class="p">()</span>
+
+    <span class="k">for</span> <span class="n">key</span> <span class="k">in</span> <span class="n">sortedKeys</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="k">let</span> <span class="nv">valueForThisKey</span> <span class="o">=</span> <span class="n">dictionaryToSort</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="p">{</span>
+            <span class="n">dictionaryToReturn</span><span class="o">.</span><span class="nf">updateValue</span><span class="p">(</span><span class="n">valueForThisKey</span><span class="p">,</span> <span class="nv">forKey</span><span class="p">:</span> <span class="n">key</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">dictionaryToReturn</span>
+<span class="p">}</span>
+
+<span class="kd">private</span> <span class="kd">func</span> <span class="nf">prepareResponse</span><span class="p">(</span><span class="nv">targetResponse</span><span class="p">:</span> <span class="kt">AuthenticationServiceResponseTypes</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">AuthenticationServiceResponse</span> <span class="p">{</span>
+    <span class="k">var</span> <span class="nv">candidateResponse</span><span class="p">:</span> <span class="kt">AuthenticationServiceResponse</span> <span class="o">=</span> <span class="kt">AuthenticationServiceResponse</span><span class="p">()</span>
+    <span class="n">candidateResponse</span><span class="o">.</span><span class="n">responseType</span> <span class="o">=</span> <span class="n">targetResponse</span>
+    <span class="n">candidateResponse</span><span class="o">.</span><span class="n">responseMessage</span> <span class="o">=</span> <span class="kt">AuthenticationServiceResponseMessages</span><span class="p">[</span><span class="n">targetResponse</span><span class="p">]</span><span class="o">!</span>
+    <span class="k">return</span> <span class="n">candidateResponse</span>
+<span class="p">}</span>
+
+<span class="kd">public</span> <span class="kd">struct</span> <span class="kt">AuthenticationServiceResponse</span> <span class="p">{</span>
+  <span class="k">var</span> <span class="nv">responseType</span><span class="p">:</span> <span class="kt">AuthenticationServiceResponseTypes</span>
+  <span class="k">var</span> <span class="nv">responseMessage</span><span class="p">:</span> <span class="kt">String</span>
+
+  <span class="nf">init</span><span class="p">(){</span>
+      <span class="k">self</span><span class="o">.</span><span class="n">responseType</span> <span class="o">=</span> <span class="o">.</span><span class="kt">UnknownFailure</span>
+      <span class="k">self</span><span class="o">.</span><span class="n">responseMessage</span> <span class="o">=</span> <span class="kt">AuthenticationServiceResponseMessages</span><span class="p">[</span><span class="o">.</span><span class="kt">UnknownFailure</span><span class="p">]</span><span class="o">!</span>
+  <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">ReturnInfoWithString</span> <span class="p">{</span>
+    <span class="k">var</span> <span class="nv">value</span><span class="p">:</span> <span class="kt">String</span>
+    <span class="k">var</span> <span class="nv">callback</span><span class="p">:</span> <span class="kt">AuthenticationServiceResponse</span>
+
+    <span class="nf">init</span><span class="p">(){</span>
+        <span class="k">self</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="s">""</span>
+        <span class="k">self</span><span class="o">.</span><span class="n">callback</span> <span class="o">=</span> <span class="kt">AuthenticationServiceResponse</span><span class="p">()</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">public</span> <span class="kd">struct</span> <span class="kt">ReturnInfoWithDictionary</span> <span class="p">{</span>
+    <span class="k">var</span> <span class="nv">dictionary</span><span class="p">:</span> <span class="kt">Dictionary</span><span class="o">&lt;</span><span class="kt">String</span><span class="p">,</span> <span class="kt">String</span><span class="o">&gt;</span> <span class="o">=</span> <span class="kt">Dictionary</span><span class="o">&lt;</span><span class="kt">String</span><span class="p">,</span> <span class="kt">String</span><span class="o">&gt;</span><span class="p">()</span>
+    <span class="k">var</span> <span class="nv">callback</span><span class="p">:</span> <span class="kt">AuthenticationServiceResponse</span>
+
+    <span class="nf">init</span><span class="p">(){</span>
+        <span class="k">self</span><span class="o">.</span><span class="n">dictionary</span> <span class="o">=</span> <span class="kt">Dictionary</span><span class="o">&lt;</span><span class="kt">String</span><span class="p">,</span> <span class="kt">String</span><span class="o">&gt;</span><span class="p">()</span>
+        <span class="k">self</span><span class="o">.</span><span class="n">callback</span> <span class="o">=</span> <span class="kt">AuthenticationServiceResponse</span><span class="p">()</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">public</span> <span class="kd">struct</span> <span class="kt">ReturnInfoWithJSON</span> <span class="p">{</span>
+    <span class="k">var</span> <span class="nv">json</span><span class="p">:</span> <span class="kt">JSON</span><span class="p">?</span>
+    <span class="k">var</span> <span class="nv">callback</span><span class="p">:</span> <span class="kt">AuthenticationServiceResponse</span>
+
+    <span class="nf">init</span><span class="p">(){</span>
+        <span class="k">self</span><span class="o">.</span><span class="n">json</span> <span class="o">=</span> <span class="kt">JSON</span><span class="p">([</span><span class="s">""</span><span class="p">:</span><span class="s">""</span><span class="p">])</span>
+        <span class="k">self</span><span class="o">.</span><span class="n">callback</span> <span class="o">=</span> <span class="kt">AuthenticationServiceResponse</span><span class="p">()</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">public</span> <span class="kd">enum</span> <span class="kt">AuthenticationServiceResponseTypes</span> <span class="p">{</span>
+    <span class="k">case</span>
+    <span class="kt">Success</span><span class="p">,</span>
+    <span class="kt">NoSSOAuthToken</span><span class="p">,</span>
+    <span class="kt">HTTPRequestFail</span><span class="p">,</span>
+    <span class="kt">FailedToGetEnterpriseList</span><span class="p">,</span>
+    <span class="kt">FailedToGetSiteList</span><span class="p">,</span>
+    <span class="kt">InvalidUTC</span><span class="p">,</span>
+    <span class="kt">NoEnterpriseIDSelected</span><span class="p">,</span>
+    <span class="kt">UnknownFailure</span><span class="p">,</span>
+    <span class="kt">NoSiteIDSelected</span><span class="p">,</span>
+    <span class="kt">NoProgramIDSelected</span><span class="p">,</span>
+    <span class="n">failedToConnectToServer</span>
+
+    <span class="nf">init</span><span class="p">(){</span>
+        <span class="k">self</span> <span class="o">=</span> <span class="o">.</span><span class="kt">UnknownFailure</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">public</span> <span class="k">let</span> <span class="nv">AuthenticationServiceResponseMessages</span><span class="p">:</span> <span class="kt">Dictionary</span><span class="o">&lt;</span><span class="kt">AuthenticationServiceResponseTypes</span><span class="p">,</span> <span class="kt">String</span><span class="o">&gt;</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="o">.</span><span class="kt">Success</span> <span class="p">:</span> <span class="s">"Success"</span><span class="p">,</span>
+    <span class="o">.</span><span class="kt">NoSSOAuthToken</span> <span class="p">:</span> <span class="s">"Authorization denied."</span><span class="p">,</span>
+    <span class="o">.</span><span class="kt">HTTPRequestFail</span> <span class="p">:</span> <span class="s">"Failed to get information from server."</span><span class="p">,</span>
+    <span class="o">.</span><span class="kt">FailedToGetEnterpriseList</span> <span class="p">:</span> <span class="s">"Failed to get enterprise list."</span><span class="p">,</span>
+    <span class="o">.</span><span class="kt">FailedToGetSiteList</span> <span class="p">:</span> <span class="s">"Failed to get site list."</span><span class="p">,</span>
+    <span class="o">.</span><span class="kt">InvalidUTC</span> <span class="p">:</span> <span class="s">"UTC Offset invalid."</span><span class="p">,</span>
+    <span class="o">.</span><span class="kt">NoEnterpriseIDSelected</span> <span class="p">:</span> <span class="s">"No enterprise selected."</span><span class="p">,</span>
+    <span class="o">.</span><span class="kt">UnknownFailure</span> <span class="p">:</span> <span class="s">"An unknown failure has occurred."</span><span class="p">,</span>
+    <span class="o">.</span><span class="kt">NoSiteIDSelected</span><span class="p">:</span> <span class="s">"No site selected."</span><span class="p">,</span>
+    <span class="o">.</span><span class="kt">NoProgramIDSelected</span><span class="p">:</span> <span class="s">"No program selected."</span><span class="p">,</span>
+    <span class="o">.</span><span class="nv">failedToConnectToServer</span> <span class="p">:</span> <span class="s">"Failled to connect to server."</span>
+<span class="p">]</span></code></pre></figure>
+:ET

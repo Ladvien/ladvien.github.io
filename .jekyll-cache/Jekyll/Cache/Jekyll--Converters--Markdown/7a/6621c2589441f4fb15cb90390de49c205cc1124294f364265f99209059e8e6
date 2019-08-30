@@ -1,0 +1,206 @@
+I"SE<p>Originally posted on <a href="www.letsmakerobots.com">www.letsmakerobots.com</a></p>
+
+<p>UPDATE: I tweaked the source and rebuilt lpc21isp to allow for automatic mode switching, bootloader and program, from an FTDI breakout.</p>
+
+<p>A few months ago Bdk6 sent me an LPC1114 ARM processor.  Not going to lie, I had little idea how to use the chip.</p>
+
+<p>Bdk6 and his kids had created the Valdez family with the chip:</p>
+
+<ul>
+  <li><a href="http://letsmakerobots.com/node/39035">The Valdez Family</a></li>
+</ul>
+
+<p>I tried several IDEs to get the chip going.  I wasn’t happy with any of them.</p>
+
+<p><a href="http://www.lpcware.com/lpcxpresso/home">LPCXpresso</a> was confusing and intimidating.  Since I was trying to learn the chip <em>and</em> a new IDE.  Add to this, NXP didn’t have libraries for the chip, so I was trying to integrate the <a href="http://www.microbuilder.eu/Projects/LPC1114ReferenceDesign/LPC1114CodeBase.aspx">LPC1114 CodeBase</a> libraries. They appeared to be incomplete and unkept.  It didn’t matter, I couldn’t seem to integrate the libraries into LPCExpresso.</p>
+
+<p>I then started using Mbed.  A lot more luck there.  But it was uncomfortable.  I’m betting most reading are familiar with Mbed, therefore, I won’t go into the usual rants about it being webbased and closed-source.</p>
+
+<p>There are other problems with Mbed.</p>
+
+<p>First, it is not a complete development solution.  You need a flashing tool to upload code to the LPC1114 chip.  The easiest tool to use is <a href="http://www.flashmagictool.com/">FlashMagic</a>, which gives you a nice GUI to interact with the LPC1114.  There is a slight problem, Mbed produces a <strong>.bin</strong> file and the LPC1114 needs a <strong>.hex</strong> file, subsequently, FlashMagic only allows uploading of .hex files.  So, you have to use a third tool to convert the file from .bin to .hex before uploading.  Sigh.  It’s a lot of trouble.</p>
+
+<p>Anyway, I eventually got it to blink a light</p>
+
+<p><a href="http://youtu.be/1tB5sTNYe20"><img src="http://i1.ytimg.com/vi/1tB5sTNYe20/mqdefault.jpg" alt="" /></a></p>
+
+<p>I craved more freedom, so I started looking for tools that’d allow me to code for the LPC1114 freely.  A bare-metal solution.  Just me, a compiler, and the <a href="http://www.nxp.com/documents/user_manual/UM10398.pdf">LPC1114 User Manual</a> (datasheet). Luckily, most of the work had been done for me.  Frank Duignan, Ted Burke, and Bdk6 had pretty much all the answers pre-compiled for my little brain.  Here’s the steps I used to get a command-line programming environment setup.</p>
+
+<p><img src="../images/GCC_Download2.jpg" alt="" /></p>
+
+<p><strong>1. <a href="https://launchpad.net/gcc-arm-embedded/4.7/4.7-2013-q3-update/+download/gcc-arm-none-eabi-4_7-2013q3-20130916-win32.exe">Download and install</a> GNU Tools for ARM Embedded Processors (Win32 Release – 2013, quarter 3).During the installation, make sure to check the box “Add path to environment variable.”</strong></p>
+
+<p><img src="../images/GCC_Download3.jpg" alt="" /></p>
+
+<p><strong>Check “Add environment variable.”</strong></p>
+
+<p>If you missed this part, you can add a path to the environment variables by:</p>
+
+<p>Right clicking on This PC / My Computer –&gt; Properties –&gt; Advanced system settings –&gt; Environment Variables –&gt; Select “Path” under “System Variables –&gt; Edit.  Go to the end of the list of paths, add a semicolon, then place the path of the GNU tools bin.</p>
+
+<p>For me, this was “<strong>C:\Program Files (x86)\GNU Tools ARM Embedded\4.7 2013q3\bin</strong>”</p>
+
+<p><img src="../images/PATH_Variable2.jpg" alt="" /></p>
+
+<p><strong>We are going to add several paths to the path systems variables.  So, refer back to these steps as needed.</strong></p>
+
+<p><img src="../images/Download_Batch.jpg" alt="" /></p>
+
+<p><strong>2. Download <a href="http://eleceng.dit.ie/frank/arm/BareMetalLPC1114/">Frank Duignan’s</a> Windows <a href="https://web.eecs.umich.edu/~prabal/teaching/eecs373-f11/readings/Linker.pdf">linker script</a>, <a href="http://www.keil.com/dd/docs/arm/nxp/lpc11xx/lpc11xx.h">LPC1114 header file</a>, and build batch file.</strong></p>
+
+<p><a href="https://drive.google.com/file/d/0B3NaVR72FYQcTDlYSVdTZ3ZpUTA/edit">Duignan’s LPC1114 tools</a></p>
+
+<p><a href="http://batchloaf.wordpress.com/2013/11/29/simple-arm-example-for-lpc1114/">Ted Burke</a> was nice enough to put these up for us.  However, there’s two pieces missing for us to use these amazing tools.</p>
+
+<p><strong>3. Create a workspace folder. e.g., “C:\Users\Ladvien\Documents\LPC1114_Bare_Metal”.</strong></p>
+
+<p><strong>4. Install <a href="http://www.gnu.org/software/binutils/">binutils</a> for file conversion.</strong> Binutils has to be compiled for Windows, though, I was able to find them pre-compiled.</p>
+
+<p>Download <a href="http://sourceforge.net/projects/mingw/files/MinGW/Base/binutils/binutils-2.22/binutils-2.22-1-mingw32-bin.tar.lzma/download">Binutils</a> compiled for Windows</p>
+
+<p>Really, we are only using Binutils for <strong>objcopy</strong>, which is at the end of the batch file.  This translates the <strong>.elf</strong> produced by the ARM compiler into a <strong>.hex</strong> file.  To unzip Binutils file I’d recommend using <a href="http://www.7-zip.org/download.html">7zip</a>.  After installing them add the bin folder to your environment variable (see step 1).  For me, I added “<strong>C:\Users\Ladvien\Documents\LPC1114_Bare_Metal\Ming32\bin”.</strong></p>
+
+<p><strong>5. Create a build script in a batch file.</strong></p>
+
+<p>Create a build batch file recommend by Duignan and Burke.  Open your workspace folder, create a new text file, enter the following:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">arm-none-eabi-gcc <span class="nt">-mcpu</span><span class="o">=</span>0 <span class="nt">-mthumb</span> <span class="nt">-v</span> <span class="nt">-g</span> <span class="nt">-c</span> init.c <span class="nt">-o</span> init.o
+arm-none-eabi-gcc <span class="nt">-mcpu</span><span class="o">=</span>0 <span class="nt">-mthumb</span> <span class="nt">-v</span> <span class="nt">-g</span> <span class="nt">-c</span> main.c <span class="nt">-o</span> main.o
+arm-none-eabi-ld init.o main.o <span class="nt">-v</span> <span class="nt">-L</span> <span class="s2">"C:</span><span class="se">\P</span><span class="s2">rogram Files (x86)</span><span class="se">\G</span><span class="s2">NU Tools ARM Embedded</span><span class="se">\4</span><span class="s2">.7 2013q3</span><span class="se">\l</span><span class="s2">ib</span><span class="se">\g</span><span class="s2">cc</span><span class="se">\a</span><span class="s2">rm-none-eabi</span><span class="se">\4</span><span class="s2">.7.4</span><span class="se">\a</span><span class="s2">rmv6-m"</span> <span class="nt">-lgcc</span> <span class="nt">-T</span> linker_script.ld <span class="nt">--cref</span> <span class="nt">-Map</span> main.map <span class="nt">-nostartfiles</span> <span class="nt">-o</span> main.elf
+objcopy <span class="nt">-O</span> ihex main.elf main.hex</code></pre></figure>
+
+<p><strong>Save the text file in your workspace as “build.bat”</strong>  Be sure to include the quotation marks, since this will convert the file from a text file to a batch file.  This is the same build commands put together by Duignan, but I’ve added the “-v” option.  This is the verbose mode and will spit out an errors during compiling.</p>
+
+<p><img src="../images/Build_bat.jpg" alt="" /></p>
+
+<p><strong>6. Setup a C++ friendly text editor, like <a href="http://www.pnotepad.org/">Programmer’s Notepad</a>.</strong></p>
+
+<p><strong>7.  Create a file called main.c in your workspace directory.  Enter the following text:</strong></p>
+
+<figure class="highlight"><pre><code class="language-c" data-lang="c"><span class="cm">/* Simple PWM demonstrator program
+ * The program simply ramps the duty of pin 10
+ * from 0% to 100%  and then resets back to 0%
+ *
+ */</span>
+
+<span class="cp">#include "lpc111x.h"
+</span>
+<span class="kt">void</span> <span class="nf">ConfigPins</span><span class="p">()</span>
+<span class="p">{</span>
+	<span class="n">SYSAHBCLKCTRL</span> <span class="o">|=</span> <span class="n">BIT6</span> <span class="o">+</span> <span class="n">BIT16</span><span class="p">;</span> <span class="c1">// Turn on clock for GPIO and IOCON</span>
+
+	<span class="c1">// Begin Port 0 setup.</span>
+	<span class="c1">// Make Port 0 bit 5 behave as a generic output port (open drain)</span>
+	<span class="n">IOCON_PIO0_5</span> <span class="o">|=</span> <span class="n">BIT8</span><span class="p">;</span>
+	<span class="c1">// Make Port 0 bit 10 behave as a generic I/O port</span>
+	<span class="n">IOCON_SWCLK_PIO0_10</span>  <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+	<span class="c1">// Make Port 0 bit 11 behave as a generic I/O port</span>
+	<span class="n">IOCON_R_PIO0_11</span>  <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+	<span class="c1">// End Port 0 setup.</span>
+
+
+	<span class="c1">// Make pin 10 behave as a PWM output CT32B1_MAT0</span>
+	<span class="n">IOCON_R_PIO1_1</span> <span class="o">|=</span> <span class="n">BIT1</span> <span class="o">+</span> <span class="n">BIT0</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="kt">void</span> <span class="nf">initPWM</span><span class="p">()</span>
+<span class="p">{</span>
+	<span class="c1">// will use counter/timer CT32B1</span>
+	<span class="c1">// Turn on CT32B1</span>
+	<span class="n">SYSAHBCLKCTRL</span> <span class="o">|=</span> <span class="n">BIT10</span><span class="p">;</span>
+	<span class="c1">// Use match register 3 as period register because its output</span>
+	<span class="c1">// is not pinned out.  A value of 48000000 produces a frequency of 1Hz</span>
+	<span class="c1">// so, to generate a 30kHz pwm signal, set MR3 = 48000000/30000 = 1600</span>
+	<span class="n">TMR32B1MR3</span> <span class="o">=</span> <span class="mi">1600</span><span class="p">;</span>
+	<span class="n">TMR32B1MR0</span> <span class="o">=</span> <span class="mi">1600</span><span class="p">;</span> <span class="c1">// Zero output to begin with</span>
+	<span class="n">TMR32B1MCR</span> <span class="o">=</span> <span class="n">BIT10</span><span class="p">;</span> <span class="c1">// Reset TC on match with MR3</span>
+	<span class="n">TMR32B1TC</span> <span class="o">=</span> <span class="mi">0</span> <span class="p">;</span> <span class="c1">// Zero the counter to begin with</span>
+	<span class="n">TMR32B1PWMC</span> <span class="o">=</span> <span class="n">BIT0</span><span class="p">;</span> <span class="c1">// Enable PWM on channel 0</span>
+	<span class="n">TMR32B1TCR</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="c1">// Enable the timer</span>
+
+<span class="p">}</span>
+<span class="kt">void</span> <span class="nf">setDuty</span><span class="p">(</span><span class="kt">int</span> <span class="n">Duty</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="c1">// sets the duty to the percent specified.</span>
+	<span class="c1">// Need to 'invert' the requested duty as the PWM mechanism</span>
+	<span class="c1">// resets the output at the start of each PWM cycle and then</span>
+	<span class="c1">// sets it on match.</span>
+	<span class="n">TMR32B1MR0</span> <span class="o">=</span> <span class="p">(</span><span class="mi">100</span><span class="o">-</span><span class="n">Duty</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="mi">4</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="kt">void</span> <span class="nf">delay</span><span class="p">(</span><span class="kt">int</span> <span class="n">dly</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="k">while</span><span class="p">(</span><span class="n">dly</span><span class="o">--</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+	<span class="kt">int</span> <span class="n">Duty</span><span class="o">=</span><span class="mi">50</span><span class="p">;</span>
+	<span class="n">ConfigPins</span><span class="p">();</span>
+	<span class="n">initPWM</span><span class="p">();</span>
+	<span class="k">while</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="n">setDuty</span><span class="p">(</span><span class="n">Duty</span><span class="o">++</span><span class="p">);</span>
+		<span class="k">if</span> <span class="p">(</span><span class="n">Duty</span> <span class="o">&gt;</span> <span class="mi">100</span><span class="p">){</span>
+			<span class="k">for</span> <span class="p">(</span><span class="n">Duty</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">;</span> <span class="n">Duty</span><span class="o">--</span><span class="p">;){</span>
+				<span class="n">setDuty</span><span class="p">(</span><span class="n">Duty</span><span class="p">);</span>
+				<span class="n">delay</span><span class="p">(</span><span class="mi">100000</span><span class="p">);</span>
+			<span class="p">}</span>
+		<span class="p">}</span>
+		<span class="n">delay</span><span class="p">(</span><span class="mi">100000</span><span class="p">);</span>
+	<span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>Save the main.c file.</p>
+
+<p>I’ve modified the above code from Duignan’s to make it comparable to the <strong>Fade</strong> sketch in the Arduino examples.</p>
+
+<p><strong>8. Open the command prompt in your workspace directory.  Run your build.bat file.</strong></p>
+
+<p><strong><img src="../images/Build_bat_2.jpg" alt="" /></strong></p>
+
+<p>After running the build.bat, it should build five files: **main.o, int.o, main.map, main.elf, main.hex.  **If it doesn’t build correctly, double check the path variables for both the compiler and binutils.</p>
+
+<p>We still have the problem of getting the main.hex uploaded to the LPC1114.  You can use FlashMagic, like above, but I’m trying to stick to the command line, that’s where <strong>lpc21isp</strong> comes in.</p>
+
+<p>I’ve pre-built lpc21isp for Windows.</p>
+
+<p><a href="https://github.com/Ladvien/LPC21ISP_Win">Download LPC21ISP</a> (now with automatic mode switching! :)</p>
+
+<p>But if this doesn’t work for you, then you’ll have to <a href="http://sourceforge.net/projects/lpc21isp/?source=dlp">build it yourself</a>.</p>
+
+<p><strong>10. Create a another batch file called,</strong> “<strong>LPC1114_upload.bat</strong>”</p>
+
+<p>Only one line this time:</p>
+
+<p><strong>lpc21isp -wipe -localecho -hex main.hex COM3 57600 12000</strong></p>
+
+<p>You’ll have to adjust the COM port to the port you are using.  Here is a little bit of a** <a href="http://pygmy.utoh.org/riscy/bootloader.html">guide using lpc21isp</a>**.  Also, you’ll either need to put the lpc21isp file in one of the folders added in the path variable.  Or, make sure the LPC1114_upload.bat and lpc21isp files are in the same directory as your main.hex.</p>
+
+<p><strong>11. Wire up your LPC1114.</strong></p>
+
+<p><img src="../images/LPC1114_Wires.png" alt="" /></p>
+
+<p>One last bit I should point out, when “DP24” is connected to ground and then voltage is supplied to the LPC1114, it’ll enter the hardware bootloader.  But, if DP24 is open or (preferably) pulled-up with a resistor when voltage is supplied to the LPC1114 then it’ll run whatever code has been uploaded to the flash memory.</p>
+
+<p>“DP24” is actually pin 1 on port 0.</p>
+
+<p><img src="../images/pinout_dip28_detail-20131006-2.png" alt="" /></p>
+
+<p><strong>12.</strong> Connect your LPC1114’s RX/TX to an serial connector, put it into the bootloader mode by connecting DP24 to ground, then apply power to the LPC1114.  Lastly, run the LPC1114_upload.bat file.  This should result in the LED connected to “SWDIO” pin to fade on and off.</p>
+
+<p>And that’s what I’ve got.  I’m going to start working on coding now, so I’ll trade to add to this write-up as I’ve more to share.  I plan to try these steps on my lab machine around June 1st to make sure they work.  But if anyone uses them before them, please let me know if there are corrections to be made.  <strong>As always, I value feedback and critique.</strong></p>
+
+<p><strong>Update: FTDI Mode switching</strong></p>
+
+<p>The lpc21isp allows for <a href="http://letsmakerobots.com/looking-lpc1114-usb-serial-solution">automatic mode switching</a>, that is, you can use an FTDI cable as below:</p>
+
+<p><img src="../images/FTDI_Reset.jpg" alt="" /></p>
+
+<p>Then replace the line in your LPC1114_upload.bat file with</p>
+
+<p><strong>lpc21isp -wipe -localecho -control -hex main.hex COM3 57600 12000</strong></p>
+
+<p>This will automatically put the LPC1114 into program mode, upload your code, then reset to run your newly uploaded program. <strong>Just like Arduino!</strong> (Bdk6, you didn’t see that statement, right? :)</p>
+
+<p>Of course, lpc21isp is an agglomeration and had an error(?) that wouldn’t reset the chip after downloading the new code.  I simply commented an if-statement and it is now “working.”  I’m sure I’ve lost some robustness, but hell, it does what I want with no apparent side-effects.  If you would like to know more about how I “broke” lpc21isp check my Github <a href="https://github.com/Ladvien/LPC21ISP_Win/blob/master/README.md">readme</a> on the issue.</p>
+
+<p><img src="../images/LPC1114_Bare_Metal_ARM2.jpg" alt="" /></p>
+:ET

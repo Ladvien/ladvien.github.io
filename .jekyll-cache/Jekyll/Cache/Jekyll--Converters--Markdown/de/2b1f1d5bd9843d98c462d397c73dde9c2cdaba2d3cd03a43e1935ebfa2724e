@@ -1,0 +1,141 @@
+I"�<h1 id="c-learning-journal-refactoring-lumi">C# Learning Journal: Refactoring Lumi</h1>
+
+<h2 id="lumi-uploader">Lumi Uploader</h2>
+
+<p>I’ve been working on writing my own flash UART uploader since May 2014. Originally, I was trying to write an uploader in C using the GCC compiler. The idea was to upload a Intel HEX file compiled for the LPC1114 to the uC remotely, using a Bluetooth LE connection. Here’s a description of the custom circuit board designed for the project:</p>
+
+<p>*<a href="http://ladvien.github.io/robots/valdez-mutant-board/">Valdez Mutant Board</a></p>
+
+<p>Unfortunately, the project was out of my league. After spending months writing C code there it was not usable. Of course, learned a lot about C in the process.</p>
+
+<p>Well, after a couple of years I started on code to upload compiled Atmel ATMega and ATtiny programs using the same method outlined in the Valdez Mutant article. But this time, the uploader was written in C# on Windows. And it interfaced with the <a href="http://ladvien.github.io/robots/tsb/">TinySafeBootloader</a> on the Atmel uCs.</p>
+
+<p>Strangely, I actually finished the project. The first code-base was written as a <a href="https://msdn.microsoft.com/en-us/library/360kwx3z(v=vs.90).aspx">C# Forms application</a>. This worked out great! I was actually able to use the <code class="highlighter-rouge">System.Devices.Ports</code> to access a CH340G or FTDI chip. The USB-to-UART then shook hands with the bootloader on either an ATMega328P, ATtiny84, or ATtiny85 (others should be supported, but these were the only tested due to the simplicity of the Arduino HAL).</p>
+
+<p><img src="http://ladvien.github.io/images/lumi_blink_upload2.PNG" alt="" /></p>
+
+<p>Here’s the code base:</p>
+
+<p>*<a href="https://github.com/Ladvien/Lumi_TinySafeBoot_Uploader">Lumi Uploader – Windows Forms Version</a></p>
+
+<p>Of course, there is are a lot of problems with the code. Most center around inexperience writing object-oriented code.</p>
+
+<p>Here are some of the problems I identified:</p>
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Mistakes</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>1\. [God objects](http://sourcemaking.com/antipatterns/the-blob)</td>
+
+</tr>
+
+<tr>
+
+<td>2\. [C# Conventions not followed](https://msdn.microsoft.com/en-us/library/ff926074.aspx)</td>
+
+</tr>
+
+<tr>
+
+<td>3\. Deprecation (Forms-&gt;Universal)</td>
+
+</tr>
+
+<tr>
+
+<td>4\. [Synchronous IO](https://msdn.microsoft.com/en-us/library/windows/desktop/aa365683(v=vs.85).aspx)</td>
+
+</tr>
+
+<tr>
+
+<td>5\. Poor support for BLE</td>
+
+</tr>
+
+<tr>
+
+<td>6\. Poor naming schemes</td>
+
+</tr>
+
+<tr>
+
+<td>7\. Improper use of delegate / events</td>
+
+</tr>
+
+<tr>
+
+<td>8\. Poor use of object abstraction</td>
+
+</tr>
+
+<tr>
+
+<td>9. </td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+<p>It was really the lack of BluetoothLE support which forced a change in directions. However, the elusive wireless upload to an AVR was just too close to abandon. Reluctantly, I created yet <em>another</em> code base. This time, it was derived from the <a href="https://msdn.microsoft.com/en-us/windows/uwp/get-started/whats-a-uwp">Windows Universal App</a> platform.</p>
+
+<p>After a few months I had a working version. It was able to upload to ATtiny chips and ATMega chips over Bluetooth LE.</p>
+
+<ul>
+  <li><a href="https://www.youtube.com/watch?v=mLfFbrijakc">Lumi Uploader Proof of Concept</a></li>
+</ul>
+
+<p><img src="http://ladvien.github.io/images/pooh.png" alt="" /> However, when I started trying to add ESP8266 support–well, things went to the Pooh. It seemed of all the problems listed above the only one resolved was the adding of Bluetooth LE support.  My skill was not increasing.</p>
+
+<p>Also, there were two additional issues which arose:</p>
+
+<ol>
+  <li>Handling advertisement and connection for Bluetooth.</li>
+  <li>There was a rather nasty bug around writing to a connected device.</li>
+</ol>
+
+<p>The first issue was a nightmare. I was able to work around it–but, it was horrifically hackish. In short, there are two namespaces which must be used to achieve in app BluetoothLE search and connection, <a href="https://msdn.microsoft.com/library/windows/apps/windows.devices.bluetooth.aspx">Windows.Devices.Bluetooth</a> and <a href="https://msdn.microsoft.com/library/windows/apps/windows.devices.bluetooth.advertisement.aspx">Windows.Devices.Bluetooth.BluetoothAdvertisement</a>. First, to find the BluetoothLE devices you’d need to instialize <a href="https://msdn.microsoft.com/en-us/library/windows.devices.bluetooth.advertisement.bluetoothleadvertisementwatcher.aspx">BluetoothLEAdvertisementWatcher</a> object:</p>
+
+<figure class="highlight"><pre><code class="language-csharp" data-lang="csharp">  <span class="c1">// Bluetooth LE Discovery</span>
+  <span class="n">BluetoothLEAdvertisementWatcher</span> <span class="n">bleAdvertWatcher</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">BluetoothLEAdvertisementWatcher</span><span class="p">();</span>
+  <span class="k">public</span> <span class="k">sealed</span> <span class="k">partial</span> <span class="k">class</span> <span class="nc">MainPage</span> <span class="p">:</span> <span class="n">Page</span>
+  <span class="p">{</span>
+        <span class="c1">// Create and initialize a new watcher instance.</span>
+        <span class="n">bleAdvertWatcher</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">BluetoothLEAdvertisementWatcher</span><span class="p">();</span>
+        <span class="n">bleAdvertWatcher</span><span class="p">.</span><span class="n">Received</span> <span class="p">+=</span> <span class="n">OnAdvertisementReceived</span><span class="p">;</span>
+        <span class="n">bleAdvertWatcher</span><span class="p">.</span><span class="n">Stopped</span> <span class="p">+=</span> <span class="n">OnAdvertisementWatcherStopped</span><span class="p">;</span>
+        <span class="n">bleAdvertWatcher</span><span class="p">.</span><span class="n">ScanningMode</span> <span class="p">=</span> <span class="n">BluetoothLEScanningMode</span><span class="p">.</span><span class="n">Active</span><span class="p">;</span>
+        <span class="n">bleAdvertWatcher</span><span class="p">.</span><span class="nf">Start</span><span class="p">();</span>
+  <span class="p">}</span></code></pre></figure>
+
+<p>I’ll not dig into the details, but with this sample in mind here is the outline of how I achieved BluetoothLE in-app scan and connect.</p>
+
+<ol>
+  <li>When OnAdvertisementReceived fires you get the discovered devices ID from the EventArgs</li>
+  <li>After the user discovers the device sought, then a user input would start a the asynchronous creation of a BluetoothLEDevice using the ID found from the AdvertisementWatcher.</li>
+  <li>Here’s where it gets hackish: If the device is successful in connecting, then there is no event–rather, a callback timer should be started with enough time for the BluetoothLEDevice to connect and enumerate.</li>
+  <li>When the timer callback fires then, using the new var device = await BluetoothLEDevice.FromBluetoothAddressAsync(ID).</li>
+  <li>After the wait, the services variable should have all of the services found on the BluetoothLEDevice. At this point, all the services on the remote device should be enumerated–and var services = device.GattServices, which includes enumerating services and characteristics.</li>
+</ol>
+
+<p>What the API actually expects is the user will connect to the device using Windows built-in Bluetooth support. This API seems poorly thought out and unfortunate. Even Apple, with all of their “developer guidance”, doesn’t tie the developers’ hands when searching and connecting to BluetoothLE devices. Of course, CoreBluetooth was developed early in BluetoothLE’s lifecycle, so maybe that’s before API developers knew better than turn too much power over to code-consumers? Who knows! But I’ve strong feelings on the matter, given it took me so much time to figure out Microsoft’s intentions.</p>
+
+<p>And with that–I’m closing down the Lumi3 project and starting on Lumi4.</p>
+:ET

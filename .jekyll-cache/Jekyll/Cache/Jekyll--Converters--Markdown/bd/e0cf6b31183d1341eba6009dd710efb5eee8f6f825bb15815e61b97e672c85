@@ -1,0 +1,176 @@
+I"�6<p>Originally posted on <a href="www.letsmakerobots.com">www.letsmakerobots.com</a></p>
+
+<div class="flex-video">
+<iframe width="560" height="315" src="https://www.youtube.com/embed/zSp-vwzY-Pg" frameborder="0" allowfullscreen=""></iframe>
+</div>
+
+<p>Here are some random notes on working with the HM-10.</p>
+
+<ol>
+  <li><strong>Working RX/TX LEDs</strong></li>
+  <li><strong>How upgrade the HM-10</strong></li>
+  <li><strong>Pseudo Star-Networking HM-10s</strong></li>
+</ol>
+
+<p><strong>Working RX/TX LEDs</strong></p>
+
+<p>I spent some time trying to find a way to create RX/TX traffic LEDs for the HM-10 breakout.  This might be easy for some, but it was a real thinker for me.  The HM-10 is TTL, which as it was explained me, means that the line is high while idling and low to represent data.  The problem here is the typical LED setup doesn’t work.  Sadly, this is the setup I used in two of my fabricated boards.</p>
+
+<p><img src="../images/HM-10_TX-RX_LED_01.jpg" alt="" /></p>
+
+<p>Well, this stupid mistake has been staring me in the face.  Especially since a few guys ordered my board and mentioned politely, “It only flashes when large amounts of data go through.”</p>
+
+<p>After asking around I was told the best way to approach this problem was to use a PNP transistor.  The guys at LMR pretty much gave me the solution <a href="http://letsmakerobots.com/node/40061">here</a>.  The people here are brilliant.  (Please don’t tell them I’m not, I want to hang with the cool-kids for a bit before they find out my mom still dresses me.)</p>
+
+<p>But while LMR was helping me I found Sparkfun’s solution to the problem on one of their <a href="https://www.sparkfun.com/datasheets/Wireless/Zigbee/XBee-Serial-Explorer-v12.pdf">Xbee Explorer boards</a>.  In essence, the LEDs are wired from in between 3.3v and the TX/RX lines, this allows them to act as sinks whenever the data is coming through.  As long as the LED is a green, blue or other with a 3.1v drop, then the voltage being sunk doesn’t interfere with the data.</p>
+
+<p>Of course, this is risky.  The <a href="http://www.ti.com/lit/ds/symlink/cc2540.pdf">CC2540</a> is a nifty chip, but it isn’t meant to be a high-current uC.  I dug through the datasheet to see what the current sink rating of the RX/TX pins (2 &amp; 3) were.  Well…it’s not in the datasheet!  But then I came across this <a href="http://e2e.ti.com/support/low_power_rf/f/538/t/165364.aspx">post</a>.</p>
+
+<p>So, I checked chapter 7.3 of the <a href="http://www.ti.com/lit/ug/swru191e/swru191e.pdf">CC2540 User Guide</a>.</p>
+
+<p><img src="../images/HM-10_TX-RX_LED_02.jpg" alt="" /></p>
+
+<p>Well, there we go.  So, I breadboarded a circuit and found it worked.  But I was only brave enough to use a 1k resistor.</p>
+
+<p>Eventually <a href="http://letsmakerobots.com/user/21289">Brassfly </a>helped me work through the math,</p>
+
+<blockquote>
+  <p>“Given that the voltage drop across the forward biased junction of a red LED is about 2 Vdc (we will call that Vf) the total current through the LED/Resistor is equal to Vsupply-Vf/R, or in this case 3.3V-2V/1000=.0013A=1.3mA….If they are bright enough then don’t worry about it. If not, you might then consider using a 470 ohm resistor (2.7mA) or even 330 ohm resistor (3.9mA).”</p>
+</blockquote>
+
+<p>So, I made up a fresh version of the HM-10 breakout board (v.9.9) with this LED setup.  I wired it up.  And, it seems to be working.</p>
+
+<p><img src="../images/IMG_0356.jpg" alt="" /></p>
+
+<p>Again, can’t use yellow or red LEDs on the RX/TX lines, since they do not create a high-enough voltage drop to signal the CC2540 low).</p>
+
+<p><strong>How upgrade the HM-10</strong></p>
+
+<p><strong>(NOTE:</strong> You can only upgrade versions 507 or later, according to Jnhuamoa)</p>
+
+<p>1. Visit the HM-10 <a href="http://www.jnhuamao.cn/index_en.asp?ID=1">website</a> and learn <em>all</em> about the HM-10 upgrade process.<img src="../images/HM-10_Upgrading_1_2.jpg" alt="" /></p>
+
+<p>2. Download the lastest firmware version file.  (Make sure your HM-10 is a CC2540, if it’s CC2541 use that file).<img src="../images/HM-10_Upgrading_2.jpg" alt="" /></p>
+
+<p>3. Before we proceed, here’s my bitchy disclaimer. Re-read the instructions and b_<strong>eware all ye who try to upload firmware and don’t blame me for problems, like the death of your HM-10 :P</strong>_</p>
+
+<p>4. Open <a href="http://realterm.sourceforge.net/">Realterm</a> (or your preferred serial terminal).</p>
+
+<p>5. Wire your HM-10’s serial connection as described in <a href="http://letsmakerobots.com/node/38009">my earlier post</a>.</p>
+
+<p>6. You are about to cross the point of no return.  Open a serial connection to the HM-10 and if you are prepared for the worst, type: “AT+SBLUP” and the module should reply, “SBLUP+OK.”  Congratulations, you’ve bricked your HM-10–well, at least until the upgrade process is complete.</p>
+
+<p>7. Now, <strong>CLOSE YOUR SERIAL CONNECTION</strong> in Realterm. Yes, I forgot to close the connection myself and was pissed because I thought I had bricked my HM-10 when I tried the next step.  I’m a hack, hacking with a hacksaw.</p>
+
+<p>8. Unzip the “HMSoft-10-2540-V522.zip” (or the latest version, respectively) into a folder.  There should be several files in the folder, <strong>open HMSoft.exe</strong></p>
+
+<p>9. Now, <strong>click on the ellipsis and select “HMSoft.bin”</strong> file.  Then, type the number of your com port.  You don’t need to include anything but the number (e.g., COM34 becomes 34).<img src="../images/HM-10_Upgrading.jpg" alt="" /></p>
+
+<p><strong>10. Pray</strong> (for the HM-10 this works best if to <a href="http://en.wikipedia.org/wiki/Nyarlathotep">Nyarlathotep</a>).</p>
+
+<p>11. Click “Load Image.”  The upload process should start pretty quick and should take approximately a minute and a half to complete.  <strong>Do not remove power or screw with the wiring until you see the following:</strong><img src="../images/HM-10_Upgrading_Done.jpg" alt="" /></p>
+
+<p>12. Click “Ok” and open Realterm.  Bring up a serial connection and type: “AT+VERS?”  It should respond, “HMSoft v521.”  That’s not a typo, even though we uploaded the V522 version it responds saying it is V521?  You got me.  But it works ok :)</p>
+
+<p><img src="../images/HM-10_Upgrading_Check_Vers.jpg" alt="" /></p>
+
+<p><strong>Pseudo Star-Networking HM-10s</strong></p>
+
+<p>Setup up at least three units.</p>
+
+<p><strong>Unit #1 (“Master”)</strong></p>
+
+<ol>
+  <li>AT+ROLE2</li>
+  <li>AT+IMME1</li>
+  <li>AT+CONxxxSLAVE#1xxxx</li>
+</ol>
+
+<p><strong>Unit #2 (Slave #A)</strong></p>
+
+<ol>
+  <li>AT+ADDR? Write the address down. Mine replied, “OK+ADDR:883314DD8015”</li>
+  <li>AT+MODE1</li>
+</ol>
+
+<p><strong>Unit #3 (Slave #B)</strong></p>
+
+<ol>
+  <li>
+    <p>AT+ADDR? Write the address down.Mine replied, “OK+ADDR:883314DD8016”</p>
+  </li>
+  <li>
+    <p>AT+MODE1</p>
+  </li>
+</ol>
+
+<p>Oh, one more bit.  You need to wire pin 4 on the Arduino to the HM-10 Master’s reset line.  Since there really isn’t anyway to reset the slave and the master at the same time.  This gets us around the timeout for both, slave and master.</p>
+
+<ul>
+  <li><strong>RESET&lt;—-1k Resistor—–&gt;D4 on Arduino</strong></li>
+</ul>
+
+<p>Then use the following code, changing your addresses respectively.</p>
+
+<figure class="highlight"><pre><code class="language-c" data-lang="c"><span class="c1">// Crap code for HM-10 pseudo-Networking</span>
+<span class="c1">// By the crappy code Thomas Brittain, aka, Ladvien.</span>
+
+<span class="n">String</span> <span class="n">inputString</span> <span class="o">=</span> <span class="s">""</span><span class="p">;</span>         <span class="c1">// a string to hold incoming data</span>
+<span class="n">boolean</span> <span class="n">stringComplete</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>  <span class="c1">// whether the string is completeString inputString = "";         // a string to hold incoming data</span>
+
+<span class="kt">float</span> <span class="n">time</span><span class="p">;</span>
+<span class="kt">float</span> <span class="n">oldTime</span><span class="p">;</span>
+
+<span class="kt">void</span> <span class="nf">setup</span><span class="p">()</span> <span class="p">{</span>
+<span class="c1">// initialize serial:</span>
+<span class="n">Serial</span><span class="p">.</span><span class="n">begin</span><span class="p">(</span><span class="mi">9600</span><span class="p">);</span>
+<span class="n">pinMode</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="n">OUTPUT</span><span class="p">);</span>
+<span class="n">digitalWrite</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="n">LOW</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">HM10Reset</span><span class="p">(){</span>
+  <span class="n">Serial</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">"AT+RESET"</span><span class="p">);</span>
+  <span class="n">delay</span><span class="p">(</span><span class="mi">220</span><span class="p">);</span>
+  <span class="n">digitalWrite</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="n">HIGH</span><span class="p">);</span>
+  <span class="n">delay</span><span class="p">(</span><span class="mi">100</span><span class="p">);</span>
+  <span class="n">digitalWrite</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="n">LOW</span><span class="p">);</span>
+  <span class="n">delay</span><span class="p">(</span><span class="mi">150</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">loop</span><span class="p">()</span> <span class="p">{</span>
+  <span class="c1">// print the string when a newline arrives:</span>
+  <span class="n">Serial</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="s">"AT+CON883314DD8016"</span><span class="p">);</span>
+  <span class="n">delay</span><span class="p">(</span><span class="mi">150</span><span class="p">);</span>
+  <span class="n">Serial</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">"From first node!  Seconds ago last here: "</span><span class="p">);</span>
+  <span class="n">time</span> <span class="o">=</span> <span class="n">millis</span><span class="p">();</span>
+  <span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">((</span><span class="n">time</span><span class="o">-</span><span class="n">oldTime</span><span class="p">)</span><span class="o">/</span><span class="mi">1000</span><span class="p">);</span>
+  <span class="n">oldTime</span> <span class="o">=</span> <span class="n">millis</span><span class="p">();</span>
+  <span class="n">delay</span><span class="p">(</span><span class="mi">250</span><span class="p">);</span>
+  <span class="n">HM10Reset</span><span class="p">();</span>
+  <span class="n">Serial</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="s">"AT+CON883314DD8015"</span><span class="p">);</span>
+  <span class="n">delay</span><span class="p">(</span><span class="mi">150</span><span class="p">);</span>  
+  <span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s">"From second node!"</span><span class="p">);</span>
+  <span class="n">delay</span><span class="p">(</span><span class="mi">150</span><span class="p">);</span>
+  <span class="n">HM10Reset</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">serialEvent</span><span class="p">()</span> <span class="p">{</span>
+  <span class="k">while</span> <span class="p">(</span><span class="n">Serial</span><span class="p">.</span><span class="n">available</span><span class="p">())</span> <span class="p">{</span>
+  <span class="c1">// get the new byte:</span>
+  <span class="kt">char</span> <span class="n">inChar</span> <span class="o">=</span> <span class="p">(</span><span class="kt">char</span><span class="p">)</span><span class="n">Serial</span><span class="p">.</span><span class="n">read</span><span class="p">();</span>
+  <span class="c1">// add it to the inputString:</span>
+  <span class="n">delay</span><span class="p">(</span><span class="mi">50</span><span class="p">);</span>
+  <span class="n">inputString</span> <span class="o">+=</span> <span class="n">inChar</span><span class="p">;</span>
+  <span class="n">stringComplete</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="p">}</span></code></pre></figure>
+
+<p>Not going to lie. I’m pretty dissapointed with how complicated the firmware makes it to switch between nodes.  Although, I’ve only begun to play with firmware versions greater than V303.</p>
+
+<p>I couldn’t do much better than about 2.84 seconds switching between nodes.  This simply wont do for me.  And, of course, this rate goes up with more nodes.  So, a swarm of little robots controlled this way would be unmanagable.</p>
+
+<p>I tried tweaking the timing of everything in the code.  The HM-10 wasn’t having it.  If I lowered the delay following an AT command it, the command wouldn’t take.  This would often cause the nodes to become stuck (waiting for timeout, still connected, etc.)  Also, the hardware reset on the HM-10 is said to be 100ms, but I’m finding it unhappy with much less than 250ms.</p>
+
+<p>Anyway, if anyone else wants to carry the banner my suggestion is uping the buad rate and sticking with hardware resets, like in my <a href="http://letsmakerobots.com/node/39795">ATtiny Bitsy Spider</a> board.</p>
+:ET

@@ -13,7 +13,7 @@ custom_css:
 custom_js: 
 ---
 
-[![](../images/lego_classifier/lego_classifier.png){: .float-right}](https://ladvien.com/lego_classifier/lego_classifier.png) I've a robot friend.  To be clear, the friend is not a robot, rather, we build robots together.  One of the projects we tossed about is building a LEGO sorting machine.  Ezra--again, not a robot--teaches robotics to kids.  For their designs, LEGOs are the primary component.  Unfortunately, this results in much time spent to preparing for an event.
+[![](../images/lego_classifier/lego_classifier_comic.png){: .float-right}](https://ladvien.com/lego_classifier/lego_classifier_comic.png) I've a robot friend.  To be clear, the friend is not a robot, rather, we build robots together.  One of the projects we tossed about is building a LEGO sorting machine.  Ezra--again, not a robot--teaches robotics to kids.  For their designs, LEGOs are the primary component.  Unfortunately, this results in much time spent to preparing for an event.
 
 He mentioned to me, "What we really need is a sorting machine."  I remained skpetical for some time, but finally, I warmed up to the idea when he started talking about incorporating a deep neural-netowrk.  More specifically, a convultional neural-network (CNN).  
 

@@ -50,6 +50,7 @@ plugins:
   - jekyll-seo-tag
   - jekyll-minifier
   - jekyll-redirect-from
+  - jemoji
   # - jekyll-compress-images
 
 jekyll-press:

@@ -186,3 +186,7 @@ svg:not(:root) {
   border: 1px solid $comp-color;
   border-radius: 4px;
 }
+
+p.img.emoji {
+  display: inline;
+}

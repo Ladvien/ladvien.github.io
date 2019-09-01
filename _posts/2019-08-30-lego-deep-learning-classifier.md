@@ -15,13 +15,13 @@ custom_js:
 
 [![](../images/lego_classifier/lego_classifier_comic.png){: .float-right}](https://ladvien.com/lego_classifier/lego_classifier_comic.png) I've a robot friend.  To be clear, the friend is not a robot, rather, we build robots together.  One of the projects we tossed about is building a LEGO sorting machine.  Rockets is the friends name--again, not a robot--teaches robotics to kids.  For their designs, LEGOs are the primary component.  Unfortunately, this results in much time spent to preparing for an event.
 
-He mentioned to me, "What I really need is a sorting machine."  And precodeed to explain his plain for building one.  
+He mentioned to me, "What I really need is a sorting machine."  And proceeded to explain his plain for building one.  
 
-I was skpetical for some time, but finally, I got drawn in he talked about incorporating a deep neural-netowrk.  More specifically, a convultional neural-network (CNN).  I'd been looking for an excuse to build a CNN.  This was a good one. 
+I was skeptical for some time, but finally, I got drawn in he talked about incorporating a deep neural-network.  More specifically, a convolutional neural-network (CNN).  I'd been looking for an excuse to build a CNN.  This was a good one. 
 
 Anyway, these blog posts are our journal in build the LEGO sorter. 
 
-Before we get started, a note about this series: I won't spend much time on explaining parts of the work where it is better documented elsehwere.  Instead, I'm going to focus on stuff I've found everyone else omitting.  Like, putting the neural-network to work. This one bugged me. Everyone loves to say, "Dude, my classifier has a validation accuracy of 99.999%!"  That's great, but as we found out, validation accuracy doesn't always translate into _production accuracy._
+Before we get started, a note about this series: I won't spend much time on explaining parts of the work where it is better documented elsewhere.  Instead, I'm going to focus on stuff I've found everyone else omitting.  Like, putting the neural-network to work. This one bugged me. Everyone loves to say, "Dude, my classifier has a validation accuracy of 99.999%!"  That's great, but as we found out, validation accuracy doesn't always translate into _production accuracy._
 
 ## TL;DR
 If you don't want to listen to my rambling or want to do things the easy way, you can jump straight into the code using Google's Colab:
@@ -34,17 +34,19 @@ Or if you want to run the code locally, Rocket made the training data public.  J
 
 * [lego_id_training_data](https://github.com/Ladvien/lego_id_training_data)
 
+Then jump to the code by clicking [here](https://ladvien.com/lego-deep-learning-classifier/#preprocessing-code-needed-libraries).
+
 
 ## The Idea
-It was pretty straightfoward to begin with.  We'd find some images of LEGOs on the internet and then train a CNN to classify LEGOs by there part code.  It was a bit naive, but if knew the full amount of work a project like this would ahead of time I doubt anyone would do it.
+It was pretty straightfoward to begin with.  We'd find some images of LEGOs on the internet and then train a CNN to classify them by their part code.  It was a bit naive, but that's where must projects being, right? Hopeful naiveté.
 
-Anyway, we began with searching the webs.  Google told us about several other folks doing something similiar.  I'm not going to list them all, only what I considered the best:
+Anyway, we searched the webs for projects like this, as we hoped they had prepared images.  Google told us several folks doing similar work.  I'm not going to list them all, only what I considered worth a read:
 
 * [Lego Sorter using TensorFlow on Raspberry Pi](https://medium.com/@pacogarcia3/tensorflow-on-raspbery-pi-lego-sorter-ab60019dcf32)
 
 This is an _extremely_ well documented project by [Paco Garcia](https://medium.com/@pacogarcia3).
 
-So, after reading a few articles, we figured we could do this.  We just need the data.  After a bit of searching we found these existing datasets:
+So, after reading a few articles, we figured we could do this.  We just needed data.  After a bit more searching we found the following datasets:
 
 * [Kaggle: Database of Lego "Images" (they are rendered from models)](https://www.kaggle.com/joosthazelzet/lego-brick-images)
 * [Kaggle: Lego vs Generic Brick](https://www.kaggle.com/pacogarciam3/lego-vs-generic-brick-image-recognition#example_Lego_1x4_crop0.jpg)
@@ -120,7 +122,7 @@ Therefore, I've written a Python script to do the following
 3. Resize the image to specified size
 4. Crop from the center of the image out
 5. Create a train and test folder
-6. Create subfolders in train and test with the class name
+6. Create sub-folders in train and test with the class name
 7. Shuffle the images in the process
 8. Save the cropped file in the appropriate folder, depending what percentage of images you want to withhold for testing.
 9.  Repeat steps 2-8 for every image
@@ -156,7 +158,7 @@ If you have any troubles load the `cv2` library, it probably means there was an 
 The following control the the flow of preprocessing
 
 * `dry_run`: if set to true, it does not save the images, but does everything else
-* `gray_scale`: converts the images to grayscale.
+* `gray_scale`: converts the images to gray-scale.
 * `root_path`: the root folder of the project
 * `show_image`: shows the before and after of the image.
 * `output_img_size`: adjust this to the size of your desired output image

@@ -2,7 +2,7 @@
 layout: post
 title: A LEGO Classifier -- CNN and Elbow Grease
 categories: robot
-series: LEGO Classifier
+series: 
 excerpt:
 tags: [tensorflow, deep learning, legos, robots, cnn]
 image: 
@@ -13,22 +13,24 @@ custom_css:
 custom_js: 
 ---
 
-[![](../images/lego_classifier/lego_classifier_comic.png){: .float-right}](https://ladvien.com/lego_classifier/lego_classifier_comic.png) I've a robot friend.  To be clear, he is not a robot, rather, we build robots together.  One of the projects we tossed about is building a LEGO sorting machine.  Rockets is his name.  Anyway, Rockets--again, not a robot--teaches robotics to kids.  For their designs, LEGOs are the primary component.  This results in a lot of time spent preparing for events.
+[![](../images/lego_classifier/lego_classifier_comic.png){: .float-right}](https://ladvien.com/lego_classifier/lego_classifier_comic.png) I've a robot friend.  To be clear, the friend is not a robot, rather, we build robots together.  One of the projects we tossed about is building a LEGO sorting machine.  Rockets is the friends name--again, not a robot--teaches robotics to kids.  For their designs, LEGOs are the primary component.  Unfortunately, this results in much time spent to preparing for an event.
 
-He mentioned to me, "What we really need is a sorting machine."  I remained disinterested, but finally, I warmed up to the idea when he started talking about incorporating a deep neural-network.  More specifically, a convolutional neural-network (CNN).  
+He mentioned to me, "What I really need is a sorting machine."  And precodeed to explain his plain for building one.  
 
-Anyway, this blog series is the journal in building the LEGO sorter. 
+I was skpetical for some time, but finally, I got drawn in he talked about incorporating a deep neural-netowrk.  More specifically, a convultional neural-network (CNN).  I'd been looking for an excuse to build a CNN.  This was a good one. 
 
-One last note to the reader: I won't spend much time on explaining parts of the work where it is better documented elsehwere.  For example, Convolutional Neural Networks are well documented by, um, everyone?  
+Anyway, these blog posts are our journal in build the LEGO sorter. 
 
-Instead, I'm going to focus on stuff which I've found everyone else omitting.  Like, deploying the neural-network to do some work. This one bugged me, because everyone loves to say, "Dude, my classifier has a validation accuracy of 99.999%!"  That's great, but as I found out, validation accuracy doesn't always translate well into _production accuracy._
+Before we get started, a note about this series: I won't spend much time on explaining parts of the work where it is better documented elsehwere.  Instead, I'm going to focus on stuff I've found everyone else omitting.  Like, putting the neural-network to work. This one bugged me. Everyone loves to say, "Dude, my classifier has a validation accuracy of 99.999%!"  That's great, but as we found out, validation accuracy doesn't always translate into _production accuracy._
 
 ## TL;DR
 If you don't want to listen to my rambling or want to do things the easy way, you can jump straight into the code using Google's Colab:
 
 * [lego_classifier](https://colab.research.google.com/drive/1b2_w2o60dMVJlV4Od25zTx2OUP07tdue)
 
-Or if you want to run the code locally, Rocket's has allowed making the training data public.  Just know, you'll need a GPU.
+This notebook is setup to download Rocket's data and train the classifier.  Thanks to Google for providing a GPU to train on and Github for hosting the data.
+
+Or if you want to run the code locally, Rocket made the training data public.  Just know, you'll need a GPU.
 
 * [lego_id_training_data](https://github.com/Ladvien/lego_id_training_data)
 

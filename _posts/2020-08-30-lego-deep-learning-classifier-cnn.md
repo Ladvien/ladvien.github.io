@@ -12,17 +12,64 @@ comments: true
 custom_css:
 custom_js: 
 ---
+This article is part of a series (linked above).  It will help explain the code used to train our convolutional neural-network (CNN) LEGO classifier.
 
+If you want to follow with this article executing the code, we've made it available in Google's Colab:
+
+* [Lego Classifier](https://colab.research.google.com/drive/1b2_w2o60dMVJlV4Od25zTx2OUP07tdue)
 
 ## Classifier Code:
+The code below started with some we found on Kaggle:
+
+* https://www.kaggle.com/twhitehurst3/lego-brick-images-keras-cnn-96-acc
+
+However, there were _a lot_ of problems in the code.  I rewrote most of it, so I'm not sure how much of the original is left.  Still, cite what's not yours, I say.
+
+Some of the issues were:
+* It used a model much more complex than needed.
+* The code format was a mess.
+* Mismatch of target output and loss.
+
+It was the last one which is _super_ tricky, but critical.  It's a hard to catch bug which will inaccurately report high accuracy.  I'll discuss it more below, but it's a trap I've fallen into myself.
+
+Regardless of the issues, it was good jump-starter code for us, since we've never worked with a CNN.
 
 Full code may be found here:
 * [CNN LEGO Trainer (Python)](https://github.com/Ladvien/lego_sorter/blob/master/lego_classifier_gpu.py)
 
-### Classifier Code: Needed Libraries
-```python
-import tensorflow as tf
+### Project Setup (local only)
+If you are running this code locally, you will need to do the following.
 
+Enter the command prompt and navigate to your home directory.  We're going to clone the project repository (repo), then, clone the data repo inside the project folder. 
+```
+git clone https://github.com/Ladvien/lego_sorter.git
+cd lego_sorter
+git clone https://github.com/Ladvien/lego_id_training_data.git
+```
+Then, open your Python IDE, set your directory to `./lego_sorter`, and open `lego_classifier_gpu.py`.
+
+Lastly, if you see a cell like this:
+```bash
+!git clone https://github.com/Ladvien/lego_id_training_data.git
+!mkdir ./data
+!mkdir ./data/output
+!ls
+```
+Skip or delete them, they are need when running the Colab notebook.
+
+### Classifier Code: Needed Libraries
+
+Below is the code used.  Looking over it again, I see some ways to clean it up, so know it may change in the future.
+
+Here's a breakdown of why the libraries are needed:
+
+* `tensorflow` -- this is Google's main deep-learning library, it's the heart of the project.
+* `keras` -- abstracts a lot of the details from creating a machine learning model.
+* `json` -- we write the classes to file for use later.
+* `tensorboard` -- visualizes your training session.
+* `webbrowser` -- this is opens your webrowser to tensorboard
+
+```python
 
 # Import needed tools.
 import os
@@ -32,6 +79,7 @@ import numpy as np
 from scipy import stats
 
 # Import Keras
+import tensorflow as tf
 import tensorflow.keras
 from tensorflow.keras.layers import Dense,Flatten, Dropout, Lambda
 from tensorflow.keras.layers import SeparableConv2D, BatchNormalization, MaxPooling2D, Conv2D, Activation
@@ -44,8 +92,11 @@ from tensorboard import program
 import webbrowser
 import time
 ```
+If you are following along with this code locally and need help setting up these libraries, just drop a comment below.  I got you.
 
 ### Classifier Code: Parameters
+The parameters sections is the heart of the training, I'll highlight what each parameter is doing and then mention of some of the parameters you might want to tweak.
+
 ```python
 continue_training       = False
 initial_epoch           = 0
@@ -71,6 +122,40 @@ model_save_dir          = './data/output/'
 train_dir               = './lego_id_training_data/gray_train/'
 val_dir                 = './lego_id_training_data/gray_test/'
 ```
+#### Parameters: Training Session
+These parameters help pick back up from an interrupted training session.  If your session is interrupted at epoch 183, then you could set `continue_training` = `True` and `initial_epoch` = 184, then execute the script.  This should then load the last best model and pick back up training where you left off.  Lastly, if you set `clear_logs` = `True` then it clears the Tensorboard information.  So, if you continue a session, you will want to set this to false.
+
+This section is a WIP and there are several issues.  First, the Tensorboard logs should be save in separate folders and shouldn't need to be cleared.  Also, when continuing a training session it resets the best validation score (tracked for saving your model before overfitting) resulting in a temporary dip in performance.
+
+#### Parameters: Image Data
+
+The `input_shape` refers to the dimensions of an image: height, width, and color (RGB) values.  `image_size` derives from the `input_shape`.
+
+Note, one issue I had early on with `image_size`.  I tried non-square images (which hurt training and aren't recommended) and found out the hard way most of the image parameters which are looking for height and width reverse their order in the Python libraries.  
+
+For example, this is what's needed:
+```python
+...
+    val_dir,
+    target_size = (height_here, width_here),
+...
+```
+I was expecting:
+```python
+...
+    val_dir,
+    target_size = (width_here, height_here),
+...
+```
+It bit me, as most frameworks I've used expect width first and then heighth.  I mean, even when we talk about screen resolution we list width then height (e.g., `1920x1080`). Just be aware of it when using rectangle images.  Always RTFM ('cause I don't).
+
+input_shape             = (300, 300, 3) 
+image_size              = (input_shape[0], input_shape[1])
+train_test_ratio        = 0.2
+zoom_range              = 0.1
+shear_range             = 0.1
+
+
 
 ### Classifier Code: Helper Functions
 ```python

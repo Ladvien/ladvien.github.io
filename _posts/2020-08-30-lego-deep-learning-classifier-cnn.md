@@ -128,7 +128,6 @@ These parameters help pick back up from an interrupted training session.  If you
 This section is a WIP and there are several issues.  First, the Tensorboard logs should be save in separate folders and shouldn't need to be cleared.  Also, when continuing a training session it resets the best validation score (tracked for saving your model before overfitting) resulting in a temporary dip in performance.
 
 #### Parameters: Image Data
-
 The `input_shape` refers to the dimensions of an image: height, width, and color (RGB) values.  `image_size` derives from the `input_shape`.
 
 Note, one issue I had early on with `image_size`.  I tried non-square images (which hurt training and aren't recommended) and found out the hard way most of the image parameters which are looking for height and width reverse their order in the Python libraries.  
@@ -149,12 +148,21 @@ I was expecting:
 ```
 It bit me, as most frameworks I've used expect width first and then heighth.  I mean, even when we talk about screen resolution we list width then height (e.g., `1920x1080`). Just be aware of it when using rectangle images.  Always RTFM ('cause I don't).
 
-input_shape             = (300, 300, 3) 
-image_size              = (input_shape[0], input_shape[1])
-train_test_ratio        = 0.2
-zoom_range              = 0.1
-shear_range             = 0.1
+The `train_test_ratio` controls how many images are held back.  I'd have to run through the code again, but I don't think this is needed.  As the preprocessing script has already create a folder with so many validation images.  Hmm, I'll add it to my tech debt list.
 
+The `zoom_range` parameter how far the script should zoom in on the images.  Latly, `shear_range` controls how much of the images to clip off the edges before feeding them to the CNN.
+
+
+#### Parameters: CNN Hyperparameters
+
+# Hyperparameters
+batch_size              = 16
+epochs                  = 40
+steps_per_epoch         = 400
+validation_steps        = 100 
+optimizer               = 'adadelta' 
+learning_rate           = 1.0
+val_save_step_num       = 1
 
 
 ### Classifier Code: Helper Functions

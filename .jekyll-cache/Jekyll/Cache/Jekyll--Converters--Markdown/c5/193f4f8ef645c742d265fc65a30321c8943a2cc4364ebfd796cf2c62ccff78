@@ -1,0 +1,296 @@
+I"jY<p><a href="https://ladvien.com/lego_classifier/lego_classifier_comic.png"><img src="../images/lego_classifier/lego_classifier_comic.png" alt="" class="float-right" /></a> I’ve a robot friend.  To be clear, the friend is not a robot, rather, we build robots together.  One of the projects we tossed about is building a LEGO sorting machine.  Rockets is the friends name–again, not a robot–teaches robotics to kids.  For their designs, LEGOs are the primary component.  Unfortunately, this results in much time spent to preparing for an event.</p>
+
+<p>He mentioned to me, “What I really need is a sorting machine.”  And proceeded to explain his plain for building one.</p>
+
+<p>I was skeptical for some time, but finally, I got drawn in he talked about incorporating a deep neural-network.  More specifically, a convolutional neural-network (CNN).  I’d been looking for an excuse to build a CNN.  This was a good one.</p>
+
+<p>Anyway, these blog posts are our journal in build the LEGO sorter.</p>
+
+<p>Before we get started, a note about this series: I won’t spend much time on explaining parts of the work where it is better documented elsewhere.  Instead, I’m going to focus on stuff I’ve found everyone else omitting.  Like, putting the neural-network to work. This one bugged me. Everyone loves to say, “Dude, my classifier has a validation accuracy of 99.999%!”  That’s great, but as we found out, validation accuracy doesn’t always translate into <em>production accuracy.</em></p>
+
+<h2 id="tldr">TL;DR</h2>
+<p>If you don’t want to listen to my rambling or want to do things the easy way, you can jump straight into the code using Google’s Colab:</p>
+
+<ul>
+  <li><a href="https://colab.research.google.com/drive/1b2_w2o60dMVJlV4Od25zTx2OUP07tdue">lego_classifier</a></li>
+</ul>
+
+<p>This notebook is setup to download Rocket’s data and train the classifier.  Thanks to Google for providing a GPU to train on and Github for hosting the data.</p>
+
+<p>Or if you want to run the code locally, Rocket made the training data public.  Just know, you’ll need a GPU.</p>
+
+<ul>
+  <li><a href="https://github.com/Ladvien/lego_id_training_data">lego_id_training_data</a></li>
+</ul>
+
+<p>Then jump to the code by clicking <a href="https://ladvien.com/lego-deep-learning-classifier/#preprocessing-code-needed-libraries">here</a>.</p>
+
+<h2 id="the-idea">The Idea</h2>
+<p>It was pretty straightfoward to begin with.  We’d find some images of LEGOs on the internet and then train a CNN to classify them by their part code.  It was a bit naive, but that’s where must projects being, right? Hopeful naiveté.</p>
+
+<p>Anyway, we searched the webs for projects like this, as we hoped they had prepared images.  Google told us several folks doing similar work.  I’m not going to list them all, only what I considered worth a read:</p>
+
+<ul>
+  <li><a href="https://medium.com/@pacogarcia3/tensorflow-on-raspbery-pi-lego-sorter-ab60019dcf32">Lego Sorter using TensorFlow on Raspberry Pi</a></li>
+</ul>
+
+<p>This is an <em>extremely</em> well documented project by <a href="https://medium.com/@pacogarcia3">Paco Garcia</a>.</p>
+
+<p>So, after reading a few articles, we figured we could do this.  We just needed data.  After a bit more searching we found the following datasets:</p>
+
+<ul>
+  <li><a href="https://www.kaggle.com/joosthazelzet/lego-brick-images">Kaggle: Database of Lego “Images” (they are rendered from models)</a></li>
+  <li><a href="https://www.kaggle.com/pacogarciam3/lego-vs-generic-brick-image-recognition#example_Lego_1x4_crop0.jpg">Kaggle: Lego vs Generic Brick</a></li>
+</ul>
+
+<p>I wasn’t happy about these datasets.  Their structures weren’t great and they were not designed to help train a classifier.  But then, Rockets found Paco had actually opened his dataset to the public:</p>
+
+<ul>
+  <li><a href="https://www.kaggle.com/pacogarciam3/lego-brick-sorting-image-recognition?fbclid=IwAR303nIR4revbYVmW7YfC_4Frnqu3yn5gOi_HP7elJ4h1_a7uXDE1MVtacw">Kaggle: Lego Brick Sorting (best)</a></li>
+</ul>
+
+<p>One bit more, Paco also made his code public:</p>
+
+<ul>
+  <li><a href="https://github.com/pacogarcia3/lego-11class-tensorflow">11 Class Tensorflow Model</a></li>
+</ul>
+
+<p>Paco, you are a robot friend, too!</p>
+
+<p>Alright, we were encouraged by Paco.  We knew the project would be possible.  However, we didn’t want to step on <a href="https://en.wikipedia.org/wiki/Brownfield_(software_development)">brownfield</a>.  We needed the green. Or if you don’t speak dev, we didn’t want to do this the easy way and replicate Paco’s work.  We wanted to really beat ourselves up by doing everything from scratch.</p>
+
+<h2 id="creating-a-dataset">Creating a Dataset</h2>
+<p>As I stated before, I didn’t like any datasets but Paco’s.  It was real images and meant to train a classifier.  But, they weren’t the LEGOs we wanted to classify.  Rockets’s LEGO projects involve a lot of technic bricks, which didn’t seem to be in Paco’s mix.  So, we set out to create our own.</p>
+
+<p>The first attempt creating training images was by rendering images from <code class="highlighter-rouge">.stl</code> files found on the internet using the Python version of <a href="https://vtk.org/">Visualization Toolkit</a>.  I won’t cover it here since it was a fail and as I’ll create an article later about the stuff we tried and didn’t work.</p>
+
+<p><img src="../images/lego_classifier/rockets_contraption.jpg" alt="" class="float-left" /> Anyway, while I was working on it Rockets had a brilliant plan.  He created an instrument to take pictures of a LEGO on a spin plate.  It used a Raspberry Pi, Pi Cam, and stepper motor, and unicorn farts.</p>
+
+<p>Then Rockets began taking pictures of 10 classes of LEGOs. Not sure how long this took , but shortly he pinged me saying he had 19,000 images. (Ok, ok, he might be <em>part</em> robot.)</p>
+
+<p>I’m not going to attempt explaining the build, as I believe Rockets will do this later.  Besides, about the only part I understand is the unicorn flatulence.</p>
+
+<p>Alright! Now I needed to get my butt in gear and fix up the software.</p>
+<div style="clear: both;"></div>
+
+<h2 id="preprocessing-code">Preprocessing Code</h2>
+<p>Before we could start training a CNN on Rockets’s images we needed to do some preprocessing.  First, the images came in at full resolution, but we needed to crop them, as the CNN train better on square image.  Of course, the image would need to be cropped as not to lose the target data (the LEGO).</p>
+
+<p>For example
+<img src="../images/lego_classifier/crop_and_resize.png" alt="preprocess-image-for-cnn" /></p>
+
+<p>Also, the trainer would be expecting a file structure something like this:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>data
+├── <span class="nb">test</span>
+│   ├── 2456
+│   │     └── 2456_0001.jpg
+│   │     └── 2456_0002.jpg
+│   │     └── 2456_0003.jpg
+│   │     └── ....
+│   ├── 3001
+│   ├── 3002
+│   ├── 3003
+│   ├── 3004
+│   ├── 3010
+│   ├── 3039
+│   ├── 32064
+│   ├── 3660
+│   └── 3701
+└── train
+    ├── 2456
+    ├── 3001
+    ├── 3002
+    ├── 3003
+    ├── 3004
+    ├── 3010
+    ├── 3039
+    ├── 32064
+    ├── 3660
+    └── 3701
+</code></pre></div></div>
+<p>Therefore, I’ve written a Python script to do the following</p>
+
+<ol>
+  <li>Take a path where images are stored by name of the class</li>
+  <li>Load the image</li>
+  <li>Resize the image to specified size</li>
+  <li>Crop from the center of the image out</li>
+  <li>Create a train and test folder</li>
+  <li>Create sub-folders in train and test with the class name</li>
+  <li>Shuffle the images in the process</li>
+  <li>Save the cropped file in the appropriate folder, depending what percentage of images you want to withhold for testing.</li>
+  <li>Repeat steps 2-8 for every image</li>
+</ol>
+
+<p>Let’s jump into the code.</p>
+
+<p>The full code can found here:</p>
+
+<ul>
+  <li><a href="https://github.com/Ladvien/lego_sorter/blob/master/square_crop.py">square_crop.py</a></li>
+</ul>
+
+<p>But I’ll walk through the code below.</p>
+
+<h2 id="preprocessing-code-needed-libraries">Preprocessing Code: Needed Libraries</h2>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">glob</span>
+<span class="kn">import</span> <span class="nn">cv2</span>
+<span class="kn">import</span> <span class="nn">random</span>
+</code></pre></div></div>
+<p>The only non-standard Python library we are using is:</p>
+
+<ul>
+  <li><a href="https://pypi.org/project/opencv-python/">OpenCV</a></li>
+</ul>
+
+<p>This may be a bit tricky depending on which OS you are using and whether you are using Anaconda or straight Python.  However, the following is what we used:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip <span class="nb">install </span>https://pypi.org/project/opencv-python/
+</code></pre></div></div>
+
+<p>If you have any troubles load the <code class="highlighter-rouge">cv2</code> library, it probably means there was an issue installing OpenCV.  Just let me know in the comments and I can help debug.</p>
+
+<h2 id="preprocessing-code-processing-parameters">Preprocessing Code: Processing Parameters</h2>
+<p>The following control the the flow of preprocessing</p>
+
+<ul>
+  <li><code class="highlighter-rouge">dry_run</code>: if set to true, it does not save the images, but does everything else</li>
+  <li><code class="highlighter-rouge">gray_scale</code>: converts the images to gray-scale.</li>
+  <li><code class="highlighter-rouge">root_path</code>: the root folder of the project</li>
+  <li><code class="highlighter-rouge">show_image</code>: shows the before and after of the image.</li>
+  <li><code class="highlighter-rouge">output_img_size</code>: adjust this to the size of your desired output image</li>
+  <li><code class="highlighter-rouge">grab_area</code>: the total area of the original image to take before resizing</li>
+  <li><code class="highlighter-rouge">train_test_split</code>: the rate of test images to withhold</li>
+  <li><code class="highlighter-rouge">shuffle_split</code>: should the images be shuffled in the process</li>
+  <li><code class="highlighter-rouge">part_numbers</code>: a list of all the class folders contained in the input</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#####################
+# Parameters
+#####################     
+</span>
+<span class="n">dry_run</span>                 <span class="o">=</span> <span class="bp">False</span> <span class="c1"># If true, will print output directory.
+</span><span class="n">gray_scale</span>              <span class="o">=</span> <span class="bp">True</span>
+
+<span class="n">root_path</span>               <span class="o">=</span> <span class="s">'./data/'</span>
+<span class="n">input_path</span>              <span class="o">=</span> <span class="n">f</span><span class="s">'{root_path}raw/size_1080/'</span>
+<span class="n">output_path</span>             <span class="o">=</span> <span class="n">f</span><span class="s">'{root_path}cropped/'</span>
+
+<span class="n">show_image</span>              <span class="o">=</span> <span class="bp">False</span>
+
+<span class="n">output_img_size</span>         <span class="o">=</span> <span class="p">(</span><span class="mi">300</span><span class="p">,</span> <span class="mi">300</span><span class="p">)</span>
+<span class="n">grab_area</span>               <span class="o">=</span> <span class="mi">500</span>
+<span class="n">train_test_split</span>        <span class="o">=</span> <span class="mf">0.3</span>
+<span class="n">shuffle_split</span>           <span class="o">=</span> <span class="bp">True</span>
+
+<span class="n">part_numbers</span>            <span class="o">=</span> <span class="p">[</span>
+                           <span class="s">'2456'</span><span class="p">,</span>
+                           <span class="s">'3001'</span><span class="p">,</span>
+                           <span class="s">'3002'</span><span class="p">,</span>
+                           <span class="s">'3003'</span><span class="p">,</span>
+                           <span class="s">'3004'</span><span class="p">,</span>
+                           <span class="s">'3010'</span><span class="p">,</span>
+                           <span class="s">'3039'</span><span class="p">,</span>
+                           <span class="s">'3660'</span><span class="p">,</span>
+                           <span class="s">'3701'</span><span class="p">,</span>
+                           <span class="s">'32064'</span>
+                        <span class="p">]</span>
+</code></pre></div></div>
+<p>Below is the main loop.  It is going to repeat for every <strong>folder</strong> it finds in the the root folder.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="n">part_number</span> <span class="ow">in</span> <span class="n">part_numbers</span><span class="p">:</span>
+
+    <span class="n">part_input_path</span>  <span class="o">=</span> <span class="n">f</span><span class="s">'{input_path}{part_number}/'</span>
+    
+    <span class="c1"># Get input file paths.
+</span>    <span class="n">image_files</span> <span class="o">=</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">f</span><span class="s">'{part_input_path}*.jpg'</span><span class="p">)</span>
+    <span class="n">num_files</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">image_files</span><span class="p">)</span>
+
+    <span class="c1"># Image index.
+</span>    <span class="n">index</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="c1"># If true, the images will be loaded and then split at random.
+</span>    <span class="k">if</span> <span class="n">shuffle_split</span><span class="p">:</span>
+        <span class="n">file_index</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_files</span><span class="p">),</span> <span class="n">num_files</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">file_index</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_files</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>This is the inner loop, it loads each of the image files in the class class folder, modifies it, and saves it to the output folders.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="k">for</span> <span class="n">file_num</span> <span class="ow">in</span> <span class="n">file_index</span><span class="p">:</span>
+        
+        <span class="c1"># Increment the file index.
+</span>        <span class="n">index</span> <span class="o">+=</span> <span class="mi">1</span>
+        
+        <span class="c1"># Load the image
+</span>        <span class="n">input_file_path</span> <span class="o">=</span> <span class="n">f</span><span class="s">'{input_path}{part_number}/{str(file_num).zfill(4)}.jpg'</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s">'LOADED: {input_file_path}'</span><span class="p">)</span>
+        
+        <span class="c1"># Crop raw image from center.
+</span>        <span class="n">img</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">input_file_path</span><span class="p">)</span>
+
+        <span class="c1"># Get the center of the image.
+</span>        <span class="n">c_x</span><span class="p">,</span> <span class="n">c_y</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">img</span> <span class="o">=</span> <span class="n">img</span><span class="p">[</span><span class="n">c_y</span> <span class="o">-</span> <span class="n">grab_area</span><span class="p">:</span> <span class="n">c_y</span> <span class="o">+</span> <span class="n">grab_area</span><span class="p">,</span> <span class="n">c_x</span> <span class="o">-</span> <span class="n">grab_area</span><span class="p">:</span> <span class="n">c_x</span> <span class="o">+</span> <span class="n">grab_area</span><span class="p">]</span>
+         
+        <span class="c1"># Resize image
+</span>        <span class="n">img</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">output_img_size</span><span class="p">,</span> <span class="n">interpolation</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">INTER_AREA</span><span class="p">)</span>
+        
+        <span class="c1"># Should we convert it to grayscale?
+</span>        <span class="k">if</span> <span class="n">gray_scale</span><span class="p">:</span>
+            <span class="n">img</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">COLOR_BGR2GRAY</span><span class="p">)</span>
+        
+        <span class="c1"># Show to user.
+</span>        <span class="k">if</span> <span class="n">show_image</span><span class="p">:</span>
+            <span class="n">cv2</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="s">'image'</span><span class="p">,</span> <span class="n">img</span><span class="p">)</span>
+            <span class="n">cv2</span><span class="o">.</span><span class="n">waitKey</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">cv2</span><span class="o">.</span><span class="n">destroyAllWindows</span><span class="p">()</span> 
+
+        <span class="c1"># Determine if it should be output to train or test.
+</span>        <span class="n">test_or_train</span> <span class="o">=</span> <span class="s">'train'</span>        
+        <span class="k">if</span> <span class="n">index</span> <span class="o">&lt;</span> <span class="nb">int</span><span class="p">(</span><span class="n">num_files</span> <span class="o">*</span> <span class="n">train_test_split</span><span class="p">):</span> 
+            <span class="n">test_or_train</span> <span class="o">=</span> <span class="s">'test'</span>
+        
+        <span class="c1"># Prepare the output folder.
+</span>        <span class="n">color</span> <span class="o">=</span> <span class="s">''</span>
+        <span class="k">if</span> <span class="n">gray_scale</span><span class="p">:</span>
+            <span class="n">part_output_folder</span> <span class="o">=</span> <span class="n">f</span><span class="s">'{output_path}gray_scale/{test_or_train}/{part_number}/'</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">part_output_folder</span> <span class="o">=</span> <span class="n">f</span><span class="s">'{output_path}color/{test_or_train}/{part_number}/'</span>
+            
+        <span class="c1"># Make the output directory, if it doesn't exist.
+</span>        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">part_output_folder</span><span class="p">):</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">part_output_folder</span><span class="p">)</span>
+
+        <span class="c1"># Create part path.
+</span>        <span class="n">part_image_path</span> <span class="o">=</span> <span class="n">f</span><span class="s">'{part_output_folder}{part_number}_{index}.jpg'</span>
+        
+        <span class="c1"># Output
+</span>        <span class="k">if</span> <span class="n">dry_run</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s">'Would have saved to: {part_image_path}'</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s">'SAVED: {part_image_path}'</span><span class="p">)</span>
+            <span class="n">cv2</span><span class="o">.</span><span class="n">imwrite</span><span class="p">(</span><span class="n">part_image_path</span><span class="p">,</span> <span class="n">img</span><span class="p">)</span>
+</code></pre></div></div>
+<p>Fairly straightfoward.  Just make sure to run to run the script from the main directory.  For example</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>project_folder
+└── square_crop.py &lt;<span class="nt">---</span> run from here
+└── data
+    ├── <span class="nb">test</span>
+    │   ├── 2456
+    │   │     └── 2456_0001.jpg
+...
+</code></pre></div></div>
+<p>Or, if you don’t want to do it the hardway.  Rockets has made his images available</p>
+
+<ul>
+  <li><a href="https://github.com/Ladvien/lego_id_training_data">lego_id_training_data</a></li>
+</ul>
+
+<h2 id="next">Next</h2>
+<p>Next, I’m going to dive into the Tensorflow CNN code.  Stay tuned, my robot friends!</p>
+:ET

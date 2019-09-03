@@ -154,6 +154,11 @@ The `zoom_range` parameter how far the script should zoom in on the images.  Lat
 
 
 #### Parameters: CNN Hyperparameters
+Hyperparameters is the term machine-learning (ML) engineers use to refer to parameters which can impact the training outcome of a neural net.
+
+* [What are Hyperparameters ?](https://towardsdatascience.com/what-are-hyperparameters-and-how-to-tune-the-hyperparameters-in-a-deep-neural-network-d0604917584a)
+
+`batch_size` refers to the number of photos a neural-net should attempt to predict its class before updating the entire the weights of each [perceptron](https://towardsdatascience.com/what-the-hell-is-perceptron-626217814f53).
 
 # Hyperparameters
 batch_size              = 16

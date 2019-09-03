@@ -12,18 +12,20 @@ comments: true
 custom_css:
 custom_js: 
 ---
-This article is part of a series (linked above).  It will help explain the code used to train our convolutional neural-network (CNN) LEGO classifier.
+This article is part of a series.  It should explain the code used to train our convolutional neural-network (CNN) LEGO classifier.
 
-If you want to follow with this article executing the code, we've made it available in Google's Colab:
+If you want to code along with this article, we've made it available in Google's Colab:
 
 * [Lego Classifier](https://colab.research.google.com/drive/1b2_w2o60dMVJlV4Od25zTx2OUP07tdue)
+
+It's a WIP, so comment below if you run into any issues.
 
 ## Classifier Code:
 The code below started with some we found on Kaggle:
 
 * [Lego Brick Images Keras CCN](https://www.kaggle.com/twhitehurst3/lego-brick-images-keras-cnn-96-acc)
 
-However, there were _a lot_ of problems in the code.  I rewrote most of it, so I'm not sure how much of the original is left.  Still, cite what's not yours, I say.
+However, there were _a lot_ of problems in the code.  I rewrote most of it, so I'm not sure how much of the original is left.  Still, cite your sources!
 
 Some of the issues were:
 * It used a model much more complex than needed.
@@ -146,7 +148,7 @@ I was expecting:
     target_size = (width_here, height_here),
 ...
 ```
-It bit me, as most frameworks I've used expect width first and then heighth.  I mean, even when we talk about screen resolution we list width then height (e.g., `1920x1080`). Just be aware of it when using rectangle images.  Always RTFM ('cause I don't).
+It bit me, as most frameworks I've used expect width first and then height.  I mean, even when we talk about screen resolution we list width then height (e.g., `1920x1080`). Just be aware of it when using rectangle images.  Always RTFM ('cause I don't).
 
 The `train_test_ratio` controls how many images are held back.  I'd have to run through the code again, but I don't think this is needed.  As the preprocessing script has already create a folder with so many validation images.  Hmm, I'll add it to my tech debt list.
 
@@ -162,10 +164,7 @@ Hyperparameters is the term machine-learning (ML) engineers use to refer to para
 
 `steps_per_epoch` are the number of batches to go through before considering one epoch complete. `epochs` is an arbitrary number representing how many `batches` * `steps_per_epoch` to go through before considering the training complete.
 
-So, the length of training would go like this:
-```
-training schedule = epochs * steps_per_epoch * batch_size
-```
+So, the length of training would go like this: `training schedule = epochs * steps_per_epoch * batch_size`
 
 `validation_steps` is the number of batches from the training data to use for validating the current weights.  This will be used when we `fit` (train) our classifier and when we `evaluate` it.
 

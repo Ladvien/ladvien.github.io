@@ -18,26 +18,25 @@ If you want to code along with this article, we've made it available in Google's
 
 * [Lego Classifier](https://colab.research.google.com/drive/1b2_w2o60dMVJlV4Od25zTx2OUP07tdue)
 
+Or if you want to run the code locally:
+
+* [lego_sorter](https://github.com/Ladvien/lego_sorter)
+
 It's a WIP, so comment below if you run into any issues.
 
 ## Classifier Code:
-The code below started with some we found on Kaggle:
+Our code started with a notebook found on Kaggle:
 
 * [Lego Brick Images Keras CCN](https://www.kaggle.com/twhitehurst3/lego-brick-images-keras-cnn-96-acc)
 
-However, there were _a lot_ of problems in the code.  I rewrote most of it, so I'm not sure how much of the original is left.  Still, cite your sources!
+However, there was _a lot_ of problems in the code.  I rewrote most of it, so I'm not sure how much of the original is left.  Still, cite your sources!
 
 Some of the issues were:
-* It used a model much more complex than needed.
+* It used a model more complex than needed.
 * The code format was a mess.
 * Mismatch of target output and loss.
 
-It was the last one which is _super_ tricky, but critical.  It's a hard to catch bug which will inaccurately report high accuracy.  I'll discuss it more below, but it's a trap I've fallen into myself.
-
-Regardless of the issues, it was good jump-starter code for us, since we've never worked with a CNN.
-
-Full code may be found here:
-* [CNN LEGO Trainer (Python)](https://github.com/Ladvien/lego_sorter/blob/master/lego_classifier_gpu.py)
+It was the last one which is _super_ tricky, but critical.  It's a hard to catch bug which will inaccurately report high accuracy.  I'll discuss it more below, but it's a trap I've fallen into myself. Regardless of the issues, it was good jump-starter code, since we've never worked with a CNN.
 
 ### Project Setup (local only)
 If you are running this code locally, you will need to do the following.
@@ -65,11 +64,11 @@ Below is the code used.  Looking over it again, I see some ways to clean it up, 
 
 Here's a breakdown of why the libraries are needed:
 
-* `tensorflow` -- this is Google's main deep-learning library, it's the heart of the project.
-* `keras` -- abstracts a lot of the details from creating a machine learning model.
+* `tensorflow` -- Google's main deep-learning library, it's the heart of the project.
+* `keras` -- a library abstracting a lot of the details from creating a machine learning model.
 * `json` -- we write the classes to file for use later.
-* `tensorboard` -- visualizes your training session.
-* `webbrowser` -- this is opens your webrowser to tensorboard
+* `tensorboard` -- a library for visualizing your training session.
+* `webbrowser` -- this is opens your webrowser to Tensorboard.
 
 ```python
 
@@ -97,7 +96,7 @@ import time
 If you are following along with this code locally and need help setting up these libraries, just drop a comment below.  I got you.
 
 ### Classifier Code: Parameters
-The parameters sections is the heart of the training, I'll highlight what each parameter is doing and then mention of some of the parameters you might want to tweak.
+The parameters sections is the heart of the training, I'll highlight what each parameter is doing and point out the parameters you might want to tweak.
 
 ```python
 continue_training       = False
@@ -125,14 +124,14 @@ train_dir               = './lego_id_training_data/gray_train/'
 val_dir                 = './lego_id_training_data/gray_test/'
 ```
 #### Parameters: Training Session
-These parameters help pick back up from an interrupted training session.  If your session is interrupted at epoch 183, then you could set `continue_training` = `True` and `initial_epoch` = 184, then execute the script.  This should then load the last best model and pick back up training where you left off.  Lastly, if you set `clear_logs` = `True` then it clears the Tensorboard information.  So, if you continue a session, you will want to set this to false.
+The first few parameters help pick back up from an interrupted training session.  If your session is interrupted at epoch 183, then you could set `continue_training` = `True` and `initial_epoch` = 184, then execute the script.  This should then load the last best model and pick back up training where you left off.  Lastly, if you set `clear_logs` = `True` then it clears the Tensorboard information.  So, if you continue a session, you will want to set this to `False`.
 
-This section is a WIP and there are several issues.  First, the Tensorboard logs should be save in separate folders and shouldn't need to be cleared.  Also, when continuing a training session it resets the best validation score (tracked for saving your model before overfitting) resulting in a temporary dip in performance.
+This section is a WIP and there are several issues.  First, the Tensorboard logs should be saved in separate folders and shouldn't need to be cleared.  Also, when continuing a training session it resets the best validation score (tracked for saving your model before overfitting) resulting in a temporary dip in performance.
 
 #### Parameters: Image Data
 The `input_shape` refers to the dimensions of an image: height, width, and color (RGB) values.  `image_size` derives from the `input_shape`.
 
-Note, one issue I had early on with `image_size`.  I tried non-square images (which hurt training and aren't recommended) and found out the hard way most of the image parameters which are looking for height and width reverse their order in the Python libraries.  
+Note, one issue I had early on with `image_size`.  I tried non-square images (which hurt training and aren't recommended) and found out the hard way most of the image parameters looking for height and width reverse their order in the Python libraries.  
 
 For example, this is what's needed:
 ```python
@@ -148,19 +147,19 @@ I was expecting:
     target_size = (width_here, height_here),
 ...
 ```
-It bit me, as most frameworks I've used expect width first and then height.  I mean, even when we talk about screen resolution we list width then height (e.g., `1920x1080`). Just be aware of it when using rectangle images.  Always RTFM ('cause I don't).
+It bit me, as most frameworks I've used expect width first and then height.  I mean, even when we talk about screen resolution we list width *then* height (e.g., `1920x1080`). Just stay aware when using rectangle images.  Always RTFM (because I didn't).
 
-The `train_test_ratio` controls how many images are held back.  I'd have to run through the code again, but I don't think this is needed.  As the preprocessing script has already create a folder with so many validation images.  Hmm, I'll add it to my tech debt list.
+The `train_test_ratio` controls how many images are held back for testing the model.  I'd have to run through the code again, but I don't think this is needed.  As the preprocessing script has already created a folder with a set number of validation images.  Hmm, I'll add it to my [tech debt](https://en.wikipedia.org/wiki/Technical_debt) list.
 
-The `zoom_range` parameter how far the script should zoom in on the images.  Latly, `shear_range` controls how much of the images to clip off the edges before feeding them to the CNN.
+The `zoom_range` parameter controls how far the script should zoom in on the images.  Lastly, `shear_range` controls how much of the images to clip off the edges before feeding them to the CNN.
 
 [![](../images/lego_classifier/batch.png){: .float-right}](https://ladvien.com/lego_classifier/batch.png)
 #### Parameters: CNN Hyperparameters
-Hyperparameters is the term machine-learning (ML) engineers use to refer to parameters which can impact the training outcome of a neural net.
+Hyperparameter is the term machine-learning (ML) engineers use to refer to parameters which can impact the training outcome of a neural net.
 
 * [What are Hyperparameters?](https://towardsdatascience.com/what-are-hyperparameters-and-how-to-tune-the-hyperparameters-in-a-deep-neural-network-d0604917584a)
 
-`batch_size` refers to the number of photos a neural-net should attempt to predict its class before updating the entire the weights of each [perceptron](https://towardsdatascience.com/what-the-hell-is-perceptron-626217814f53).
+`batch_size` refers to the number of photos a neural-net should attempt to predict its class before updating the entire the weights of each [perceptron](https://towardsdatascience.com/what-the-hell-is-perceptron-626217814f53).  **Note**, the highest batch size is usually limited by your GPU RAM.  Locally, I use a `GTX 1060` with 6GB of RAM--I couldn't get a batch bigger than around 16.  YMMV.
 
 `steps_per_epoch` are the number of batches to go through before considering one epoch complete. `epochs` is an arbitrary number representing how many `batches` * `steps_per_epoch` to go through before considering the training complete.
 
@@ -170,9 +169,10 @@ So, the length of training would go like this: `training schedule = epochs * ste
 
 `optimizer` is the name of the optimizer used.  This is the heart of training, as it is what is responsible for updating the weights on each perceptron after each batch.
 
-I've setup the code to only use one of two optimizers, either `adam` or `adagrad`
+I've setup the code to only use one of three optimizers, either `adam`, `adagrad`, `sgd`.
 
 Easy to read:
+* [Stochastic Gradient Descent](https://en.wikipedia.org/wiki/Stochastic_gradient_descent)
 * [Adam](https://machinelearningmastery.com/adam-optimization-algorithm-for-deep-learning/)
 * [Adagrad](https://databricks.com/glossary/adagrad)
 
@@ -182,52 +182,69 @@ Primary source:
 
 The primary reason, as I understand it, to use `adagrad` over `adam`, is `adagrad`'s `learning_rate` will naturally modify itself to be more conducive to optimal convergence.
 
+However, there are many optimizers.  A lot of them available in Keras:
 
-learning_rate           = 1.0
+* Stochastic Gradient Descent (SGD)
+* RMSprop
+* Adagrad
+* Adadelta
+* Adam
+* Nadam
+* Adamax
+
+Keras' docs on optimizers:
+
+* [Keras Optimizers](https://keras.io/optimizers/)
+
+The `learning_rate` controls how drastically the optimizer should change the perceptrons' weights when they have made an incorrect prediction.  Too high, it won't converge (learn) too low and it will take a while.
+
+You will find a lot of documentation saying, "The default learning rate of an optimizer is best, it doesn't need to be changed."  I've found this advice to be true, well, mostly.  I did run into an issue when using `adam`'s default setting of `0.001` in this project.  The neural-net just didn't learn--I had to drop it to around `0.0001`, which did better. 
+
+A starter read on learning rate:
+
+* [How to pick the best learning rate](https://medium.com/octavian-ai/which-optimizer-and-learning-rate-should-i-use-for-deep-learning-5acb418f9b2)
+
+But! It's not exhaustive, so if you interested in tweaking the optimizer or learning rate, Google and read as much as possible.
+
+Lastly, `val_save_step_num` controls how many training epochs should pass before the validator tests whether your model is performing well on the test set.  The way we have teh code setup, if the validator says the model is performing better than any of the previous tests within this training session, then it will save the model automatically.
 
 
-
-<div style="clear: both;"></div>
-
-# Hyperparameters
-
-val_save_step_num       = 1
-
-
-### Classifier Code: Helper Functions
-```python
-if clear_logs:
-  !rm -rf data/output/logs/*
-
-def make_dir(dir_path):
-    if not os.path.exists(dir_path):
-        os.mkdir(dir_path)
-    
-
-def show_final_history(history):
-    fig, ax = plt.subplots(1, 2, figsize=(15,5))
-    ax[0].set_title('loss')
-    ax[0].plot(history.epoch, history.history['loss'], label='Train loss')
-    ax[0].plot(history.epoch, history.history['val_loss'], label='Validation loss')
-    ax[1].set_title('acc')
-    ax[1].plot(history.epoch, history.history['acc'], label='Train acc')
-    ax[1].plot(history.epoch, history.history['val_acc'], label='Validation acc')
-    ax[0].legend()
-    ax[1].legend()
-```
 
 
 ### Classifier Code: Data Preparation
+
+
 ```python
-#################################
+def make_dir(dir_path):
+    if not os.path.exists(dir_path):
+        os.mkdir(dir_path)
+
 # Create needed dirs
-#################################
 make_dir(model_save_dir)
 
-#################################
-# Data generators
-#################################
+# Save Class IDs
+classes_json = train_gen.class_indices
+num_classes = len(train_gen.class_indices)
+```
 
+```json
+{
+    "2456": 0,
+    "3001": 1,
+    "3002": 2,
+    "3003": 3,
+    "3004": 4,
+    "3010": 5,
+    "3039": 6,
+    "32064": 7,
+    "3660": 8,
+    "3701": 9
+}
+```
+
+
+### Classifier Code: Callbacks
+```python
 # These Keras generators will pull files from disk
 # and prepare them for training and validation.
 augs_gen = ImageDataGenerator (
@@ -253,11 +270,6 @@ test_gen = augs_gen.flow_from_directory (
     shuffle = False
 )
 
-#################################
-# Save Class IDs
-#################################
-classes_json = train_gen.class_indices
-num_classes = len(train_gen.class_indices)
 ```
 
 
@@ -329,14 +341,6 @@ checkpoint = ModelCheckpoint(
     period = val_save_step_num
 )
 
-earlystop = EarlyStopping(
-    monitor='val_loss',
-    min_delta=0.001,
-    patience=10,
-    verbose=1,
-    mode='auto'
-)
-
 tensorboard = TensorBoard(
     log_dir = model_save_dir + '/logs',
     histogram_freq=0,
@@ -346,22 +350,7 @@ tensorboard = TensorBoard(
     write_images=False,
 )
 
-csvlogger = CSVLogger(
-    filename = model_save_dir + 'training.csv',
-    separator = ',',
-    append = False
-)
-
-reduce = ReduceLROnPlateau(
-    monitor='val_loss',
-    factor=0.5,
-    patience=40,
-    verbose=1, 
-    mode='auto',
-    cooldown=1 
-)
-
-callbacks = [checkpoint, csvlogger, tensorboard]
+callbacks = [checkpoint, tensorboard]
 ```
 
 

@@ -14,6 +14,12 @@ echo "* Moving raw_images into images                       *"
 echo "*******************************************************"
 rsync -h -v -r -P -t --size-only /home/ladvien/ladvien.github.io/raw_images/* /home/ladvien/ladvien.github.io/images
 
+echo ""
+echo "*******************************************************"
+echo "* Optimizing /images                                  *"
+echo "*******************************************************"
+optimize-images /$HOME/ladvien.github.io/images/.
+
 
 echo ""
 echo "******************************"

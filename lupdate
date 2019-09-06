@@ -12,7 +12,7 @@ echo ""
 echo "*******************************************************"
 echo "* Moving raw_images into images                       *"
 echo "*******************************************************"
-rsync -h -v -r -P -t --size-only /home/ladvien/ladvien.github.io/raw_images/* /home/ladvien/ladvien.github.io/images
+rsync -h -v -r -P -t --ignore-existing /home/ladvien/ladvien.github.io/raw_images/* /home/ladvien/ladvien.github.io/images
 
 echo ""
 echo "*******************************************************"
@@ -25,7 +25,7 @@ echo ""
 echo "******************************"
 echo "* Updating Website           *"
 echo "******************************"
-rsync -h -v -r -P -t --size-only /home/ladvien/ladvien.github.io/_site/* root@ladvien.com:/usr/share/nginx/html
+rsync -h -v -r -P -t -u /home/ladvien/ladvien.github.io/_site/* root@ladvien.com:/usr/share/nginx/html
 # rsync -avzu /home/ladvien/ladvien.github.io/_site/* root@ladvien.com:/usr/share/nginx/html
 #rsync -avzu --ignore-existing /home/ladvien/ladvien.github.io/raw_images/* root@ladvien.com:/usr/share/nginx/html/raw_images
 

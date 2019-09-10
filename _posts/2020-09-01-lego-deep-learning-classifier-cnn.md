@@ -16,7 +16,7 @@ This article is part of a series.  It should explain the code used to train our 
 
 If you want to code along with this article, we've made it available in Google's Colab:
 
-* [Lego Classifier](https://colab.research.google.com/drive/1b2_w2o60dMVJlV4Od25zTx2OUP07tdue)
+* [Lego Classifier](https://colab.research.google.com/drive/1gD51CXRngVZhTO9464aFKHV2pejsVPcx)
 
 Or if you want to run the code locally:
 

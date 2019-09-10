@@ -8,6 +8,9 @@ words_per_minute: 200
 url: https://ladvien.com
 #url:
 
+# Good info on optimizing Jekyll.
+# https://wiredcraft.com/blog/make-jekyll-fast/
+
 # Owner/author information
 owner:
   name:           C. Thomas Brittain (Ladvien)
@@ -96,12 +99,12 @@ assets:
 #   images_path: "images/**/*.{gif,png,jpg,jpeg,svg}"
 #   strategy: 3
 
-# imageoptim:
-#   nice: 20
-#   pngout: true
-#   jpegoptim: true
-#   verbose: true
-#   threads: 10
+imageoptim:
+  nice: 20
+  pngout: true
+  jpegoptim: true
+  verbose: true
+  threads: 10
 
 include: 
   - .htaccess

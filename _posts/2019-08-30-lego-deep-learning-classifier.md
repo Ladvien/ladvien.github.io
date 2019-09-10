@@ -26,7 +26,7 @@ Before we get started, a note about this series: I won't spend much time on expl
 ## TL;DR
 If you don't want to listen to my rambling or want to do things the easy way, you can jump straight into the code using Google's Colab:
 
-* [lego_classifier](https://colab.research.google.com/drive/1b2_w2o60dMVJlV4Od25zTx2OUP07tdue)
+* [lego_classifier](https://colab.research.google.com/drive/1gD51CXRngVZhTO9464aFKHV2pejsVPcx)
 
 This notebook is setup to download Rocket's data and train the classifier.  Thanks to Google for providing a GPU to train on and Github for hosting the data.
 

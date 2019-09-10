@@ -11,7 +11,7 @@ echo ""
 echo "*******************************************************"
 echo "* Optimizing /images                                  *"
 echo "*******************************************************"
-optimize-images /$HOME/ladvien.github.io/images/.
+# optimize-images /$HOME/ladvien.github.io/images/.
 
 echo ""
 echo "*******************************************************"

@@ -208,11 +208,8 @@ But! It's not exhaustive, so if you interested in tweaking the optimizer or lear
 
 Lastly, `val_save_step_num` controls how many training epochs should pass before the validator tests whether your model is performing well on the test set.  The way we have teh code setup, if the validator says the model is performing better than any of the previous tests within this training session, then it will save the model automatically.
 
-
-
-
 ### Classifier Code: Data Preparation
-
+The `make_dir` allows making a directory, if it doesn't already exist.  We then use it to create our model save directory.
 
 ```python
 def make_dir(dir_path):
@@ -221,12 +218,16 @@ def make_dir(dir_path):
 
 # Create needed dirs
 make_dir(model_save_dir)
+```
 
+The next bit saves the classes the `train_gen` found to a file.  This is useful later when we are trying to quickly deploy the model to production.
+
+```python
 # Save Class IDs
 classes_json = train_gen.class_indices
 num_classes = len(train_gen.class_indices)
 ```
-
+This saves one object to a `json` file.  The key (e.g., "2456") represents the code provided by LEGO.  And value is the numeric class assigned by the classifier.
 ```json
 {
     "2456": 0,
@@ -241,9 +242,26 @@ num_classes = len(train_gen.class_indices)
     "3701": 9
 }
 ```
+We can do the following later:
+```python
+predicted_lego_code = json_classes[model.predict()]
+```
+And the model will return the LEGO class it has identified.
 
 
-### Classifier Code: Callbacks
+### Classifier Code: Data Generator
+When dealing with CNNs, often the input is much too large to fit all training into RAM (let alone GPU RAM) at once, which is the method preferred when dealing with tabular data.
+
+Instead, a `DataGenarator` is used.  A `DataGenerator` is utility class provided by `Keras`, it loads training data in manageable chunks to feed to your training model.
+
+First, we initialize `ImageDataGenerator` -- a subclass of `keras`' `DataGenerator`.  Then, we create two `flows`, one for loading data from the training folder into the model.  The other is the same, however, it loads data from the test folder for validating the model.
+
+Let me annotate the parameters of the `ImageDataGenerator`:
+* `shear_range` -- this controls how much of the images' edge is trimmed off as a percentage of the whole image.  This is useful for quickly reducing the size of images (thereby increasing training speed).
+* `zoom_range` -- is the how far to zoom on the image before feeding it to trainer or validator.
+* `horzinontal_flip` -- if this is set to `true`, the the images are randomly mirrored horizontally.  This essentially doubles your training images.
+* `validation_split` -- determines the percentage of images pulled for validation.
+  
 ```python
 # These Keras generators will pull files from disk
 # and prepare them for training and validation.
@@ -253,7 +271,35 @@ augs_gen = ImageDataGenerator (
     horizontal_flip = True,
     validation_split = train_test_ratio
 )  
+```
+Now,the parameters of the `ImageDataGenerator.flow_from_directory` methods:
 
+* `target_size` -- this one bit me.  It's the size of your images as tuple (e.g., "(150, 150)").  **It expects height _then_ width.**
+* `batch_size` -- this is the number of images which will be loaded into the GPU RAM and trained on before updating the weights through back-propagation. 
+* `class_mode` -- **an import argument.**  This sets up the targets for the model's attempt at prediction.  `sparse` indicates the targets will look be `LabelEncoded`.
+
+If you have more than one class to predict, like us, you have two options.  Either `sparse` or `categorical`
+**Sparse**
+| target|
+|-------|
+| 1     |
+| 2     |
+| 3     |
+| 2     |
+
+**categorical**
+| 1|  2 | 3 |
+|---|---|---|
+| 1 | 0 | 0 |
+| 0 | 1 | 0 |
+| 0 | 0 | 1 |
+| 0 | 1 | 0 |
+
+DOn't mix them up, or bad stuff happens.
+
+
+
+```python
 train_gen = augs_gen.flow_from_directory (
     train_dir,
     target_size = image_size, # THIS IS HEIGHT, WIDTH

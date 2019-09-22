@@ -124,14 +124,14 @@ train_dir               = './lego_id_training_data/gray_train/'
 val_dir                 = './lego_id_training_data/gray_test/'
 ```
 #### Parameters: Training Session
-The first few parameters help pick back up from an interrupted training session.  If your session is interrupted at epoch 183, then you could set `continue_training` = `True` and `initial_epoch` = 184, then execute the script.  This should then load the last best model and pick back up training where you left off.  Lastly, if you set `clear_logs` = `True` then it clears the Tensorboard information.  So, if you continue a session, you will want to set this to `False`.
+The first few parameters help continue from an interrupted training session.  For example, if your session is interrupted at epoch 183, then you could set `continue_training` = `True` and `initial_epoch` = 184, then execute the script.  This should then load the last best model and pick back up training where you left off.  Lastly, if you set `clear_logs` = `True` then it clears the Tensorboard information.  So, if you continue a session, you will want to set this to `False`.
 
 This section is a WIP and there are several issues.  First, the Tensorboard logs should be saved in separate folders and shouldn't need to be cleared.  Also, when continuing a training session it resets the best validation score (tracked for saving your model before overfitting) resulting in a temporary dip in performance.
 
 #### Parameters: Image Data
-The `input_shape` refers to the dimensions of an image: height, width, and color (RGB) values.  `image_size` derives from the `input_shape`.
+The `input_shape` refers to the dimensions of an image: height, width, and color (RGB) values.  `image_size` comes from the `input_shape`.
 
-Note, one issue I had early on with `image_size`.  I tried non-square images (which hurt training and aren't recommended) and found out the hard way most of the image parameters looking for height and width reverse their order in the Python libraries.  
+Note, one issue I had early on with `image_size`.  I tried non-square images (which hurt training and aren't recommended for CNNs) and found the hard way most of the image parameters for width and height reverse their order.  
 
 For example, this is what's needed:
 ```python
@@ -147,11 +147,11 @@ I was expecting:
     target_size = (width_here, height_here),
 ...
 ```
-It bit me, as most frameworks I've used expect width first and then height.  I mean, even when we talk about screen resolution we list width *then* height (e.g., `1920x1080`). Just stay aware when using rectangle images.  Always RTFM (because I didn't).
+It bit me hard, as most frameworks I've used expect width first and then height.  I mean, even when we talk screen resolution we list width *then* height (e.g., `1920x1080`). Just be aware when using rectangle images.  Always RTFM (because, apparently, I didn't).
 
-The `train_test_ratio` controls how many images are held back for testing the model.  I'd have to run through the code again, but I don't think this is needed.  As the preprocessing script has already created a folder with a set number of validation images.  Hmm, I'll add it to my [tech debt](https://en.wikipedia.org/wiki/Technical_debt) list.
+The `train_test_ratio` controls how many images are held back for testing the model.  I'd have to run through the code again, but I don't think this is needed.  As the preprocessing script already created a folder with a set number of validation images.  Hmm, I'll add it to my [tech debt](https://en.wikipedia.org/wiki/Technical_debt) list.
 
-The `zoom_range` parameter controls how far the script should zoom in on the images.  Lastly, `shear_range` controls how much of the images to clip off the edges before feeding them to the CNN.
+The `zoom_range` parameter controls how far the script should zoom in on the images.  And, lastly, `shear_range` controls how much of the images to clip from the edges before feeding them to the CNN.
 
 [![](../images/lego_classifier/batch.png){: .float-right}](https://ladvien.com/lego_classifier/batch.png)
 #### Parameters: CNN Hyperparameters
@@ -250,17 +250,17 @@ And the model will return the LEGO class it has identified.
 
 
 ### Classifier Code: Data Generator
-When dealing with CNNs, often the input is much too large to fit all training into RAM (let alone GPU RAM) at once, which is the method preferred when dealing with tabular data.
+When dealing with CNNs, often the input is much too large to fit all training data in RAM (let alone GPU RAM) at once.
 
-Instead, a `DataGenarator` is used.  A `DataGenerator` is utility class provided by `Keras`, it loads training data in manageable chunks to feed to your training model.
+Instead, a `DataGenarator` is used.  A `DataGenerator` is class provided by `Keras`, it loads training data in manageable chunks to feed to your model during training. Let's run through using it.
 
 First, we initialize `ImageDataGenerator` -- a subclass of `keras`' `DataGenerator`.  Then, we create two `flows`, one for loading data from the training folder into the model.  The other is the same, however, it loads data from the test folder for validating the model.
 
-Let me annotate the parameters of the `ImageDataGenerator`:
+Parameters used in our `ImageDataGenerator`:
 * `shear_range` -- this controls how much of the images' edge is trimmed off as a percentage of the whole image.  This is useful for quickly reducing the size of images (thereby increasing training speed).
 * `zoom_range` -- is the how far to zoom on the image before feeding it to trainer or validator.
-* `horzinontal_flip` -- if this is set to `true`, the the images are randomly mirrored horizontally.  This essentially doubles your training images.
-* `validation_split` -- determines the percentage of images pulled for validation.
+* `horizontal_flip` -- if this is set to `true`, the images are randomly mirrored horizontally.  This essentially doubles your training images. Though, it should be used in all cases.  If the target has a "handediness" to it, then this would destroy accuracy.  A simple example of this downfall would be training a CNN to determine whether baseball player is left or right handed.
+* `validation_split` -- determines the percentage of images held back for validation.
   
 ```python
 # These Keras generators will pull files from disk
@@ -275,28 +275,36 @@ augs_gen = ImageDataGenerator (
 Now,the parameters of the `ImageDataGenerator.flow_from_directory` methods:
 
 * `target_size` -- this one bit me.  It's the size of your images as tuple (e.g., "(150, 150)").  **It expects height _then_ width.**
-* `batch_size` -- this is the number of images which will be loaded into the GPU RAM and trained on before updating the weights through back-propagation. 
+* `batch_size` -- this is the number of images which will be loaded into the GPU RAM and trained on before updating the weights. 
 * `class_mode` -- **an import argument.**  This sets up the targets for the model's attempt at prediction.  `sparse` indicates the targets will look be `LabelEncoded`.
 
-If you have more than one class to predict, like us, you have two options.  Either `sparse` or `categorical`
+If you have more than one class to predict, like us, you have two options.  Either `sparse` or `categorical`.
+
 **Sparse**
+
 | target|
-|-------|
+|:-----:|
 | 1     |
 | 2     |
 | 3     |
 | 2     |
 
 **categorical**
+
 | 1|  2 | 3 |
-|---|---|---|
+|:--|:-:|--:|
 | 1 | 0 | 0 |
 | 0 | 1 | 0 |
 | 0 | 0 | 1 |
 | 0 | 1 | 0 |
 
-DOn't mix them up, or bad stuff happens.
+Here is where the bug in the original code was.  It had setup the targets as categorical, however, it used a `binary_crossentropy` as the loss function.  This was the error which is difficult to catch--it's the machine-learning equivalent of the "there" and "their" error--spellchecks no help.
 
+With the mismatch of targets and loss function there's no help either.  The model will still compile and train without error.  But the cruel combination of `categorical` targets and `binary_crossentropy` leads to an extremely high accuracy but an _extremely_ bad production accuracy.  The problem is the loss function is _only_ looking at column `1` in the `categorical` table above.  If the model model predicts it is `1` when the first column is `1` then it thinks its "correct."  Otherwise, if the model predicts a `0` when column `1` is `0`, then the model still thinks its correct.  After all, "it wasn't `1`."  And to be clear, the model isn't wrong--we've just given it the wrong target labels. 
+
+This is the quintessential ["hotdog, not a hotdog"](https://medium.com/@timanglade/how-hbos-silicon-valley-built-not-hotdog-with-mobile-tensorflow-keras-react-native-ef03260747f3) problem.
+
+In short, if you feel your model quickly trains to an accuracy which is too good to be true.  It is.  If you have trouble, let me know in a comment and I can help debug.
 
 
 ```python

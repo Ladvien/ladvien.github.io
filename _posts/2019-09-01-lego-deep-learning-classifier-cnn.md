@@ -29,14 +29,14 @@ Our code started with a notebook found on Kaggle:
 
 * [Lego Brick Images Keras CCN](https://www.kaggle.com/twhitehurst3/lego-brick-images-keras-cnn-96-acc)
 
-However, there was _a lot_ of problems in the code.  I rewrote most of it, so I'm not sure how much of the original is left.  Still, cite your sources!
+However, there problems in the code.  I rewrote most of it, so I'm not sure how much of the original is left.  Still, cite your sources!
 
 Some of the issues were:
 * It used a model more complex than needed.
 * The code format was a mess.
 * Mismatch of target output and loss.
 
-It was the last one which is _super_ tricky, but critical.  It's a hard to catch bug which will inaccurately report high accuracy.  I'll discuss it more below, but it's a trap I've fallen into myself. Regardless of the issues, it was good jump-starter code, since we've never worked with a CNN.
+It was the last one which is _super_ tricky, but critical.  It's a hard to catch bug which inaccurately reports high accuracy.  I'll discuss it more below, but it's a trap I've fallen into myself. Regardless of the issues, it was good jump-starter code, since we've never worked with a CNN.
 
 ### Project Setup (local only)
 If you are running this code locally, you will need to do the following.
@@ -56,11 +56,11 @@ Lastly, if you see a cell like this:
 !mkdir ./data/output
 !ls
 ```
-Skip or delete them, they are need when running the Colab notebook.
+Skip or delete them, they are need when running the Colab notebook.  Of course, if you are running the Colab notebook, make sure to execute them.
 
 ### Classifier Code: Needed Libraries
 
-Below is the code used.  Looking over it again, I see some ways to clean it up, so know it may change in the future.
+Below is the code we used.  Reviewing it, I see some ways to clean it up, so know it may change in the future.
 
 Here's a breakdown of why the libraries are needed:
 
@@ -96,7 +96,7 @@ import time
 If you are following along with this code locally and need help setting up these libraries, just drop a comment below.  I got you.
 
 ### Classifier Code: Parameters
-The parameters sections is the heart of the training, I'll highlight what each parameter is doing and point out the parameters you might want to tweak.
+The parameters sections is the heart of the training, I'll explain what the parameters are doing and highlight those you might want to tweak.
 
 ```python
 continue_training       = False
@@ -126,7 +126,7 @@ val_dir                 = './lego_id_training_data/gray_test/'
 #### Parameters: Training Session
 The first few parameters help continue from an interrupted training session.  For example, if your session is interrupted at epoch 183, then you could set `continue_training` = `True` and `initial_epoch` = 184, then execute the script.  This should then load the last best model and pick back up training where you left off.  Lastly, if you set `clear_logs` = `True` then it clears the Tensorboard information.  So, if you continue a session, you will want to set this to `False`.
 
-This section is a WIP and there are several issues.  First, the Tensorboard logs should be saved in separate folders and shouldn't need to be cleared.  Also, when continuing a training session it resets the best validation score (tracked for saving your model before overfitting) resulting in a temporary dip in performance.
+This section is a WIP and there are several issues.  First, the Tensorboard logs should be saved in separate folders and shouldn't need to be cleared.  Also, when continuing a training session, it resets the best validation score (tracked for saving your model before overfitting) resulting in a temporary dip in performance.
 
 #### Parameters: Image Data
 The `input_shape` refers to the dimensions of an image: height, width, and color (RGB) values.  `image_size` comes from the `input_shape`.
@@ -149,25 +149,27 @@ I was expecting:
 ```
 It bit me hard, as most frameworks I've used expect width first and then height.  I mean, even when we talk screen resolution we list width *then* height (e.g., `1920x1080`). Just be aware when using rectangle images.  Always RTFM (because, apparently, I didn't).
 
-The `train_test_ratio` controls how many images are held back for testing the model.  I'd have to run through the code again, but I don't think this is needed.  As the preprocessing script already created a folder with a set number of validation images.  Hmm, I'll add it to my [tech debt](https://en.wikipedia.org/wiki/Technical_debt) list.
+The `train_test_ratio` controls how many images are held back for testing the model.  I'd have to run through the code again, but I don't think this is needed.  As the preprocessing script created a folder with validation images.  Hmm, I'll add it to my [tech debt](https://en.wikipedia.org/wiki/Technical_debt) list.
 
 The `zoom_range` parameter controls how far the script should zoom in on the images.  And, lastly, `shear_range` controls how much of the images to clip from the edges before feeding them to the CNN.
 
 [![](../images/lego_classifier/batch.png){: .float-right}](https://ladvien.com/lego_classifier/batch.png)
 #### Parameters: CNN Hyperparameters
-Hyperparameter is the term machine-learning (ML) engineers use to refer to parameters which can impact the training outcome of a neural net.
+A "hyperparameter" is what machine-learning engineers call parameters which may impact the outcome of training a neural-net.
 
 * [What are Hyperparameters?](https://towardsdatascience.com/what-are-hyperparameters-and-how-to-tune-the-hyperparameters-in-a-deep-neural-network-d0604917584a)
 
-`batch_size` refers to the number of photos a neural-net should attempt to predict its class before updating the entire the weights of each [perceptron](https://towardsdatascience.com/what-the-hell-is-perceptron-626217814f53).  **Note**, the highest batch size is usually limited by your GPU RAM.  Locally, I use a `GTX 1060` with 6GB of RAM--I couldn't get a batch bigger than around 16.  YMMV.
+Here are the hyperparamters we've exposed:
 
-`steps_per_epoch` are the number of batches to go through before considering one epoch complete. `epochs` is an arbitrary number representing how many `batches` * `steps_per_epoch` to go through before considering the training complete.
+`batch_size` refers to the number of photos a neural-net should attempt predictions on before updating the weights of each [perceptron](https://towardsdatascience.com/what-the-hell-is-perceptron-626217814f53).  **Note**, the highest batch size is usually limited by your GPU RAM.  Locally, I use a `GTX 1060` with 6GB of RAM--I couldn't get a batch bigger than around 16.  YMMV.
 
-So, the length of training would go like this: `training schedule = epochs * steps_per_epoch * batch_size`
+`steps_per_epoch` are the number of batches to go through before considering one epoch complete. An `epoch` is an arbitrary number representing how many `batches` * `steps_per_epoch` to go through before considering the training complete.
+
+So, the length of training would be `training schedule = epochs * steps_per_epoch * batch_size`
 
 `validation_steps` is the number of batches from the training data to use for validating the current weights.  This will be used when we `fit` (train) our classifier and when we `evaluate` it.
 
-`optimizer` is the name of the optimizer used.  This is the heart of training, as it is what is responsible for updating the weights on each perceptron after each batch.
+`optimizer` is the name of the optimizer used.  This is the heart of training, as it is responsible for deciding how the the weights should be updated after each batch.
 
 I've setup the code to only use one of three optimizers, either `adam`, `adagrad`, `sgd`.
 

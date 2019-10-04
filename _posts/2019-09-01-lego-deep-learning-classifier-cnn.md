@@ -406,9 +406,6 @@ These pre-written callback functions will be passed to the model and executed at
 * `ModelCheckpoint` this method is called after the number of epochs set by `val_save_step_num`.  It runs a validation batch and compares the `val_loss` against other past scores.  If it is the best `val_loss` yet, the method will save the model and, more importantly, weights to the `best_model_weights` path.
 * `TensorBoard` opens a [TensorBoard](https://www.tensorflow.org/tensorboard/r1/summaries) session for visualizing the training session.
 
-m.
-
-
 ```python
 best_model_weights = model_save_dir + 'base.model'
 

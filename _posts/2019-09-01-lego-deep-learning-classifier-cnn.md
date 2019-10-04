@@ -338,7 +338,6 @@ test_gen = augs_gen.flow_from_directory (
     class_mode = 'sparse',
     shuffle = False
 )
-
 ```
 
 ### Classifier Code: Building the Model
@@ -459,7 +458,6 @@ And here, we come to the end.  The following function executes the training sess
 
 
 ```python
-
 history = model.fit_generator(
     train_gen, 
     steps_per_epoch  = steps_per_epoch, 
@@ -472,4 +470,3 @@ history = model.fit_generator(
 ```
 
 Whew, that's it. The above model converged for me after 20 minutes to 98% validation accuracy.  However, there's lots left to do though.  As I've said before, "Just because we have high validation accuracy does not mean we will have high production accuracy."  In the future, I'll be writing about the turntable for quickly generating training data.  It's nifty.  Based on a NEMA17, RAMPS kit, and RPi with RPi Camera.  It's the bomb-dot-com.
- 

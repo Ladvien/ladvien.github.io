@@ -2,7 +2,7 @@
 layout: post
 title: A LEGO Classifier -- CNN and Elbow Grease
 categories: robot
-series: 
+series: LEGO Classifier
 excerpt:
 tags: [tensorflow, deep learning, legos, robots, cnn]
 image: 

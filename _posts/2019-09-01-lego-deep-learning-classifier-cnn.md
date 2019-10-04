@@ -173,6 +173,18 @@ So, the length of training would be `training schedule = epochs * steps_per_epoc
 
 I've setup the code to only use one of three optimizers, either `adam`, `adagrad`, `sgd`.
 
+```python
+def get_optimizer(optimizer, learning_rate = 0.001):
+    if optimizer == 'adam':
+        return tensorflow.keras.optimizers.Adam(lr = learning_rate, beta_1 = 0.9, beta_2 = 0.999, epsilon = None, decay = 0., amsgrad = False)
+    elif optimizer == 'sgd':
+        return tensorflow.keras.optimizers.SGD(lr = learning_rate, momentum = 0.99) 
+    elif optimizer == 'adadelta':
+        return tensorflow.keras.optimizers.Adadelta(lr=learning_rate, rho=0.95, epsilon=None, decay=0.0)
+```
+
+Here is more information on optimizers.
+
 Easy to read:
 * [Stochastic Gradient Descent](https://en.wikipedia.org/wiki/Stochastic_gradient_descent)
 * [Adam](https://machinelearningmastery.com/adam-optimization-algorithm-for-deep-learning/)
@@ -198,17 +210,17 @@ Keras' docs on optimizers:
 
 * [Keras Optimizers](https://keras.io/optimizers/)
 
-The `learning_rate` controls how drastically the optimizer should change the perceptrons' weights when they have made an incorrect prediction.  Too high, it won't converge (learn) too low and it will take a while.
+The `learning_rate` controls how drastically the optimizer should change the perceptrons's weights when they have made an incorrect prediction.  Too high, it won't converge (learn) too low and it will take a while.
 
-You will find a lot of documentation saying, "The default learning rate of an optimizer is best, it doesn't need to be changed."  I've found this advice to be true, well, mostly.  I did run into an issue when using `adam`'s default setting of `0.001` in this project.  The neural-net just didn't learn--I had to drop it to around `0.0001`, which did better. 
+You will find a lot of documentation saying, "The default learning rate of an optimizer is best, it doesn't need to be changed."  I've found this advice to be true, well, mostly.  I did run into an issue when using `adam`'s default setting of `0.001` in this project.  The neural-net just didn't learn--I had to drop it to around `0.0001`, which did much better. 
 
 A starter read on learning rate:
 
 * [How to pick the best learning rate](https://medium.com/octavian-ai/which-optimizer-and-learning-rate-should-i-use-for-deep-learning-5acb418f9b2)
 
-But! It's not exhaustive, so if you interested in tweaking the optimizer or learning rate, Google and read as much as possible.
+It's not exhaustive.  If you interested in tweaking the optimizer or learning rate, Google and read as much as possible.
 
-Lastly, `val_save_step_num` controls how many training epochs should pass before the validator tests whether your model is performing well on the test set.  The way we have teh code setup, if the validator says the model is performing better than any of the previous tests within this training session, then it will save the model automatically.
+Lastly, `val_save_step_num` controls how many training epochs should pass before the validator tests whether your model is performing well on the test set.  We have the code setup such if the validator says the model is performing better than any of the previous tests within this training session, then it will save the model automatically.
 
 ### Classifier Code: Data Preparation
 The `make_dir` allows making a directory, if it doesn't already exist.  We then use it to create our model save directory.
@@ -229,7 +241,7 @@ The next bit saves the classes the `train_gen` found to a file.  This is useful 
 classes_json = train_gen.class_indices
 num_classes = len(train_gen.class_indices)
 ```
-This saves one object to a `json` file.  The key (e.g., "2456") represents the code provided by LEGO.  And value is the numeric class assigned by the classifier.
+This saves one object to a `json` file.  The key (e.g., "2456") represents the code provided by LEGO.  And the value is the numeric class assigned by the classifier.
 ```json
 {
     "2456": 0,
@@ -244,7 +256,7 @@ This saves one object to a `json` file.  The key (e.g., "2456") represents the c
     "3701": 9
 }
 ```
-We can do the following later:
+We can do the following after we've trained the model:
 ```python
 predicted_lego_code = json_classes[model.predict()]
 ```
@@ -252,16 +264,16 @@ And the model will return the LEGO class it has identified.
 
 
 ### Classifier Code: Data Generator
-When dealing with CNNs, often the input is much too large to fit all training data in RAM (let alone GPU RAM) at once.
+When dealing with CNNs, often, the training data are too large to fit in RAM, let alone GPU RAM, at once.
 
 Instead, a `DataGenarator` is used.  A `DataGenerator` is class provided by `Keras`, it loads training data in manageable chunks to feed to your model during training. Let's run through using it.
 
-First, we initialize `ImageDataGenerator` -- a subclass of `keras`' `DataGenerator`.  Then, we create two `flows`, one for loading data from the training folder into the model.  The other is the same, however, it loads data from the test folder for validating the model.
+We initialize `ImageDataGenerator` -- a subclass of `keras`' `DataGenerator`.  Then, we create two `flows`, one for loading data from the training folder into the model.  The other is the same, however, it loads data from the test folder.  The latter will be used to validate the model.
 
 Parameters used in our `ImageDataGenerator`:
 * `shear_range` -- this controls how much of the images' edge is trimmed off as a percentage of the whole image.  This is useful for quickly reducing the size of images (thereby increasing training speed).
-* `zoom_range` -- is the how far to zoom on the image before feeding it to trainer or validator.
-* `horizontal_flip` -- if this is set to `true`, the images are randomly mirrored horizontally.  This essentially doubles your training images. Though, it should be used in all cases.  If the target has a "handediness" to it, then this would destroy accuracy.  A simple example of this downfall would be training a CNN to determine whether baseball player is left or right handed.
+* `zoom_range` -- is how far to zoom in before feeding the image to the model.
+* `horizontal_flip` -- if this is set to `true`, the images are randomly mirrored horizontally.  This essentially doubles your training images. Though, it shouldn't be used in all cases.  If the target has a "handediness" to it, then this would destroy accuracy.  A simple example of this downfall would be training a CNN to determine whether baseball player is left or right handed.
 * `validation_split` -- determines the percentage of images held back for validation.
   
 ```python
@@ -276,9 +288,11 @@ augs_gen = ImageDataGenerator (
 ```
 Now,the parameters of the `ImageDataGenerator.flow_from_directory` methods:
 
-* `target_size` -- this one bit me.  It's the size of your images as tuple (e.g., "(150, 150)").  **It expects height _then_ width.**
-* `batch_size` -- this is the number of images which will be loaded into the GPU RAM and trained on before updating the weights. 
-* `class_mode` -- **an import argument.**  This sets up the targets for the model's attempt at prediction.  `sparse` indicates the targets will look be `LabelEncoded`.
+* `target_size` -- this one bit me.  It's the size of your images as a tuple (e.g., "(150, 150)").  **It expects height _then_ width.**
+* `batch_size` -- this is the number of images loaded into the GPU RAM and trained on before updating the weights. 
+* `class_mode` -- **an import argument.**  This sets up the targets for the model's attempt at prediction.  `sparse` indicates the targets will be `LabelEncoded`.
+
+Below lies a tale of woe I keep hinting at.  
 
 If you have more than one class to predict, like us, you have two options.  Either `sparse` or `categorical`.
 
@@ -291,7 +305,7 @@ If you have more than one class to predict, like us, you have two options.  Eith
 | 3     |
 | 2     |
 
-**categorical**
+**Categorical**
 
 | 1|  2 | 3 |
 |:--|:-:|--:|
@@ -300,14 +314,13 @@ If you have more than one class to predict, like us, you have two options.  Eith
 | 0 | 0 | 1 |
 | 0 | 1 | 0 |
 
-Here is where the bug in the original code was.  It had setup the targets as categorical, however, it used a `binary_crossentropy` as the loss function.  This was the error which is difficult to catch--it's the machine-learning equivalent of the "there" and "their" error--spellchecks no help.
+However, this is where the bug in the original code was.  It had setup the targets as categorical, however, it used `binary_crossentropy` as the loss function.  This error is difficult to catch--it's the machine-learning equivalent of the "there" and "their" error.
 
-With the mismatch of targets and loss function there's no help either.  The model will still compile and train without error.  But the cruel combination of `categorical` targets and `binary_crossentropy` leads to an extremely high accuracy but an _extremely_ bad production accuracy.  The problem is the loss function is _only_ looking at column `1` in the `categorical` table above.  If the model model predicts it is `1` when the first column is `1` then it thinks its "correct."  Otherwise, if the model predicts a `0` when column `1` is `0`, then the model still thinks its correct.  After all, "it wasn't `1`."  And to be clear, the model isn't wrong--we've just given it the wrong target labels. 
+With the mismatch of targets and loss function there's no help either.  The model will still compile and train without problems.  But the cruel combination of `categorical` targets and `binary_crossentropy` leads to an extremely high accuracy but an _extremely_ bad production accuracy.  The problem is the loss function is _only_ looking at column `1` in the `categorical` table above.  If the model model predicts it is `1` when the first column is `1` then it thinks its "correct."  Otherwise, if the model predicts a `0` when column `1` is `0`, then the model still thinks its correct.  After all, "it wasn't `1`."  And to be clear, the model isn't wrong--we've just given it the wrong target labels. 
 
 This is the quintessential ["hotdog, not a hotdog"](https://medium.com/@timanglade/how-hbos-silicon-valley-built-not-hotdog-with-mobile-tensorflow-keras-react-native-ef03260747f3) problem.
 
-In short, if you feel your model quickly trains to an accuracy which is too good to be true.  It is.  If you have trouble, let me know in a comment and I can help debug.
-
+In short, if you feel your model quickly trains to an accuracy too good to be true, it is.  
 
 ```python
 train_gen = augs_gen.flow_from_directory (
@@ -328,11 +341,21 @@ test_gen = augs_gen.flow_from_directory (
 
 ```
 
-
 ### Classifier Code: Building the Model
-```python
+Close to done.  I'm not going to go over the design of a CNN for two reasons.  I'm still learning what it all means and there are _much_ better explanations elsewhere.
 
-def test_model(opt, input_shape):
+* [Getting Started with Convolutional Neural Networks](https://medium.com/abraia/getting-started-with-image-recognition-and-convolutional-neural-networks-in-5-minutes-28c1dfdd401)
+
+However, there are a couple of things important to us.
+
+* `num_classes` is the number of LEGOs we are trying to classify.
+* `activation` on the last layer controls the type of output from the CNN.  It will need to correspond with the `optimizer` and will need to correspond to the `class_mode` setting of the the `DataGenerators`.
+* `build_model` is a convenience function.  It allows us to quickly build a Keras CNN model and return it to be used.
+* `model.summary` outputs a text diagram of the model.
+* `model.compile` prepares the entire model for training.  
+
+```python
+def build_model(opt, input_shape, num_classes):
     model = tf.keras.models.Sequential()
     model.add(tf.keras.layers.Conv2D(32, (3, 3), input_shape = input_shape))
     model.add(tf.keras.layers.Activation('relu'))
@@ -362,17 +385,9 @@ def test_model(opt, input_shape):
 # Create model
 #################################
 
-def get_optimizer(optimizer, learning_rate = 0.001):
-    if optimizer == 'adam':
-        return tensorflow.keras.optimizers.Adam(lr = learning_rate, beta_1 = 0.9, beta_2 = 0.999, epsilon = None, decay = 0., amsgrad = False)
-    elif optimizer == 'sgd':
-        return tensorflow.keras.optimizers.SGD(lr = learning_rate, momentum = 0.99) 
-    elif optimizer == 'adadelta':
-        return tensorflow.keras.optimizers.Adadelta(lr=learning_rate, rho=0.95, epsilon=None, decay=0.0)
-
 selected_optimizer = get_optimizer(optimizer, learning_rate)
 
-model = test_model(selected_optimizer, input_shape)
+model = build_model(selected_optimizer, input_shape, num_classes)
 model.summary()
 
 model.compile(
@@ -382,8 +397,19 @@ model.compile(
 )
 ```
 
-
 ### Classifier Code: Creating Callbacks
+Before we execute training we should setup of Keras callbacks.
+
+* [Keras callbacks](https://keras.io/callbacks/)
+
+These pre-written callback functions will be passed to the model and executed at important points throughout the training session.
+
+* `ModelCheckpoint` this method is called after the number of epochs set by `val_save_step_num`.  It runs a validation batch and compares the `val_loss` against other past scores.  If it is the best `val_loss` yet, the method will save the model and, more importantly, weights to the `best_model_weights` path.
+* `TensorBoard` opens a [TensorBoard](https://www.tensorflow.org/tensorboard/r1/summaries) session for visualizing the training session.
+
+m.
+
+
 ```python
 best_model_weights = model_save_dir + 'base.model'
 
@@ -405,12 +431,21 @@ tensorboard = TensorBoard(
     write_grads=True,
     write_images=False,
 )
+```
 
+Before any `KerasCallbacks` can be added to the training session, they must be gathered into a list, as it is how training method will except to receive the
+
+```python
 callbacks = [checkpoint, tensorboard]
 ```
 
 
 ### Classifier Code: Training
+
+Gross, I need to rewrite this portion of the code.  It is a kludge way to restart a training session after interruption.
+
+It checks if you indicated you want to continue a session.  It then loads the best saved model and evaluates it on the test data.
+
 ```python
 if continue_training:
     model.load_weights(best_model_weights)
@@ -418,7 +453,12 @@ if continue_training:
 
     print('Model Test Loss:', model_score[0])
     print('Model Test Accuracy:', model_score[1])
+```
 
+And here, we come to the end.  The following function executes the training session.  It will initialize the callbacks, then train for the number of epochs set.  Each epoch it is pulling a batch of data from the `train_gen` (`DataGenerator`), attempting predictions, and then updating weights based on outcomes.  After the number of epochs set in the `checkpoint` callback, the model will pull data from the `test_gen`, these data it has "never" seen before, and attempt predictions.  If the outcome of the test is better than the outcome of any previous test, the model will save.
+
+
+```python
 
 history = model.fit_generator(
     train_gen, 
@@ -430,3 +470,6 @@ history = model.fit_generator(
     callbacks = callbacks
 )
 ```
+
+Whew, that's it. The above model converged for me after 20 minutes to 98% validation accuracy.  However, there's lots left to do though.  As I've said before, "Just because we have high validation accuracy does not mean we will have high production accuracy."  In the future, I'll be writing about the turntable for quickly generating training data.  It's nifty.  Based on a NEMA17, RAMPS kit, and RPi with RPi Camera.  It's the bomb-dot-com.
+ 

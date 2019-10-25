@@ -24,8 +24,8 @@ After a few hours of coding over a couple of weeks I was able to put write code 
 
 I've listed the code parts below with a brief explanation--just in case someone would like to hack them for other projects.
 
-## MVH
-Warning words, I'm an advocate of the minimally viable product, especially, when it comes to my personal hacking time.  I refer to this as the minimally viable hack.  That stated, there are known issues in the code below.  But that aside, it does the job I wanted it to do--so I've not addressed the issues.
+## Minimum Viable Hack
+Warning words, I'm an advocate of the minimum viable product, especially, when it comes to my personal hacking time.  I refer to this as the minimum viable hack.  That stated, there are known issues in the code below.  But! It does the job--so I've not addressed the issues.
 
 Here are a few:
 1. The value 0x0A value is not handled as part of packet (e.g., if MILLI_BETWEEN = 10 bad things will happen).
@@ -246,9 +246,7 @@ void greetings() {
 }
 
 
-/*  ############### MOTORS ###############
- * 
-*/
+/*  ############### MOTORS ############### */
 
 /* Method for initalizing MOTOR */
 void motorSetup(MOTOR motor) {
@@ -562,9 +560,6 @@ from time import sleep, time
 """
 
 class RAMPS:
-    
-    
-    
     DRIVE_CMD       = 0x01
     HALT_CMD        = 0x0F
     DIR_CC          = 0x00

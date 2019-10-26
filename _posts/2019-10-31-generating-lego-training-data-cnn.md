@@ -18,7 +18,7 @@ ADD IMAGE
 
 I asked if he would be OK with me ordering some RAMPs boards and programming them to synchronize with the PiCamera.  I figured, it would probably be better for reproducibility if we had solid hardware, with custom firmware and software.
 
-After a few hours of coding over a couple of weeks I was able to put write code to control the RAMPs from a Python script from either the Raspberry Pi or a desktop computer.
+After a few hours of coding over a couple of weeks I was able to control the RAMPs within a Python script from either the Raspberry Pi or a desktop computer.
 
 * [Turn Table Controller Code](https://github.com/Ladvien/lego_sorter/tree/master/turn_table)
 
@@ -28,13 +28,37 @@ I've listed the code parts below with a brief explanation--just in case someone 
 Warning words, I'm an advocate of the minimum viable product, especially, when it comes to my personal hacking time.  I refer to this as the minimum viable hack.  That stated, there are known issues in the code below.  But! It does the job--so I've not addressed the issues.
 
 Here are a few:
-1. The value 0x0A value is not handled as part of packet (e.g., if MILLI_BETWEEN = 10 bad things will happen).
+1. The value `0x0A` (`\n`) value is not handled as part of packet (e.g., if MILLI_BETWEEN = 10 bad things will happen).
 2. The motors are always on (reduces motor life).
 3. Pulse width is not adjustable without firmware update.
 4. The Python code is blocking.  This makes the halt feature on the Arduino Mega side fairly useless.
 5. Only RAMPs motor X is setup (this one I _will_ address later, as we will need several drivers before the end of this project).
 
 # RAMPS Code
+To move the turn table we used a RAMPs 1.4 board:
+
+[RAMPS Kit (Amazon)](https://www.amazon.com/gp/product/B07T8L584W/ref=ppx_yo_dt_b_asin_title_o09_s00?ie=UTF8&psc=1)
+
+Getting things going was straightforward.  I put together the hardware, installed the Arduino IDE, and looked-up the pinout for the RAMPs controller.
+
+I wrote the firmware to receive serial commands as packet.  The packet structure (at time of writing) looks like this:
+
+```
+MOTOR_PACKET = 0x01 0x01 0x00 0x03 0xE8 0x05 0x0A
+INDEX        =  1    2     3    4    5    6   7
+ ```
+* `first_byte` = This indicates what sort of packet type.  Right now, there is only one, but I figure we might want to control other I/O on the Arduino later.
+* `second_byte` = the motor selected 1-5 (X, Y, Z,  E1, E2).
+* `third_byte` = Motor direction, `0x00` is clockwise and `0x01` is counter-clockwise.
+* `fourth_byte` = first chunk of the steps.
+* `fifth_byte` = second chunk of the steps.  The steps variable tells the motor how many steps to move before stopping.
+* `sixth_byte` = delay between steps in milliseconds.
+* `seventh_byte` = the end-of-transmission (EOT) character.  I've used `\n`.
+ 
+When the code receives an EOT character, it parses the packet and call the `writeMotor()`.  This function loops through the number of steps, delaying between each.  Each loop the function checks if a `halt` command has been received.  If it has, it stops the motor mid-move.
+
+Again, this code isn't perfect.  Far from it.  But it does the job.
+
 ```c++
 #include <avr/interrupt.h> 
 #include <avr/io.h> 
@@ -368,6 +392,18 @@ boolean checkForHalt() {
 ```
 
 # Python RAMPS 
+There are two variants of the Python code.  First, is for the Raspberry Pi.  It's where I focused coding time, as it made sense to generate training images using the same hardware (PiCamera) as would be used for production.  However, I've a simpler desktop version which uses OpenCV and a webacam
+
+* [Raspberry Pi Turn Table](https://github.com/Ladvien/lego_sorter/blob/master/turn_table/turn_table_master_rpi.py)
+* [Desktop Turn Table](https://github.com/Ladvien/lego_sorter/blob/master/turn_table/turn_table_master.py)
+
+For the Raspberry Pi and desktop versions you will need the following:
+* `Python 3.7` -- this should be standard on Raspbian Buster.
+
+On the desktop you will need `opencv`, it can be installed using:
+```bash
+pip install opencv
+```
 
 ```python
 #!/usr/bin/env python3
@@ -394,7 +430,7 @@ IMAGES_PER_ROTATION	    = 60
 FULL_ROTATION           = 3200
 STEPS_BEFORE_PIC 	    = int(FULL_ROTATION / IMAGES_PER_ROTATION)
 
-print("steps per pic %d" % (STEPS_BEFORE_PIC))
+print(f'Steps per image: {STEPS_BEFORE_PIC}')
 
 ####################
 # Don't Overwrite
@@ -427,49 +463,6 @@ PIC_SIZE = 1200
 CAM_OFFSET_X = 0
 CAM_OFFSET_Y = 0
 camera.start_preview()
-
-def set_camera_zoom():
-    camera.resolution = (PIC_SIZE,PIC_SIZE)
-    #CAM_SCALE_X = 3280/PIC_SIZE
-    #CAM_SCALE_Y = 2464/PIC_SIZE
-    #camera.zoom = ( (1-CAM_SCALE_X)/2,(1-CAM_SCALE_Y)/2,CAM_SCALE_X,CAM_SCALE_Y )
-    print(f'picture size: {PIC_SIZE}')
-
-while False:
-    set_camera_zoom()
-    camera_zoom = input(f'Adjust camera. i:In o:Out u:Up d:Down l:Left r:Right: q:quit:: ')
-    
-    if(camera_zoom.lower() == 'q'):
-        print('Camera set')
-        break
-
-    if(camera_zoom.lower() == 'i'):
-        PIC_SIZE -= 100
-    if(camera_zoom.lower() == 'o'):
-        PIC_SIZE += 100
-
-    if(camera_zoom.lower() == 'u'):
-        CAM_OFFSET_Y -= 50
-    if(camera_zoom.lower() == 'd'):
-        CAM_OFFSET_Y += 50
-    if(camera_zoom.lower() == 'l'):
-        CAM_OFFSET_X -= 50
-    if(camera_zoom.lower() == 'r'):
-        CAM_OFFSET_Y += 50
-
-    if(PIC_SIZE < 300):
-        PIC_SIZE = 300
-    if(PIC_SIZE > 2400):
-        PIC_SIZE = 2400
-    if(CAM_OFFSET_X < 0):
-        CAM_OFFSET_X = 0
-    if(CAM_OFFSET_Y < 0):
-        CAM_OFFSET_Y = 0
-    if(CAM_OFFSET_X + PIC_SIZE >  3280):
-        CAM_OFFSET_X = 3280 - PIC_SIZE
-    if(CAM_OFFSET_Y + PIC_SIZE > 2464):
-        CAM_OFFSET_Y = 2464 - PIC_SIZE
-
 
 #################
 # Init RAMPS

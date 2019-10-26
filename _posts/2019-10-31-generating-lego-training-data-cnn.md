@@ -404,6 +404,12 @@ On the desktop you will need `opencv`, it can be installed using:
 ```bash
 pip install opencv
 ```
+In both cases you will need the custom class `ramps_control`, if you clone the repository and run your script from the `./turn_table` directory, that should be handled for you.
+
+## What's it Do?
+The turn table script initializes the camera.  It then creates a loop over the number of angles you want to take images.  
+
+A full rotation is `3200` steps and if you ask for 60 images, then the script will rotate the turntable ~`53.33` steps.  At the end of the rotation, the script will capture an image of your target.  Then, it will rotate another `53.33` steps and take another picture.  It will do this 60 times, where it should have completed a full rotation.
 
 ```python
 #!/usr/bin/env python3

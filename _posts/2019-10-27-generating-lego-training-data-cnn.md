@@ -14,7 +14,7 @@ custom_js:
 ---
 After having success with training a CNN on our initial dataset, we decided to up the game on generating training images.  My buddy Rockets built a nice little turntable and ordered a couple of NEMA17s for each of us.  His idea was we could both start generating training images.
 
-![arduino-turn-table](../images/lego_classifier/turn_table.jpg))
+![arduino-turn-table](../images/lego_classifier/turn_table.jpg)
 
 I asked if he would be OK with me ordering some RAMPs boards and programming them to synchronize with the PiCamera.  I figured, it would probably be better for reproducibility if we had solid hardware, with custom firmware and software.
 
@@ -25,7 +25,7 @@ After a few hours of coding over a couple of weeks I was able to control the RAM
 I've listed the code parts below with a brief explanation--just in case someone would like to hack them for other projects.
 
 ## Minimum Viable Hack
-Warning words, I'm an advocate of the minimum viable product, especially, when it comes to my personal hacking time.  I refer to this as the minimum viable hack.  That stated, there are known issues in the code below.  But! It does the job--so I've not addressed the issues.
+Warning words, I'm an advocate of the minimum viable product, especially, when it comes to my personal hacking time.  I refer to this as the minimum viable hack.  That stated, there are known issues in the code below.  But! It does the job--so I've not addressed them.
 
 Here are a few:
 1. The value `0x0A` (`\n`) value is not handled as part of packet (e.g., if MILLI_BETWEEN = 10 bad things will happen).

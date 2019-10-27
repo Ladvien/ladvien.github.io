@@ -1,0 +1,689 @@
+I"�<p>After having success with training a CNN on our initial dataset, we decided to up the game on generating training images.  My buddy Rockets built a nice little turntable and ordered a couple of NEMA17s for each of us.  His idea was we could both start generating training images.</p>
+
+<p><img src="../images/lego_classifier/turn_table.jpg" alt="arduino-turn-table" /></p>
+
+<p>I asked if he would be OK with me ordering some RAMPs boards and programming them to synchronize with the PiCamera.  I figured, it would probably be better for reproducibility if we had solid hardware, with custom firmware and software.</p>
+
+<p>After a few hours of coding over a couple of weeks I was able to control the RAMPs within a Python script from either the Raspberry Pi or a desktop computer.</p>
+
+<ul>
+  <li><a href="https://github.com/Ladvien/lego_sorter/tree/master/turn_table">Turn Table Controller Code</a></li>
+</ul>
+
+<p>I’ve listed the code parts below with a brief explanation–just in case someone would like to hack them for other projects.</p>
+
+<h2 id="minimum-viable-hack">Minimum Viable Hack</h2>
+<p>Warning words, I’m an advocate of the minimum viable product, especially, when it comes to my personal hacking time.  I refer to this as the minimum viable hack.  That stated, there are known issues in the code below.  But! It does the job–so I’ve not addressed the issues.</p>
+
+<p>Here are a few:</p>
+<ol>
+  <li>The value <code class="highlighter-rouge">0x0A</code> (<code class="highlighter-rouge">\n</code>) value is not handled as part of packet (e.g., if MILLI_BETWEEN = 10 bad things will happen).</li>
+  <li>The motors are always on (reduces motor life).</li>
+  <li>Pulse width is not adjustable without firmware update.</li>
+  <li>The Python code is blocking.  This makes the halt feature on the Arduino Mega side fairly useless.</li>
+  <li>Only RAMPs motor X is setup (this one I <em>will</em> address later, as we will need several drivers before the end of this project).</li>
+</ol>
+
+<h1 id="ramps-code">RAMPS Code</h1>
+<p>To move the turn table we used a RAMPs 1.4 board:</p>
+
+<p><a href="https://www.amazon.com/gp/product/B07T8L584W/ref=ppx_yo_dt_b_asin_title_o09_s00?ie=UTF8&amp;psc=1">RAMPS Kit (Amazon)</a></p>
+
+<p>Getting things going was straightforward.  I put together the hardware, installed the Arduino IDE, and looked-up the pinout for the RAMPs controller.</p>
+
+<p>I wrote the firmware to receive serial commands as packet.  The packet structure (at time of writing) looks like this:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>MOTOR_PACKET = 0x01 0x01 0x00 0x03 0xE8 0x05 0x0A
+INDEX        =  1    2     3    4    5    6   7
+</code></pre></div></div>
+<ul>
+  <li><code class="highlighter-rouge">first_byte</code> = This indicates what sort of packet type.  Right now, there is only one, but I figure we might want to control other I/O on the Arduino later.</li>
+  <li><code class="highlighter-rouge">second_byte</code> = the motor selected 1-5 (X, Y, Z,  E1, E2).</li>
+  <li><code class="highlighter-rouge">third_byte</code> = Motor direction, <code class="highlighter-rouge">0x00</code> is clockwise and <code class="highlighter-rouge">0x01</code> is counter-clockwise.</li>
+  <li><code class="highlighter-rouge">fourth_byte</code> = first chunk of the steps.</li>
+  <li><code class="highlighter-rouge">fifth_byte</code> = second chunk of the steps.  The steps variable tells the motor how many steps to move before stopping.</li>
+  <li><code class="highlighter-rouge">sixth_byte</code> = delay between steps in milliseconds.</li>
+  <li><code class="highlighter-rouge">seventh_byte</code> = the end-of-transmission (EOT) character.  I’ve used <code class="highlighter-rouge">\n</code>.</li>
+</ul>
+
+<p>When the code receives an EOT character, it parses the packet and call the <code class="highlighter-rouge">writeMotor()</code>.  This function loops through the number of steps, delaying between each.  Each loop the function checks if a <code class="highlighter-rouge">halt</code> command has been received.  If it has, it stops the motor mid-move.</p>
+
+<p>Again, this code isn’t perfect.  Far from it.  But it does the job.</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include &lt;avr/interrupt.h&gt; 
+#include &lt;avr/io.h&gt; 
+</span><span class="c1">// https://reprap.org/mediawiki/images/f/f6/RAMPS1.4schematic.png</span>
+<span class="c1">// https://reprap.org/forum/read.php?219,168722</span>
+
+<span class="c1">// TODO: Pulse width set by initialization.</span>
+<span class="c1">// TODO: Setup all motors to be selected by master.</span>
+<span class="c1">// TODO: Add a timer to shutdown motors after threshold.</span>
+<span class="c1">//       And keep motor enabled until threshold has been met.</span>
+<span class="c1">// TODO: Handle 0x0A values as part of packet (e.g., if MILLI_BETWEEN = 10).</span>
+<span class="c1">// TODO: Add a "holding torque" feature; making it so motors never disable.</span>
+
+<span class="c1">// For RAMPS 1.4</span>
+<span class="cp">#define X_STEP_PIN         54
+#define X_DIR_PIN          55
+#define X_ENABLE_PIN       38
+#define X_MIN_PIN           3
+#define X_MAX_PIN           2
+</span>
+<span class="cp">#define Y_STEP_PIN         60
+#define Y_DIR_PIN          61
+#define Y_ENABLE_PIN       56
+#define Y_MIN_PIN          14
+#define Y_MAX_PIN          15
+</span>
+<span class="cp">#define Z_STEP_PIN         46
+#define Z_DIR_PIN          48
+#define Z_ENABLE_PIN       62
+#define Z_MIN_PIN          18
+#define Z_MAX_PIN          19
+</span>
+<span class="cp">#define E_STEP_PIN         26
+#define E_DIR_PIN          28
+#define E_ENABLE_PIN       24
+</span>
+<span class="cp">#define SDPOWER            -1
+#define SDSS               53
+#define LED_PIN            13
+</span>
+<span class="cp">#define FAN_PIN            9
+</span>
+<span class="cp">#define PS_ON_PIN          12
+#define KILL_PIN           -1
+</span>
+<span class="cp">#define HEATER_0_PIN       10
+#define HEATER_1_PIN       8
+#define TEMP_0_PIN         13   // ANALOG NUMBERING
+#define TEMP_1_PIN         14   // ANALOG NUMBERING
+</span>
+<span class="cp">#define MOTOR_X         0x01
+#define MOTOR_Y         0x02
+#define MOTOR_Z         0x03
+#define MOTOR_E1        0x04
+#define MOTOR_E2        0x05
+</span>
+<span class="cp">#define DRIVE_CMD       (char)0x01
+#define HALT_CMD        (char)0x0F
+#define DIR_CC          (char)0x00
+#define DIR_CCW         (char)0x01
+</span>
+<span class="cp">#define COMPLETED_CMD   (char)0x07
+#define END_TX          (char)0x0A
+#define ACK             (char)0x06 // Acknowledge
+#define NACK            (char)0x15 // Negative Acknowledge
+</span>
+
+<span class="c1">// Determine the pulse width of motor.</span>
+<span class="cp">#define MOTOR_ANGLE           1.8
+#define PULSE_WIDTH_MICROS    360 / MOTOR_ANGLE
+</span>
+<span class="cp">#define RX_BUFFER_SIZE 16
+</span>
+<span class="cm">/*
+  MOTOR_NUM:
+      X     = 0
+      Y     = 1
+      Z     = 2
+      E1    = 3
+      E2    = 4
+      
+  PACKET_TYPES
+      0x01 = motor_write
+      0x02 = motor_halt
+
+  DIRECTION
+      0x00 = CW
+      0x01 = CCW
+
+  MOTOR MOVE PROTOCOL:
+                       0               1     2     3        4       5         6
+  MOTOR_PACKET = PACKET_TYPE_CHAR MOTOR_NUM DIR STEPS_1 STEPS_2 MILLI_BETWEEN \n
+  MOTOR_PACKET =    01                01    00    03     E8        05         0A
+  MOTOR_PACKET =    0x 01010003E8050A
+
+  HALT         = 0x0F
+*/</span>
+
+
+<span class="cm">/* Create a structure for the motors
+ *  direction_pin = pin to control direction of stepper.
+ *  step_pin      = pin to control the steps.
+ *  enable_pin    = pin to enable motor.
+ */</span>
+<span class="k">struct</span> <span class="n">MOTOR</span> <span class="p">{</span>
+  <span class="kt">uint8_t</span> <span class="n">direction_pin</span><span class="p">;</span>
+  <span class="kt">uint8_t</span> <span class="n">step_pin</span><span class="p">;</span>
+  <span class="kt">uint8_t</span> <span class="n">enable_pin</span><span class="p">;</span>
+  <span class="kt">uint8_t</span> <span class="n">pulse_width_micros</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="k">struct</span> <span class="n">BUFFER</span> <span class="p">{</span>
+  <span class="kt">uint8_t</span> <span class="n">data</span><span class="p">[</span><span class="n">RX_BUFFER_SIZE</span><span class="p">];</span>
+  <span class="kt">uint8_t</span> <span class="n">bufferSize</span><span class="p">;</span>
+  <span class="kt">uint8_t</span> <span class="n">index</span><span class="p">;</span>
+  <span class="n">boolean</span> <span class="n">packetComplete</span><span class="p">;</span>
+  <span class="kt">uint8_t</span> <span class="n">shutdownThreshold</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="cm">/* Initialize motors */</span>
+<span class="n">MOTOR</span> <span class="n">motorX</span> <span class="o">=</span> <span class="p">{</span>
+      <span class="n">X_DIR_PIN</span><span class="p">,</span>
+      <span class="n">X_STEP_PIN</span><span class="p">,</span>
+      <span class="n">X_ENABLE_PIN</span><span class="p">,</span>
+      <span class="n">PULSE_WIDTH_MICROS</span>
+<span class="p">};</span>
+
+<span class="c1">// Urgent shutdown.</span>
+<span class="k">volatile</span> <span class="n">boolean</span> <span class="n">halt</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+<span class="k">volatile</span> <span class="k">static</span> <span class="kt">bool</span> <span class="n">triggered</span><span class="p">;</span>
+
+<span class="cm">/* Initialize RX buffer */</span>
+<span class="n">BUFFER</span> <span class="n">rxBuffer</span><span class="p">;;</span>
+
+
+
+<span class="cm">/* Initialize program */</span>
+<span class="kt">void</span> <span class="nf">setup</span><span class="p">()</span>
+<span class="p">{</span>
+  <span class="n">Serial</span><span class="p">.</span><span class="n">begin</span><span class="p">(</span><span class="mi">115200</span><span class="p">);</span>
+  
+  <span class="c1">// Initialize the structures</span>
+  <span class="n">motorSetup</span><span class="p">(</span><span class="n">motorX</span><span class="p">);</span>
+  <span class="n">rxBuffer</span><span class="p">.</span><span class="n">bufferSize</span> <span class="o">=</span> <span class="n">RX_BUFFER_SIZE</span><span class="p">;</span>
+
+  <span class="c1">// Disable holding torque.</span>
+  <span class="n">digitalWrite</span><span class="p">(</span><span class="n">motorX</span><span class="p">.</span><span class="n">enable_pin</span><span class="p">,</span> <span class="n">HIGH</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="cm">/* Main */</span>
+<span class="kt">void</span> <span class="nf">loop</span><span class="p">()</span>
+<span class="p">{</span>
+  <span class="c1">// If packet is packetComplete</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">rxBuffer</span><span class="p">.</span><span class="n">packetComplete</span><span class="p">)</span> <span class="p">{</span>
+    
+    <span class="kt">uint8_t</span> <span class="n">packet_type</span> <span class="o">=</span> <span class="n">rxBuffer</span><span class="p">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+
+    <span class="k">switch</span> <span class="p">(</span><span class="n">packet_type</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">case</span> <span class="n">DRIVE_CMD</span><span class="p">:</span>
+        <span class="p">{</span>
+          <span class="c1">// Unpack the command.</span>
+          <span class="kt">uint8_t</span> <span class="n">motorNumber</span> <span class="o">=</span>  <span class="n">rxBuffer</span><span class="p">.</span><span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+          <span class="kt">uint8_t</span> <span class="n">direction</span> <span class="o">=</span>  <span class="n">rxBuffer</span><span class="p">.</span><span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span>
+          <span class="kt">uint16_t</span> <span class="n">steps</span> <span class="o">=</span> <span class="p">((</span><span class="kt">uint8_t</span><span class="p">)</span><span class="n">rxBuffer</span><span class="p">.</span><span class="n">data</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">&lt;&lt;</span> <span class="mi">8</span><span class="p">)</span>  <span class="o">|</span> <span class="p">(</span><span class="kt">uint8_t</span><span class="p">)</span><span class="n">rxBuffer</span><span class="p">.</span><span class="n">data</span><span class="p">[</span><span class="mi">4</span><span class="p">];</span>
+          <span class="kt">uint8_t</span> <span class="n">milliSecondsDelay</span> <span class="o">=</span> <span class="n">rxBuffer</span><span class="p">.</span><span class="n">data</span><span class="p">[</span><span class="mi">5</span><span class="p">];</span>
+
+          <span class="c1">// Let the master know command is in process.</span>
+          <span class="n">sendAck</span><span class="p">();</span>
+  
+          <span class="c1">// Start the motor</span>
+          <span class="n">writeMotor</span><span class="p">(</span><span class="n">motorX</span><span class="p">,</span> <span class="n">direction</span><span class="p">,</span> <span class="n">steps</span><span class="p">,</span> <span class="n">milliSecondsDelay</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">break</span><span class="p">;</span>
+      <span class="nl">default:</span>
+        <span class="n">sendNack</span><span class="p">();</span>
+        <span class="k">break</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="c1">// Clear the buffer for the nexgt packet.</span>
+    <span class="n">resetBuffer</span><span class="p">(</span><span class="o">&amp;</span><span class="n">rxBuffer</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+
+<span class="cm">/*  ############### MOTORS ############### */</span>
+
+<span class="cm">/* Method for initalizing MOTOR */</span>
+<span class="kt">void</span> <span class="nf">motorSetup</span><span class="p">(</span><span class="n">MOTOR</span> <span class="n">motor</span><span class="p">)</span> <span class="p">{</span>
+
+  <span class="c1">// Setup motor pins</span>
+  <span class="n">pinMode</span><span class="p">(</span><span class="n">motor</span><span class="p">.</span><span class="n">direction_pin</span><span class="p">,</span> <span class="n">OUTPUT</span><span class="p">);</span>
+  <span class="n">pinMode</span><span class="p">(</span><span class="n">motor</span><span class="p">.</span><span class="n">step_pin</span><span class="p">,</span> <span class="n">OUTPUT</span><span class="p">);</span>
+  <span class="n">pinMode</span><span class="p">(</span><span class="n">motor</span><span class="p">.</span><span class="n">enable_pin</span><span class="p">,</span> <span class="n">OUTPUT</span><span class="p">);</span>
+
+<span class="p">}</span>
+
+<span class="cm">/* Write to MOTOR */</span>
+<span class="kt">void</span> <span class="nf">writeMotor</span><span class="p">(</span><span class="n">MOTOR</span> <span class="n">motor</span><span class="p">,</span> <span class="kt">int</span> <span class="n">direction</span><span class="p">,</span> <span class="kt">uint16_t</span> <span class="n">numberOfSteps</span><span class="p">,</span> <span class="kt">int</span> <span class="n">milliBetweenSteps</span><span class="p">)</span> <span class="p">{</span>
+
+    <span class="c1">// Enable motor.</span>
+    <span class="n">digitalWrite</span><span class="p">(</span><span class="n">motor</span><span class="p">.</span><span class="n">enable_pin</span><span class="p">,</span> <span class="n">LOW</span><span class="p">);</span>
+
+    <span class="c1">// Check direction;</span>
+    <span class="k">switch</span> <span class="p">(</span><span class="n">direction</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">case</span> <span class="n">DIR_CC</span><span class="p">:</span>
+        <span class="n">digitalWrite</span><span class="p">(</span><span class="n">motor</span><span class="p">.</span><span class="n">direction_pin</span><span class="p">,</span> <span class="n">HIGH</span><span class="p">);</span>
+        <span class="k">break</span><span class="p">;</span>
+      <span class="k">case</span> <span class="n">DIR_CCW</span><span class="p">:</span>
+        <span class="n">digitalWrite</span><span class="p">(</span><span class="n">motor</span><span class="p">.</span><span class="n">direction_pin</span><span class="p">,</span> <span class="n">LOW</span><span class="p">);</span>
+        <span class="k">break</span><span class="p">;</span>
+      <span class="nl">default:</span>
+        <span class="n">sendNack</span><span class="p">();</span>
+        <span class="k">return</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">// Move the motor (but keep an eye for a halt command)</span>
+    <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="n">numberOfSteps</span><span class="p">;</span> <span class="n">n</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+      <span class="c1">// Interrupt motor</span>
+      <span class="k">if</span><span class="p">(</span><span class="n">checkForHalt</span><span class="p">())</span> <span class="p">{</span>  
+        <span class="n">sendAck</span><span class="p">();</span>
+        <span class="k">break</span><span class="p">;</span> 
+      <span class="p">}</span>
+      <span class="n">digitalWrite</span><span class="p">(</span><span class="n">motor</span><span class="p">.</span><span class="n">step_pin</span><span class="p">,</span> <span class="n">HIGH</span><span class="p">);</span>
+      <span class="n">delayMicroseconds</span><span class="p">(</span><span class="n">motor</span><span class="p">.</span><span class="n">pulse_width_micros</span><span class="p">);</span>
+      <span class="n">digitalWrite</span><span class="p">(</span><span class="n">motor</span><span class="p">.</span><span class="n">step_pin</span><span class="p">,</span> <span class="n">LOW</span><span class="p">);</span>
+      <span class="n">delay</span><span class="p">(</span><span class="n">milliBetweenSteps</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="c1">// Disable holding torque.</span>
+    <span class="n">digitalWrite</span><span class="p">(</span><span class="n">motor</span><span class="p">.</span><span class="n">enable_pin</span><span class="p">,</span> <span class="n">HIGH</span><span class="p">);</span>
+
+    <span class="c1">// Let the user know the move is done.</span>
+    <span class="n">sendCompletedAction</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="c1">// END MOTORS</span>
+
+<span class="cm">/*  ############### COMMUNICATION ###############
+ * 
+*/</span>
+<span class="kt">void</span> <span class="nf">serialEvent</span><span class="p">()</span> <span class="p">{</span>
+
+  <span class="c1">// Get all the data.</span>
+  <span class="k">while</span> <span class="p">(</span><span class="n">Serial</span><span class="p">.</span><span class="n">available</span><span class="p">())</span> <span class="p">{</span>
+
+    <span class="c1">// Read a byte</span>
+    <span class="kt">uint8_t</span> <span class="n">inByte</span> <span class="o">=</span> <span class="p">(</span><span class="kt">uint8_t</span><span class="p">)</span><span class="n">Serial</span><span class="p">.</span><span class="n">read</span><span class="p">();</span>
+
+    <span class="c1">// Store the byte in the buffer.</span>
+    <span class="n">rxBuffer</span><span class="p">.</span><span class="n">data</span><span class="p">[</span><span class="n">rxBuffer</span><span class="p">.</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">inByte</span><span class="p">;</span>
+    <span class="n">rxBuffer</span><span class="p">.</span><span class="n">index</span><span class="o">++</span><span class="p">;</span>
+
+    <span class="c1">// If a complete packet character is found, mark the packet</span>
+    <span class="c1">// as ready for execution.</span>
+    <span class="k">if</span> <span class="p">((</span><span class="kt">char</span><span class="p">)</span><span class="n">inByte</span> <span class="o">==</span> <span class="sc">'\n'</span><span class="p">)</span> <span class="p">{</span>
+      <span class="n">rxBuffer</span><span class="p">.</span><span class="n">packetComplete</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="p">}</span>
+    
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1">// Clear the buffer.</span>
+<span class="kt">void</span> <span class="nf">resetBuffer</span><span class="p">(</span><span class="k">struct</span> <span class="n">BUFFER</span> <span class="o">*</span><span class="n">buffer</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">memset</span><span class="p">(</span><span class="n">buffer</span><span class="o">-&gt;</span><span class="n">data</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">buffer</span><span class="o">-&gt;</span><span class="n">data</span><span class="p">));</span>
+  <span class="n">buffer</span><span class="o">-&gt;</span><span class="n">index</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="n">buffer</span><span class="o">-&gt;</span><span class="n">packetComplete</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// Does not count termination char.</span>
+<span class="kt">int</span> <span class="nf">packetLength</span><span class="p">(</span><span class="n">BUFFER</span> <span class="n">buffer</span><span class="p">){</span>
+  <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">buffer</span><span class="p">.</span><span class="n">bufferSize</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span><span class="p">((</span><span class="kt">char</span><span class="p">)</span><span class="n">buffer</span><span class="p">.</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="sc">'\n'</span><span class="p">){</span> <span class="k">return</span> <span class="n">i</span><span class="p">;</span> <span class="p">}</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">sendAck</span><span class="p">()</span> <span class="p">{</span>
+  <span class="n">Serial</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="n">ACK</span><span class="p">);</span>
+  <span class="n">Serial</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="n">END_TX</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">sendNack</span><span class="p">()</span> <span class="p">{</span>
+  <span class="n">Serial</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="n">ACK</span><span class="p">);</span>
+  <span class="n">Serial</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="n">END_TX</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">sendCompletedAction</span><span class="p">()</span> <span class="p">{</span>
+  <span class="n">Serial</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="n">COMPLETED_CMD</span><span class="p">);</span>
+  <span class="n">Serial</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="n">END_TX</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="c1">// Halt is handled outside normal communication protocol.</span>
+<span class="n">boolean</span> <span class="nf">checkForHalt</span><span class="p">()</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">Serial</span><span class="p">.</span><span class="n">available</span><span class="p">()){</span>
+    <span class="c1">// Halt command has no termination character.</span>
+    <span class="k">if</span> <span class="p">((</span><span class="kt">uint8_t</span><span class="p">)</span><span class="n">Serial</span><span class="p">.</span><span class="n">read</span><span class="p">()</span> <span class="o">==</span> <span class="n">HALT_CMD</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// END COMMUNICATION</span>
+</code></pre></div></div>
+<h1 id="python-ramps">Python RAMPS</h1>
+<p>There are two variants of the Python code.  First, is for the Raspberry Pi.  It’s where I focused coding time, as it made sense to generate training images using the same hardware (PiCamera) as would be used for production.  However, I’ve a simpler desktop version which uses OpenCV and a webacam</p>
+
+<ul>
+  <li><a href="https://github.com/Ladvien/lego_sorter/blob/master/turn_table/turn_table_master_rpi.py">Raspberry Pi Turn Table</a></li>
+  <li><a href="https://github.com/Ladvien/lego_sorter/blob/master/turn_table/turn_table_master.py">Desktop Turn Table</a></li>
+</ul>
+
+<p>For the Raspberry Pi and desktop versions you will need the following:</p>
+<ul>
+  <li><code class="highlighter-rouge">Python 3.7</code> – this should be standard on Raspbian Buster.</li>
+</ul>
+
+<p>On the desktop you will need <code class="highlighter-rouge">opencv</code>, it can be installed using:</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip <span class="nb">install </span>opencv
+</code></pre></div></div>
+<p>In both cases you will need the custom class <code class="highlighter-rouge">ramps_control</code>, if you clone the repository and run your script from the <code class="highlighter-rouge">./turn_table</code> directory, that should be handled for you.</p>
+
+<h2 id="whats-it-do">What’s it Do?</h2>
+<p>The turn table script initializes the camera.  It then creates a loop over the number of angles you want to take images.</p>
+
+<p>A full rotation is <code class="highlighter-rouge">3200</code> steps and if you ask for 60 images, then the script will rotate the turntable ~<code class="highlighter-rouge">53.33</code> steps.  At the end of the rotation, the script will capture an image of your target.  Then, it will rotate another <code class="highlighter-rouge">53.33</code> steps and take another picture.  It will do this 60 times, where it should have completed a full rotation.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+</span><span class="s">"""
+Created on Wed Sep 25 05:58:48 2019
+
+@author: ladvien
+"""</span>
+
+<span class="kn">from</span> <span class="nn">picamera</span> <span class="kn">import</span> <span class="n">PiCamera</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">sleep</span>
+<span class="kn">import</span> <span class="nn">ramps_control</span>
+<span class="kn">import</span> <span class="nn">serial</span>
+<span class="kn">import</span> <span class="nn">glob</span>
+
+<span class="c1">#################
+# Parameters
+#################
+</span>
+<span class="n">MILLI_BETWEEN_STEPS</span>     <span class="o">=</span> <span class="mi">5</span>
+<span class="n">IMAGES_PER_ROTATION</span>	    <span class="o">=</span> <span class="mi">60</span>
+<span class="n">FULL_ROTATION</span>           <span class="o">=</span> <span class="mi">3200</span>
+<span class="n">STEPS_BEFORE_PIC</span> 	    <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">FULL_ROTATION</span> <span class="o">/</span> <span class="n">IMAGES_PER_ROTATION</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s">'Steps per image: {STEPS_BEFORE_PIC}'</span><span class="p">)</span>
+
+<span class="c1">####################
+# Don't Overwrite
+####################
+</span><span class="k">def</span> <span class="nf">check_existing_images</span><span class="p">(</span><span class="n">output_directory</span><span class="p">):</span>
+    <span class="n">existing_image_files</span> <span class="o">=</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">f</span><span class="s">'{output_directory}/*.jpg'</span><span class="p">)</span>
+    <span class="n">max_file_index</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="nb">file</span> <span class="ow">in</span> <span class="n">existing_image_files</span><span class="p">:</span>
+        <span class="n">file_index</span> <span class="o">=</span> <span class="nb">file</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">'/'</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">'_'</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">'.jpg'</span><span class="p">,</span> <span class="s">''</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">file_index</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">file_index</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">file_index</span> <span class="o">&gt;</span> <span class="n">max_file_index</span><span class="p">:</span>
+                <span class="n">max_file_index</span> <span class="o">=</span> <span class="n">file_index</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">pass</span>
+    <span class="k">return</span> <span class="n">max_file_index</span>
+
+<span class="c1">#################
+# Open Serial
+#################
+</span><span class="n">ser</span> <span class="o">=</span> <span class="n">serial</span><span class="o">.</span><span class="n">Serial</span><span class="p">(</span><span class="s">'/dev/ttyUSB0'</span><span class="p">,</span> <span class="mi">115200</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">ser</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>   
+
+<span class="c1">#################
+# Init Camera
+#################
+#picam v2 resolution 3280 x 2464
+</span><span class="n">camera</span> <span class="o">=</span> <span class="n">PiCamera</span><span class="p">()</span>
+<span class="n">PIC_SIZE</span> <span class="o">=</span> <span class="mi">1200</span>
+<span class="n">CAM_OFFSET_X</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">CAM_OFFSET_Y</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">camera</span><span class="o">.</span><span class="n">start_preview</span><span class="p">()</span>
+
+<span class="c1">#################
+# Init RAMPS
+#################
+</span><span class="n">ramps</span> <span class="o">=</span> <span class="n">ramps_control</span><span class="o">.</span><span class="n">RAMPS</span><span class="p">(</span><span class="n">ser</span><span class="p">,</span> <span class="n">debug</span> <span class="o">=</span> <span class="bp">False</span><span class="p">)</span>
+
+<span class="c1"># Track whether the motor is at work.
+</span><span class="n">motor_moving</span> <span class="o">=</span> <span class="bp">False</span>
+
+<span class="c1"># Reset the RAMPs program.
+</span><span class="n">ramps</span><span class="o">.</span><span class="n">reset_ramps</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+
+<span class="c1">#################
+# Main
+#################
+</span>
+<span class="n">part</span> <span class="o">=</span> <span class="s">''</span>
+
+<span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+    <span class="n">part_candidate</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="n">f</span><span class="s">'Enter part number and hit enter. (Default {part}; "q" to quit): '</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">part_candidate</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s">'q'</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">'Bye!'</span><span class="p">)</span>
+        <span class="n">quit</span><span class="p">()</span>
+    <span class="k">elif</span> <span class="n">part_candidate</span> <span class="o">!=</span> <span class="s">''</span><span class="p">:</span>
+        <span class="n">part</span> <span class="o">=</span> <span class="n">part_candidate</span>
+
+    <span class="n">output_directory</span> <span class="o">=</span> <span class="n">f</span><span class="s">'/home/pi/Desktop/lego_images/{part}'</span> 
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">output_directory</span><span class="p">):</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">output_directory</span><span class="p">)</span>
+
+    <span class="n">max_file_index</span> <span class="o">=</span> <span class="n">check_existing_images</span><span class="p">(</span><span class="n">output_directory</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">IMAGES_PER_ROTATION</span><span class="p">):</span>
+
+            <span class="n">success</span> <span class="o">=</span> <span class="n">ramps</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="n">ramps</span><span class="o">.</span><span class="n">MOTOR_X</span><span class="p">,</span>
+                        <span class="n">ramps</span><span class="o">.</span><span class="n">DIR_CCW</span><span class="p">,</span>
+                        <span class="n">STEPS_BEFORE_PIC</span><span class="p">,</span>
+                        <span class="n">MILLI_BETWEEN_STEPS</span><span class="p">)</span>
+            
+            <span class="k">if</span> <span class="n">success</span><span class="p">:</span>
+                <span class="k">print</span><span class="p">(</span><span class="s">'Table move a success.'</span><span class="p">)</span>
+
+                <span class="n">file_path</span> <span class="o">=</span> <span class="n">f</span><span class="s">'{output_directory}/{part}_{i + max_file_index}.jpg'</span>
+                <span class="k">print</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
+                <span class="n">camera</span><span class="o">.</span><span class="n">capture</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
+                
+            <span class="c1"># sleep(0.05)
+</span>
+<span class="n">ser</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="n">camera</span><span class="o">.</span><span class="n">stop_preview</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h1 id="python-ramps-class">Python RAMPS Class</h1>
+
+<p>To increase resuability of the code, I’ve abstracted the RAMPs controller Python class.  This class is called by the script above.  It is block code which handles sending the commands, polling the Arduino, and reports received information.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+</span><span class="s">"""
+Created on Sat Sep 28 05:39:18 2019
+
+@author: ladvien
+"""</span>
+<span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">sleep</span><span class="p">,</span> <span class="n">time</span>
+
+
+<span class="s">"""
+  MOTOR_NUM:
+      X     = 0
+      Y     = 1
+      Z     = 2
+      E1    = 3
+      E2    = 4
+      
+  PACKET_TYPES
+      0x01 = motor_write
+      0x02 = motor_halt
+
+  DIRECTION
+      0x00 = CW
+      0x01 = CCW
+
+  MOTOR MOVE PROTOCOL:
+                       0               1     2     3        4       5         6
+  MOTOR_PACKET = PACKET_TYPE_CHAR MOTOR_NUM DIR STEPS_1 STEPS_2 MILLI_BETWEEN </span><span class="se">\n</span><span class="s">
+
+"""</span>
+
+<span class="k">class</span> <span class="nc">RAMPS</span><span class="p">:</span>
+    <span class="n">DRIVE_CMD</span>       <span class="o">=</span> <span class="mh">0x01</span>
+    <span class="n">HALT_CMD</span>        <span class="o">=</span> <span class="mh">0x0F</span>
+    <span class="n">DIR_CC</span>          <span class="o">=</span> <span class="mh">0x00</span>
+    <span class="n">DIR_CCW</span>         <span class="o">=</span> <span class="mh">0x01</span>
+    
+    <span class="n">COMPLETED_CMD</span>   <span class="o">=</span> <span class="mh">0x07</span>
+    <span class="n">END_TX</span>          <span class="o">=</span> <span class="mh">0x0A</span>
+    <span class="n">ACKNOWLEDGE</span>     <span class="o">=</span> <span class="mh">0x06</span>
+    <span class="n">NEG_ACKNOWLEDGE</span> <span class="o">=</span> <span class="mh">0x15</span>
+        
+    
+    <span class="n">MOTOR_X</span>         <span class="o">=</span> <span class="mh">0x01</span>
+    <span class="n">MOTOR_Y</span>         <span class="o">=</span> <span class="mh">0x02</span>
+    <span class="n">MOTOR_Z</span>         <span class="o">=</span> <span class="mh">0x03</span>
+    <span class="n">MOTOR_E1</span>        <span class="o">=</span> <span class="mh">0x04</span>
+    <span class="n">MOTOR_E2</span>        <span class="o">=</span> <span class="mh">0x05</span>
+    
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ser</span><span class="p">,</span> <span class="n">debug</span> <span class="o">=</span> <span class="bp">False</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ser</span> <span class="o">=</span> <span class="n">ser</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">toggle_debug</span> <span class="o">=</span> <span class="n">debug</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rx_buffer_size</span> <span class="o">=</span> <span class="mi">256</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">serial_delay</span> <span class="o">=</span> <span class="mf">0.1</span>
+        
+    <span class="k">def</span> <span class="nf">toggle_debug</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">debug</span> <span class="o">=</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">debug</span>
+        
+    <span class="k">def</span> <span class="nf">print_debug</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">toggle_debug</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+    
+    <span class="s">""" 
+            COMMUNICATION
+    """</span>
+    
+    <span class="c1"># Prepare for a serial send.
+</span>    <span class="k">def</span> <span class="nf">encode_packet</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">bytearray</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+    
+    <span class="c1"># Prepare a packet the slave will understand
+</span>    <span class="k">def</span> <span class="nf">prepare_motor_packet</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">motor_num</span><span class="p">,</span> <span class="n">direction</span><span class="p">,</span> <span class="n">steps</span><span class="p">,</span> <span class="n">milli_between</span><span class="p">):</span>
+        <span class="n">steps_1</span> <span class="o">=</span> <span class="p">(</span><span class="n">steps</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xFF</span>
+        <span class="n">steps_2</span> <span class="o">=</span> <span class="p">(</span><span class="n">steps</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xFF</span>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">DRIVE_CMD</span><span class="p">,</span> <span class="n">motor_num</span><span class="p">,</span> <span class="n">direction</span><span class="p">,</span> <span class="n">steps_1</span><span class="p">,</span> <span class="n">steps_2</span><span class="p">,</span> <span class="n">milli_between</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">END_TX</span><span class="p">]</span>
+    
+    <span class="k">def</span> <span class="nf">read_available</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">as_ascii</span> <span class="o">=</span> <span class="bp">False</span><span class="p">):</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">print_debug</span><span class="p">(</span><span class="n">f</span><span class="s">'Reading available.'</span><span class="p">)</span>
+        
+        <span class="c1"># 1. Get all available data.
+</span>        <span class="c1"># 2. Unless buffer exceeded.
+</span>        <span class="c1"># 3. Return a list of the data.
+</span>        
+        <span class="n">incoming_data</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">incoming_data_size</span> <span class="o">=</span> <span class="mi">0</span>
+        
+        <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">ser</span><span class="o">.</span><span class="n">in_waiting</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">incoming_data_size</span> <span class="o">+=</span> <span class="mi">1</span>
+            
+            <span class="k">if</span> <span class="n">incoming_data_size</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">rx_buffer_size</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">print_debug</span><span class="p">(</span><span class="n">f</span><span class="s">'Buffer overflow.'</span><span class="p">)</span>
+                <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="s">'RX buffer overflow.'</span><span class="p">)</span>
+            
+            <span class="k">if</span> <span class="n">as_ascii</span><span class="p">:</span>
+                <span class="n">incoming_data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ser</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s">'utf-8'</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">incoming_data</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ser</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">print_debug</span><span class="p">(</span><span class="n">f</span><span class="s">'Completed reading available.'</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">incoming_data</span>
+
+
+    <span class="k">def</span> <span class="nf">check_for_confirm</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">command_expected</span><span class="p">):</span>
+        <span class="n">confirmation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">read_available</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">confirmation</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">confirmation</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">command_expected</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">False</span>
+
+    
+    <span class="s">""" 
+            RAMPS UTILITY
+    """</span>
+    
+    <span class="k">def</span> <span class="nf">reset_ramps</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">print_welcome</span> <span class="o">=</span> <span class="bp">False</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">print_debug</span><span class="p">(</span><span class="n">f</span><span class="s">'Reseting Arduino.'</span><span class="p">)</span>
+        <span class="c1"># Reset the Arduino Mega.
+</span>        <span class="bp">self</span><span class="o">.</span><span class="n">ser</span><span class="o">.</span><span class="n">setDTR</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+        <span class="n">sleep</span><span class="p">(</span><span class="mf">0.4</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ser</span><span class="o">.</span><span class="n">setDTR</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+        <span class="n">sleep</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>   
+        
+        <span class="c1"># Get welcome message.
+</span>        <span class="n">welcome_message</span> <span class="o">=</span> <span class="p">[]</span>
+        
+        <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">ser</span><span class="o">.</span><span class="n">in_waiting</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">welcome_message</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ser</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s">'utf-8'</span><span class="p">)</span> <span class="p">)</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">print_debug</span><span class="p">(</span><span class="n">f</span><span class="s">'Completed reset.'</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">print_welcome</span><span class="p">:</span>
+            <span class="c1"># Print it for the user.
+</span>            <span class="k">print</span><span class="p">(</span><span class="s">''</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">welcome_message</span><span class="p">))</span>
+            <span class="k">return</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span>
+
+    <span class="s">""" 
+            MOTOR COMMANDS
+    """</span>
+    <span class="k">def</span> <span class="nf">move</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">motor</span><span class="p">,</span> <span class="n">direction</span><span class="p">,</span> <span class="n">steps</span><span class="p">,</span> <span class="n">milli_secs_between_steps</span><span class="p">):</span>
+        
+        <span class="c1"># 1. Create a list containg RAMPs command.
+</span>        <span class="c1"># 2. Encode it for serial writing.
+</span>        <span class="c1"># 3. Write to serial port.
+</span>        <span class="c1"># 4. Check for ACK or NACK.
+</span>        <span class="c1"># 5. Poll serial for completed command.
+</span>        
+        <span class="n">packet</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prepare_motor_packet</span><span class="p">(</span><span class="n">motor</span><span class="p">,</span>
+                                           <span class="n">direction</span><span class="p">,</span>
+                                           <span class="n">steps</span><span class="p">,</span>
+                                           <span class="n">milli_secs_between_steps</span><span class="p">)</span>
+        <span class="n">packet</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">encode_packet</span><span class="p">(</span><span class="n">packet</span><span class="p">)</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">print_debug</span><span class="p">(</span><span class="n">f</span><span class="s">'Created move packet: {packet}'</span><span class="p">)</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">write_move</span><span class="p">(</span><span class="n">packet</span><span class="p">)</span>
+        
+        <span class="c1"># Don't miss ACK to being in a hurry.
+</span>        <span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">serial_delay</span><span class="p">)</span>
+        <span class="n">confirmation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">read_available</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">confirmation</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">ACKNOWLEDGE</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">print_debug</span><span class="p">(</span><span class="n">f</span><span class="s">'Move command acknowledged.'</span><span class="p">)</span>
+        
+        <span class="k">if</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">wait_for_complete</span><span class="p">(</span><span class="mi">120</span><span class="p">)):</span>
+            <span class="k">return</span> <span class="bp">True</span>
+        
+        <span class="k">return</span> <span class="bp">False</span>
+    
+    <span class="k">def</span> <span class="nf">wait_for_complete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timeout</span><span class="p">):</span>
+        
+        <span class="c1"># 1. Wait for complete or timeout
+</span>        <span class="c1"># 2. Return whether the move was successful.
+</span>        
+        <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+        
+        <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+            <span class="n">now_time</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+            <span class="n">duration</span> <span class="o">=</span> <span class="n">now_time</span> <span class="o">-</span> <span class="n">start_time</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">print_debug</span><span class="p">(</span><span class="n">duration</span><span class="p">)</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">duration</span> <span class="o">&gt;</span> <span class="n">timeout</span><span class="p">):</span>
+                <span class="k">return</span> <span class="bp">False</span>
+            
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">check_for_confirm</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">COMPLETED_CMD</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">print_debug</span><span class="p">(</span><span class="n">f</span><span class="s">'Move command completed.'</span><span class="p">)</span>
+                <span class="k">return</span> <span class="bp">True</span>
+            
+            <span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">serial_delay</span><span class="p">)</span>
+    
+    <span class="k">def</span> <span class="nf">write_move</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">packet</span><span class="p">):</span>        
+        <span class="bp">self</span><span class="o">.</span><span class="n">ser</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">packet</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">print_debug</span><span class="p">(</span><span class="n">f</span><span class="s">'Executed move packet: {packet}'</span><span class="p">)</span>
+</code></pre></div></div>
+:ET

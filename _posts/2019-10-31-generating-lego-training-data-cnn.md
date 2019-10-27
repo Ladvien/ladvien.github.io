@@ -198,9 +198,7 @@ BUFFER rxBuffer;;
 /* Initialize program */
 void setup()
 {
-  // Greetings.
   Serial.begin(115200);
-  greetings();
   
   // Initialize the structures
   motorSetup(motorX);
@@ -241,32 +239,6 @@ void loop()
     // Clear the buffer for the nexgt packet.
     resetBuffer(&rxBuffer);
   }
-}
-
-
-void greetings() {
-  Serial.println("RAMPs 1.4 stepper driver.");
-  Serial.println("  MOTOR_NUM:");
-  Serial.println("      X     = 0");
-  Serial.println("      Y     = 1");
-  Serial.println("      Z     = 2");
-  Serial.println("      E1    = 3");
-  Serial.println("      E2    = 4");
-  Serial.println("      ");
-  Serial.println("  PACKET_TYPES");
-  Serial.println("      0x01 = motor_write");
-  Serial.println("");
-  Serial.println("  DIRECTION");
-  Serial.println("      0x00 = CW");
-  Serial.println("      0x01 = CCW");
-  Serial.println("");
-  Serial.println("  MOTOR MOVE PROTOCOL:");
-  Serial.println("                       0               1     2     3        4       5         6");
-  Serial.println("  MOTOR_PACKET = PACKET_TYPE_CHAR MOTOR_NUM DIR STEPS_1 STEPS_2 MILLI_BETWEEN \\n");
-  Serial.println("  MOTOR_PACKET =    01                01    00    03     E8        05         0A");
-  Serial.println("  MOTOR_PACKET =    0x 01010003E8050A");
-  Serial.println("");
-  Serial.println("  HALT         = 0x0F");
 }
 
 
@@ -390,7 +362,6 @@ boolean checkForHalt() {
 
 // END COMMUNICATION
 ```
-
 # Python RAMPS 
 There are two variants of the Python code.  First, is for the Raspberry Pi.  It's where I focused coding time, as it made sense to generate training images using the same hardware (PiCamera) as would be used for production.  However, I've a simpler desktop version which uses OpenCV and a webacam
 
@@ -525,6 +496,10 @@ camera.stop_preview()
 
 
 # Python RAMPS Class
+
+To increase resuability of the code, I've abstracted the RAMPs controller Python class.  This class is called by the script above.  It is block code which handles sending the commands, polling the Arduino, and reports received information.
+
+
 ```python
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-

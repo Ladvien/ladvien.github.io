@@ -41,7 +41,7 @@ To move the turn table we used a RAMPs 1.4 board:
 
 Getting things going was straightforward.  I put together the hardware, installed the Arduino IDE, and looked-up the pinout for the RAMPs controller.
 
-I wrote the firmware to receive serial commands as packet.  The packet structure (at time of writing) looks like this:
+I wrote the firmware to receive serial commands as a packet.  The packet structure (at time of writing) looks like this:
 
 ```
 MOTOR_PACKET = 0x01 0x01 0x00 0x03 0xE8 0x05 0x0A
@@ -55,7 +55,7 @@ INDEX        =  1    2     3    4    5    6   7
 * `sixth_byte` = delay between steps in milliseconds.
 * `seventh_byte` = the end-of-transmission (EOT) character.  I've used `\n`.
  
-When the code receives an EOT character, it parses the packet and call the `writeMotor()`.  This function loops through the number of steps, delaying between each.  Each loop the function checks if a `halt` command has been received.  If it has, it stops the motor mid-move.
+When the code receives an EOT character, it parses the packet and calls the `writeMotor()`.  This function loops through the number of steps, delaying between each.  Each loop, the function checks if a `halt` command has been received.  If it has, it stops the motor mid-move.
 
 Again, this code isn't perfect.  Far from it.  But it does the job.
 
@@ -363,7 +363,7 @@ boolean checkForHalt() {
 // END COMMUNICATION
 ```
 # Python RAMPS 
-There are two variants of the Python code.  First, is for the Raspberry Pi.  It's where I focused coding time, as it made sense to generate training images using the same hardware (PiCamera) as would be used for production.  However, I've a simpler desktop version which uses OpenCV and a webacam
+There are two variants of the Python code.  First, is for the Raspberry Pi.  It's where I focused coding time, as it made sense to generate training images using the same hardware (PiCamera) as would be used for production.  However, I've a simpler desktop version which uses OpenCV and a webcam.
 
 * [Raspberry Pi Turn Table](https://github.com/Ladvien/lego_sorter/blob/master/turn_table/turn_table_master_rpi.py)
 * [Desktop Turn Table](https://github.com/Ladvien/lego_sorter/blob/master/turn_table/turn_table_master.py)
@@ -497,7 +497,7 @@ camera.stop_preview()
 
 # Python RAMPS Class
 
-To increase resuability of the code, I've abstracted the RAMPs controller Python class.  This class is called by the script above.  It is block code which handles sending the commands, polling the Arduino, and reports received information.
+To increase resuability of the code, I've abstracted the RAMPs controller code into a Python class.  This class is called by the script above.  It is blocking code which handles sending commands, polling the Arduino, and reports received information.
 
 ```python
 #!/usr/bin/env python3
@@ -696,3 +696,5 @@ class RAMPS:
         self.ser.write(packet)
         self.print_debug(f'Executed move packet: {packet}')
 ```
+# Questions
+That's pretty much it.  I've kept this article light, as I'm saving most of my free time for coding.  But, feel free to ask questions in the comments below.

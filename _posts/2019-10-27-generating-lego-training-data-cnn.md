@@ -37,7 +37,7 @@ Here are a few:
 # RAMPS Code
 To move the turn table we used a RAMPs 1.4 board:
 
-[RAMPS Kit (Amazon)](https://www.amazon.com/gp/product/B07T8L584W/ref=ppx_yo_dt_b_asin_title_o09_s00?ie=UTF8&psc=1)
+* [RAMPS Kit (Amazon)](https://www.amazon.com/gp/product/B07T8L584W/ref=ppx_yo_dt_b_asin_title_o09_s00?ie=UTF8&psc=1)
 
 Getting things going was straightforward.  I put together the hardware, installed the Arduino IDE, and looked-up the pinout for the RAMPs controller.
 

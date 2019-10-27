@@ -14,7 +14,7 @@ custom_js:
 ---
 After having success with training a CNN on our initial dataset, we decided to up the game on generating training images.  My buddy Rockets built a nice little turntable and ordered a couple of NEMA17s for each of us.  His idea was we could both start generating training images.
 
-ADD IMAGE
+![arduino-turn-table](../images/lego_classifier/turn_table.jpg))
 
 I asked if he would be OK with me ordering some RAMPs boards and programming them to synchronize with the PiCamera.  I figured, it would probably be better for reproducibility if we had solid hardware, with custom firmware and software.
 
@@ -498,7 +498,6 @@ camera.stop_preview()
 # Python RAMPS Class
 
 To increase resuability of the code, I've abstracted the RAMPs controller Python class.  This class is called by the script above.  It is block code which handles sending the commands, polling the Arduino, and reports received information.
-
 
 ```python
 #!/usr/bin/env python3

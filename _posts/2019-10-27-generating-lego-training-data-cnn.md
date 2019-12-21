@@ -14,7 +14,7 @@ custom_js:
 ---
 After having success with training a CNN on our initial dataset, we decided to up the game on generating training images.  My buddy Rockets built a nice little turntable and ordered a couple of NEMA17s for each of us.  His idea was we could both start generating training images.
 
-ADD IMAGE
+![arduino-turn-table](../images/lego_classifier/turn_table.jpg)
 
 I asked if he would be OK with me ordering some RAMPs boards and programming them to synchronize with the PiCamera.  I figured, it would probably be better for reproducibility if we had solid hardware, with custom firmware and software.
 
@@ -25,7 +25,7 @@ After a few hours of coding over a couple of weeks I was able to control the RAM
 I've listed the code parts below with a brief explanation--just in case someone would like to hack them for other projects.
 
 ## Minimum Viable Hack
-Warning words, I'm an advocate of the minimum viable product, especially, when it comes to my personal hacking time.  I refer to this as the minimum viable hack.  That stated, there are known issues in the code below.  But! It does the job--so I've not addressed the issues.
+Warning words, I'm an advocate of the minimum viable product, especially, when it comes to my personal hacking time.  I refer to this as the minimum viable hack.  That stated, there are known issues in the code below.  But! It does the job--so I've not addressed them.
 
 Here are a few:
 1. The value `0x0A` (`\n`) value is not handled as part of packet (e.g., if MILLI_BETWEEN = 10 bad things will happen).
@@ -37,11 +37,11 @@ Here are a few:
 # RAMPS Code
 To move the turn table we used a RAMPs 1.4 board:
 
-[RAMPS Kit (Amazon)](https://www.amazon.com/gp/product/B07T8L584W/ref=ppx_yo_dt_b_asin_title_o09_s00?ie=UTF8&psc=1)
+* [RAMPS Kit (Amazon)](https://www.amazon.com/gp/product/B07T8L584W/ref=ppx_yo_dt_b_asin_title_o09_s00?ie=UTF8&psc=1)
 
 Getting things going was straightforward.  I put together the hardware, installed the Arduino IDE, and looked-up the pinout for the RAMPs controller.
 
-I wrote the firmware to receive serial commands as packet.  The packet structure (at time of writing) looks like this:
+I wrote the firmware to receive serial commands as a packet.  The packet structure (at time of writing) looks like this:
 
 ```
 MOTOR_PACKET = 0x01 0x01 0x00 0x03 0xE8 0x05 0x0A
@@ -55,7 +55,7 @@ INDEX        =  1    2     3    4    5    6   7
 * `sixth_byte` = delay between steps in milliseconds.
 * `seventh_byte` = the end-of-transmission (EOT) character.  I've used `\n`.
  
-When the code receives an EOT character, it parses the packet and call the `writeMotor()`.  This function loops through the number of steps, delaying between each.  Each loop the function checks if a `halt` command has been received.  If it has, it stops the motor mid-move.
+When the code receives an EOT character, it parses the packet and calls the `writeMotor()`.  This function loops through the number of steps, delaying between each.  Each loop, the function checks if a `halt` command has been received.  If it has, it stops the motor mid-move.
 
 Again, this code isn't perfect.  Far from it.  But it does the job.
 
@@ -198,9 +198,7 @@ BUFFER rxBuffer;;
 /* Initialize program */
 void setup()
 {
-  // Greetings.
   Serial.begin(115200);
-  greetings();
   
   // Initialize the structures
   motorSetup(motorX);
@@ -241,32 +239,6 @@ void loop()
     // Clear the buffer for the nexgt packet.
     resetBuffer(&rxBuffer);
   }
-}
-
-
-void greetings() {
-  Serial.println("RAMPs 1.4 stepper driver.");
-  Serial.println("  MOTOR_NUM:");
-  Serial.println("      X     = 0");
-  Serial.println("      Y     = 1");
-  Serial.println("      Z     = 2");
-  Serial.println("      E1    = 3");
-  Serial.println("      E2    = 4");
-  Serial.println("      ");
-  Serial.println("  PACKET_TYPES");
-  Serial.println("      0x01 = motor_write");
-  Serial.println("");
-  Serial.println("  DIRECTION");
-  Serial.println("      0x00 = CW");
-  Serial.println("      0x01 = CCW");
-  Serial.println("");
-  Serial.println("  MOTOR MOVE PROTOCOL:");
-  Serial.println("                       0               1     2     3        4       5         6");
-  Serial.println("  MOTOR_PACKET = PACKET_TYPE_CHAR MOTOR_NUM DIR STEPS_1 STEPS_2 MILLI_BETWEEN \\n");
-  Serial.println("  MOTOR_PACKET =    01                01    00    03     E8        05         0A");
-  Serial.println("  MOTOR_PACKET =    0x 01010003E8050A");
-  Serial.println("");
-  Serial.println("  HALT         = 0x0F");
 }
 
 
@@ -390,9 +362,8 @@ boolean checkForHalt() {
 
 // END COMMUNICATION
 ```
-
 # Python RAMPS 
-There are two variants of the Python code.  First, is for the Raspberry Pi.  It's where I focused coding time, as it made sense to generate training images using the same hardware (PiCamera) as would be used for production.  However, I've a simpler desktop version which uses OpenCV and a webacam
+There are two variants of the Python code.  First, is for the Raspberry Pi.  It's where I focused coding time, as it made sense to generate training images using the same hardware (PiCamera) as would be used for production.  However, I've a simpler desktop version which uses OpenCV and a webcam.
 
 * [Raspberry Pi Turn Table](https://github.com/Ladvien/lego_sorter/blob/master/turn_table/turn_table_master_rpi.py)
 * [Desktop Turn Table](https://github.com/Ladvien/lego_sorter/blob/master/turn_table/turn_table_master.py)
@@ -525,6 +496,9 @@ camera.stop_preview()
 
 
 # Python RAMPS Class
+
+To increase resuability of the code, I've abstracted the RAMPs controller code into a Python class.  This class is called by the script above.  It is blocking code which handles sending commands, polling the Arduino, and reports received information.
+
 ```python
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
@@ -722,3 +696,5 @@ class RAMPS:
         self.ser.write(packet)
         self.print_debug(f'Executed move packet: {packet}')
 ```
+# Questions
+That's pretty much it.  I've kept this article light, as I'm saving most of my free time for coding.  But, feel free to ask questions in the comments below.

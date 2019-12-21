@@ -5,7 +5,7 @@ desription: TBD
 categories: data
 excerpt:
 tags: [Node, Python, Angular, Machine Learning, MongoDB]
-series: Deep, Deep Learning
+series: Deep Learning Journal
 image: 
     feature: louis-reed-747361-unsplash.jpg
     credit: Louis Reed

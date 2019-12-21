@@ -5,8 +5,8 @@ series: Deep, Deep Learning
 excerpt: A random name generator based on a generative adversarial network.  First attempt using a GAN for someething useful.
 tags: [gan, tensorflow, keras, deep-learning]
 image: 
-    feature: lego_mess.jpg
-    credit: Photo by Markus Spiske
+    feature: jon-tyson-566CgCRSNCk-unsplash.jpg
+    credit: Photo by Jon Tyson
 comments: true
 custom_css:
 custom_js: 

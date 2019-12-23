@@ -14,7 +14,8 @@ print('')
 print('*******************************************************')
 print('* Optimizing /images                                  *')
 print('*******************************************************')
-# optimize-images /$HOME/ladvien.github.io/images/.
+os.system('rake')
+
 
 print('')
 print('*******************************************************')

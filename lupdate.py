@@ -2,11 +2,13 @@
 import os, sys
 from datetime import date
 
+root_path = os.environ['HOME']
+
 print('')
 print('*******************************************************')
 print('* Moving raw_images into images                       *')
 print('*******************************************************')
-os.system('rsync -h -v -r -P -t --ignore-existing /home/ladvien/ladvien.github.io/raw_images/* /home/ladvien/ladvien.github.io/images')
+os.system(f'rsync -h -v -r -P -t --ignore-existing {root_path}/ladvien.github.io/raw_images/* {root_path}/ladvien.github.io/images')
 
 print('')
 print('*******************************************************')
@@ -18,15 +20,15 @@ print('')
 print('*******************************************************')
 print('* Syncing files to Ladvien.com Jekyll build directory *')
 print('*******************************************************')
-os.system('bundle exec jekyll build --source /home/ladvien/ladvien.github.io --destination /home/ladvien/ladvien.github.io/_site')
+os.system(f'bundle exec jekyll build --source {root_path}/ladvien.github.io --destination {root_path}/ladvien.github.io/_site')
 
 print('')
 print('******************************')
 print('* Updating Website           *')
 print('******************************')
-os.system('rsync -h -v -r -P -t /home/ladvien/ladvien.github.io/_site/* root@ladvien.com:/usr/share/nginx/html')
+os.system(f'rsync -h -v -r -P -t {root_path}/ladvien.github.io/_site/* root@ladvien.com:/usr/share/nginx/html')
 
-os.system('cd /home/ladvien/ladvien.github.io')
+os.system('cd {root_path}/ladvien.github.io')
 os.system('git add .')
 print('')
 print('****************************')

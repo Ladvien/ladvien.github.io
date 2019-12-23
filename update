@@ -20,8 +20,8 @@ ECHO "****************************"
 ECHO "* Updating Jekyll includes *"
 ECHO "****************************"
 
-sshpass -p "$PASSWORD" rsync -avzu /Users/caseybrittain/ladvien.github.io/_site/* root@ladvien.com:/usr/share/nginx/html
-sshpass -p "$PASSWORD" rsync -avzu /Users/caseybrittain/ladvien.github.io/raw_images/* root@ladvien.com:/usr/share/nginx/html/raw_images/
+rsync -avzu /Users/caseybrittain/ladvien.github.io/_site/* root@ladvien.com:/usr/share/nginx/html
+rsync -avzu /Users/caseybrittain/ladvien.github.io/raw_images/* root@ladvien.com:/usr/share/nginx/html/raw_images/
 
 cd /Users/caseybrittain/ladvien.github.io
 git add .

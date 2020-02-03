@@ -49,7 +49,7 @@ The password will be `raspberry`
 
 If you have trouble finding your Pi's ip: The easiest way to do this is login into your router.  _Usually_, you can login into your router by opening a webbrowser on your PC and typing `192.168.1.1`.  This is the "home" address.  You should then be prompted to login to the router.  On your router's web interface there should be a section for "attached devices."  You can find your Pi's ip there.  If many are listed, you can turn off your Pi and see which ip goes away.  That was probably the Pi's ip.
 
-9. Once on the Pi, run the following
+1. Once on the Pi, run the following
 ```bash
 sudo raspi-config
 ```

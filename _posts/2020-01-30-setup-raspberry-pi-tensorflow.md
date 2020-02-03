@@ -37,8 +37,8 @@ Note, there are two plugs the PiCamera will mate with.  To save frustration:
 
 ![pi-cam-connector](../images/lego_classifier/pi_cam_plug.jpg)
 
-Step #7: . Turn the Pi on.
-Step #8: . Find the ip of your Pi and `ssh` into it with the following.  
+Step #7: Turn the Pi on.
+Step #8: Find the ip of your Pi and `ssh` into it with the following.  
 
 ```bash
 ssh pi@your_pi_ip
@@ -48,7 +48,7 @@ The password will be `raspberry`
 
 The easiest way to find your Pi's ip is to login into your router.  _Usually_, you can login into your router by opening a webbrowser on your PC and typing `192.168.1.1`.  This is the "home" address.  You should then be prompted to login to the router.  On your router's web interface there should be a section for "attached devices."  You can find your Pi's ip there.  If many are listed, you can turn off your Pi and see which ip goes away.  That was probably the Pi's ip.
 
-Step #9: . Once on the Pi, run the following
+Step #9: Once on the Pi, run the following
 ```bash
 sudo raspi-config
 ```

@@ -21,11 +21,20 @@ I will be focusing on the Raspberry Pi 3B+, but don't worry if you are using a d
 
 ![download-raspbian](../images/lego_classifier/download_raspbian.png)
 
-2. Write the image to a card with at least 8gb.  I use [Etcher](https://www.balena.io/etcher/).
-3. Once the image is finished, and before you plug the card into the Pi, open the SD card and create a file called `ssh`.  No extension.  This will enable `ssh` on boot.
+2. Write the image to a 8gb (or greater) SD card.  I use [Etcher](https://www.balena.io/etcher/).
+
+[write-raspbian-sd-card](../images/lego_classifier/download_raspbian.png)
+
+3. Once the image is finished, and before you plug the card into the Pi, open the SD card and create a file called `ssh`.  No extension and nothing inside.  This will enable `ssh` on boot.
+
+![enable-ssh-with-boot-file](../images/lego_classifier/ssh_file.png)
+
 4. Plug the card in to the Pi.
 5. Plug a LAN cable into the Pi
 6. Attach your PiCam.
+
+Note, there are two plugs the PiCamera will mate with.  To save frustration, it's this one:
+
 7. Turn the Pi on.
 8. Find the ip of your Pi and `ssh` into it with the following:
 

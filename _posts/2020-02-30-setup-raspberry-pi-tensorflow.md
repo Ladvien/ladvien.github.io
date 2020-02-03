@@ -82,3 +82,8 @@ If you want another combination Tensorflow, Python, and Pi, you can see `ihelont
 The script wheel is installed in '/home/pi/.local/bin' which is not on PATH. Consider adding this directory to PATH or, if you prefer to suppress this warning, use --no-warn-script-location.
 
 
+## Pi Setup
+Install `imutils`
+```
+pip3 intall imutils
+```

@@ -174,3 +174,27 @@ And there was no visible delay when moving 100 mm on the X axis.
 Easy to make.  
 
 Adjustments to the endstop can be made with `M306 Yxxx Xxxx Zxxx`.  And adjustments to the probe offset made with `M565 Yxxx Xxxx Zxxx`
+
+### Hotend Won't Hit Target and Auto PID
+When I started using TPU (flexible filament) I ran into an issue where Elsewhere would autodisconnect in ambient temperature 18c (65f).  It irked me to none other, because the error reads as "Temperature took too long to be reached	Check the heater is alright, and if it is, you need to adjust your temperature safety parameters." (Smoothieware Error 32.)  But the word made it seem as if the temperature probe was malfunctioning.
+
+I tried using hte Auto PID.  This is meant to calibrate the temperature settings and hotend output.  It would not complete the autotune cycle if the part fan was blowing.
+```
+M303 E0 S190
+```
+
+I did a bit of Googling and found it was the hotend sock which was the issue.
+
+#### Hotend Sock
+Pretty much the first hit on Google was the answer I needed:
+
+From [3D Printing Stack Exchange](https://3dprinting.stackexchange.com/questions/8041/unable-to-hit-hot-end-temperature-with-part-cooler-on)
+
+
+> This is a test to simulate the issue. The first drop is the fan kicking on, then the last bump is me turning the fan off. It's almost as if the set point drops when the fan kicks in. Any ideas? The PID is tuned (I ran the autotune) and works well without the fan on. This is a RepRap Guru Prusa clone
+
+This guy's response made sense to me, as I didn't have my hotend silicon sock on the hotend.
+
+> This effect you describe is a commonly known problem that occurs when the print part cooling fan is not correctly positioned, i.e. if it blows air directly onto the nozzle or heater block and is best solved by printing an alternative part cooling fan duct. Alternatively you could insulate the heater block with some insulation cotton or silicone socks that fit over the heater block.
+
+Well, luckily, I had some extra hotend condemns, er, I mean "socks."  I threw one on the hotend and reran the AutoPID command.  Problem solved.

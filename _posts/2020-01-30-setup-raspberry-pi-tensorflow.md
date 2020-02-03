@@ -17,29 +17,28 @@ This post shows how to setup a Raspberry Pi 3B+ for operating a [Tensorflow](htt
 ## Raspberry Pi Setup
 I will be focusing on the Raspberry Pi 3B+, but don't worry if you are using a different Pi.  Just let me know in the comments below and I'll try to get instructions for your particular Pi added.  
 
-1. Download [Raspbian Buster with desktop and recommended software](https://www.raspberrypi.org/downloads/raspbian/)
+Step #1: Download [Raspbian Buster with desktop and recommended software](https://www.raspberrypi.org/downloads/raspbian/)
 
 ![download-raspbian](../images/lego_classifier/download_raspbian.png)
 
-2. Write the image to a 8gb (or greater) SD card.  I use [Etcher](https://www.balena.io/etcher/).
+Step #2: Write the image to a 8gb (or greater) SD card.  I use [Etcher](https://www.balena.io/etcher/).
 
 ![write-raspbian-sd-card](../images/lego_classifier/etcher.png)
 
-3. Once the image is finished, and before you plug the card into the Pi, open the SD card and create a file called `ssh`.  No extension and nothing inside.  This will enable `ssh` on boot.
+Step #3:  Once the image is finished, and before you plug the card into the Pi, open the SD card and create a file called `ssh`.  No extension and nothing inside.  This will enable `ssh` on boot.
 
 ![enable-ssh-with-boot-file](../images/lego_classifier/ssh_file.png)
 
-4. Plug the card in to the Pi.
-5. Plug a LAN cable into the Pi
-6. Attach your PiCam.
+Step #4: Plug the card in to the Pi.
+Step #5: Plug a LAN cable into the Pi
+Step #6: Attach your PiCam.
 
 Note, there are two plugs the PiCamera will mate with.  To save frustration:
 
 ![pi-cam-connector](../images/lego_classifier/pi_cam_plug.jpg)
 
-
-7. Turn the Pi on.
-8. Find the ip of your Pi and `ssh` into it with the following.  
+Step #7: . Turn the Pi on.
+Step #8: . Find the ip of your Pi and `ssh` into it with the following.  
 
 ```bash
 ssh pi@your_pi_ip
@@ -47,9 +46,9 @@ ssh pi@your_pi_ip
 The password will be `raspberry`
 
 
-If you have trouble finding your Pi's ip: The easiest way to do this is login into your router.  _Usually_, you can login into your router by opening a webbrowser on your PC and typing `192.168.1.1`.  This is the "home" address.  You should then be prompted to login to the router.  On your router's web interface there should be a section for "attached devices."  You can find your Pi's ip there.  If many are listed, you can turn off your Pi and see which ip goes away.  That was probably the Pi's ip.
+The easiest way to find your Pi's ip is to login into your router.  _Usually_, you can login into your router by opening a webbrowser on your PC and typing `192.168.1.1`.  This is the "home" address.  You should then be prompted to login to the router.  On your router's web interface there should be a section for "attached devices."  You can find your Pi's ip there.  If many are listed, you can turn off your Pi and see which ip goes away.  That was probably the Pi's ip.
 
-1. Once on the Pi, run the following
+Step #9: . Once on the Pi, run the following
 ```bash
 sudo raspi-config
 ```
@@ -75,24 +74,24 @@ Still in `raspi-config` open `Advanced Options`.  Navigate to `Resolution` and c
 
 Once you've finished setting these options, exit.  At the end it will ask if you want to reboot, say "Yes."
 
-10. Download and install [RealVNC Viewer](https://www.realvnc.com/en/connect/download/viewer/).
-11. Open RealVNC and set the ip to your Pi. Don't include your user name, like we did when `ssh`'ing, because RealVNC is about to ask us for it.  Once you've typed in the ip hit "Enter" or "Return."
+Step #10: Download and install [RealVNC Viewer](https://www.realvnc.com/en/connect/download/viewer/).
+Step #11: Open RealVNC and set the ip to your Pi. Don't include your user name, like we did when `ssh`'ing, because RealVNC is about to ask us for it.  Once you've typed in the ip hit "Enter" or "Return."
 
 
-12. RealVNC will warn you about singing into your Pi, as it's not a credentialed source.  No worries.  Hit continue.
+Step #12: RealVNC will warn you about singing into your Pi, as it's not a credentialed source.  No worries.  Hit continue.
 
 Note, if you're on a Mac, it's going to ask you to give RealVNC access to keys or something.  (Shesh, Mac, thank you for the security, but, well, shesh.)
 
 ![enable-keys-vnc-mac](../images/lego_classifier/enable_keys_on_mac.png)
 
-13. Enter your credentials.  
+Step #13: Enter your credentials.  
 ```
 username: pi
 password: raspberry
 ```
 ![vnc-to-raspberry-pi](../images/lego_classifier/real_vnc.png)
 
-14. This should open your Pi's desktop environment.  It will ask you a few setup questions, go ahead and take care of it.  Note, if you change your password, you will need to update RealVNC (if you had it "Remember My Password").
+Step #14: This should open your Pi's desktop environment.  It will ask you a few setup questions, go ahead and take care of it.  Note, if you change your password, you will need to update RealVNC (if you had it "Remember My Password").
 
 ## Tensorflow Setup
 Here's where it gets real.

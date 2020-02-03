@@ -75,6 +75,7 @@ Still in `raspi-config` open `Advanced Options`.  Navigate to `Resolution` and c
 Once you've finished setting these options, exit.  At the end it will ask if you want to reboot, say "Yes."
 
 Step #10: Download and install [RealVNC Viewer](https://www.realvnc.com/en/connect/download/viewer/).
+
 Step #11: Open RealVNC and set the ip to your Pi. Don't include your user name, like we did when `ssh`'ing, because RealVNC is about to ask us for it.  Once you've typed in the ip hit "Enter" or "Return."
 
 

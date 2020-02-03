@@ -12,10 +12,15 @@ comments: true
 custom_css:
 custom_js: 
 ---
-This post coverts setting up a Raspberry Pi 3B+ for operating a [Tensorflow](https://www.tensorflow.org/) CNN model using a [Camera Module v2.0](https://www.raspberrypi.org/products/camera-module-v2/).
+This post shows how to setup a Raspberry Pi 3B+ for operating a [Tensorflow](https://www.tensorflow.org/) CNN model using a [Pi Camera Module v2.0](https://www.raspberrypi.org/products/camera-module-v2/).
 
 ## Raspberry Pi Setup
+I will be focusing on the Raspberry Pi 3B+, but don't worry if you are using a different Pi.  Just let me know in the comments below and I'll try to get instructions for your particular Pi added.  
+
 1. Download [Raspbian Buster with desktop and recommended software](https://www.raspberrypi.org/downloads/raspbian/)
+
+![download-raspbian](../images/lego_classifier/download_raspbian.png)
+
 2. Write the image to a card with at least 8gb.  I use [Etcher](https://www.balena.io/etcher/).
 3. Once the image is finished, and before you plug the card into the Pi, open the SD card and create a file called `ssh`.  No extension.  This will enable `ssh` on boot.
 4. Plug the card in to the Pi.

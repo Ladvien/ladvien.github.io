@@ -198,3 +198,9 @@ This guy's response made sense to me, as I didn't have my hotend silicon sock on
 > This effect you describe is a commonly known problem that occurs when the print part cooling fan is not correctly positioned, i.e. if it blows air directly onto the nozzle or heater block and is best solved by printing an alternative part cooling fan duct. Alternatively you could insulate the heater block with some insulation cotton or silicone socks that fit over the heater block.
 
 Well, luckily, I had some extra hotend condemns, er, I mean "socks."  I threw one on the hotend and reran the AutoPID command.  Problem solved.
+
+# Setting Probe Offsets
+```
+# M565 X  Y  Z (I don't think Z is used on Cartesian prints.)
+M565 X-22.0 Y-38.0 Z0.0
+```

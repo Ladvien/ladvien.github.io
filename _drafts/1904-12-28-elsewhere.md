@@ -202,5 +202,9 @@ Well, luckily, I had some extra hotend condemns, er, I mean "socks."  I threw on
 # Setting Probe Offsets
 ```
 # M565 X  Y  Z (I don't think Z is used on Cartesian prints.)
-M565 X-22.0 Y-38.0 Z0.0
+M565 X42.0 Y-38.0 Z0.0
+# Save the new settings
+M500
+# Show our new settings
+M501
 ```

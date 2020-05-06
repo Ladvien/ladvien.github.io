@@ -1,0 +1,73 @@
+==================================================================
+https://keybase.io/thomasbrittain
+--------------------------------------------------------------------
+
+I hereby claim:
+
+  * I am an admin of https://ladvien.com
+  * I am thomasbrittain (https://keybase.io/thomasbrittain) on keybase.
+  * I have a public key with fingerprint 49CB 39FB 4651 6132 AE71  4BC6 87A4 2DD6 42A9 547C
+
+To do so, I am signing this object:
+
+{
+  "body": {
+    "key": {
+      "eldest_kid": "01208cb632ddea789402046dc3077e2d1c3ec9a05043f00c1ff6befc2db1b849327d0a",
+      "fingerprint": "49cb39fb46516132ae714bc687a42dd642a9547c",
+      "host": "keybase.io",
+      "key_id": "87a42dd642a9547c",
+      "kid": "0101e6a391e1222e2ab1bac039d8029088555de1ad7f1819897481bea36b6785f0860a",
+      "uid": "365b551e42ccd96f7c754c18f5c1a619",
+      "username": "thomasbrittain"
+    },
+    "service": {
+      "hostname": "ladvien.com",
+      "protocol": "https:"
+    },
+    "type": "web_service_binding",
+    "version": 1
+  },
+  "ctime": 1585233272,
+  "expire_in": 157680000,
+  "prev": "bd9679043a1da3f7611f49596f7b4c4278574a0f7036b6e6077d0ad89c2864f1",
+  "seqno": 8,
+  "tag": "signature"
+}
+
+which yields the signature:
+
+-----BEGIN PGP MESSAGE-----
+
+owFtUmtMFFcUXpAGWYOAVBQsUqegjeExd96zSmqVsJBKg7ghJlSWOzN3YFz2we4C
+4kJtLYhYVLC0EUiz1kfLIxDEkkZbJa1tgZAIFFBTqpa2kFKbSBGjgJbOEPnX++fm
+nvOd73znO7cmcIVO71N5Ie7WzmZTqU//lKDLLr1W78EEu1SCGTyYBS1dKF9CLrfZ
+okiYAcMBgXOiwJCEJCHIcjyFEzjFSCKJsywiJCCSSOQhTuMUKeO4CGSZEZAsEpIA
+BI7iSYKVcIjFYrJiy0VOh1OxuVVaihcFkpcFiqEBA0gCIhZQgshwLKTUTgxFQJ6m
+WFEtzLO7tApVnABdKF6xqzH1YV6S9z/4Zd04QAwkeYAAQRCIgKoeKOIkL3E4weMc
+R9O0hACUWBlwgOd4luKAgCDJCAzL0TLOMUu6C5foSIYWaBogihBFiWdkVmRpSgSc
+TIsAMoDXgC7ktEErUtHuPLsVugSn4nZDxYaVxWJqrkgRkWavNs8LXD6UihRkixft
+VpXA4bS77aI9X03kud0Ol0ErdJc4NGQxEswvOMyCYpNUM9WKIuR0KXYbZgAqUnQr
+GimgOZogVduJWAwddChOZFY0BM0yHK4erQ8qUikFaT/PsLy6NwgkSMosA4BM8bQ2
+nUCJFKG6wFIQl1lc8wQx6sLVVUocLxIcQ8kA08YqsNkxA6fqhLkqp0vJtUF3oRNh
+ZfoqX9JP56PXRYZt8kvt5xeS90CiveCtH5c/4Eu+2u/T6QOClyODDUGLJoPxL+9T
+W+B40qVH0qZDtWEdv0Ra6Q1w8vj0EXFX4Ir15nWjk5eujbcPDfYvVne2BRtGr1b/
+2bX5zOkUYldNExsa/t2qO0wlEdmSbWn85kxU24S9rKO4987C5amb7/UPfTEwy7Zd
+Doxcbaj7OaGkxuKMqz4febQ8LzMje/z3rNmDdx9PWLb7sxln4yLq/NPri+8TexfC
+miPGb4Y219d3fWk51XkyJnHslaSts9bGmcnbnvKmjdF/kzOfpD43haf5dY6N6Y2r
+WwcyGk+WRnD/vHpl3ztdndNt5yo+2mPGTu3++vCnxpfxhnmaAIkx4NCToByuZnRz
+fPjKiYATD33eDagcfDN8V3RzX9TTGdtIwvBPO2uN3u5jMZ66uaHgsG3pvMH5ARa6
+N8T78VpP0SNTn1/Ub6Cq9o3THSG7qcP/XrB7+uiQzMfRc/HJ+ceTTzybu+vtvej0
+7b7+R0L3/nWw3N+VssVUckNe3+rdCke2ZZVQQUfJqS6jMfTtYd055ZbvgW9X9Tyf
+uDqTNWda7A2QW+mRB+VHWnN2fJ9qfVaB+q0t2dLQwMO8OPJAeWHO61d+uO8Inn9/
+zZOsRIPYF+wzPvPavZVDa6zDmV7sQ7aqIUJKS4vevuPiMfpBMWyvuDdNFjRlg84b
+o3OfbZj1/yplX0vSWYvnuj62Z+zX26M96RPzGz/fcn7tfw==
+=rzZs
+-----END PGP MESSAGE-----
+
+And finally, I am proving ownership of this host by posting or
+appending to this document.
+
+View my publicly-auditable identity here: https://keybase.io/thomasbrittain
+
+==================================================================

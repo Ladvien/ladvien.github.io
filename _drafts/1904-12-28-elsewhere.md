@@ -208,6 +208,10 @@ M500
 M501
 ```
 
+# 12v vs 24v
+https://3dprinting.stackexchange.com/a/3496
+
+
 
 ```
 # Changed:

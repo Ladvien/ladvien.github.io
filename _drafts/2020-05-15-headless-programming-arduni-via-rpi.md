@@ -12,11 +12,11 @@ comments: true
 custom_css:
 custom_js: 
 ---
-I've been working on an automated system for sorting LEGOs.  It seems like a simple enough task, however, the nuances of implementing a sorting machine reveal many complexities.  I've working solutions for a few of these challenges, such as identifying the LEGO and creating training data for supporting the classifier.  But one of the problems which has been trickier to solve seemed simple at first:  How do we get the LEGO from a container to the classifier?
+I've been working on an automated system for sorting LEGOs.  It seems like a simple enough task, however, the nuances of implementation are ugly.  I have working solutions for a few of these challenges, such as identifying the LEGO and creating training data for supporting the classifier.  But one of the problems which has been trickier than first thought:  How do we get the LEGO from a container to the classifier?
 
-The answer is easy is simple, right? A conveyor belt.  They are ubiquitous in manufacturing, so I thought, "Simple.  I toss a conveyor belt together real quick and that'll solve that."  Hah.  
+The answer obvious, right? A conveyor belt.  They are ubiquitous in manufacturing, so I thought, "Simple.  I'll toss a conveyor belt together real quick and that'll solve that."  Hah.  
 
-But after a month and a half of failed attempts, I've created a working first iteration.
+After a month and a half of failed attempts, I've created a working prototype.
 
 ![](../raw_images/lego_classifier/conveyor_belt/2020-05-03%2017.45.38.jpg)
 
@@ -28,10 +28,10 @@ The system consists of 5 parts:
 4. Conveyor belt
 5. NEMA17 Stepper Motor and Mount
 
-Covering all of the implementation will be too much for one article, **so in this article I'll focus on the firmware for the Arduino / RAMPs.** And in a subsequent article I'll cover the physical build.
+Covering all parts will be too much for one article, **so in this article I'll focus on the firmware for the Arduino / RAMPs.** And in a subsequent article I'll cover the physical build.
 
 ## Remote VSCode (sshfs)
-I hate trying to program on computers besides my workstation.  I've also found it a bad idea to program code intended for a Raspberry Pi on my workstation.  To get the best of both worlds I use `sshfs`.  It lets me mount Raspberry Pi folders as if they were local folders.  This allows me to edit and run files on the Raspberry Pi from my workstation.
+I hate trying to program on computers other than my workstation.  I've also found it a bad idea to program code intended for a Raspberry Pi on my workstation.  To get the best of both worlds I use `sshfs`.  It lets me mount Raspberry Pi folders as if they were local folders.  This allows me to edit and run files on the Raspberry Pi from my workstation.
 
 ![](../raw_images/lego_classifier/conveyor_belt/sshfs_rpi.png)
 
@@ -51,6 +51,11 @@ A few notes on the above command:
 * The `192.168.1.x` should be replaced with the `ip` of your Raspberry Pi
 * `~/rpi` is the local directory where you are going to mount the Raspberry Pi.
 
+If all goes well, you should be able to open your Raspberry Pi files in Visual Studio Code (or IDE of choice) by navigating to the `~/rpi` directory.
+
+To run files, you still have to `ssh` into the Pi.  I usually do this by creating an integrated terminal in Visual Studio Code.
+
+![ssh-to-raspberry-pi-from-vscode](../raw_images/lego_classifier/conveyor_belt/ssh_pi_vscode.png)
 
 ## Arduino CLI Setup
 

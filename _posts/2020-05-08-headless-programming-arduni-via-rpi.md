@@ -58,9 +58,9 @@ To run files, you still have to `ssh` into the Pi.  I usually do this by creatin
 ![ssh-to-raspberry-pi-from-vscode](../raw_images/lego_classifier/conveyor_belt/ssh_pi_vscode.png)
 
 ## Arduino CLI Setup
-Now I had a way to edit Raspberry Pi files on my PC, but I still needed to be able to connect my Arduino to the Pi and program it from my workstation.  The route I see many people take for doing something like this would be to use a VNC program like RealVNC to access the Pi's desktop remotely.  Gross.  Give my command line back.
+Now I had a way to edit Raspberry Pi files on my PC, but I still needed to be able to connect my Arduino to the Pi and program it from my workstation.  The route people seem to use for remote programming is using a VNC program, like RealVNC, to access the Pi's desktop remotely.  Gross.  Give my command line back.
 
-Enter [[Arduino's command line interface (CLI)](https://github.com/arduino/arduino-cli)](https://github.com/arduino/arduino-cli).
+Enter [Arduino's command line interface (CLI)](https://github.com/arduino/arduino-cli).
 
 Now I had all the needed pieces to make for comfortable coding:
 * Code the Pi from my workstation using VSCode

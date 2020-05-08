@@ -1,4 +1,4 @@
-I"jY<p><a href="https://ladvien.com/lego_classifier/lego_classifier_comic.png"><img src="../images/lego_classifier/lego_classifier_comic.png" alt="" class="float-right" /></a> I’ve a robot friend.  To be clear, the friend is not a robot, rather, we build robots together.  One of the projects we tossed about is building a LEGO sorting machine.  Rockets is the friends name–again, not a robot–teaches robotics to kids.  For their designs, LEGOs are the primary component.  Unfortunately, this results in much time spent to preparing for an event.</p>
+I"�_<p><a href="https://ladvien.com/lego_classifier/lego_classifier_comic.png"><img src="../images/lego_classifier/lego_classifier_comic.png" alt="" class="float-right" /></a> I’ve a robot friend.  To be clear, the friend is not a robot, rather, we build robots together.  One of the projects we tossed about is building a LEGO sorting machine.  Rockets is the friends name–again, not a robot–teaches robotics to kids.  For their designs, LEGOs are the primary component.  Unfortunately, this results in much time spent to preparing for an event.</p>
 
 <p>He mentioned to me, “What I really need is a sorting machine.”  And proceeded to explain his plain for building one.</p>
 
@@ -175,8 +175,8 @@
 </span><span class="n">gray_scale</span>              <span class="o">=</span> <span class="bp">True</span>
 
 <span class="n">root_path</span>               <span class="o">=</span> <span class="s">'./data/'</span>
-<span class="n">input_path</span>              <span class="o">=</span> <span class="n">f</span><span class="s">'{root_path}raw/size_1080/'</span>
-<span class="n">output_path</span>             <span class="o">=</span> <span class="n">f</span><span class="s">'{root_path}cropped/'</span>
+<span class="n">input_path</span>              <span class="o">=</span> <span class="s">f'</span><span class="si">{</span><span class="n">root_path</span><span class="si">}</span><span class="s">raw/size_1080/'</span>
+<span class="n">output_path</span>             <span class="o">=</span> <span class="s">f'</span><span class="si">{</span><span class="n">root_path</span><span class="si">}</span><span class="s">cropped/'</span>
 
 <span class="n">show_image</span>              <span class="o">=</span> <span class="bp">False</span>
 
@@ -202,10 +202,10 @@
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="n">part_number</span> <span class="ow">in</span> <span class="n">part_numbers</span><span class="p">:</span>
 
-    <span class="n">part_input_path</span>  <span class="o">=</span> <span class="n">f</span><span class="s">'{input_path}{part_number}/'</span>
+    <span class="n">part_input_path</span>  <span class="o">=</span> <span class="s">f'</span><span class="si">{</span><span class="n">input_path</span><span class="si">}{</span><span class="n">part_number</span><span class="si">}</span><span class="s">/'</span>
     
     <span class="c1"># Get input file paths.
-</span>    <span class="n">image_files</span> <span class="o">=</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">f</span><span class="s">'{part_input_path}*.jpg'</span><span class="p">)</span>
+</span>    <span class="n">image_files</span> <span class="o">=</span> <span class="n">glob</span><span class="p">.</span><span class="n">glob</span><span class="p">(</span><span class="s">f'</span><span class="si">{</span><span class="n">part_input_path</span><span class="si">}</span><span class="s">*.jpg'</span><span class="p">)</span>
     <span class="n">num_files</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">image_files</span><span class="p">)</span>
 
     <span class="c1"># Image index.
@@ -213,7 +213,7 @@
 
     <span class="c1"># If true, the images will be loaded and then split at random.
 </span>    <span class="k">if</span> <span class="n">shuffle_split</span><span class="p">:</span>
-        <span class="n">file_index</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_files</span><span class="p">),</span> <span class="n">num_files</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">file_index</span> <span class="o">=</span> <span class="n">random</span><span class="p">.</span><span class="n">sample</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_files</span><span class="p">),</span> <span class="n">num_files</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">file_index</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_files</span><span class="p">)</span>
 </code></pre></div></div>
@@ -226,28 +226,28 @@
 </span>        <span class="n">index</span> <span class="o">+=</span> <span class="mi">1</span>
         
         <span class="c1"># Load the image
-</span>        <span class="n">input_file_path</span> <span class="o">=</span> <span class="n">f</span><span class="s">'{input_path}{part_number}/{str(file_num).zfill(4)}.jpg'</span>
-        <span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s">'LOADED: {input_file_path}'</span><span class="p">)</span>
+</span>        <span class="n">input_file_path</span> <span class="o">=</span> <span class="s">f'</span><span class="si">{</span><span class="n">input_path</span><span class="si">}{</span><span class="n">part_number</span><span class="si">}</span><span class="s">/</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">file_num</span><span class="p">).</span><span class="n">zfill</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span><span class="si">}</span><span class="s">.jpg'</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">f'LOADED: </span><span class="si">{</span><span class="n">input_file_path</span><span class="si">}</span><span class="s">'</span><span class="p">)</span>
         
         <span class="c1"># Crop raw image from center.
-</span>        <span class="n">img</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">input_file_path</span><span class="p">)</span>
+</span>        <span class="n">img</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="n">imread</span><span class="p">(</span><span class="n">input_file_path</span><span class="p">)</span>
 
         <span class="c1"># Get the center of the image.
-</span>        <span class="n">c_x</span><span class="p">,</span> <span class="n">c_y</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+</span>        <span class="n">c_x</span><span class="p">,</span> <span class="n">c_y</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">img</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">img</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
         <span class="n">img</span> <span class="o">=</span> <span class="n">img</span><span class="p">[</span><span class="n">c_y</span> <span class="o">-</span> <span class="n">grab_area</span><span class="p">:</span> <span class="n">c_y</span> <span class="o">+</span> <span class="n">grab_area</span><span class="p">,</span> <span class="n">c_x</span> <span class="o">-</span> <span class="n">grab_area</span><span class="p">:</span> <span class="n">c_x</span> <span class="o">+</span> <span class="n">grab_area</span><span class="p">]</span>
          
         <span class="c1"># Resize image
-</span>        <span class="n">img</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">output_img_size</span><span class="p">,</span> <span class="n">interpolation</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">INTER_AREA</span><span class="p">)</span>
+</span>        <span class="n">img</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="n">resize</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">output_img_size</span><span class="p">,</span> <span class="n">interpolation</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="n">INTER_AREA</span><span class="p">)</span>
         
         <span class="c1"># Should we convert it to grayscale?
 </span>        <span class="k">if</span> <span class="n">gray_scale</span><span class="p">:</span>
-            <span class="n">img</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">COLOR_BGR2GRAY</span><span class="p">)</span>
+            <span class="n">img</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">cv2</span><span class="p">.</span><span class="n">COLOR_BGR2GRAY</span><span class="p">)</span>
         
         <span class="c1"># Show to user.
 </span>        <span class="k">if</span> <span class="n">show_image</span><span class="p">:</span>
-            <span class="n">cv2</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="s">'image'</span><span class="p">,</span> <span class="n">img</span><span class="p">)</span>
-            <span class="n">cv2</span><span class="o">.</span><span class="n">waitKey</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-            <span class="n">cv2</span><span class="o">.</span><span class="n">destroyAllWindows</span><span class="p">()</span> 
+            <span class="n">cv2</span><span class="p">.</span><span class="n">imshow</span><span class="p">(</span><span class="s">'image'</span><span class="p">,</span> <span class="n">img</span><span class="p">)</span>
+            <span class="n">cv2</span><span class="p">.</span><span class="n">waitKey</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">cv2</span><span class="p">.</span><span class="n">destroyAllWindows</span><span class="p">()</span> 
 
         <span class="c1"># Determine if it should be output to train or test.
 </span>        <span class="n">test_or_train</span> <span class="o">=</span> <span class="s">'train'</span>        
@@ -257,23 +257,23 @@
         <span class="c1"># Prepare the output folder.
 </span>        <span class="n">color</span> <span class="o">=</span> <span class="s">''</span>
         <span class="k">if</span> <span class="n">gray_scale</span><span class="p">:</span>
-            <span class="n">part_output_folder</span> <span class="o">=</span> <span class="n">f</span><span class="s">'{output_path}gray_scale/{test_or_train}/{part_number}/'</span>
+            <span class="n">part_output_folder</span> <span class="o">=</span> <span class="s">f'</span><span class="si">{</span><span class="n">output_path</span><span class="si">}</span><span class="s">gray_scale/</span><span class="si">{</span><span class="n">test_or_train</span><span class="si">}</span><span class="s">/</span><span class="si">{</span><span class="n">part_number</span><span class="si">}</span><span class="s">/'</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">part_output_folder</span> <span class="o">=</span> <span class="n">f</span><span class="s">'{output_path}color/{test_or_train}/{part_number}/'</span>
+            <span class="n">part_output_folder</span> <span class="o">=</span> <span class="s">f'</span><span class="si">{</span><span class="n">output_path</span><span class="si">}</span><span class="s">color/</span><span class="si">{</span><span class="n">test_or_train</span><span class="si">}</span><span class="s">/</span><span class="si">{</span><span class="n">part_number</span><span class="si">}</span><span class="s">/'</span>
             
         <span class="c1"># Make the output directory, if it doesn't exist.
-</span>        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">part_output_folder</span><span class="p">):</span>
-            <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">part_output_folder</span><span class="p">)</span>
+</span>        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="n">exists</span><span class="p">(</span><span class="n">part_output_folder</span><span class="p">):</span>
+            <span class="n">os</span><span class="p">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">part_output_folder</span><span class="p">)</span>
 
         <span class="c1"># Create part path.
-</span>        <span class="n">part_image_path</span> <span class="o">=</span> <span class="n">f</span><span class="s">'{part_output_folder}{part_number}_{index}.jpg'</span>
+</span>        <span class="n">part_image_path</span> <span class="o">=</span> <span class="s">f'</span><span class="si">{</span><span class="n">part_output_folder</span><span class="si">}{</span><span class="n">part_number</span><span class="si">}</span><span class="s">_</span><span class="si">{</span><span class="n">index</span><span class="si">}</span><span class="s">.jpg'</span>
         
         <span class="c1"># Output
 </span>        <span class="k">if</span> <span class="n">dry_run</span><span class="p">:</span>
-            <span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s">'Would have saved to: {part_image_path}'</span><span class="p">)</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">f'Would have saved to: </span><span class="si">{</span><span class="n">part_image_path</span><span class="si">}</span><span class="s">'</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s">'SAVED: {part_image_path}'</span><span class="p">)</span>
-            <span class="n">cv2</span><span class="o">.</span><span class="n">imwrite</span><span class="p">(</span><span class="n">part_image_path</span><span class="p">,</span> <span class="n">img</span><span class="p">)</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">f'SAVED: </span><span class="si">{</span><span class="n">part_image_path</span><span class="si">}</span><span class="s">'</span><span class="p">)</span>
+            <span class="n">cv2</span><span class="p">.</span><span class="n">imwrite</span><span class="p">(</span><span class="n">part_image_path</span><span class="p">,</span> <span class="n">img</span><span class="p">)</span>
 </code></pre></div></div>
 <p>Fairly straightfoward.  Just make sure to run to run the script from the main directory.  For example</p>
 

@@ -1,4 +1,4 @@
-I"\n<p>Previously, I wrote about training a CNN to detect toxic comments from text alone.  But, I realized, even if one has a nice little NN to solve all the world’s problems it doesn’t help unless it is in production.</p>
+I"�m<p>Previously, I wrote about training a CNN to detect toxic comments from text alone.  But, I realized, even if one has a nice little NN to solve all the world’s problems it doesn’t help unless it is in production.</p>
 
 <p>This article is going to cover how to prepare a server and needed word embeddings to mechanize the NN in a Flask webservice.</p>
 
@@ -135,31 +135,31 @@ Created on Tue Jan 22 05:19:35 2019
 <span class="n">MAX_NUM_WORDS</span> <span class="o">=</span> <span class="mi">20000</span>
 
 <span class="c1"># Load embeddings
-</span><span class="n">info</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">info</span><span class="p">()</span> <span class="c1"># show info about available models/datasets
-</span><span class="n">embedding_model</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">word_embedding_name</span><span class="p">)</span> <span class="c1"># download the model and return as object ready for use
+</span><span class="n">info</span> <span class="o">=</span> <span class="n">api</span><span class="p">.</span><span class="n">info</span><span class="p">()</span> <span class="c1"># show info about available models/datasets
+</span><span class="n">embedding_model</span> <span class="o">=</span> <span class="n">api</span><span class="p">.</span><span class="n">load</span><span class="p">(</span><span class="n">word_embedding_name</span><span class="p">)</span> <span class="c1"># download the model and return as object ready for use
 </span>
-<span class="n">vocab_size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">embedding_model</span><span class="o">.</span><span class="n">vocab</span><span class="p">)</span>
+<span class="n">vocab_size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">embedding_model</span><span class="p">.</span><span class="n">vocab</span><span class="p">)</span>
 
-<span class="n">index2word</span> <span class="o">=</span> <span class="n">embedding_model</span><span class="o">.</span><span class="n">index2word</span>
+<span class="n">index2word</span> <span class="o">=</span> <span class="n">embedding_model</span><span class="p">.</span><span class="n">index2word</span>
 <span class="n">word2idx</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">vocab_size</span><span class="p">):</span>
-    <span class="n">word2idx</span><span class="p">[</span><span class="n">embedding_model</span><span class="o">.</span><span class="n">index2word</span><span class="p">[</span><span class="n">index</span><span class="p">]]</span> <span class="o">=</span> <span class="n">index</span>
+    <span class="n">word2idx</span><span class="p">[</span><span class="n">embedding_model</span><span class="p">.</span><span class="n">index2word</span><span class="p">[</span><span class="n">index</span><span class="p">]]</span> <span class="o">=</span> <span class="n">index</span>
     
 <span class="c1"># Get labels
 </span><span class="k">print</span><span class="p">(</span><span class="s">'Loading Toxic Comments data.'</span><span class="p">)</span>
 <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">TRAIN_TEXT_DATA_DIR</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-    <span class="n">toxic_comments</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">TRAIN_TEXT_DATA_DIR</span><span class="p">)</span>
+    <span class="n">toxic_comments</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">TRAIN_TEXT_DATA_DIR</span><span class="p">)</span>
 
 <span class="c1"># Convert Toxic Comments to Sequences
 </span><span class="k">print</span><span class="p">(</span><span class="s">'Processing text dataset'</span><span class="p">)</span>
 
 <span class="n">tokenizer</span> <span class="o">=</span> <span class="n">Tokenizer</span><span class="p">(</span><span class="n">num_words</span><span class="o">=</span><span class="n">MAX_NUM_WORDS</span><span class="p">)</span>
-<span class="n">tokenizer</span><span class="o">.</span><span class="n">fit_on_texts</span><span class="p">(</span><span class="n">toxic_comments</span><span class="p">[</span><span class="s">'comment_text'</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="s">"DUMMY_VALUE"</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
-<span class="n">sequences</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">texts_to_sequences</span><span class="p">(</span><span class="n">toxic_comments</span><span class="p">[</span><span class="s">'comment_text'</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="s">"DUMMY_VALUE"</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
-<span class="n">word_index</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">word_index</span>
+<span class="n">tokenizer</span><span class="p">.</span><span class="n">fit_on_texts</span><span class="p">(</span><span class="n">toxic_comments</span><span class="p">[</span><span class="s">'comment_text'</span><span class="p">].</span><span class="n">fillna</span><span class="p">(</span><span class="s">"DUMMY_VALUE"</span><span class="p">).</span><span class="n">values</span><span class="p">)</span>
+<span class="n">sequences</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="p">.</span><span class="n">texts_to_sequences</span><span class="p">(</span><span class="n">toxic_comments</span><span class="p">[</span><span class="s">'comment_text'</span><span class="p">].</span><span class="n">fillna</span><span class="p">(</span><span class="s">"DUMMY_VALUE"</span><span class="p">).</span><span class="n">values</span><span class="p">)</span>
+<span class="n">word_index</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="p">.</span><span class="n">word_index</span>
 
 <span class="c1"># Save Embeddings to MongoDB
-</span><span class="n">mong</span> <span class="o">=</span> <span class="n">pymongo</span><span class="o">.</span><span class="n">MongoClient</span><span class="p">(</span><span class="s">'127.0.0.1'</span><span class="p">,</span> <span class="mi">27017</span><span class="p">)</span>
+</span><span class="n">mong</span> <span class="o">=</span> <span class="n">pymongo</span><span class="p">.</span><span class="n">MongoClient</span><span class="p">(</span><span class="s">'127.0.0.1'</span><span class="p">,</span> <span class="mi">27017</span><span class="p">)</span>
 
 <span class="c1"># Create collection database
 </span><span class="n">mongdb</span> <span class="o">=</span> <span class="n">mong</span><span class="p">[</span><span class="s">"word_embeddings"</span><span class="p">]</span>
@@ -171,14 +171,14 @@ Created on Tue Jan 22 05:19:35 2019
     <span class="k">if</span> <span class="n">i</span> <span class="o">%</span> <span class="mi">1000</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
         <span class="k">print</span><span class="p">(</span><span class="s">'Saved: '</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">+</span> <span class="s">' out of '</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">index2word</span><span class="p">)))</span>
     <span class="k">try</span><span class="p">:</span>
-        <span class="n">embedding_vector</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">embedding_model</span><span class="o">.</span><span class="n">get_vector</span><span class="p">(</span><span class="n">word</span><span class="p">)))</span>
+        <span class="n">embedding_vector</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">embedding_model</span><span class="p">.</span><span class="n">get_vector</span><span class="p">(</span><span class="n">word</span><span class="p">)))</span>
         <span class="n">post</span> <span class="o">=</span> <span class="p">{</span>
                 <span class="s">'word'</span><span class="p">:</span> <span class="n">word</span><span class="p">,</span>
                 <span class="s">'index'</span><span class="p">:</span> <span class="n">word_index</span><span class="p">[</span><span class="n">word</span><span class="p">],</span>
                 <span class="s">'vector'</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">embedding_vector</span><span class="p">)</span>
          <span class="p">}</span>
-        <span class="n">posts</span> <span class="o">=</span> <span class="n">coll</span><span class="o">.</span><span class="n">posts</span>
-        <span class="n">post_id</span> <span class="o">=</span> <span class="n">posts</span><span class="o">.</span><span class="n">insert_one</span><span class="p">(</span><span class="n">post</span><span class="p">)</span><span class="o">.</span><span class="n">inserted_id</span>
+        <span class="n">posts</span> <span class="o">=</span> <span class="n">coll</span><span class="p">.</span><span class="n">posts</span>
+        <span class="n">post_id</span> <span class="o">=</span> <span class="n">posts</span><span class="p">.</span><span class="n">insert_one</span><span class="p">(</span><span class="n">post</span><span class="p">).</span><span class="n">inserted_id</span>
     <span class="k">except</span><span class="p">:</span>
         <span class="k">continue</span>
 </code></pre></div></div>
@@ -276,7 +276,7 @@ model.predict(test_prediction)
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">[</span><span class="s">"toxic"</span><span class="p">,</span> <span class="s">"severe_toxic"</span><span class="p">,</span> <span class="s">"obscene"</span><span class="p">,</span> <span class="s">"threat"</span><span class="p">,</span> <span class="s">"insult"</span><span class="p">,</span> <span class="s">"identity_hate"</span><span class="p">]</span>
 </code></pre></div></div>
 <p>The <code class="highlighter-rouge">test_prediction</code> was the following text sequence pre-encoded.</p>
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">"C*#</span><span class="si">%</span><span class="s">`SUCKER BEFORE YOU PISS AROUND ON MY WORK"</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">"C*#%`SUCKER BEFORE YOU PISS AROUND ON MY WORK"</span>
 </code></pre></div></div>
 <p>So, the <code class="highlighter-rouge">toxic</code> and <code class="highlighter-rouge">obscene</code> label should definitely be close to <code class="highlighter-rouge">1</code>.  Looks like we’re in good shape.</p>
 

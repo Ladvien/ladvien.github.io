@@ -1,4 +1,4 @@
-I"H<p>General notes and suggestions for customizing <strong>HPSTR</strong>.</p>
+I"�H<p>General notes and suggestions for customizing <strong>HPSTR</strong>.</p>
 
 <p>HPSTR now requires <a href="http://jekyllrb.com/">Jekyll</a> 3.0. Make sure to run <code class="highlighter-rouge">bundle update</code> if you aren’t on the latest version to update all gem dependencies.</p>
 
@@ -80,7 +80,7 @@ bundle <span class="nb">exec </span>jekyll serve
 
 <h2 id="customization">Customization</h2>
 
-<p>Most of the variables found here are used in the .html files found in <code class="highlighter-rouge">_includes</code> if you need to add or remove anything. A good place to start would be to add the <code class="highlighter-rouge">title</code>, <code class="highlighter-rouge">description</code>, and <code class="highlighter-rouge">url</code> for your site. Links are absolute and prefixed with <code class="highlighter-rouge">{{ site.url }}</code> in the various <code class="highlighter-rouge">_includes</code> and <code class="highlighter-rouge">_layouts</code>, so remember to properly set <code class="highlighter-rouge">url</code><sup id="fnref:1"><a href="#fn:1" class="footnote">1</a></sup> to <code class="highlighter-rouge">http://localhost:4000</code> when developing locally.</p>
+<p>Most of the variables found here are used in the .html files found in <code class="highlighter-rouge">_includes</code> if you need to add or remove anything. A good place to start would be to add the <code class="highlighter-rouge">title</code>, <code class="highlighter-rouge">description</code>, and <code class="highlighter-rouge">url</code> for your site. Links are absolute and prefixed with <code class="highlighter-rouge">{{ site.url }}</code> in the various <code class="highlighter-rouge">_includes</code> and <code class="highlighter-rouge">_layouts</code>, so remember to properly set <code class="highlighter-rouge">url</code><sup id="fnref:1" role="doc-noteref"><a href="#fn:1" class="footnote">1</a></sup> to <code class="highlighter-rouge">http://localhost:4000</code> when developing locally.</p>
 
 <h3 id="disqus-comments">Disqus Comments</h3>
 
@@ -135,7 +135,7 @@ bundle <span class="nb">exec </span>jekyll serve
 
 <h3 id="feature-images">Feature Images</h3>
 
-<p>A good rule of thumb is to keep feature images nice and wide so you don’t push the body text too far down. An image cropped around around 1024 x 256 pixels will keep file size down with an acceptable resolution for most devices. If you want to serve these images responsively I’d suggest looking at the <a href="https://github.com/scottjehl/picturefill">Jekyll Picture Tag</a><sup id="fnref:2"><a href="#fn:2" class="footnote">2</a></sup> plugin.</p>
+<p>A good rule of thumb is to keep feature images nice and wide so you don’t push the body text too far down. An image cropped around around 1024 x 256 pixels will keep file size down with an acceptable resolution for most devices. If you want to serve these images responsively I’d suggest looking at the <a href="https://github.com/scottjehl/picturefill">Jekyll Picture Tag</a><sup id="fnref:2" role="doc-noteref"><a href="#fn:2" class="footnote">2</a></sup> plugin.</p>
 
 <p>The two layouts make the assumption that the feature images live in the <em>images</em> folder. To add a feature image to a post or page just include the filename in the front matter like so.</p>
 
@@ -209,13 +209,13 @@ bundle <span class="nb">exec </span>jekyll serve
 
 <hr />
 
-<div class="footnotes">
+<div class="footnotes" role="doc-endnotes">
   <ol>
-    <li id="fn:1">
-      <p>Used to generate absolute URLs in <code class="highlighter-rouge">feed.xml</code>, and for canonical URLs in <code class="highlighter-rouge">head.html</code>. Don’t include a trailing <code class="highlighter-rouge">/</code> in your base url ie: http://mademistakes.com. When developing locally I suggest using http://localhost:4000 or whatever localhost you’re using to properly load all theme stylesheets, scripts, and image assets. If you leave this variable blank all links will resolve correctly except those pointing to home. <a href="#fnref:1" class="reversefootnote">&#8617;</a></p>
+    <li id="fn:1" role="doc-endnote">
+      <p>Used to generate absolute URLs in <code class="highlighter-rouge">feed.xml</code>, and for canonical URLs in <code class="highlighter-rouge">head.html</code>. Don’t include a trailing <code class="highlighter-rouge">/</code> in your base url ie: http://mademistakes.com. When developing locally I suggest using http://localhost:4000 or whatever localhost you’re using to properly load all theme stylesheets, scripts, and image assets. If you leave this variable blank all links will resolve correctly except those pointing to home. <a href="#fnref:1" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
-    <li id="fn:2">
-      <p>If you’re using GitHub Pages to host your site be aware that plugins are disabled. So you’ll need to build your site locally and then manually deploy if you want to use this sweet plugin. <a href="#fnref:2" class="reversefootnote">&#8617;</a></p>
+    <li id="fn:2" role="doc-endnote">
+      <p>If you’re using GitHub Pages to host your site be aware that plugins are disabled. So you’ll need to build your site locally and then manually deploy if you want to use this sweet plugin. <a href="#fnref:2" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
   </ol>
 </div>

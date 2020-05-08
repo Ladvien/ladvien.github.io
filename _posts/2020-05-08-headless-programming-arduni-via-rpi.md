@@ -143,12 +143,7 @@ If this fails, you can use the "wrong" way and just execute the `./install.py` s
 python3 install_sketch.py
 ```
 
-## Arduino Mega2560 Firmware
+Ok, that's it for now.  I'll tackle the firmware next.  
 
-
-### Six-Bit Communication
-
-### Motor Polling
-
-
+I've you have any trouble with the code, or have questions, just leave a comment below.
 

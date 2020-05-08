@@ -64,10 +64,10 @@ Enter [Arduino's command line interface (CLI)](https://github.com/arduino/arduin
 
 Now I had all the needed pieces to make for comfortable coding:
 * Code the Pi from my workstation using VSCode
-* Any software written would be native to the Pi's ARM core.
+* Any software written would be native to the Pi's ARM core
 * I could upload new firmware from the Raspberry Pi to the Arduino; enabling quick iterations
 
-I was pretty excited.  I just need to put the pieces together a little.
+I was pretty excited.  I just need to put the pieces together.
 
 ## Python Convenience Scripts
 First, I had to get the Arduino CLI running on the Raspberry Pi.  That turned out pretty painless.  In fact, I turned the installation into a Python script for you.
@@ -99,7 +99,7 @@ os.system('arduino-cli core update-index')
 os.system('arduino-cli core install arduino:avr')
 os.system('arduino-cli core install arduino:megaavr')
 ```
-The installation script downloads the Arduino CLI and installs it.  It then updates the Arduino core libraries.  Lastly, it ensure the `AVR` and `Arduino Mega AVR` cores are installed as well.
+The installation script downloads the Arduino CLI and installs it.  It then updates the Arduino core libraries.  Lastly, it ensures the `AVR` and `Arduino Mega AVR` cores are installed as well.
 
 ### Script for Uploading using Arduino CLI
 You should now be set to compile and install new firmware directly from the Raspberry Pi to the Arduino Mega2560.  I've also created a firmware installation script, which eases installing new code.
@@ -117,9 +117,31 @@ os.system('arduino-cli compile -b arduino:avr:mega ramps_sketch')
 command_str = f'arduino-cli -v upload -p {write_port} --fqbn arduino:avr:mega ramps_sketch'
 os.system(command_str)
 ```
-Feel free to hack the script for other projects.  You can replace the `arduino:avr:mega` with other chipsets and program tons of different devices using the same method.
+Feel free to hack the script for other projects.  You can replace the `arduino:avr:mega` with other chipsets and program tons of different devices using the same method.  And the `ramps_sketch` refers to the program you want to upload.  It is a folder containing and `.ino` file of the same name, which is the program you want to upload to the Arduino
+
+![arduino-sketch-folder-for-cli](../raw_images/lego_classifier/conveyor_belt/arduino_sketch_folder_for_cli.png)
+
+Here's an action shot:
 
 ![upload-to-arduino-from-raspberry-pi-command-line](../raw_images/lego_classifier/conveyor_belt/arduino-cli-install-script.gif)
+
+A couple of notes, if you have trouble running the install script here are two issues I ran into:
+
+#### pyserial
+The install script uses Python to lookup what USB-serial bridges you have attached to your Pi.  This Python relies on the [pyserial](https://pypi.org/project/pyserial/) package.  Make sure it is installed using:
+```
+pip install pyserial
+```
+#### Access to USB
+For the install script to work correctly, the executing user must have access to the USB-serial devices.  This is known as the `dialout` group.  The right way of doing this is by adding the permission to the user.
+
+```
+sudo adduser $USER dialout
+```
+If this fails, you can use the "wrong" way and just execute the `./install.py` script using `sudo`.
+```
+python3 install_sketch.py
+```
 
 ## Arduino Mega2560 Firmware
 

@@ -97,8 +97,47 @@ void loop()
 
 ### serialEvent
 
-The one bit of code which is not in the main loop is the the UART RX handler.  This code is activated by an RX interrupt.  If the interrupt fires, the new data is quickly loaded into the `rxBuffer`.  If the incoming data contains a `0x04` character, this signals the packet is complete and ready to be decoded.
+Some code not in the main loop is the the UART RX handler.  It is activated by an RX interrupt.  If the interrupt fires, the new data is quickly loaded into the `rxBuffer`.  If the incoming data contains a `0x03` character, this signals the packet is complete and ready to be decoded.
 
+Here's the packet template:
+```cpp
+MOTOR_PACKET = CMD_TYPE MOTOR_NUM DIR STEPS_1 STEPS_2 MILLI_BETWEEN 0x03
+```
+Each motor movement packet consists of seven bytes and four values:
+1. `CMD_TYPE` = drive or halt
+2. `MOTOR_NUM` = the motor selected X, Y, Z, E0, E1
+3. `DIR` = direction of the motor
+4. `STEPS_1` = the high 6-bits of of steps to take
+5. `STEPS_2` = the low 6-bits of steps to take
+6. `MILLI_BETWEEN` = number of milliseconds between each step; this allows speed control.
+7. `0x03` = this signals the end of the packet (`ETX`)
+
+Each of these bytes are encoded by left-shifting the bits by two. This means each of the bytes in the packet can only represent 64 values (`2^6 = 64`).
+
+Why add this complication?  Well, we want to be able to send commands to control the firmware, rather than the motors.  The most critical is knowing when the end of a packet is reached.  I'm using the `ETX` char, `0x03` to signal the end of a packet. If we didn't reserve the `0x03` byte then what happens if we send command to the firmware to move the motor 3 steps?  An invalid packet.
+
+Here's a sample motor packet before encoding:
+```cpp
+uint8_t packet[7] = {0x01, 0x01, 0x01, 0x3F, 0x3F, 0x05, 0x03}
+```
+And after encoding:
+```cpp
+uint8_t packet[7] = {0x07, 0x04,  0x07,  0xFF, 0xFF, 0x17, 0x03}
+```
+Notice the last byte is not encoded, as this is a reserved command character.
+
+Here are the `decode` and `encode` functions. Fairly straightforward bitwise operations.
+```cpp
+uint8_t decode(uint8_t value) {
+  return (value >> 2) &~ 0xC0;
+}
+
+uint8_t encode(uint8_t value) {
+  return (value << 2) | 0x03;
+}
+```
+
+And the serial handling as a whole:
 ```cpp
 void serialEvent() {
 
@@ -121,22 +160,13 @@ void serialEvent() {
 ```
 
 ### handleCompletePacket
-When a packet is waiting to be decoding, the `handleCompletePacket()` will be executed.  The first thing the method does is check the `packet_type`.  Keeping it simple, there are only two and I've not finished implementing the `HALT_CMD`.
+When a packet is waiting to be decoded, the `handleCompletePacket()` will be executed.  The first thing the method does is check the `packet_type`.  Keeping it simple, there are only two and I've not implemented the second one yet (`HALT_CMD`)
 
 ```cpp
 #define DRIVE_CMD       (char)0x01
-#define HALT_CMD        (char)0x0F
+#define HALT_CMD        (char)0x02
 ```
 
-If it is a `DRIVE_CMD`, then the packet is processed as a motor movement command.  The motor movement packet consists of five bytes.  Each byte is left-shifted two bits, this means each of the bytes in the packet can only represent 64 values (`2^6 = 64`).
-
-Why add this complication if we need it simple?  We want to be able to send commands like `DRIVE_CMD` and `HALT_CMD` without fear a value will inadvertently trigger the command.  Reserving two bits for for commands gives us at least `4` (`2^2 = 4`) commands to control our application.
-
-This method could be seen as a bastardized version of [UUEncoding](https://ladvien.com/uuencode-in-c/)
-
-```bash
-MOTOR_PACKET = PACKET_TYPE_CHAR MOTOR_NUM DIR STEPS_1 STEPS_2 MILLI_BETWEEN
-```
 
 ```cpp
 void handleCompletePacket(BUFFER rxBuffer) {

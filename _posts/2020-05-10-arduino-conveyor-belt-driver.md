@@ -63,7 +63,130 @@ Here were my design goals for my Arduino / RAMPs firmware:
 
 After much head scratching and realization I didn't know jack about stepper motors, or the code driving them.
 
+### Main
+```cpp
+/* Main */
+void loop()
+{
+  if (rxBuffer.packet_complete) {
+    // If packet is packet_complete
+    handleCompletePacket(rxBuffer);
+    // Clear the buffer for the next packet.
+    resetBuffer(&rxBuffer);
+  }
+  
+  // Start the motor
+  pollMotor();
+}
+```
+
+### serialEvent
+```cpp
+void serialEvent() {
+
+  // Get all the data.
+  while (Serial.available()) {
+
+    // Read a byte
+    uint8_t inByte = (uint8_t)Serial.read();
+
+    if (inByte == END_TX) {
+      rxBuffer.packet_complete = true;
+    } else {
+      // Store the byte in the buffer.
+      inByte = decodePacket(inByte);
+      rxBuffer.data[rxBuffer.index] = inByte;
+      rxBuffer.index++;
+    }
+  }
+}
+```
+
+### handleCompletePacket
+```cpp
+void handleCompletePacket(BUFFER rxBuffer) {
+    
+    uint8_t packet_type = rxBuffer.data[0];
+      
+    switch (packet_type) {
+      case DRIVE_CMD:
+
+          // Unpack the command.
+          uint8_t motorNumber =  rxBuffer.data[1];
+          uint8_t direction =  rxBuffer.data[2];
+          uint16_t steps = ((uint8_t)rxBuffer.data[3] << 6)  | (uint8_t)rxBuffer.data[4];
+          unsigned long microSecondsDelay = rxBuffer.data[5] * 1000; // Delay comes in as milliseconds.
+
+          if (microSecondsDelay < MINIMUM_STEPPER_DELAY) { microSecondsDelay = MINIMUM_STEPPER_DELAY; }
+
+          // Should we move this motor.
+          if (steps > 0) {
+            // Set motor state.
+            setMotorState(motorNumber, direction, steps, microSecondsDelay);
+          }
+          
+          // Let the master know command is in process.
+          sendAck();
+        break;
+      default:
+        sendNack();
+        break;
+    }
+}
+```
+
+
+### pollMotor
+
+```cpp
+/* Write to MOTOR */
+void pollMotor() {
+    unsigned long current_micros = micros();
+
+    // Loop over all motors.
+    for (int i = 0; i < int(sizeof(all_motors)/sizeof(int)); i++)
+    {
+
+      // Get motor and motorState for this motor.
+      MOTOR motor = getMotor(all_motors[i]);
+      MOTOR_STATE* motorState = getMotorState(all_motors[i]);
+      
+      // Check if motor needs to move.
+      if (motorState->steps > 0) {
+
+        // Initial step timer.
+        if (motorState->next_step_at == SENTINEL) {
+          motorState->next_step_at = micros() + motorState->step_delay;
+        }
+
+        // Enable motor.
+        if (motorState->enabled == false) {
+          enableMotor(motor, motorState);
+        }
+
+        // Set motor direction.
+        setDirection(motor, motorState->direction);
+
+        unsigned long window = motorState->step_delay;  // we should be within this time frame
+
+        if(current_micros - motorState->next_step_at < window) {         
+            writeMotor(motor);
+            motorState->steps -= 1;
+            motorState->next_step_at += motorState->step_delay;
+            // Serial.println(motorState->steps);
+        }
+      }
+
+      // If steps are finished, disable motor and reset state.
+      if (motorState->steps == 0 && motorState->enabled == true ) {
+        Serial.println("Disabled motor");
+        disableMotor(motor, motorState);
+        resetMotorState(motorState);
+      }
+    }
+}
+```
+
 ### Motor
 
-### Communication
 

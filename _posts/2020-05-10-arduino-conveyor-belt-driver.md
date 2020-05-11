@@ -51,19 +51,34 @@ Anyway, I found the lowest point for my motor, without skipping steps, was aroun
 ![setting-stepper-driver-amperage](../raw_images/lego_classifier/conveyor_belt/setting-stepper-driver-amperage.jpg)
 
 ## Arduino Code
-When I bought the RAMPs board I started thinking, "I should see if we could re-purpose Marlin to drive the conveyor belt easily."  I took one look at the source and said, "Oh hell no."  Learning how to hack Marlin to drive a conveyor belt seemed like learning heart surgery to get your heart to pump gas.
+When I bought the RAMPs board I started thinking, "I should see if we could re-purpose Marlin to drive the conveyor belt easily."  I took one look at the source and said, "Oh hell no."  Learning how to hack Marlin to drive a conveyor belt seemed like learning heart surgery to get your heart pumping gas. So, I decided roll my own RAMPs firmware.
 
-So, I decided to write a striped down version of a stepper driver.
+My design goals were simple:
+* Motors operate independently
+* Controlled with small packets via UART
+* Include four commands: motor select, direction, speed, duration
 
-Here were my design goals for my Arduino / RAMPs firmware:
-* Uses serial communication
-* Accessible to a Python script
-* Keep the serial command packets small
-* Simple commands: motor number, direction, speed, duration
+That's it.  I prefer to keep stuff as simple as possible, unless absolutely necessary.
 
-After much head scratching and realization I didn't know jack about stepper motors, or the code driving them.
+I should point out, this project builds on previous attempt at firmware:
+
+* [Raspbery Pi, Arduino, RAMPS Turntable ](https://ladvien.com/generating-lego-training-data-cnn/)
+
+But that code was flawed.  It was not written with independent motor operation in mind.  The result, only one motor could be controlled at a time.
+
+Ok, on to the code.
 
 ### Main
+
+The firmware follows this procedure:
+
+1. Check if a new movement packet has been received.
+2. Decode the packet
+3. Load direction, steps, and delay (speed) into the appropriate motor struct.
+4. Check if a motor has steps to take and the timing window for the next step is open.
+5. If a motor has steps waiting to be taken, move the motor one step and decrement the respective motor's step counter.
+6. Repeat forever.
+
 ```cpp
 /* Main */
 void loop()
@@ -81,6 +96,9 @@ void loop()
 ```
 
 ### serialEvent
+
+The one bit of code which is not in the main loop is the the UART RX handler.  This code is activated by an RX interrupt.  If the interrupt fires, the new data is quickly loaded into the `rxBuffer`.  If the incoming data contains a `0x04` character, this signals the packet is complete and ready to be decoded.
+
 ```cpp
 void serialEvent() {
 
@@ -103,6 +121,23 @@ void serialEvent() {
 ```
 
 ### handleCompletePacket
+When a packet is waiting to be decoding, the `handleCompletePacket()` will be executed.  The first thing the method does is check the `packet_type`.  Keeping it simple, there are only two and I've not finished implementing the `HALT_CMD`.
+
+```cpp
+#define DRIVE_CMD       (char)0x01
+#define HALT_CMD        (char)0x0F
+```
+
+If it is a `DRIVE_CMD`, then the packet is processed as a motor movement command.  The motor movement packet consists of five bytes.  Each byte is left-shifted two bits, this means each of the bytes in the packet can only represent 64 values (`2^6 = 64`).
+
+Why add this complication if we need it simple?  We want to be able to send commands like `DRIVE_CMD` and `HALT_CMD` without fear a value will inadvertently trigger the command.  Reserving two bits for for commands gives us at least `4` (`2^2 = 4`) commands to control our application.
+
+This method could be seen as a bastardized version of [UUEncoding](https://ladvien.com/uuencode-in-c/)
+
+```bash
+MOTOR_PACKET = PACKET_TYPE_CHAR MOTOR_NUM DIR STEPS_1 STEPS_2 MILLI_BETWEEN
+```
+
 ```cpp
 void handleCompletePacket(BUFFER rxBuffer) {
     

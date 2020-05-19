@@ -24,7 +24,7 @@ To move forward with the LEGO sorting machine I needed a way to drive a conveyor
 At the time of the build, these kits were around $28-35 and included:
 * Arduino Mega2560
 * 4 x Endstops
-* 5 x Stepers Drivers
+* 5 x Stepers Drivers (A4988)
 * RAMPSs 1.4 board
 * Display
 * Cables & wires
@@ -38,20 +38,33 @@ I would eventually need:
 Luckily, I had the PSU and a few stepper motors lying about the house. 
 
 ### Physical Adjustments
-Wiring everything up wasn't too bad.  You follow pretty much any RAMPs wiring diagram.  I did need to make two adjustments before starting on the firmware.
+Wiring everything up wasn't too bad.  You follow about any RAMPs wiring diagram.  However, I did need to make two adjustments before starting on the firmware.
 
 First, underneath each of the stepper drivers there are three drivers for setting the microsteps of the respective driver.  Having all three jumpers enables maximum microsteps, but would cause the speed of the motor to be limited by the clock cycles of the Arduino--more on that soon.
 
 ![removing-stepper-jump-on-ramps](../raw_images/lego_classifier/conveyor_belt/removing-stepper-jump-on-ramps.jpg)
 
-I've also increased the amperage to the stepper.  This allowed me to drive the entire belt from one NEMA17.  Setting the amperage on these cheap ramps boards is straightforward.  You get a small phillips screwdriver, two alligator clips, and a multimeter.  Power on your RAMPs board **and carefully** attach the negative probe to the RAMPs `GND`.  Attach the positive probe to an alligator clip and attach the other end to the shaft of your screwdriver.  Use the screwdriver to turn the small potentiometer on the stepper driver which will be driving the conveyor belt.  Watch the voltage on the multimeter--we want to use the lowest amperage which effectively drives the conveyor belt.  We are watching the voltage, as it is related to the amperage we are feeding the motors.
+I've also increased the amperage to the stepper.  This allowed me to drive the entire belt from one NEMA17. 
 
-Anyway, I found the lowest point for my motor, without skipping steps, was around ~`0.801v`.  This voltage will _definitely_ vary depending on the drag of your conveyor belt and the quality of your stepper motor.
+To set the amperage, get a small phillips screwdriver, two alligator clips, and a multimeter.  Power on your RAMPs board **and carefully** attach the negative probe to the RAMPs `GND`.  Attach the positive probe to an alligator clip and attach the other end to the shaft of your screwdriver.  Use the screwdriver to turn the tiny potentiometer on the stepper driver.  Watch the voltage on the multimeter--we want to use the lowest amperage which effectively drives the conveyor belt.  We are watching the voltage, as it is related to the amperage we are feeding the motors.
+
+```
+current_limit = Vref x 2.5
+```
+
+Anyway, I found the lowest point for my motor, without skipping steps, was around ~`0.801v`.  
+
+```
+current_limit = 0.801 x 2.5
+current_limit = 2.0025
+```
+
+The your `current_limit` will vary depending on the drag of your conveyor belt and the quality of your stepper motor. To ensure a long-life of your motor, **do not set the amperage higher than needed to do the job.**
 
 ![setting-stepper-driver-amperage](../raw_images/lego_classifier/conveyor_belt/setting-stepper-driver-amperage.jpg)
 
 ## Arduino Code
-When I bought the RAMPs board I started thinking, "I should see if we could re-purpose Marlin to drive the conveyor belt easily."  I took one look at the source and said, "Oh hell no."  Learning how to hack Marlin to drive a conveyor belt seemed like learning heart surgery to get your heart pumping gas. So, I decided roll my own RAMPs firmware.
+When I bought the RAMPs board I started thinking, "I should see if we could re-purpose Marlin to drive the conveyor belt easily."  I took one look at the source and said, "Oh hell no."  Learning how to hack Marlin to drive a conveyor belt seemed like learning heart surgery to hack your heart into a gas pump. So, I decided roll my own RAMPs firmware.
 
 My design goals were simple:
 * Motors operate independently
@@ -60,13 +73,13 @@ My design goals were simple:
 
 That's it.  I prefer to keep stuff as simple as possible, unless absolutely necessary.
 
-I should point out, this project builds on previous attempt at firmware:
+I should point out, this project builds on a previous attempt at firmware:
 
 * [Raspbery Pi, Arduino, RAMPS Turntable ](https://ladvien.com/generating-lego-training-data-cnn/)
 
-But that code was flawed.  It was not written with independent motor operation in mind.  The result, only one motor could be controlled at a time.
+But that code was flawed.  It was not written with concurrent and independent motor operation in mind.  The result, only one motor could be controlled at a time.
 
-Ok, on to the code.
+Ok, on to the new code.
 
 ### Main
 
@@ -75,7 +88,7 @@ The firmware follows this procedure:
 1. Check if a new movement packet has been received.
 2. Decode the packet
 3. Load direction, steps, and delay (speed) into the appropriate motor struct.
-4. Check if a motor has steps to take and the timing window for the next step is open.
+4. Check if a motor has steps to take **and** the timing window for the next step is open.
 5. If a motor has steps waiting to be taken, move the motor one step and decrement the respective motor's step counter.
 6. Repeat forever.
 
@@ -103,23 +116,74 @@ Here's the packet template:
 ```cpp
 MOTOR_PACKET = CMD_TYPE MOTOR_NUM DIR STEPS_1 STEPS_2 MILLI_BETWEEN 0x03
 ```
-Each motor movement packet consists of seven bytes and four values:
+Each motor movement packet consists of seven bytes and five values:
 1. `CMD_TYPE` = drive or halt
 2. `MOTOR_NUM` = the motor selected X, Y, Z, E0, E1
 3. `DIR` = direction of the motor
 4. `STEPS_1` = the high 6-bits of of steps to take
 5. `STEPS_2` = the low 6-bits of steps to take
-6. `MILLI_BETWEEN` = number of milliseconds between each step; this allows speed control.
+6. `MILLI_BETWEEN` = number of milliseconds between each step (speed control)
 7. `0x03` = this signals the end of the packet (`ETX`)
 
 Each of these bytes are encoded by left-shifting the bits by two. This means each of the bytes in the packet can only represent 64 values (`2^6 = 64`).
 
-Why add this complication?  Well, we want to be able to send commands to control the firmware, rather than the motors.  The most critical is knowing when the end of a packet is reached.  I'm using the `ETX` char, `0x03` to signal the end of a packet. If we didn't reserve the `0x03` byte then what happens if we send command to the firmware to move the motor 3 steps?  An invalid packet.
+Why add this complication?  Well, we want to be able to send commands to control the firmware, rather than the motors.  The most critical is knowing when the end of a packet is reached.  I'm using the `ETX` char, `0x03` to signal the end of a packet. If we didn't reserve the `0x03` byte then what happens if we send command to the firmware to move the motor 3 steps?  Nothing good.
 
+Here's the flow of a processed command:
+```md
+1. CMD_TYPE       = DRIVE (0x01)
+2. MOTOR_NUM      = X     (0x01)
+3. DIR            = CW    (0x01)
+4. STEPS          = 4095  (0x0FFF)
+5. MILLI_BETWEEN  = 1     (0x01)
+```
+Note, the maximum value of the `STEPS` byte is greater than 8-bits.  To handle this, we break it into two bytes.  
+```md
+1. CMD_TYPE       = DRIVE (0x01)
+2. MOTOR_NUM      = X     (0x01)
+3. DIR            = CW    (0x01)
+4. STEPS_1        = 3F
+5. STEPS_2        = 3F
+5. MILLI_BETWEEN  = 1     (0x01)
+```
 Here's a sample motor packet before encoding:
 ```cpp
 uint8_t packet[7] = {0x01, 0x01, 0x01, 0x3F, 0x3F, 0x05, 0x03}
 ```
+Now, we have to shift all of the bytes left by two bits, this will ensure `0x00` through `0x03` are reserved for metacommuncation.
+
+This process is a bit easier to see in binary:
+
+**Before** shift:
+```md
+1. CMD_TYPE       = 0000 0001
+2. MOTOR_NUM      = 0000 0001
+3. DIR            = 0000 0001
+4. STEPS_1        = 0011 1111
+5. STEPS_2        = 0011 1111
+5. MILLI_BETWEEN  = 0000 0001
+```
+
+**After** shift:
+```md
+1. CMD_TYPE       = 0000 0100
+2. MOTOR_NUM      = 0000 0100
+3. DIR            = 0000 0100
+4. STEPS_1        = 1111 1100
+5. STEPS_2        = 1111 1100
+5. MILLI_BETWEEN  = 0000 0100
+```
+
+And back to hex:
+```md
+1. CMD_TYPE       = 0x07
+2. MOTOR_NUM      = 0000 0100
+3. DIR            = 0000 0100
+4. STEPS_1        = 1111 1100
+5. STEPS_2        = 1111 1100
+5. MILLI_BETWEEN  = 0000 0100
+```
+
 And after encoding:
 ```cpp
 uint8_t packet[7] = {0x07, 0x04,  0x07,  0xFF, 0xFF, 0x17, 0x03}

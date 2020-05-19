@@ -135,7 +135,8 @@ Here's the flow of a processed command:
 2. MOTOR_NUM      = X     (0x01)
 3. DIR            = CW    (0x01)
 4. STEPS          = 4095  (0x0FFF)
-5. MILLI_BETWEEN  = 1     (0x01)
+5. MILLI_BETWEEN  = 5ms   (0x05)
+6. ETX            = End   (0x03)
 ```
 Note, the maximum value of the `STEPS` byte is greater than 8-bits.  To handle this, we break it into two bytes.  
 ```md
@@ -144,7 +145,8 @@ Note, the maximum value of the `STEPS` byte is greater than 8-bits.  To handle t
 3. DIR            = CW    (0x01)
 4. STEPS_1        = 3F
 5. STEPS_2        = 3F
-5. MILLI_BETWEEN  = 1     (0x01)
+5. MILLI_BETWEEN  = 5     (0x05)
+6. ETX            = End   (0x03)
 ```
 Here's a sample motor packet before encoding:
 ```cpp
@@ -161,7 +163,8 @@ This process is a bit easier to see in binary:
 3. DIR            = 0000 0001
 4. STEPS_1        = 0011 1111
 5. STEPS_2        = 0011 1111
-5. MILLI_BETWEEN  = 0000 0001
+5. MILLI_BETWEEN  = 0000 0101
+6. ETX            = 0000 0011
 ```
 
 **After** shift:
@@ -171,22 +174,24 @@ This process is a bit easier to see in binary:
 3. DIR            = 0000 0100
 4. STEPS_1        = 1111 1100
 5. STEPS_2        = 1111 1100
-5. MILLI_BETWEEN  = 0000 0100
+5. MILLI_BETWEEN  = 0001 0100
+6. ETX            = 0000 0011
 ```
 
 And back to hex:
 ```md
-1. CMD_TYPE       = 0x07
-2. MOTOR_NUM      = 0000 0100
-3. DIR            = 0000 0100
-4. STEPS_1        = 1111 1100
-5. STEPS_2        = 1111 1100
-5. MILLI_BETWEEN  = 0000 0100
+1. CMD_TYPE       = 0x04
+2. MOTOR_NUM      = 0x04
+3. DIR            = 0x04
+4. STEPS_1        = 0xFC
+5. STEPS_2        = 0xFC
+5. MILLI_BETWEEN  = 0x14
+6. ETX            = 0x03
 ```
 
 And after encoding:
 ```cpp
-uint8_t packet[7] = {0x07, 0x04,  0x07,  0xFF, 0xFF, 0x17, 0x03}
+uint8_t packet[7] = {0x04, 0x04,  0x04, 0xFC, 0xFC, 0x14, 0x03}
 ```
 Notice the last byte is not encoded, as this is a reserved command character.
 

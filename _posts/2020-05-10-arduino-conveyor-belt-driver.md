@@ -14,6 +14,11 @@ custom_js:
 ---
 This article is part of a series documenting an attempt to create a LEGO sorting machine.  This portion covers the Arduino Mega2560 firmware I've written to control a RAMPS 1.4 stepper motor board.
 
+**A big thanks to William Cooke, his wisdom was key to this project.  Thank you, sir!**
+
+* [William Cooke](http://smalltimeelectronics.com/about/about.html)
+
+
 ## Goal
 To move forward with the LEGO sorting machine I needed a way to drive a conveyor belt.  Stepper motors were a fairly obvious choice.  They provide plenty of torque and finite control.  This was great, as several other parts of the LEGO classifier system would need steppers motors as well-e.g.,turn table and dispensing hopper.  Of course, one of the overall goals of this project is to keep the tools accessible.  After some research I decided to meet both goals by purchasing an Ardunio / RAMPs combo package intended for 3D printers.
 

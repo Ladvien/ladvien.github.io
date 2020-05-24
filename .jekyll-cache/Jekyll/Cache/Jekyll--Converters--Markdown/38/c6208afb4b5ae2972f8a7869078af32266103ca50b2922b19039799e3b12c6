@@ -27,9 +27,9 @@ nano nn_service.py
 
 <span class="c1"># Connection to Mongo DB
 </span><span class="k">try</span><span class="p">:</span>
-    <span class="n">mong</span> <span class="o">=</span> <span class="n">pymongo</span><span class="p">.</span><span class="n">MongoClient</span><span class="p">(</span><span class="s">'127.0.0.1'</span><span class="p">,</span> <span class="n">mongo_port</span><span class="p">)</span>
+    <span class="n">mong</span> <span class="o">=</span> <span class="n">pymongo</span><span class="o">.</span><span class="n">MongoClient</span><span class="p">(</span><span class="s">'127.0.0.1'</span><span class="p">,</span> <span class="n">mongo_port</span><span class="p">)</span>
     <span class="k">print</span><span class="p">(</span><span class="s">'Connected successfully.'</span><span class="p">)</span>
-<span class="k">except</span> <span class="n">pymongo</span><span class="p">.</span><span class="n">errors</span><span class="p">.</span><span class="n">ConnectionFailure</span><span class="p">:</span>
+<span class="k">except</span> <span class="n">pymongo</span><span class="o">.</span><span class="n">errors</span><span class="o">.</span><span class="n">ConnectionFailure</span><span class="p">:</span>
     <span class="k">print</span><span class="p">(</span><span class="s">'Could not connect to MongoDB: '</span> <span class="o">+</span> <span class="n">e</span><span class="p">)</span>
 
 <span class="n">db</span> <span class="o">=</span> <span class="n">mong</span><span class="p">[</span><span class="n">embedding_collection</span><span class="p">]</span>
@@ -37,19 +37,19 @@ nano nn_service.py
 
 <span class="c1"># Load Keras Model
 </span><span class="n">model</span> <span class="o">=</span> <span class="n">load_model</span><span class="p">(</span><span class="s">'/home/my_user/flask_app/models/tox_com_det.h5'</span><span class="p">)</span>
-<span class="n">model</span><span class="p">.</span><span class="n">_make_predict_function</span><span class="p">()</span>
+<span class="n">model</span><span class="o">.</span><span class="n">_make_predict_function</span><span class="p">()</span>
 
 <span class="c1"># Start flask
 </span><span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span>
-    <span class="n">application</span><span class="p">.</span><span class="n">run</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="s">'127.0.0.1'</span><span class="p">)</span>
+    <span class="n">application</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="s">'127.0.0.1'</span><span class="p">)</span>
 
-<span class="o">@</span><span class="n">application</span><span class="p">.</span><span class="n">route</span><span class="p">(</span><span class="s">'/detect-toxic'</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s">'POST'</span><span class="p">])</span>
+<span class="o">@</span><span class="n">application</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s">'/detect-toxic'</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s">'POST'</span><span class="p">])</span>
 <span class="k">def</span> <span class="nf">sequence_to_indexes</span><span class="p">():</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s">'nn_service.log'</span><span class="p">,</span> <span class="s">'w+'</span><span class="p">)</span> <span class="k">as</span> <span class="nb">file</span><span class="p">:</span>
-        <span class="nb">file</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="s">'here'</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">request</span><span class="p">.</span><span class="n">method</span> <span class="o">==</span> <span class="s">'POST'</span><span class="p">:</span>
+        <span class="nb">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">'here'</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s">'POST'</span><span class="p">:</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">sequence</span> <span class="o">=</span> <span class="n">request</span><span class="p">.</span><span class="n">json</span><span class="p">[</span><span class="s">'sequence'</span><span class="p">]</span>
+            <span class="n">sequence</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">json</span><span class="p">[</span><span class="s">'sequence'</span><span class="p">]</span>
         <span class="k">except</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">get_error</span><span class="p">(</span><span class="s">'missing parameters'</span><span class="p">)</span>
         <span class="n">response</span> <span class="o">=</span> <span class="p">{</span>
@@ -60,27 +60,27 @@ nano nn_service.py
 <span class="k">def</span> <span class="nf">get_word_index</span><span class="p">(</span><span class="n">word</span><span class="p">):</span>
     <span class="n">index</span> <span class="o">=</span> <span class="s">''</span>
     <span class="k">try</span><span class="p">:</span>
-        <span class="n">index</span> <span class="o">=</span> <span class="n">coll</span><span class="p">.</span><span class="n">posts</span><span class="p">.</span><span class="n">find_one</span><span class="p">({</span><span class="s">'word'</span><span class="p">:</span> <span class="n">word</span><span class="p">})[</span><span class="s">'index'</span><span class="p">]</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="n">coll</span><span class="o">.</span><span class="n">posts</span><span class="o">.</span><span class="n">find_one</span><span class="p">({</span><span class="s">'word'</span><span class="p">:</span> <span class="n">word</span><span class="p">})[</span><span class="s">'index'</span><span class="p">]</span>
     <span class="k">except</span><span class="p">:</span>
         <span class="k">pass</span>
     <span class="k">return</span> <span class="n">index</span>
 
 <span class="k">def</span> <span class="nf">get_error</span><span class="p">(</span><span class="n">message</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">json</span><span class="p">.</span><span class="n">dumps</span><span class="p">({</span><span class="s">'error'</span><span class="p">:</span> <span class="n">message</span><span class="p">})</span>
+    <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">({</span><span class="s">'error'</span><span class="p">:</span> <span class="n">message</span><span class="p">})</span>
 
 <span class="k">def</span> <span class="nf">prediction_from_sequence</span><span class="p">(</span><span class="n">sequence</span><span class="p">,</span> <span class="n">pad_length</span><span class="p">):</span>
-    <span class="n">sequence</span> <span class="o">=</span> <span class="n">sequence</span><span class="p">.</span><span class="n">lower</span><span class="p">()</span>
+    <span class="n">sequence</span> <span class="o">=</span> <span class="n">sequence</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
     <span class="n">sequence_indexes</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">sequence</span><span class="p">.</span><span class="n">split</span><span class="p">():</span>
+    <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">sequence</span><span class="o">.</span><span class="n">split</span><span class="p">():</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">index</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">get_word_index</span><span class="p">(</span><span class="n">word</span><span class="p">.</span><span class="n">strip</span><span class="p">()))</span>
+            <span class="n">index</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">get_word_index</span><span class="p">(</span><span class="n">word</span><span class="o">.</span><span class="n">strip</span><span class="p">()))</span>
         <span class="k">except</span><span class="p">:</span>
             <span class="n">index</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">if</span> <span class="n">index</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="n">sequence_indexes</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+            <span class="n">sequence_indexes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
     <span class="n">sequence_indexes</span> <span class="o">=</span> <span class="n">pad_sequences</span><span class="p">([</span><span class="n">sequence_indexes</span><span class="p">],</span> <span class="n">maxlen</span><span class="o">=</span><span class="n">pad_length</span><span class="p">)</span>
-    <span class="n">sample</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">(</span><span class="n">sequence_indexes</span><span class="p">)</span>
-    <span class="n">prediction</span> <span class="o">=</span> <span class="n">model</span><span class="p">.</span><span class="n">predict</span><span class="p">(</span><span class="n">sample</span><span class="p">,</span> <span class="n">verbose</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">sample</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">sequence_indexes</span><span class="p">)</span>
+    <span class="n">prediction</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">sample</span><span class="p">,</span> <span class="n">verbose</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
     <span class="n">prediction_labels</span> <span class="o">=</span> <span class="p">[</span><span class="s">'toxic'</span><span class="p">,</span> <span class="s">'severe_toxic'</span><span class="p">,</span> <span class="s">'obscene'</span><span class="p">,</span> <span class="s">'threat'</span><span class="p">,</span> <span class="s">'insult'</span><span class="p">,</span> <span class="s">'identity_hate'</span><span class="p">]</span>
     <span class="n">prediction_results</span> <span class="o">=</span> <span class="nb">str</span><span class="p">({</span><span class="n">prediction_labels</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span> <span class="n">prediction</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span>
                               <span class="n">prediction_labels</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span> <span class="n">prediction</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span>

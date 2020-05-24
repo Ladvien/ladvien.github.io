@@ -1,4 +1,4 @@
-I"��<p>I’m writing learning-notes from implementing a “toxic comment” detector using a convolutional neural network (CNN).  This is a common project across the interwebs, however, the articles I’ve seen on the matter leave a few bits out.  So, I’m attempting to augment public knowledge–not write a comprehensive tutorial.</p>
+I"��<p>I’m writing learning-notes from implementing a “toxic comment” detector using a convolutional neural network (CNN).  This is a common project across the interwebs, however, the articles I’ve seen on the matter leave a few bits out.  So, I’m attempting to augment public knowledge–not write a comprehensive tutorial.</p>
 
 <p>A common omission is what the data look like as they travel through pre-processing.  I’ll try to show how the data look before falling into the neural-net black-hole.  However, I’ll stop short before reviewing the CNN setup, as this is explained much better elsewhere.  Though, I’ve put all the original code, relevant project links, tutorial links, and other resources towards the bottom.</p>
 
@@ -62,15 +62,15 @@ pip install pandas
 <h4 id="code-load-embeddings">Code: Load Embeddings</h4>
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">print</span><span class="p">(</span><span class="s">'Loading word vectors.'</span><span class="p">)</span>
 <span class="c1"># Load embeddings
-</span><span class="n">info</span> <span class="o">=</span> <span class="n">api</span><span class="p">.</span><span class="n">info</span><span class="p">()</span>
-<span class="n">embedding_model</span> <span class="o">=</span> <span class="n">api</span><span class="p">.</span><span class="n">load</span><span class="p">(</span><span class="s">"glove-wiki-gigaword-300"</span><span class="p">)</span>
+</span><span class="n">info</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+<span class="n">embedding_model</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s">"glove-wiki-gigaword-300"</span><span class="p">)</span>
 </code></pre></div></div>
 
 <p>The <code class="highlighter-rouge">info</code> object is a list of <a href="https://radimrehurek.com/gensim/">gensim</a> embeddings available.  You can use any of the listed embeddings in the format <code class="highlighter-rouge">api.load('name-of-desired-embedding')</code>.  One nice feature of <a href="https://radimrehurek.com/gensim/">gensim</a>’s <code class="highlighter-rouge">api.load</code> is it will automatically download the embeddings from the Internet and load them into Python.  Of course, once they’ve been downloaded, <a href="https://radimrehurek.com/gensim/">gensim</a> will load the local copy.  This makes it easy to experiment with different embedding layers.</p>
 
 <h4 id="code-process-embeddings">Code: Process Embeddings</h4>
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">index2word</span> <span class="o">=</span> <span class="n">embedding_model</span><span class="p">.</span><span class="n">index2word</span>
-<span class="n">vocab_size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">embedding_model</span><span class="p">.</span><span class="n">vocab</span><span class="p">)</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">index2word</span> <span class="o">=</span> <span class="n">embedding_model</span><span class="o">.</span><span class="n">index2word</span>
+<span class="n">vocab_size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">embedding_model</span><span class="o">.</span><span class="n">vocab</span><span class="p">)</span>
 <span class="n">word2idx</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">vocab_size</span><span class="p">):</span>
     <span class="n">word2idx</span><span class="p">[</span><span class="n">index2word</span><span class="p">[</span><span class="n">index</span><span class="p">]]</span> <span class="o">=</span> <span class="n">index</span>
@@ -86,13 +86,13 @@ pip install pandas
     <span class="s">"of"</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
     <span class="s">"to"</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
     <span class="s">"and"</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
-    <span class="p">....</span>
+    <span class="o">....</span>
     <span class="s">"blah"</span><span class="p">:</span> <span class="mi">12984</span><span class="p">,</span>
-    <span class="p">...</span>
+    <span class="o">...</span>
 <span class="p">}</span>  
 </code></pre></div></div>
 <p><code class="highlighter-rouge">index2word</code> is a list where the the values are the words and the word’s position in the string represents it’s index in the <code class="highlighter-rouge">word2idx</code>.</p>
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">index2word</span> <span class="o">=</span> <span class="p">[</span><span class="s">"the"</span><span class="p">,</span> <span class="s">","</span><span class="p">,</span> <span class="s">"."</span><span class="p">,</span> <span class="s">"of"</span><span class="p">,</span> <span class="s">"to"</span><span class="p">,</span> <span class="s">"and"</span><span class="p">,</span> <span class="p">...]</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">index2word</span> <span class="o">=</span> <span class="p">[</span><span class="s">"the"</span><span class="p">,</span> <span class="s">","</span><span class="p">,</span> <span class="s">"."</span><span class="p">,</span> <span class="s">"of"</span><span class="p">,</span> <span class="s">"to"</span><span class="p">,</span> <span class="s">"and"</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
 </code></pre></div></div>
 <p>These will be used to turn our comment strings into integer vectors.</p>
 
@@ -108,11 +108,11 @@ pip install pandas
 <h4 id="code-get-toxic-comments-labels">Code: Get Toxic Comments Labels</h4>
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">print</span><span class="p">(</span><span class="s">'Loading Toxic Comments data.'</span><span class="p">)</span>
 <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">TRAIN_TEXT_DATA_DIR</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-    <span class="n">toxic_comments</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">TRAIN_TEXT_DATA_DIR</span><span class="p">)</span>
+    <span class="n">toxic_comments</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">TRAIN_TEXT_DATA_DIR</span><span class="p">)</span>
 
 <span class="k">print</span><span class="p">(</span><span class="s">'Getting Comment Labels.'</span><span class="p">)</span>
 <span class="n">prediction_labels</span> <span class="o">=</span> <span class="p">[</span><span class="s">"toxic"</span><span class="p">,</span> <span class="s">"severe_toxic"</span><span class="p">,</span> <span class="s">"obscene"</span><span class="p">,</span> <span class="s">"threat"</span><span class="p">,</span> <span class="s">"insult"</span><span class="p">,</span> <span class="s">"identity_hate"</span><span class="p">]</span>
-<span class="n">labels</span> <span class="o">=</span> <span class="n">toxic_comments</span><span class="p">[</span><span class="n">prediction_labels</span><span class="p">].</span><span class="n">values</span>
+<span class="n">labels</span> <span class="o">=</span> <span class="n">toxic_comments</span><span class="p">[</span><span class="n">prediction_labels</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
 
 </code></pre></div></div>
 <p>This loads the <code class="highlighter-rouge">toxic_comment.csv</code> as a Pandas dataframe called <code class="highlighter-rouge">toxic_comments</code>.  We then grab all of the comment labels using their column names.  This becomes a second a numpy matrix called <code class="highlighter-rouge">labels</code>.</p>
@@ -227,11 +227,11 @@ pip install pandas
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">print</span><span class="p">(</span><span class="s">'Tokenizing and sequencing text.'</span><span class="p">)</span>
 
 <span class="n">tokenizer</span> <span class="o">=</span> <span class="n">Tokenizer</span><span class="p">(</span><span class="n">num_words</span><span class="o">=</span><span class="n">MAX_NUM_WORDS</span><span class="p">)</span>
-<span class="n">tokenizer</span><span class="p">.</span><span class="n">fit_on_texts</span><span class="p">(</span><span class="n">toxic_comments</span><span class="p">[</span><span class="s">'comment_text'</span><span class="p">].</span><span class="n">fillna</span><span class="p">(</span><span class="s">"&lt;DT&gt;"</span><span class="p">).</span><span class="n">values</span><span class="p">)</span>
-<span class="n">sequences</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="p">.</span><span class="n">texts_to_sequences</span><span class="p">(</span><span class="n">toxic_comments</span><span class="p">[</span><span class="s">'comment_text'</span><span class="p">].</span><span class="n">fillna</span><span class="p">(</span><span class="s">"&lt;DT&gt;"</span><span class="p">).</span><span class="n">values</span><span class="p">)</span>
-<span class="n">word_index</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="p">.</span><span class="n">word_index</span>
+<span class="n">tokenizer</span><span class="o">.</span><span class="n">fit_on_texts</span><span class="p">(</span><span class="n">toxic_comments</span><span class="p">[</span><span class="s">'comment_text'</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="s">"&lt;DT&gt;"</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+<span class="n">sequences</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">texts_to_sequences</span><span class="p">(</span><span class="n">toxic_comments</span><span class="p">[</span><span class="s">'comment_text'</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="s">"&lt;DT&gt;"</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+<span class="n">word_index</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">word_index</span>
 
-<span class="k">print</span><span class="p">(</span><span class="s">'Found %s sequences.'</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">sequences</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="s">'Found </span><span class="si">%</span><span class="s">s sequences.'</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">sequences</span><span class="p">))</span>
 </code></pre></div></div>
 <p>The <code class="highlighter-rouge">Tokenizer</code> object comes from the <code class="highlighter-rouge">Keras</code> API.  It takes chunks of texts cleans them and then converts them to unique integer values.</p>
 
@@ -251,7 +251,7 @@ pip install pandas
     <span class="s">"you"</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span>
     <span class="s">"i"</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span>
     <span class="s">"is"</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span>
-    <span class="p">...</span>
+    <span class="o">...</span>
     <span class="s">"hanumakonda"</span><span class="p">:</span> <span class="mi">210334</span><span class="p">,</span>
     <span class="s">"956ce"</span><span class="p">:</span> <span class="mi">210335</span><span class="p">,</span>
     <span class="s">"automakers"</span><span class="p">:</span> <span class="mi">210336</span><span class="p">,</span>
@@ -284,10 +284,10 @@ pip install pandas
 
 <h4 id="code-applying-embeddings">Code: Applying Embeddings</h4>
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">num_words</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">MAX_NUM_WORDS</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">word_index</span><span class="p">))</span> <span class="o">+</span> <span class="mi">1</span>
-<span class="n">embedding_matrix</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">num_words</span><span class="p">,</span> <span class="n">EMBEDDING_DIM</span><span class="p">))</span>
-<span class="k">for</span> <span class="n">word</span><span class="p">,</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">word_index</span><span class="p">.</span><span class="n">items</span><span class="p">():</span>
+<span class="n">embedding_matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">num_words</span><span class="p">,</span> <span class="n">EMBEDDING_DIM</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">word</span><span class="p">,</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">word_index</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
     <span class="k">try</span><span class="p">:</span>
-        <span class="n">embedding_vector</span> <span class="o">=</span> <span class="n">embedding_model</span><span class="p">.</span><span class="n">get_vector</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
+        <span class="n">embedding_vector</span> <span class="o">=</span> <span class="n">embedding_model</span><span class="o">.</span><span class="n">get_vector</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">embedding_vector</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
             <span class="n">embedding_matrix</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">embedding_vector</span>
     <span class="k">except</span><span class="p">:</span>
@@ -308,13 +308,13 @@ pip install pandas
 </code></pre></div></div>
 <p>This gets the maximum number of words to be addeded in our embedding layer.  If it is less than our “average English speaker’s vocabulary”–20,000–we’ll use all of the words found in our tokenizer.  Otherwise, the <code class="highlighter-rouge">for-loop</code> will stop after <code class="highlighter-rouge">num_words</code> is met.  And remember, the <code class="highlighter-rouge">tokenizer</code> has kept the words in order of their frequency–so, the words which are lost aren’t as critical.</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">embedding_matrix</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">num_words</span><span class="p">,</span> <span class="n">EMBEDDING_DIM</span><span class="p">))</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">embedding_matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">num_words</span><span class="p">,</span> <span class="n">EMBEDDING_DIM</span><span class="p">))</span>
 </code></pre></div></div>
 <p>This initializes our embedding_matrix, which is a <code class="highlighter-rouge">numpy</code> object with all values set to zero.  Note, if the <code class="highlighter-rouge">EMBEDDING_DIM</code> size does not match the size of the word-embeddings loaded, the code will execute, but you will get a bad embedding matrix.  Further, you might not notice until your network isn’t training.  I mean, not that this happened to <em>me</em>–I’m just guessing it could happen to <em>someone</em>.</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="n">word</span><span class="p">,</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">word_index</span><span class="p">.</span><span class="n">items</span><span class="p">():</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="n">word</span><span class="p">,</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">word_index</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
     <span class="k">try</span><span class="p">:</span>
-        <span class="n">embedding_vector</span> <span class="o">=</span> <span class="n">embedding_model</span><span class="p">.</span><span class="n">get_vector</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
+        <span class="n">embedding_vector</span> <span class="o">=</span> <span class="n">embedding_model</span><span class="o">.</span><span class="n">get_vector</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">embedding_vector</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
             <span class="n">embedding_matrix</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">embedding_vector</span>
     <span class="k">except</span><span class="p">:</span>
@@ -326,10 +326,10 @@ pip install pandas
 <p>Confused? Me too.  Let’s visualize it.</p>
 
 <p>Let’s walk through the code with a word in mind: “of”.</p>
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="n">word</span><span class="p">,</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">word_index</span><span class="p">.</span><span class="n">items</span><span class="p">():</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="n">word</span><span class="p">,</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">word_index</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
 </code></pre></div></div>
 <p>By now the <code class="highlighter-rouge">for-loop</code> is two words in.  The words “the” and “to” have already been added.  Therefore, for this iteration <code class="highlighter-rouge">word</code> = ‘of’ and <code class="highlighter-rouge">i</code> = 2.</p>
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">embedding_vector</span> <span class="o">=</span> <span class="n">embedding_model</span><span class="p">.</span><span class="n">get_vector</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">embedding_vector</span> <span class="o">=</span> <span class="n">embedding_model</span><span class="o">.</span><span class="n">get_vector</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
 </code></pre></div></div>
 <p>The the word-embedding for the word “of” is</p>
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>-0.076947, -0.021211, 0.21271, -0.72232, -0.13988, -0.12234, ...
@@ -426,7 +426,7 @@ We defined this size with the <code class="highlighter-rouge">EMBEDDING_DIM</cod
 <p>Lastly, the <code class="highlighter-rouge">training</code> option is set to <code class="highlighter-rouge">False</code> so the word-embedding relationships are not updated as we train our <code class="highlighter-rouge">toxic_comment</code> detector.  You could set it to <code class="highlighter-rouge">True</code>, but come on, let’s be honest, are we going to be doing better than Google?</p>
 
 <h4 id="code-splitting-the-data">Code: Splitting the Data</h4>
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">nb_validation_samples</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">VALIDATION_SPLIT</span> <span class="o">*</span> <span class="n">data</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">nb_validation_samples</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">VALIDATION_SPLIT</span> <span class="o">*</span> <span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 <span class="n">x_train</span> <span class="o">=</span> <span class="n">data</span><span class="p">[:</span><span class="o">-</span><span class="n">nb_validation_samples</span><span class="p">]</span>
 <span class="n">y_train</span> <span class="o">=</span> <span class="n">labels</span><span class="p">[:</span><span class="o">-</span><span class="n">nb_validation_samples</span><span class="p">]</span>
 <span class="n">x_val</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="o">-</span><span class="n">nb_validation_samples</span><span class="p">:]</span>
@@ -464,13 +464,13 @@ We defined this size with the <code class="highlighter-rouge">EMBEDDING_DIM</cod
 <span class="n">x</span> <span class="o">=</span> <span class="n">Dense</span><span class="p">(</span><span class="mi">128</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s">'relu'</span><span class="p">)(</span><span class="n">x</span><span class="p">)</span>
 <span class="n">output</span> <span class="o">=</span> <span class="n">Dense</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">prediction_labels</span><span class="p">),</span> <span class="n">activation</span><span class="o">=</span><span class="s">'sigmoid'</span><span class="p">)(</span><span class="n">x</span><span class="p">)</span>
 <span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="p">(</span><span class="n">input_</span><span class="p">,</span> <span class="n">output</span><span class="p">)</span>
-<span class="n">model</span><span class="p">.</span><span class="nb">compile</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="s">'binary_crossentropy'</span><span class="p">,</span>
+<span class="n">model</span><span class="o">.</span><span class="nb">compile</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="s">'binary_crossentropy'</span><span class="p">,</span>
               <span class="n">optimizer</span><span class="o">=</span><span class="s">'rmsprop'</span><span class="p">,</span>
               <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="s">'acc'</span><span class="p">])</span>
 
 <span class="k">print</span><span class="p">(</span><span class="s">'Training model.'</span><span class="p">)</span>
 <span class="c1"># happy learning!
-</span><span class="n">history</span> <span class="o">=</span> <span class="n">model</span><span class="p">.</span><span class="n">fit</span><span class="p">(</span><span class="n">x_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">512</span><span class="p">,</span> <span class="n">validation_data</span><span class="o">=</span><span class="p">(</span><span class="n">x_val</span><span class="p">,</span> <span class="n">y_val</span><span class="p">))</span>
+</span><span class="n">history</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">x_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">512</span><span class="p">,</span> <span class="n">validation_data</span><span class="o">=</span><span class="p">(</span><span class="n">x_val</span><span class="p">,</span> <span class="n">y_val</span><span class="p">))</span>
 </code></pre></div></div>
 
 <p>Oh! There’s one more bit I’d like to go over, which most other articles have left out.  Prediction.</p>
@@ -480,17 +480,17 @@ We defined this size with the <code class="highlighter-rouge">EMBEDDING_DIM</cod
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">create_prediction</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">sequence</span><span class="p">,</span> <span class="n">tokenizer</span><span class="p">,</span> <span class="n">max_length</span><span class="p">,</span> <span class="n">prediction_labels</span><span class="p">):</span>
     <span class="c1"># Convert the sequence to tokens and pad it.
-</span>    <span class="n">sequence</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="p">.</span><span class="n">texts_to_sequences</span><span class="p">(</span><span class="n">sequence</span><span class="p">)</span>
+</span>    <span class="n">sequence</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">texts_to_sequences</span><span class="p">(</span><span class="n">sequence</span><span class="p">)</span>
     <span class="n">sequence</span> <span class="o">=</span> <span class="n">pad_sequences</span><span class="p">(</span><span class="n">sequence</span><span class="p">,</span> <span class="n">maxlen</span><span class="o">=</span><span class="n">max_length</span><span class="p">)</span>
 
     <span class="c1"># Make a prediction
-</span>    <span class="n">sequence_prediction</span> <span class="o">=</span> <span class="n">model</span><span class="p">.</span><span class="n">predict</span><span class="p">(</span><span class="n">sequence</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</span>    <span class="n">sequence_prediction</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">sequence</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
     <span class="c1"># Take only the first of the batch of predictions
-</span>    <span class="n">sequence_prediction</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">sequence_prediction</span><span class="p">).</span><span class="nb">round</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</span>    <span class="n">sequence_prediction</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">sequence_prediction</span><span class="p">)</span><span class="o">.</span><span class="nb">round</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 
     <span class="c1"># Label the predictions
-</span>    <span class="n">sequence_prediction</span><span class="p">.</span><span class="n">columns</span> <span class="o">=</span> <span class="n">prediction_labels</span>
+</span>    <span class="n">sequence_prediction</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="n">prediction_labels</span>
     <span class="k">return</span> <span class="n">sequence_prediction</span>
 
 <span class="c1"># Create a test sequence

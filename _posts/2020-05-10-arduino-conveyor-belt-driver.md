@@ -298,6 +298,10 @@ Everything in this function is intuitive, but the critical part for understandin
 ```cpp
 motorState->next_step_at = micros() + microSecondsDelay;
 ```
+`micros()` is built into the Arduino ecosystem.  It returns the number of microseconds since hte program started.
+
+* micros()
+
 The `next_step_at` is set for *when* we want the this specific motor to take its next step.  We get this number as the number of seconds from the programs start up, plus the delay we want between each step. This may be a bit hard to understand, however, like stated, it's key to the entire program working well.  Later, we will update `motorState->next_step_at` with when this motor should take its _next_ step. This "time to take the next step" threshold allows us to avoid creating a blocking loop on each motor.
 
 For example, the wrong way may look like:
@@ -343,6 +347,11 @@ void setMotorState(uint8_t motorNumber, uint8_t direction, uint16_t steps, unsig
 ```
 
 ### pollMotor
+Getting to the action.  Inside the main loop there is a call to `pollMotor()`, which loops all of the motors, checking if the `motorState` has steps to take.  If it does, it takes one step and sets when it should take its next step:
+```cpp
+motorState->next_step_at += motorState->step_delay;
+```
+This is key to all motors running together.  By setting when each motor should take its next step, it frees microcontroller to do other work.  And the microcontroller is quick, it can do its other work fast and come back and check if each motor needs to take its next step several hundred times before any motor needs to move again.  Of course, it all depends on how fast you want your motors to go.  For this project, it works like a charm.
 
 ```cpp
 /* Write to MOTOR */
@@ -388,3 +397,8 @@ void pollMotor() {
     }
 }
 ```
+
+## Summary
+We have the motor driver working.  We now can control five stepper motors' speed and number steps, all independent of one another.  And the serial communication protocol allows us to send small packets to each specific motor, telling how many steps to take and how quickly.
+
+Next, we need a controller on the other side of the UART--a master device.  This master device will coordinate higher level functions with the motor movements.  I've already started work on this project, it will be a asynchronous Python package.  Wish me luck.

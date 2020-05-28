@@ -14,6 +14,11 @@ custom_js:
 ---
 This article is part of a series documenting an attempt to create a LEGO sorting machine.  This portion covers the Arduino Mega2560 firmware I've written to control a RAMPS 1.4 stepper motor board.
 
+**A big thanks to William Cooke, his wisdom was key to this project.  Thank you, sir!**
+
+* [William Cooke](http://smalltimeelectronics.com/about/about.html)
+
+
 ## Goal
 To move forward with the LEGO sorting machine I needed a way to drive a conveyor belt.  Stepper motors were a fairly obvious choice.  They provide plenty of torque and finite control.  This was great, as several other parts of the LEGO classifier system would need steppers motors as well-e.g.,turn table and dispensing hopper.  Of course, one of the overall goals of this project is to keep the tools accessible.  After some research I decided to meet both goals by purchasing an Ardunio / RAMPs combo package intended for 3D printers.
 
@@ -135,22 +140,24 @@ Here's the flow of a processed command:
 2. MOTOR_NUM      = X     (0x01)
 3. DIR            = CW    (0x01)
 4. STEPS          = 4095  (0x0FFF)
-5. MILLI_BETWEEN  = 1     (0x01)
+5. MILLI_BETWEEN  = 5ms   (0x05)
+6. ETX            = End   (0x03)
 ```
-Note, the maximum value of the `STEPS` byte is greater than 8-bits.  To handle this, we break it into two bytes.  
+Note, the maximum value of the `STEPS` byte is greater than 8-bits.  To handle this, we break it into two bytes of 6-bits.  
 ```md
 1. CMD_TYPE       = DRIVE (0x01)
 2. MOTOR_NUM      = X     (0x01)
 3. DIR            = CW    (0x01)
 4. STEPS_1        = 3F
 5. STEPS_2        = 3F
-5. MILLI_BETWEEN  = 1     (0x01)
+5. MILLI_BETWEEN  = 5     (0x05)
+6. ETX            = End   (0x03)
 ```
 Here's a sample motor packet before encoding:
 ```cpp
 uint8_t packet[7] = {0x01, 0x01, 0x01, 0x3F, 0x3F, 0x05, 0x03}
 ```
-Now, we have to shift all of the bytes left by two bits, this will ensure `0x00` through `0x03` are reserved for metacommuncation.
+Now, we have to shift all of the bytes left by two bits, this will ensure `0x00` through `0x03` are reserved for meta-communication.
 
 This process is a bit easier to see in binary:
 
@@ -161,7 +168,8 @@ This process is a bit easier to see in binary:
 3. DIR            = 0000 0001
 4. STEPS_1        = 0011 1111
 5. STEPS_2        = 0011 1111
-5. MILLI_BETWEEN  = 0000 0001
+5. MILLI_BETWEEN  = 0000 0101
+6. ETX            = 0000 0011
 ```
 
 **After** shift:
@@ -171,22 +179,24 @@ This process is a bit easier to see in binary:
 3. DIR            = 0000 0100
 4. STEPS_1        = 1111 1100
 5. STEPS_2        = 1111 1100
-5. MILLI_BETWEEN  = 0000 0100
+5. MILLI_BETWEEN  = 0001 0100
+6. ETX            = 0000 0011
 ```
 
 And back to hex:
 ```md
-1. CMD_TYPE       = 0x07
-2. MOTOR_NUM      = 0000 0100
-3. DIR            = 0000 0100
-4. STEPS_1        = 1111 1100
-5. STEPS_2        = 1111 1100
-5. MILLI_BETWEEN  = 0000 0100
+1. CMD_TYPE       = 0x04
+2. MOTOR_NUM      = 0x04
+3. DIR            = 0x04
+4. STEPS_1        = 0xFC
+5. STEPS_2        = 0xFC
+5. MILLI_BETWEEN  = 0x14
+6. ETX            = 0x03
 ```
 
 And after encoding:
 ```cpp
-uint8_t packet[7] = {0x07, 0x04,  0x07,  0xFF, 0xFF, 0x17, 0x03}
+uint8_t packet[7] = {0x04, 0x04,  0x04, 0xFC, 0xFC, 0x14, 0x03}
 ```
 Notice the last byte is not encoded, as this is a reserved command character.
 
@@ -224,14 +234,22 @@ void serialEvent() {
 ```
 
 ### handleCompletePacket
-When a packet is waiting to be decoded, the `handleCompletePacket()` will be executed.  The first thing the method does is check the `packet_type`.  Keeping it simple, there are only two and I've not implemented the second one yet (`HALT_CMD`)
+When a packet is waiting to be decoded, the `handleCompletePacket()` will be executed.  The first thing the method does is check the `packet_type`.  Keeping it simple, there are only two and one is not implemented yet (`HALT_CMD`)
 
 ```cpp
 #define DRIVE_CMD       (char)0x01
 #define HALT_CMD        (char)0x02
 ```
+Code is simple.  It unloads the data from the packet.  Each byte in the incoming packet represents different portions of the the motor move command.  Each byte's value is loaded into local a variable.  
 
+The only note worth item is the `steps` bytes, as the steps consistent of a 12-bit value, which is contained in the 6 lower bits of two bytes.  The the upper 6-bits are left-shifted by 6 and we `OR` them with lower 6-bits.
+```cpp
+uint16_t steps = ((uint8_t)rxBuffer.data[3] << 6)  | (uint8_t)rxBuffer.data[4];
+```
 
+If the packet actually contains steps to move we call the `setMotorState()`, passing all of the freshly unpacked values as arguments.  This function will store those values until the processor has time to process the move command.
+
+Lastly, the `handleCompletePacket()` sends an acknowledgment byte (`0x02`).
 ```cpp
 void handleCompletePacket(BUFFER rxBuffer) {
     
@@ -244,8 +262,8 @@ void handleCompletePacket(BUFFER rxBuffer) {
           uint8_t motorNumber =  rxBuffer.data[1];
           uint8_t direction =  rxBuffer.data[2];
           uint16_t steps = ((uint8_t)rxBuffer.data[3] << 6)  | (uint8_t)rxBuffer.data[4];
-          unsigned long microSecondsDelay = rxBuffer.data[5] * 1000; // Delay comes in as milliseconds.
-
+          uint16_t microSecondsDelay = rxBuffer.data[5] * 1000; // Delay comes in as milliseconds.
+          
           if (microSecondsDelay < MINIMUM_STEPPER_DELAY) { microSecondsDelay = MINIMUM_STEPPER_DELAY; }
 
           // Should we move this motor.
@@ -264,18 +282,89 @@ void handleCompletePacket(BUFFER rxBuffer) {
 }
 ```
 
+### setMotorState
+Each motor has a `struct MOTOR_STATE` representing its current state.
+```cpp
+struct MOTOR_STATE {
+  uint8_t direction;
+  uint16_t steps;
+  unsigned long step_delay;
+  unsigned long next_step_at;
+  bool enabled;
+};
+```
+There are five motor `MOTOR_STATE`s which are initialized a program start, one for each motor (X, Y, Z, E0, E1).
+```cpp
+MOTOR_STATE motor_n_state = { DIR_CC, 0, 0, SENTINEL, false };
+```
+And whenever a valid move packet is processed, as we saw above, the `setMotorState()` is responsible for updating the respective `MOTOR_STATE` struct.
+
+Everything in this function is intuitive, but the critical part for understanding how the entire program comes together to ensure the motors are able to move around at different speeds, directions, all simultaneously is:
+```cpp
+motorState->next_step_at = micros() + microSecondsDelay;
+```
+`micros()` is built into the Arduino ecosystem.  It returns the number of microseconds since hte program started.
+
+* micros()
+
+The `next_step_at` is set for *when* we want the this specific motor to take its next step.  We get this number as the number of seconds from the programs start up, plus the delay we want between each step. This may be a bit hard to understand, however, like stated, it's key to the entire program working well.  Later, we will update `motorState->next_step_at` with when this motor should take its _next_ step. This "time to take the next step" threshold allows us to avoid creating a blocking loop on each motor.
+
+For example, the wrong way may look like:
+```cpp
+void main_loop() {
+
+  // motor_x
+  for(int i = 0; i < motor_x_steps; i++) {
+    digitalWrite(motor.step_pin, HIGH);
+    delayMicroseconds(motor.pulse_width_micros);
+    digitalWrite(motor.step_pin, LOW);
+  }
+
+  // motor_y
+  for(int i = 0; i < motor_y_steps; i++) {
+    digitalWrite(motor.step_pin, HIGH);
+    delayMicroseconds(motor.pulse_width_micros);
+    digitalWrite(motor.step_pin, LOW);
+  }
+
+  // Etc
+}
+
+```
+As you might have noticed, the `motor_y` would not start moving until `motor_x` took _all_ of its steps.  That's no good.
+
+Anyway, keep this in mind as we start looking at the motor movement function--coming up next.
+
+```cpp
+void setMotorState(uint8_t motorNumber, uint8_t direction, uint16_t steps, unsigned long microSecondsDelay) {
+
+    // Get reference to motor state.
+    MOTOR_STATE* motorState = getMotorState(motorNumber);
+
+    ...
+
+    // Update with target states.
+    motorState->direction = direction;
+    motorState->steps = steps;
+    motorState->step_delay = microSecondsDelay;
+    motorState->next_step_at = micros() + microSecondsDelay;
+}
+```
 
 ### pollMotor
+Getting to the action.  Inside the main loop there is a call to `pollMotor()`, which loops all of the motors, checking if the `motorState` has steps to take.  If it does, it takes one step and sets when it should take its next step:
+```cpp
+motorState->next_step_at += motorState->step_delay;
+```
+This is key to all motors running together.  By setting when each motor should take its next step, it frees microcontroller to do other work.  And the microcontroller is quick, it can do its other work fast and come back and check if each motor needs to take its next step several hundred times before any motor needs to move again.  Of course, it all depends on how fast you want your motors to go.  For this project, it works like a charm.
 
 ```cpp
 /* Write to MOTOR */
 void pollMotor() {
     unsigned long current_micros = micros();
-
     // Loop over all motors.
     for (int i = 0; i < int(sizeof(all_motors)/sizeof(int)); i++)
     {
-
       // Get motor and motorState for this motor.
       MOTOR motor = getMotor(all_motors[i]);
       MOTOR_STATE* motorState = getMotorState(all_motors[i]);
@@ -302,13 +391,11 @@ void pollMotor() {
             writeMotor(motor);
             motorState->steps -= 1;
             motorState->next_step_at += motorState->step_delay;
-            // Serial.println(motorState->steps);
         }
       }
 
       // If steps are finished, disable motor and reset state.
       if (motorState->steps == 0 && motorState->enabled == true ) {
-        Serial.println("Disabled motor");
         disableMotor(motor, motorState);
         resetMotorState(motorState);
       }
@@ -316,6 +403,7 @@ void pollMotor() {
 }
 ```
 
-### Motor
+## Summary
+We have the motor driver working.  We now can control five stepper motors' speed and number steps, all independent of one another.  And the serial communication protocol allows us to send small packets to each specific motor, telling how many steps to take and how quickly.
 
-
+Next, we need a controller on the other side of the UART--a master device.  This master device will coordinate higher level functions with the motor movements.  I've already started work on this project, it will be a asynchronous Python package.  Wish me luck.

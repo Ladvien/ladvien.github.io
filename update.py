@@ -6,12 +6,6 @@ root_path = os.environ['HOME']
 
 print('')
 print('*******************************************************')
-print('* Moving raw_images into images                       *')
-print('*******************************************************')
-os.system(f'rsync -h -v -r -P -t --ignore-existing {root_path}/ladvien.github.io/raw_images/* {root_path}/ladvien.github.io/images')
-
-print('')
-print('*******************************************************')
 print('* Optimizing /images                                  *')
 print('*******************************************************')
 # os.system('rake')
@@ -27,6 +21,12 @@ print('')
 print('******************************')
 print('* Updating Website           *')
 print('******************************')
+# RSYNC OPTIONS:
+# -h = output numbers in a human-readable format
+# -v = increase verbosity
+# -r = recurse into directories
+# -P = progress
+# -t = preserve modification times
 os.system(f'rsync -h -v -r -P -t {root_path}/ladvien.github.io/_site/* root@ladvien.com:/usr/share/nginx/html')
 
 os.system('cd {root_path}/ladvien.github.io')

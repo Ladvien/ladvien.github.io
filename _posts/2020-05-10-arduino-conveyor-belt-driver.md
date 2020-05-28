@@ -193,11 +193,11 @@ Notice the last byte is not encoded, as this is a reserved command character.
 Here are the `decode` and `encode` functions. Fairly straightforward bitwise operations.
 ```cpp
 uint8_t decode(uint8_t value) {
-  return (value >> 2) &~ 0xC0;
+  return (value >> 2) & 0x3F;
 }
 
 uint8_t encode(uint8_t value) {
-  return (value << 2) | 0x03;
+  return (value << 2) & 0xFC;
 }
 ```
 

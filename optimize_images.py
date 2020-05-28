@@ -9,8 +9,8 @@ root_path = os.environ['HOME']
 ############
 # Parameters
 ############
-input_directory = f'{root_path}/Desktop/images'
-output_directory = f'{root_path}/Desktop/processed_images'
+input_directory = f'{root_path}/ladvien.github.io/raw_images'
+output_directory = f'{root_path}/ladvien.github.io/images'
 
 max_size                = 2500
 max_file_size_kb        = 300 

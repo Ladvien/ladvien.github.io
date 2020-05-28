@@ -1,4 +1,4 @@
-I"¨¼<p>Iâ€™ve started designing a system to manage data analysis tools I build.</p>
+I"$»<p>Iâ€™ve started designing a system to manage data analysis tools I build.</p>
 
 <ol>
   <li>An illegitimate REST interface</li>
@@ -176,12 +176,12 @@ Created on Mon Jun 11 21:12:10 2018
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="c1">#
-</span><span class="n">filename</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-<span class="n">filepath</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
-<span class="n">pathToWriteProcessedFile</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+</span><span class="n">filename</span> <span class="o">=</span> <span class="n">sys</span><span class="p">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">filepath</span> <span class="o">=</span> <span class="n">sys</span><span class="p">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+<span class="n">pathToWriteProcessedFile</span> <span class="o">=</span> <span class="n">sys</span><span class="p">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
 
-<span class="n">request</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
-<span class="n">request</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+<span class="n">request</span> <span class="o">=</span> <span class="n">sys</span><span class="p">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
+<span class="n">request</span> <span class="o">=</span> <span class="n">json</span><span class="p">.</span><span class="n">loads</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
 
 <span class="k">try</span><span class="p">:</span>
     <span class="n">cols_to_remove</span> <span class="o">=</span> <span class="n">request</span><span class="p">[</span><span class="s">'columnsToRemove'</span><span class="p">]</span>
@@ -189,7 +189,7 @@ Created on Mon Jun 11 21:12:10 2018
 <span class="k">except</span><span class="p">:</span>
     <span class="c1"># If columns aren't contained or no columns, exit nicely
 </span>    <span class="n">result</span> <span class="o">=</span> <span class="p">{</span><span class="s">'status'</span><span class="p">:</span> <span class="mi">400</span><span class="p">,</span> <span class="s">'message'</span><span class="p">:</span> <span class="s">'Expected script parameters not found.'</span><span class="p">}</span>
-    <span class="k">print</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">result</span><span class="p">)))</span>
+    <span class="k">print</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">result</span><span class="p">)))</span>
     <span class="n">quit</span><span class="p">()</span>
 
 <span class="n">pathToData</span> <span class="o">=</span> <span class="n">filepath</span> <span class="o">+</span> <span class="n">filename</span>
@@ -218,36 +218,36 @@ Created on Mon Jun 11 21:12:10 2018
 <span class="k">def</span> <span class="nf">add_datatype_prefix</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">date_to_cont</span> <span class="o">=</span> <span class="bp">True</span><span class="p">):</span>    
     <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="n">pd</span>
     <span class="c1"># Get a list of current column names.
-</span>    <span class="n">column_names</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+</span>    <span class="n">column_names</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">df</span><span class="p">.</span><span class="n">columns</span><span class="p">.</span><span class="n">values</span><span class="p">)</span>
     <span class="c1"># Encode each column based with a three letter prefix based upon assigned datatype.
 </span>    <span class="c1"># 1. con = continuous
 </span>    <span class="c1"># 2. cat = categorical
 </span>    
     <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">column_names</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">df</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="s">'object'</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">df</span><span class="p">[</span><span class="n">name</span><span class="p">].</span><span class="n">dtype</span> <span class="o">==</span> <span class="s">'object'</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
-                <span class="n">df</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">name</span><span class="p">])</span>
+                <span class="n">df</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">name</span><span class="p">])</span>
                 <span class="k">if</span><span class="p">(</span><span class="n">date_to_cont</span><span class="p">):</span>
-                    <span class="n">new_col_names</span> <span class="o">=</span> <span class="s">"con_"</span> <span class="o">+</span> <span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">" "</span><span class="p">,</span> <span class="s">"_"</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">"/"</span><span class="p">,</span> <span class="s">"_"</span><span class="p">)</span>
-                    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="n">name</span><span class="p">:</span> <span class="n">new_col_names</span><span class="p">})</span>
+                    <span class="n">new_col_names</span> <span class="o">=</span> <span class="s">"con_"</span> <span class="o">+</span> <span class="n">name</span><span class="p">.</span><span class="n">lower</span><span class="p">().</span><span class="n">replace</span><span class="p">(</span><span class="s">" "</span><span class="p">,</span> <span class="s">"_"</span><span class="p">).</span><span class="n">replace</span><span class="p">(</span><span class="s">"/"</span><span class="p">,</span> <span class="s">"_"</span><span class="p">)</span>
+                    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="n">name</span><span class="p">:</span> <span class="n">new_col_names</span><span class="p">})</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="n">new_col_names</span> <span class="o">=</span> <span class="s">"date_"</span> <span class="o">+</span> <span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">" "</span><span class="p">,</span> <span class="s">"_"</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">"/"</span><span class="p">,</span> <span class="s">"_"</span><span class="p">)</span>
-                    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="n">name</span><span class="p">:</span> <span class="n">new_col_names</span><span class="p">})</span>                    
+                    <span class="n">new_col_names</span> <span class="o">=</span> <span class="s">"date_"</span> <span class="o">+</span> <span class="n">name</span><span class="p">.</span><span class="n">lower</span><span class="p">().</span><span class="n">replace</span><span class="p">(</span><span class="s">" "</span><span class="p">,</span> <span class="s">"_"</span><span class="p">).</span><span class="n">replace</span><span class="p">(</span><span class="s">"/"</span><span class="p">,</span> <span class="s">"_"</span><span class="p">)</span>
+                    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="n">name</span><span class="p">:</span> <span class="n">new_col_names</span><span class="p">})</span>                    
             <span class="k">except</span> <span class="nb">ValueError</span><span class="p">:</span>
                 <span class="k">pass</span>
     
-    <span class="n">column_names</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+    <span class="n">column_names</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">df</span><span class="p">.</span><span class="n">columns</span><span class="p">.</span><span class="n">values</span><span class="p">)</span>
     
     <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">column_names</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">name</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span> <span class="o">==</span> <span class="s">"rem"</span> <span class="ow">or</span> <span class="s">"con"</span> <span class="ow">or</span> <span class="s">"cat"</span> <span class="ow">or</span> <span class="s">"date"</span><span class="p">:</span>
             <span class="k">pass</span>
-        <span class="k">if</span> <span class="n">df</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="s">'object'</span><span class="p">:</span>
-            <span class="n">new_col_names</span> <span class="o">=</span> <span class="s">"cat_"</span> <span class="o">+</span> <span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">" "</span><span class="p">,</span> <span class="s">"_"</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">"/"</span><span class="p">,</span> <span class="s">"_"</span><span class="p">)</span>
-            <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="n">name</span><span class="p">:</span> <span class="n">new_col_names</span><span class="p">})</span>
-        <span class="k">elif</span> <span class="n">df</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="s">'float64'</span> <span class="ow">or</span> <span class="n">df</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="s">'int64'</span> <span class="ow">or</span> <span class="n">df</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="s">'datetime64[ns]'</span><span class="p">:</span>
-            <span class="n">new_col_names</span> <span class="o">=</span> <span class="s">"con_"</span> <span class="o">+</span> <span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">" "</span><span class="p">,</span> <span class="s">"_"</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">"/"</span><span class="p">,</span> <span class="s">"_"</span><span class="p">)</span>
-            <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="n">name</span><span class="p">:</span> <span class="n">new_col_names</span><span class="p">})</span>
-    <span class="n">column_names</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">df</span><span class="p">[</span><span class="n">name</span><span class="p">].</span><span class="n">dtype</span> <span class="o">==</span> <span class="s">'object'</span><span class="p">:</span>
+            <span class="n">new_col_names</span> <span class="o">=</span> <span class="s">"cat_"</span> <span class="o">+</span> <span class="n">name</span><span class="p">.</span><span class="n">lower</span><span class="p">().</span><span class="n">replace</span><span class="p">(</span><span class="s">" "</span><span class="p">,</span> <span class="s">"_"</span><span class="p">).</span><span class="n">replace</span><span class="p">(</span><span class="s">"/"</span><span class="p">,</span> <span class="s">"_"</span><span class="p">)</span>
+            <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="n">name</span><span class="p">:</span> <span class="n">new_col_names</span><span class="p">})</span>
+        <span class="k">elif</span> <span class="n">df</span><span class="p">[</span><span class="n">name</span><span class="p">].</span><span class="n">dtype</span> <span class="o">==</span> <span class="s">'float64'</span> <span class="ow">or</span> <span class="n">df</span><span class="p">[</span><span class="n">name</span><span class="p">].</span><span class="n">dtype</span> <span class="o">==</span> <span class="s">'int64'</span> <span class="ow">or</span> <span class="n">df</span><span class="p">[</span><span class="n">name</span><span class="p">].</span><span class="n">dtype</span> <span class="o">==</span> <span class="s">'datetime64[ns]'</span><span class="p">:</span>
+            <span class="n">new_col_names</span> <span class="o">=</span> <span class="s">"con_"</span> <span class="o">+</span> <span class="n">name</span><span class="p">.</span><span class="n">lower</span><span class="p">().</span><span class="n">replace</span><span class="p">(</span><span class="s">" "</span><span class="p">,</span> <span class="s">"_"</span><span class="p">).</span><span class="n">replace</span><span class="p">(</span><span class="s">"/"</span><span class="p">,</span> <span class="s">"_"</span><span class="p">)</span>
+            <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="n">name</span><span class="p">:</span> <span class="n">new_col_names</span><span class="p">})</span>
+    <span class="n">column_names</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">df</span><span class="p">.</span><span class="n">columns</span><span class="p">.</span><span class="n">values</span><span class="p">)</span>
     
     <span class="c1"># Get lists of coolumns for conversion
 </span>    <span class="n">con_column_names</span> <span class="o">=</span> <span class="p">[]</span>
@@ -257,25 +257,25 @@ Created on Mon Jun 11 21:12:10 2018
     
     <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">column_names</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">name</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span> <span class="o">==</span> <span class="s">"cat"</span><span class="p">:</span>
-            <span class="n">cat_column_names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+            <span class="n">cat_column_names</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">name</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span> <span class="o">==</span> <span class="s">"con"</span><span class="p">:</span>
-            <span class="n">con_column_names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+            <span class="n">con_column_names</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">name</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span> <span class="o">==</span> <span class="s">"rem"</span><span class="p">:</span>
-            <span class="n">rem_column_names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+            <span class="n">rem_column_names</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">name</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">4</span><span class="p">]</span> <span class="o">==</span> <span class="s">"date"</span><span class="p">:</span>
-            <span class="n">date_column_names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+            <span class="n">date_column_names</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
             
     <span class="c1"># Make sure continuous variables are correct datatype. (Otherwise, they'll be dummied).
 </span>    <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">con_column_names</span><span class="p">:</span>
-        <span class="n">df</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">name</span><span class="p">],</span> <span class="n">errors</span><span class="o">=</span><span class="s">'coerce'</span><span class="p">)</span>
-        <span class="n">df</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">df</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">name</span><span class="p">],</span> <span class="n">errors</span><span class="o">=</span><span class="s">'coerce'</span><span class="p">)</span>
+        <span class="n">df</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">name</span><span class="p">].</span><span class="n">fillna</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
     
     <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">cat_column_names</span><span class="p">:</span>
-        <span class="n">df</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="nb">apply</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
-        <span class="n">df</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="s">'not_collected'</span><span class="p">)</span>
+        <span class="n">df</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">name</span><span class="p">].</span><span class="nb">apply</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+        <span class="n">df</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">name</span><span class="p">].</span><span class="n">fillna</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="s">'not_collected'</span><span class="p">)</span>
     
     <span class="c1"># Remove unwanted columns    
-</span>    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">rem_column_names</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</span>    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">rem_column_names</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">df</span>
 
 <span class="c1"># ------------------------------------------------------
@@ -287,12 +287,12 @@ Created on Mon Jun 11 21:12:10 2018
 # to avoid the Dummy Variable Trap.
 </span><span class="k">def</span> <span class="nf">dummy_categorical</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">drop_first</span> <span class="o">=</span> <span class="bp">True</span><span class="p">):</span>
     <span class="c1"># Get categorical data columns.
-</span>    <span class="n">columns</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
-    <span class="n">columnsToEncode</span> <span class="o">=</span> <span class="n">columns</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span> 
+</span>    <span class="n">columns</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">df</span><span class="p">.</span><span class="n">columns</span><span class="p">.</span><span class="n">values</span><span class="p">)</span>
+    <span class="n">columnsToEncode</span> <span class="o">=</span> <span class="n">columns</span><span class="p">.</span><span class="n">copy</span><span class="p">()</span> 
 
     <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">columns</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">name</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span> <span class="o">!=</span> <span class="s">'cat'</span><span class="p">:</span>          
-            <span class="n">columnsToEncode</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+            <span class="n">columnsToEncode</span><span class="p">.</span><span class="n">remove</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
 
     <span class="c1"># if there are no columns to encode, return unmutated.
 </span>    <span class="k">if</span> <span class="ow">not</span> <span class="n">columnsToEncode</span><span class="p">:</span>
@@ -305,50 +305,50 @@ Created on Mon Jun 11 21:12:10 2018
         <span class="k">if</span> <span class="n">name</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span> <span class="o">!=</span> <span class="s">'cat'</span><span class="p">:</span>
             <span class="k">continue</span>
 
-        <span class="n">tmp</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">get_dummies</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">name</span><span class="p">],</span> <span class="n">drop_first</span> <span class="o">=</span> <span class="n">drop_first</span><span class="p">)</span>
+        <span class="n">tmp</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">get_dummies</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">name</span><span class="p">],</span> <span class="n">drop_first</span> <span class="o">=</span> <span class="n">drop_first</span><span class="p">)</span>
         <span class="n">names</span> <span class="o">=</span> <span class="p">{}</span>
         
         <span class="c1"># Get a clean column name.
-</span>        <span class="n">clean_name</span> <span class="o">=</span> <span class="n">name</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">" "</span><span class="p">,</span> <span class="s">"_"</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">"/"</span><span class="p">,</span> <span class="s">"_"</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+</span>        <span class="n">clean_name</span> <span class="o">=</span> <span class="n">name</span><span class="p">.</span><span class="n">replace</span><span class="p">(</span><span class="s">" "</span><span class="p">,</span> <span class="s">"_"</span><span class="p">).</span><span class="n">replace</span><span class="p">(</span><span class="s">"/"</span><span class="p">,</span> <span class="s">"_"</span><span class="p">).</span><span class="n">lower</span><span class="p">()</span>
         <span class="c1"># Get a dictionary for renaming the dummay variables in the scheme of old_col_name + response_string
 </span>        <span class="k">if</span> <span class="n">clean_name</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span> <span class="o">==</span> <span class="s">"cat"</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">tmp_name</span> <span class="ow">in</span> <span class="n">tmp</span><span class="p">:</span>
                 <span class="n">tmp_name</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">tmp_name</span><span class="p">)</span>
-                <span class="n">new_tmp_name</span> <span class="o">=</span> <span class="n">tmp_name</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">" "</span><span class="p">,</span> <span class="s">"_"</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">"/"</span><span class="p">,</span> <span class="s">"_"</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+                <span class="n">new_tmp_name</span> <span class="o">=</span> <span class="n">tmp_name</span><span class="p">.</span><span class="n">replace</span><span class="p">(</span><span class="s">" "</span><span class="p">,</span> <span class="s">"_"</span><span class="p">).</span><span class="n">replace</span><span class="p">(</span><span class="s">"/"</span><span class="p">,</span> <span class="s">"_"</span><span class="p">).</span><span class="n">lower</span><span class="p">()</span>
                 <span class="n">new_tmp_name</span> <span class="o">=</span> <span class="n">clean_name</span> <span class="o">+</span> <span class="s">"_"</span> <span class="o">+</span> <span class="n">new_tmp_name</span>
                 <span class="n">names</span><span class="p">[</span><span class="n">tmp_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_tmp_name</span>
         
         <span class="c1"># Rename the dummy variable dataframe
-</span>        <span class="n">tmp</span> <span class="o">=</span> <span class="n">tmp</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">names</span><span class="p">)</span>
+</span>        <span class="n">tmp</span> <span class="o">=</span> <span class="n">tmp</span><span class="p">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">names</span><span class="p">)</span>
         
         <span class="c1"># join the dummy variable back to original dataframe.
-</span>        <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tmp</span><span class="p">)</span>
+</span>        <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">.</span><span class="n">join</span><span class="p">(</span><span class="n">tmp</span><span class="p">)</span>
     
     <span class="c1"># Drop all old categorical columns
-</span>    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">columnsToEncode</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</span>    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">columnsToEncode</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">df</span>
 
 <span class="c1"># Read the file
-</span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">pathToData</span><span class="p">)</span>
+</span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">pathToData</span><span class="p">)</span>
 
 <span class="c1"># Drop columns such as unique IDs
 </span><span class="k">try</span><span class="p">:</span>
-    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">cols_to_remove</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">.</span><span class="n">drop</span><span class="p">(</span><span class="n">cols_to_remove</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="k">except</span><span class="p">:</span>
     <span class="c1"># If columns aren't contained or no columns, exit nicely
 </span>    <span class="n">result</span> <span class="o">=</span> <span class="p">{</span><span class="s">'status'</span><span class="p">:</span> <span class="mi">404</span><span class="p">,</span> <span class="s">'message'</span><span class="p">:</span> <span class="s">'Problem with columns to remove.'</span><span class="p">}</span>
-    <span class="k">print</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">result</span><span class="p">)))</span>
+    <span class="k">print</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">result</span><span class="p">)))</span>
     <span class="n">quit</span><span class="p">()</span>
     
 <span class="c1"># Get the number of columns before hot encoding
-</span><span class="n">num_cols_before</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+</span><span class="n">num_cols_before</span> <span class="o">=</span> <span class="n">df</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 
 <span class="c1"># Encode the data.
 </span><span class="n">df</span> <span class="o">=</span> <span class="n">add_datatype_prefix</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
 <span class="n">df</span> <span class="o">=</span> <span class="n">dummy_categorical</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
 
 <span class="c1"># Get the new dataframe shape.
-</span><span class="n">num_cols_after</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+</span><span class="n">num_cols_after</span> <span class="o">=</span> <span class="n">df</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 
 
 <span class="n">percentage_increase</span> <span class="o">=</span> <span class="n">num_cols_after</span> <span class="o">/</span> <span class="n">num_cols_before</span>
@@ -356,23 +356,23 @@ Created on Mon Jun 11 21:12:10 2018
 <span class="n">result</span> <span class="o">=</span> <span class="s">""</span>
 
 <span class="k">if</span> <span class="n">percentage_increase</span> <span class="o">&gt;</span> <span class="n">unreasonable_increase</span><span class="p">:</span>
-    <span class="n">message</span> <span class="o">=</span> <span class="s">"</span><span class="se">\"</span><span class="s">error</span><span class="se">\"</span><span class="s">: </span><span class="se">\"</span><span class="s">Feature increase is greater than unreasonableIncreaseThreshold, most likely a unique id was included."</span>
+    <span class="n">message</span> <span class="o">=</span> <span class="s">"</span><span class="si">\</span><span class="se">"</span><span class="s">error</span><span class="si">\</span><span class="se">"</span><span class="s">: </span><span class="si">\</span><span class="se">"</span><span class="s">Feature increase is greater than unreasonableIncreaseThreshold, most likely a unique id was included."</span>
     <span class="n">result</span> <span class="o">=</span> <span class="p">{</span><span class="s">'status'</span><span class="p">:</span> <span class="mi">400</span><span class="p">,</span> <span class="s">'message'</span><span class="p">:</span> <span class="n">message</span><span class="p">}</span>
 <span class="k">else</span><span class="p">:</span>
-    <span class="n">filename</span> <span class="o">=</span> <span class="n">filename</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">".csv"</span><span class="p">,</span> <span class="s">""</span><span class="p">)</span>
+    <span class="n">filename</span> <span class="o">=</span> <span class="n">filename</span><span class="p">.</span><span class="n">replace</span><span class="p">(</span><span class="s">".csv"</span><span class="p">,</span> <span class="s">""</span><span class="p">)</span>
     <span class="kn">import</span> <span class="nn">os</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">pathToWriteProcessedFile</span><span class="p">):</span>
-        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">pathToWriteProcessedFile</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="n">exists</span><span class="p">(</span><span class="n">pathToWriteProcessedFile</span><span class="p">):</span>
+        <span class="n">os</span><span class="p">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">pathToWriteProcessedFile</span><span class="p">)</span>
         
     
     <span class="n">writeFile</span> <span class="o">=</span> <span class="n">pathToWriteProcessedFile</span> <span class="o">+</span> <span class="n">filename</span> <span class="o">+</span> <span class="s">"_encoded.csv"</span>
-    <span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">path_or_buf</span><span class="o">=</span><span class="n">writeFile</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s">','</span><span class="p">)</span>
+    <span class="n">df</span><span class="p">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">path_or_buf</span><span class="o">=</span><span class="n">writeFile</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s">','</span><span class="p">)</span>
     
     
     <span class="c1"># Process the results and return JSON results object
 </span>    <span class="n">result</span> <span class="o">=</span> <span class="p">{</span><span class="s">'status'</span><span class="p">:</span> <span class="mi">200</span><span class="p">,</span> <span class="s">'message'</span><span class="p">:</span> <span class="s">'encoded data'</span><span class="p">,</span> <span class="s">'path'</span><span class="p">:</span> <span class="n">writeFile</span><span class="p">}</span>
  
-<span class="k">print</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">result</span><span class="p">)))</span>
+<span class="k">print</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">result</span><span class="p">)))</span>
 </code></pre></div></div>
 
 <p>Thatâ€™s the premise.  Iâ€™ll be adding more services to as a series of articles.</p>

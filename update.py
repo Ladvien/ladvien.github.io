@@ -4,12 +4,6 @@ from datetime import date
 
 root_path = os.environ['HOME']
 
-print('')
-print('*******************************************************')
-print('* Optimizing /images                                  *')
-print('*******************************************************')
-# os.system('rake')
-
 
 print('')
 print('*******************************************************')

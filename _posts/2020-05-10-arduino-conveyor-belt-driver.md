@@ -22,7 +22,7 @@ This article is part of a series documenting an attempt to create a LEGO sorting
 ## Goal
 To move forward with the LEGO sorting machine I needed a way to drive a conveyor belt.  Stepper motors were a fairly obvious choice.  They provide plenty of torque and finite control.  This was great, as several other parts of the LEGO classifier system would need steppers motors as well-e.g.,turn table and dispensing hopper.  Of course, one of the overall goals of this project is to keep the tools accessible.  After some research I decided to meet both goals by purchasing an Ardunio / RAMPs combo package intended for 3D printers.
 
-![ramps-kits-on-amazon](../raw_images/lego_classifier/conveyor_belt/ramps-kit.png)
+![ramps-kits-on-amazon](../images/lego_classifier/conveyor_belt/ramps-kit.png)
 
 * [Amazon RAMPs Kits](https://www.amazon.com/s?k=CNC+3D+Printer+Kit+for+Arduino+Mega+2560+R3+RAMPS+1.4&ref=nb_sb_noss)
 
@@ -47,7 +47,7 @@ Wiring everything up wasn't too bad.  You follow about any RAMPs wiring diagram.
 
 First, underneath each of the stepper drivers there are three drivers for setting the microsteps of the respective driver.  Having all three jumpers enables maximum microsteps, but would cause the speed of the motor to be limited by the clock cycles of the Arduino--more on that soon.
 
-![removing-stepper-jump-on-ramps](../raw_images/lego_classifier/conveyor_belt/removing-stepper-jump-on-ramps.jpg)
+![removing-stepper-jump-on-ramps](../images/lego_classifier/conveyor_belt/removing-stepper-jump-on-ramps.jpg)
 
 I've also increased the amperage to the stepper.  This allowed me to drive the entire belt from one NEMA17. 
 
@@ -66,7 +66,7 @@ current_limit = 2.0025
 
 The your `current_limit` will vary depending on the drag of your conveyor belt and the quality of your stepper motor. To ensure a long-life of your motor, **do not set the amperage higher than needed to do the job.**
 
-![setting-stepper-driver-amperage](../raw_images/lego_classifier/conveyor_belt/setting-stepper-driver-amperage.jpg)
+![setting-stepper-driver-amperage](../images/lego_classifier/conveyor_belt/setting-stepper-driver-amperage.jpg)
 
 ## Arduino Code
 When I bought the RAMPs board I started thinking, "I should see if we could re-purpose Marlin to drive the conveyor belt easily."  I took one look at the source and said, "Oh hell no."  Learning how to hack Marlin to drive a conveyor belt seemed like learning heart surgery to hack your heart into a gas pump. So, I decided roll my own RAMPs firmware.

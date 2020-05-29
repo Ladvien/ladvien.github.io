@@ -12,9 +12,11 @@ root_path = os.environ['HOME']
 input_directory = f'{root_path}/ladvien.github.io/raw_images'
 output_directory = f'{root_path}/ladvien.github.io/images'
 
-max_size                = 2500
+max_size                = 1920
 max_file_size_kb        = 300 
 compression_quality     = 95 
+
+ignore_existing         = False 
 
 ############
 # Transforms
@@ -23,12 +25,10 @@ print('')
 print('*******************************************************')
 print('* Moving raw_images into images                       *')
 print('*******************************************************')
-image_paths = glob.glob(f'{root_path}/Desktop/images/**/*.jpg', recursive = True) +\
-              glob.glob(f'{root_path}/Desktop/images/**/*.JPG', recursive = True) +\
-              glob.glob(f'{root_path}/Desktop/images/**/*.png', recursive = True) +\
-              glob.glob(f'{root_path}/Desktop/images/**/*.PNG', recursive = True) +\
-              glob.glob(f'{root_path}/Desktop/images/**/*.gif', recursive = True) +\
-              glob.glob(f'{root_path}/Desktop/images/**/*.GIF', recursive = True) 
+image_paths = glob.glob(f'{root_path}/**/*.jpg', recursive = True) +\
+              glob.glob(f'{root_path}/**/*.JPG', recursive = True) +\
+              glob.glob(f'{root_path}/**/*.png', recursive = True) +\
+              glob.glob(f'{root_path}/**/*.PNG', recursive = True)
 
 
 def resize(image, max_size):
@@ -61,7 +61,7 @@ for image_path in image_paths:
     # Get the output file path.
     output_file_path = f'{image_output_dir}{image_file_name}'
 
-    if os.path.exists(output_file_path):
+    if os.path.exists(output_file_path) and ignore_existing:
         image_index += 1
         continue
 
@@ -76,7 +76,7 @@ for image_path in image_paths:
         image = resize(image, max_size)
 
     if file_size_kb > max_file_size_kb:
-        image.save(output_file_path, optimize = True, quality = 95)
+        image.save(output_file_path, optimize = True, quality = compression_quality)
     else:
         image.save(output_file_path)
     

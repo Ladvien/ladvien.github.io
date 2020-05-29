@@ -23,7 +23,7 @@ print('******************************')
 # -t = preserve modification times
 os.system(f'rsync -h -v -r -P -t {root_path}/ladvien.github.io/_site/* root@ladvien.com:/usr/share/nginx/html')
 
-os.system('cd {root_path}/ladvien.github.io')
+os.system(f'cd {root_path}/ladvien.github.io')
 os.system('git add .')
 print('')
 print('****************************')

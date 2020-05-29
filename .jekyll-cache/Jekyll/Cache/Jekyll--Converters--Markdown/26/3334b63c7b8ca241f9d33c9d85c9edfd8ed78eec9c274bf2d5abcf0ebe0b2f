@@ -1,15 +1,0 @@
-I"<p>This R function allows sampling of a dataframe.  This is helpful when writing a script which will be used against a large dataframe, however, writing the script is iterative.  Sampling allows the overall reduction in time of testing iterations, without losing the validity of realistic results.</p>
-
-<figure class="highlight"><pre><code class="language-r" data-lang="r"><span class="w">    </span><span class="n">options</span><span class="p">(</span><span class="n">java.parameters</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"-Xmx14336m"</span><span class="p">)</span><span class="w">  </span><span class="c1">## memory set to 14 GB</span><span class="w">
-    </span><span class="n">library</span><span class="p">(</span><span class="s2">"sqldf"</span><span class="p">)</span><span class="w">
-    </span><span class="n">library</span><span class="p">(</span><span class="s2">"XLConnect"</span><span class="p">)</span><span class="w">
-    </span><span class="n">library</span><span class="p">(</span><span class="s2">"tcltk"</span><span class="p">)</span><span class="w">
-
-    </span><span class="n">df</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">readWorksheetFromFile</span><span class="p">(</span><span class="s2">"Data_X.xlsx"</span><span class="p">,</span><span class="w"> </span><span class="n">sheet</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="n">startRow</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">)</span><span class="w">
-
-    </span><span class="n">sampleVector</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">sample</span><span class="p">(</span><span class="m">1</span><span class="o">:</span><span class="n">nrow</span><span class="p">(</span><span class="n">df</span><span class="p">),</span><span class="w"> </span><span class="m">30000</span><span class="p">)</span><span class="w">
-    </span><span class="n">df2</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">df</span><span class="p">[</span><span class="n">sampleVector</span><span class="p">,]</span><span class="w">
-
-    </span><span class="n">write.csv</span><span class="p">(</span><span class="n">df2</span><span class="p">,</span><span class="w"> </span><span class="n">file</span><span class="o">=</span><span class="s2">"Sample of Data_X (30000).csv"</span><span class="p">,</span><span class="w"> </span><span class="n">na</span><span class="o">=</span><span class="s2">""</span><span class="p">)</span><span class="w">
-    </span></code></pre></figure>
-:ET

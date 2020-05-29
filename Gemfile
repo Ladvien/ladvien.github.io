@@ -18,4 +18,4 @@ gem "image_optim"
 gem "image_optim_pack"
 gem "rake"
 gem "jemoji"
-
+gem "jekyll-responsive-image"

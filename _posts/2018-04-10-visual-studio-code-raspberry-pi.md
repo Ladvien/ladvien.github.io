@@ -18,7 +18,7 @@ I'm spoiled.  I love the pretty colors of modern text IDEs.  My favorite among t
 
 I know it'll engender a lot of bad rep with the old-timers, but I prefer the one on the right.
 
-[![](/images/nano_vs_vsc.png)](/images/nano_vs_vsc.png)
+![](/images/nano_vs_vsc.png)
 
 However, when working on a headless (no monitor) Raspberry Pi it felt like I was pretty much stuck with the `nano`.  
 
@@ -69,7 +69,7 @@ Back to setup.
 
 In Visual Studio Code type `F1` and type `Preferences: Open Workspace Settings`
 
-[![](/images/vsc_preferences.png)](/images/vsc_preferences.png)
+![](/images/vsc_preferences.png)
 
 Find the section labeled
 ```
@@ -78,7 +78,7 @@ remote.onStartup: false
 
 We need to change it to `true` by clicking on the pencil next to its name.  This sets the listening server to start every time you open Visual Studio Code.
 
-[![](/images/vsc_start_server.png)](/images/vsc_start_server.png)
+![](/images/vsc_start_server.png)
 
 Almost there.  Now to setup the Raspberry Pi.  We need to install a program on the Pi which will send a file of our choosing to Visual Studio Code to be edited.  [RMate](https://github.com/textmate/rmate) was my choice.
 

@@ -50,7 +50,7 @@ Eventually [Brassfly ](http://letsmakerobots.com/user/21289)helped me work throu
 
 So, I made up a fresh version of the HM-10 breakout board (v.9.9) with this LED setup.  I wired it up.  And, it seems to be working.
 
-![](/images/IMG_0356.jpg)
+![](/images/IMG_0356.png)
 
 Again, can't use yellow or red LEDs on the RX/TX lines, since they do not create a high-enough voltage drop to signal the CC2540 low).
 

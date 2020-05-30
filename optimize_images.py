@@ -58,37 +58,36 @@ for image_path in image_paths:
     image_output_dir = image_path.replace(input_image_dir, output_image_dir).replace(image_output_file, '')
     image_output_file_path = image_output_dir + image_output_file
 
-    print(image_output_file_path)
+    # Ensure the output directory exists.
+    if not os.path.exists(image_output_dir):
+        os.mkdir(image_output_dir)
+
+    # Get the output file path.
+    output_file_path = f'{image_output_dir}{image_file_name}'
+
+    if os.path.exists(output_file_path) and ignore_existing:
+        image_index += 1
+        continue
+
+    # Determine the starting file size.
+    file_size_kb = os.stat(image_path).st_size / 1000
+
+    image = Image.open(image_path)
+    img_width, img_height = image.size
     
-    # # Ensure the output directory exists.
-    # if not os.path.exists(image_output_dir):
-    #     os.mkdir(image_output_dir)
+    # Resize images too large.
+    if img_width > max_size:
+        image = resize(image, max_size)
 
-    # # Get the output file path.
-    # output_file_path = f'{image_output_dir}{image_file_name}'
-
-    # if os.path.exists(output_file_path) and ignore_existing:
-    #     image_index += 1
-    #     continue
-
-    # # Determine the starting file size.
-    # file_size_kb = os.stat(image_path).st_size / 1000
-
-    # image = Image.open(image_path)
-    # img_width, img_height = image.size
+    if file_size_kb > max_file_size_kb:
+        image.save(image_output_file_path, optimize = True, quality = compression_quality)
+    else:
+        image.save(image_output_file_path)
     
-    # # Resize images too large.
-    # if img_width > max_size:
-    #     image = resize(image, max_size)
+    file_size_kb_new = os.stat(output_file_path).st_size / 1000
 
-    # if file_size_kb > max_file_size_kb:
-    #     image.save(output_file_path, optimize = True, quality = compression_quality)
-    # else:
-    #     image.save(output_file_path)
-    
-    # file_size_kb_new = os.stat(output_file_path).st_size / 1000
-    # print(f'{image_index} / {image_count} = {round((image_index / image_count), 2) * 100}% -- File size before {file_size_kb}kb and after {file_size_kb_new}kb')
-    # image_index += 1
+    print(f'{image_index} / {image_count} = {round((image_index / image_count) * 100, 2)}% -- File size before {file_size_kb}kb and after {file_size_kb_new}kb')
+    image_index += 1
 
 
     

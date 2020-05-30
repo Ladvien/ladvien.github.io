@@ -12,7 +12,7 @@ custom_css:
 custom_js: 
 ---
 
-![](../images/burning-tinysafeboot-using-arduino-isp-1.jpg)
+![](/images/burning-tinysafeboot-using-arduino-isp-1.jpg)
 
 This article will show you how use a two-wire interface (UART) to upload Arduino sketches to the ATtiny85. In short, we will burn the [TinySafeBootloader](http://jtxp.org/tech/tinysafeboot_en.html) onto the ATtiny85 using an [Arduino Uno as an ISP](https://www.arduino.cc/en/Tutorial/ArduinoISP) programmer. After the initial burning of the bootloader, we can then program the ATtiny85 with any FTDI compatible USB-to-UART. And very similar steps may be followed to do the same for an ATtiny84.
 
@@ -39,7 +39,7 @@ Many may ask, "Really, why would I want to go through all this trouble to instal
 This article was not meant to be independent. The entire purpose of the this is to prepare an ATtiny85 (actually, any ATtiny orATmega uCs) for wireless upload of Arduino sketches or AVR binaries.
 
 ## Step 1: Upload the ArduinoISP Sketch
-![](../images/burning-tinysafeboot-using-arduino-isp-2.jpg)
+![](/images/burning-tinysafeboot-using-arduino-isp-2.jpg)
 
 There are several guides on how to use an Arduino as an ISP:
 
@@ -55,12 +55,12 @@ before wiring up the Arduino Uno to the ATtiny85 you will need to install the Ar
 Then hit the Upload button. Wire up the ATtiny85 After the ArduinoISP sketch has been uploaded it is time to burn our bootloader to the ATtiny85. Go ahead and wire your ATtiny85 to the Arduino Uno as shown in the image above.
 
 ## Step 2: Wire Up the ATtiny85 and Arduino
-![](../images/burning-tinysafeboot-using-arduino-isp-3.jpg)
+![](/images/burning-tinysafeboot-using-arduino-isp-3.jpg)
 
 After the ArduinoISP sketch has been uploaded it is time to burn our bootloader to the ATtiny85. Go ahead and wire your ATtiny85 to the Arduino Uno as shown in the image.
 
 ## Step 3: Install AVRDUDE
-![](../images/burning-tinysafeboot-using-arduino-isp-4.jpg)
+![](/images/burning-tinysafeboot-using-arduino-isp-4.jpg)
 
 Now, we will need to install AVRDude
 

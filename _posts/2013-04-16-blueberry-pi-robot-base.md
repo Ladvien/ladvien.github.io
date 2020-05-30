@@ -21,18 +21,18 @@ That aside, here we go:
 
 **1. Get Berryboot.**  [Berryboot](http://www.berryterminal.com/doku.php/berryboot) will allow you to download several Raspberry Pi images.
 
-![](../images/BerryBoot.jpg)
+![](/images/BerryBoot.jpg)
 
 
 Now extract the zip files to a blank SD card.
 
-![](../images/BerryBootExtract.jpg)
+![](/images/BerryBootExtract.jpg)
 
 Put the BerryBoot SD card in your Pi and boot it up.
 
 **2. Setup RPi with [Raspbian Wheezy](http://www.raspberrypi.org/downloads) (first option).**
 
-**![](../images/berryboot-install-distro2.png)**
+**![](/images/berryboot-install-distro2.png)**
 
 **3. [Setup your WiFi dongle.](http://neville-wright.com/setup-your-raspberry-pi-wireless-network/)** I believe BerryBoot will now setup your WiFi dongle on initial boot, which it did for me (even gave me the option to download the image via WiFi).  But, I had trouble getting my WiFi dongle pulled up after booting Raspbian Wheezy.
 
@@ -42,13 +42,13 @@ Put the BerryBoot SD card in your Pi and boot it up.
 
 **4. Setup PuTTY on your Desktop Computer.  [Follow this video.](https://www.youtube.com/watch?v=k-ao1ZktuzI)**This will allow you to begin SSHing into the Pi.  That way you don't have to look at a little RCA screen like me.  For those who aren't familiar with SSH (like I was before this video), the video will explain it.  At risk of oversimplification,**it allows you to access your Raspberry Pi command line through your desktop.**
 
-![](../images/Putty1.jpg)
+![](/images/Putty1.jpg)
 
 **You have to plug in your Pi's network number.**You can find this by pulling up your wireless hub's configuration page.  You should see what address your Pi is listed at.  For some strange reason, if it doesn't list the device name, just view the page while the Pi is up, then unplug your Pi and refresh the wireless hub configuration page.  The device that disappeared is your Pi.  I've never had to change the port number, but beware you might need to depending on your setup.**
 
 If you want to know whether your have the correct information, try login' in and if you get a screen like this, your good.
 
-![](../images/Putty2.jpg)
+![](/images/Putty2.jpg)
 
 Your username and password are by default:**pi, raspberry**
 
@@ -56,7 +56,7 @@ Your username and password are by default:**pi, raspberry**
 
 **Once you have PuTTY setup, you should be able to bring up your Pi command line, something like this:**
 
-![](../images/Putty3.jpg)
+![](/images/Putty3.jpg)
 
 
 **5. Setup VNCServer on your Raspberry Pi.  [Follow this video.](https://www.youtube.com/watch?v=c5QCoh8S0N4) (Or this [walkthrough](http://gettingstartedwithraspberrypi.tumblr.com/post/24142374137/setting-up-a-vnc-server)).** Putty will let you access your Pi's command line, but setting up a VNC will actually allow you to access your Pi's Desktop GUI from your PC, in the same manner as Putty.  
@@ -67,15 +67,15 @@ Once you have VNC setup on both machines, PuTTY into your Pi and start the VNC s
 
 **$sudo vncserver**
 
-![](../images/RealVNC5.jpg)
+![](/images/RealVNC5.jpg)
 
 Two notes here, if you did better with the video instructions than I did, your vncserver will start automatically on boot.  Unfortunately, I have to type it each time (I'm too lazy to figure out the boot part of it).  As a result, you'll have problems running certain Python scripts through VNC if you don't use $**sudo** vncserver
 
-![](../images/RealVNC.jpg)
+![](/images/RealVNC.jpg)
 
 You'll enter your Pi address, but port should be 1 (if I remember the video instructions correctly).
 
-![](../images/RealVNC3.jpg)
+![](/images/RealVNC3.jpg)
 
 You should end up with at a windowed version of your Raspberry Pi desktop.  One more note, somewhere in the video it gets you to setup the "geometry" of the VNC desktop.  The limitations you put there will be reflected in the quality of the desktop you see in the window.  In essence, if you put in 640x480, that's the resolution this desktop will end up.  So, please, take advantage of the Pi's GPU :)
 
@@ -85,7 +85,7 @@ Use something like this, "-geometry 1024x728 -depth 24"
 
 **8. Git manager will allow you to pull code from git hubs (again, this should already be installed, but just in case).**
 
-![](../images/gitinstall.jpg)
+![](/images/gitinstall.jpg)
 
 **I****nstall the git manager: **
 
@@ -123,13 +123,13 @@ Control serial devices:
 
 **12. [Install WinSCP](http://winscp.net/eng/download.php).  This will allow you to transfer files between your desktop and the Pi. **I find this helps with programming management.  I'm a messy filer.  If I file at all.
 
-![](../images/winscp.jpg)
+![](/images/winscp.jpg)
 
 **13.  Take a deep breath.**
 
 **14.  Follow [these instructions](http://letsmakerobots.com/node/36847) for making my I2C optoisolator board.**
 
-![](../images/IMG_0602.jpg)
+![](/images/IMG_0602.JPG)
 
 Again, there are many commercial boards that will serve the same function.  Also, you can do the same with a [USB cable](http://www.doctormonk.com/2012/04/raspberry-pi-and-arduino.html), [serial pins to GPIO](http://justpushbuttons.com/blog/?p=376), or [RF](http://www.cooking-hacks.com/index.php/documentation/tutorials/raspberry-pi-xbee) connection--basically any way that lets the Arduino and Pi talk at a reasonable speed.  The speed restraint will of course depend on your need.  I doubt many methods will be apt for running a responsive quadrocopter.  But in my case, my Pi is the central nervous system and the Arduino is the autonomous nervous system.   The Pi will send directives, but it's up to the Arduino to manifest them through responsive actuators.  And I chose this optoisolator because I didn't want an voltage restraint on my actuators or fear of frying my Pi.
 
@@ -139,11 +139,10 @@ Once you have the board setup, you can run:
 
 This should bring up a list of active I2C registers.  You _should_ find your Arduino at whatever address you set in your Arduino code.
 
-![](../images/i2cshowsup2.jpg)
+![](/images/i2cshowsup2.jpg)
 
 Now, I've read this fellow's [article](http://quick2wire.com/category/raspberry-pi/) on how Raspberry Pi I2C pins are actually 5v tolerant.  (Note, this is _only_ for I2C pins, due to their pull-up resistors.)
 
-![](../images/i2c5vtolerant.jpg)
 
 So in theory, you can skip the optoisolator all together.  But that's _you_, I'll stick with my optoisolation.
 

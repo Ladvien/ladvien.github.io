@@ -19,7 +19,7 @@ One of the reasons we have the amazing devices we do today is because a computer
 
 Now, this may sound simple, but it's actually a subtle miracle.  Anyone who has been stuck on the toothpaste isle trying to decide between the 45 kinds of toothpaste probably understands making decisions is difficult.  Of course, human decision making and computer decision making are not even on the same level.  Humans can make comparisons of all 45 products at once(sort of).  Computers, they have to make a decision between two objects, then, two objects, then two objects, so forth, until it has made it through all 45.  Fortunately, computers can make these decisions blazing fast.
 
-![](../images/toothpaste-decision.svg)
+![](/images/toothpaste-decision.svg)
 
 In computer programming we call this computer decision making process [control flow](https://en.wikipedia.org/wiki/Control_flow).  But let's write some pseudocode for a little better understanding:
 

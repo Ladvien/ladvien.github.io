@@ -17,15 +17,15 @@ custom_js:
 
 I’ve been working on writing my own flash UART uploader since May 2014\. Originally, I was trying to write an uploader in C using the GCC compiler. The idea was to upload a Intel HEX file compiled for the LPC1114 to the uC remotely, using a Bluetooth LE connection. Here’s a description of the custom circuit board designed for the project:
 
-*[Valdez Mutant Board](http://ladvien.github.io/robots/valdez-mutant-board/)
+*[Valdez Mutant Board](/images/robots/valdez-mutant-board/)
 
 Unfortunately, the project was out of my league. After spending months writing C code there it was not usable. Of course, learned a lot about C in the process.
 
-Well, after a couple of years I started on code to upload compiled Atmel ATMega and ATtiny programs using the same method outlined in the Valdez Mutant article. But this time, the uploader was written in C# on Windows. And it interfaced with the [TinySafeBootloader](http://ladvien.github.io/robots/tsb/) on the Atmel uCs.
+Well, after a couple of years I started on code to upload compiled Atmel ATMega and ATtiny programs using the same method outlined in the Valdez Mutant article. But this time, the uploader was written in C# on Windows. And it interfaced with the [TinySafeBootloader](/images/robots/tsb/) on the Atmel uCs.
 
 Strangely, I actually finished the project. The first code-base was written as a [C# Forms application](https://msdn.microsoft.com/en-us/library/360kwx3z(v=vs.90).aspx). This worked out great! I was actually able to use the `System.Devices.Ports` to access a CH340G or FTDI chip. The USB-to-UART then shook hands with the bootloader on either an ATMega328P, ATtiny84, or ATtiny85 (others should be supported, but these were the only tested due to the simplicity of the Arduino HAL).
 
-![](http://ladvien.github.io/images/lumi_blink_upload2.PNG)
+![](/images/lumi_blink_upload2.PNG)
 
 Here’s the code base:
 
@@ -113,7 +113,7 @@ After a few months I had a working version. It was able to upload to ATtiny chip
 
 *   [Lumi Uploader Proof of Concept](https://www.youtube.com/watch?v=mLfFbrijakc)
 
-![](http://ladvien.github.io/images/pooh.png) However, when I started trying to add ESP8266 support–well, things went to the Pooh. It seemed of all the problems listed above the only one resolved was the adding of Bluetooth LE support.  My skill was not increasing.
+![](/images/pooh.png) However, when I started trying to add ESP8266 support–well, things went to the Pooh. It seemed of all the problems listed above the only one resolved was the adding of Bluetooth LE support.  My skill was not increasing.
 
 Also, there were two additional issues which arose:
 

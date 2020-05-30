@@ -97,7 +97,7 @@ These graphs provided the political insurance needed to to approach the partner 
 When approaching the troubled agency, it helps to have a plan.  In TX-601 we called these "Data Quality Action Plans" and consisted a list of all the errors needing to be repaired, and a [SMART goal](https://en.wikipedia.org/wiki/SMART_criteria).
 
 By focusing on the agency which has the most data errors it is like you are on a ship with many holes, possibly sinking.  Before bailing water, or patching small holes, you patch the biggest, as it'll have the greatest impact on the entire ship
-![](../images/boat-with-holes.png)
+![](/images/boat-with-holes.png)
 
 ## Eminence vs. Data Based Decision Making
 

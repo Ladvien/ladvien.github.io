@@ -35,15 +35,15 @@ First, it is not a complete development solution.  You need a flashing tool to u
 
 Anyway, I eventually got it to blink a light
 
-[![](http://i1.ytimg.com/vi/1tB5sTNYe20/mqdefault.jpg)](http://youtu.be/1tB5sTNYe20)
+[Video](http://youtu.be/1tB5sTNYe20)
 
 I craved more freedom, so I started looking for tools that'd allow me to code for the LPC1114 freely.  A bare-metal solution.  Just me, a compiler, and the [LPC1114 User Manual](http://www.nxp.com/documents/user_manual/UM10398.pdf) (datasheet). Luckily, most of the work had been done for me.  Frank Duignan, Ted Burke, and Bdk6 had pretty much all the answers pre-compiled for my little brain.  Here's the steps I used to get a command-line programming environment setup.
 
-![](../images/GCC_Download2.jpg)
+![](/images/GCC_Download2.jpg)
 
 **1. [Download and install](https://launchpad.net/gcc-arm-embedded/4.7/4.7-2013-q3-update/+download/gcc-arm-none-eabi-4_7-2013q3-20130916-win32.exe) GNU Tools for ARM Embedded Processors (Win32 Release -- 2013, quarter 3).During the installation, make sure to check the box "Add path to environment variable."**
 
-![](../images/GCC_Download3.jpg)
+![](/images/GCC_Download3.jpg)
 
 **Check "Add environment variable."**
 
@@ -53,11 +53,11 @@ Right clicking on This PC / My Computer --> Properties --> Advanced system setti
 
 For me, this was "**C:\Program Files (x86)\GNU Tools ARM Embedded\4.7 2013q3\bin**"
 
-![](../images/PATH_Variable2.jpg)
+![](/images/PATH_Variable2.jpg)
 
 **We are going to add several paths to the path systems variables.  So, refer back to these steps as needed.**
 
-![](../images/Download_Batch.jpg)
+![](/images/Download_Batch.jpg)
 
 **2\. Download [Frank Duignan's](http://eleceng.dit.ie/frank/arm/BareMetalLPC1114/) Windows [linker script](https://web.eecs.umich.edu/~prabal/teaching/eecs373-f11/readings/Linker.pdf), [LPC1114 header file](http://www.keil.com/dd/docs/arm/nxp/lpc11xx/lpc11xx.h), and build batch file.**
 
@@ -86,7 +86,7 @@ objcopy -O ihex main.elf main.hex
 
 **Save the text file in your workspace as "build.bat"**  Be sure to include the quotation marks, since this will convert the file from a text file to a batch file.  This is the same build commands put together by Duignan, but I've added the "-v" option.  This is the verbose mode and will spit out an errors during compiling.
 
-![](../images/Build_bat.jpg)
+![](/images/Build_bat.jpg)
 
 **6\. Setup a C++ friendly text editor, like [Programmer's Notepad](http://www.pnotepad.org/).**
 
@@ -171,7 +171,7 @@ I've modified the above code from Duignan's to make it comparable to the **Fade*
 
 **8\. Open the command prompt in your workspace directory.  Run your build.bat file.**
 
-**![](../images/Build_bat_2.jpg)**
+**![](/images/Build_bat_2.jpg)**
 
 After running the build.bat, it should build five files: **main.o, int.o, main.map, main.elf, main.hex.  **If it doesn't build correctly, double check the path variables for both the compiler and binutils.  
 
@@ -193,14 +193,14 @@ You'll have to adjust the COM port to the port you are using.  Here is a little 
 
 **11\. Wire up your LPC1114.**
 
-![](../images/LPC1114_Wires.png)
+![](/images/LPC1114_Wires.png)
 
 
 One last bit I should point out, when "DP24" is connected to ground and then voltage is supplied to the LPC1114, it'll enter the hardware bootloader.  But, if DP24 is open or (preferably) pulled-up with a resistor when voltage is supplied to the LPC1114 then it'll run whatever code has been uploaded to the flash memory.  
 
 "DP24" is actually pin 1 on port 0.
 
-![](../images/pinout_dip28_detail-20131006-2.png)
+![](/images/pinout_dip28_detail-20131006-2.png)
 
 
 **12.** Connect your LPC1114's RX/TX to an serial connector, put it into the bootloader mode by connecting DP24 to ground, then apply power to the LPC1114\.  Lastly, run the LPC1114_upload.bat file.  This should result in the LED connected to "SWDIO" pin to fade on and off.
@@ -211,7 +211,7 @@ And that's what I've got.  I'm going to start working on coding now, so I'll tra
 
 The lpc21isp allows for [automatic mode switching](http://letsmakerobots.com/looking-lpc1114-usb-serial-solution), that is, you can use an FTDI cable as below:
 
-![](../images/FTDI_Reset.jpg)
+![](/images/FTDI_Reset.jpg)
 
 Then replace the line in your LPC1114_upload.bat file with
 
@@ -221,4 +221,4 @@ This will automatically put the LPC1114 into program mode, upload your code, the
 
 Of course, lpc21isp is an agglomeration and had an error(?) that wouldn't reset the chip after downloading the new code.  I simply commented an if-statement and it is now "working."  I'm sure I've lost some robustness, but hell, it does what I want with no apparent side-effects.  If you would like to know more about how I "broke" lpc21isp check my Github [readme](https://github.com/Ladvien/LPC21ISP_Win/blob/master/README.md) on the issue.
 
-![](../images/LPC1114_Bare_Metal_ARM2.jpg)
+![](/images/LPC1114_Bare_Metal_ARM2.jpg)

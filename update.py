@@ -11,6 +11,13 @@ print('* Syncing files to Ladvien.com Jekyll build directory *')
 print('*******************************************************')
 os.system(f'bundle exec jekyll build --source {root_path}/ladvien.github.io --destination {root_path}/ladvien.github.io/_site')
 
+
+print('')
+print('*******************************************************')
+print('* Adding raw_images to Ladvien.com/raw_images *')
+print('*******************************************************')
+os.system(f'rsync -h -v -r -P -t {root_path}/ladvien.github.io/raw_images/ root@ladvien.com:/usr/share/nginx/html/raw_images/')
+
 print('')
 print('******************************')
 print('* Updating Website           *')

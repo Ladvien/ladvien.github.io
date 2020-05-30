@@ -30,13 +30,13 @@ Besides that, the rest of the board works.
 
 
 
-![](../images/isp-key.png)
+![](/images/isp-key.png)
 
 
 
 ## Footprint
 
-![](../images/robber-board-v3-top.png)
+![](/images/robber-board-v3-top.png)
 
 
-![](../images/robber-board-v3-bottom.png)
+![](/images/robber-board-v3-bottom.png)

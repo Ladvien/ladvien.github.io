@@ -153,7 +153,8 @@ The `train_test_ratio` controls how many images are held back for testing the mo
 
 The `zoom_range` parameter controls how far the script should zoom in on the images.  And, lastly, `shear_range` controls how much of the images to clip from the edges before feeding them to the CNN.
 
-[![](../images/lego_classifier/batch.png){: .float-right}](https://ladvien.com/lego_classifier/batch.png)
+![](/images/lego_classifier/batch.png)
+
 #### Parameters: CNN Hyperparameters
 A "hyperparameter" is what machine-learning engineers call parameters which may impact the outcome of training a neural-net.
 

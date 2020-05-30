@@ -29,7 +29,7 @@ Now, I'm going for the third attempt.  I'll attempt to correct for the above er
 
 Here is sketch of the design:
 
-![Lumi2_rough_Sketch_v2.png](/../../images/Lumi2_rough_Sketch_v2.png)
+![Lumi2_rough_Sketch_v2.png](/images/Lumi2_rough_Sketch_v2.png)
 
 ## ESPER
 
@@ -41,7 +41,8 @@ The other code is Arduino C and sets up the ESP8266 device as an HTTP WebServer.
 
 ## Update 2/7/2016
 
-![ESPER_ui_1.PNG](/../../images/ESPER_ui_1.PNG)I've added a search method to the ESPER class.  Basically, this iterates over a range POSTing a name request for the ESPER.  When the C# code discovers an ESPER, then it adds it to an array.  I'm pretty happy with it.  
+![ESPER_ui_1.PNG](/images/ESPER_ui_1.PNG)
+I've added a search method to the ESPER class.  Basically, this iterates over a range POSTing a name request for the ESPER.  When the C# code discovers an ESPER, then it adds it to an array.  I'm pretty happy with it.  
 
 I did run into an issue trying to use Windows.HttpClient, as there doesn't seem to be a way to adjust the timeout.  The default was like 3 seconds, which is way too long.  Therefore, the System.Net.HttpClient was used, since it has a Timeout property which takes a Timespan.    
 

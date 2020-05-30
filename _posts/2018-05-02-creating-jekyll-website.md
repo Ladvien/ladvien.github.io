@@ -105,11 +105,11 @@ Head over to
 
 And `Sign Up`
 
-![](../images/sign_up_lindode.png)
+![](/images/sign_up_lindode.png)
 
 Login, then go to `Add Linode`.  Here select the smallest sized Linode as possible.  When I started, the small servers were $5 a month--but it looks like they've gone up.  My guess is, you can find them on sale occasionally.
  
-![](../images/smallest_linode_server.png)
+![](/images/smallest_linode_server.png)
 
 You don't have to select the smallest--but I think it's plenty for a Jekyll blog.
 
@@ -117,13 +117,13 @@ Once you've selected the size of server, scroll to the bottom and select a locat
 
 Then select `Add this Linode!`
 
-![](../images/set_location_add_linode.png)
+![](/images/set_location_add_linode.png)
 
 Once you've added your Linode you will be re-directed to your Linodes dashboard
 
 Notice, the `IP Address` is the IP address of your very first server! Waahoo!
 
-![](../images/linode_dashboard.png)
+![](/images/linode_dashboard.png)
 
 It'll take it a second, but the status of your linode should change from `Being created` to `Brand new`, when it does, you will be ready for the fun!
 
@@ -131,24 +131,24 @@ It'll take it a second, but the status of your linode should change from `Being 
 
 Let's get Linux setup on your machine.  Click on the name of your Linode.
 
-![](../images/your_linode_name.png)
+![](/images/your_linode_name.png)
 
 This should load the server dashboard for _your_ server.  Looking something like this.
 
-![](../images/your_server_dashboard.png)
+![](/images/your_server_dashboard.png)
 
 Don't be alarmed.  There is a lot going on here, but we are going to taker it one step at a time.  Don't worry, I got you.
 
 First, let's tell the computer which manages your server to install Linux on it.  You can do this by going to `Deploy an Image`
 
-![](../images/deploy_image.png)
+![](/images/deploy_image.png)
 
 #### **Beware ye Stackscripts!**
 > A stackscript is a Linux script meant for a machine with newly installed Linux.  The script tells the machine to do a bunch of automated setup work to prepare the machine for a particular task.  In our case prepare our machine to be a server.  I'm not going to show how to use them in this walkthrough.  For a few reasons.  We will learn more setting things up ourselves, and therefore, will be able to maintain it.  Also, I've not found a stack which is specifically for Jekyll.  Most of them have a lot of extra stuff we don't need.
 
 Ok, back to work.  Let's fill out our setup request
 
-![](../images/install_linux.png)
+![](/images/install_linux.png)
 
 Be sure to save your password somewhere! Not a lot of ways to recover it.  Once everything is selected hit `Deploy`
 
@@ -161,7 +161,7 @@ And besides, I'm writing this tutorial around it, so you kinda must to keep foll
 
 Ok, let's fire up your machine.  Open up the Linode dashboard and click on your linode's name.  At the top right there be a box called `Server Status` and it is probably `Powered Off`.  Let's turn it on by hitting the `Boot` button.
 
-![](../images/boot_up_server.png)
+![](/images/boot_up_server.png)
 
 Wait until the status below shows your linode has fully booted.
 
@@ -235,7 +235,7 @@ Great! This means it is installed and working.  We just need to setup `nginx` to
 
 Also, open a browser and type your sever's IP address again.  Hit enter.  This time you should see:
 
-![](../images/welcome_nginx.png)
+![](/images/welcome_nginx.png)
 
 Wow, your are now serving an html to the world, for anyone who visits your website.  Pretty cool, eh?  I think so.
 
@@ -287,7 +287,7 @@ Then hit `CTRL + O`, which should save the file.  Then hit `CTRL + X` to exit th
 
 Now, switch back to your browser, go back to your website's IP address, and hit refresh.   You should see.
 
-![](../images/welcome_t0_nginx_jungle.png)
+![](/images/welcome_t0_nginx_jungle.png)
 
 Not seeing it?  You didn't change the `<title>` instead of the `<h1>`, right?  Ask me how I know that...
 
@@ -383,11 +383,11 @@ Breaking this down, we used the `bundler` program to execute the `jekyll` progra
 
 In your file explorer, navigate to your website directory and enter the `_site` directory.  This directory contains your entire website after compilation.
 
-![jekyll_site_folder](../images/the_site_folder.png)
+![jekyll_site_folder](/images/the_site_folder.png)
 
 Open this folder and then double click on the file `index.html`.  This should open your website locally in the browser.
 
-![jekyll_site_locally](../images/local_jekyll.png)  
+![jekyll_site_locally](/images/local_jekyll.png)  
 
 But this isn't what we want.  Let's get it on the webserver we setup.
 

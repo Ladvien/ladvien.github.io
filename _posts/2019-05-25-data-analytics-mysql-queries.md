@@ -46,7 +46,7 @@ When the data are presented like this, it appear similar to our traditional Exce
 
 Let's compare the SQL query and a spreadsheet.
 
-![compare-excel-and-sql](../images/data-analytics-series/sql_to_excel_compare.png)
+![compare-excel-and-sql](/images/data-analytics-series/sql_to_excel_compare.png)
 
 Now, here in a few weeks when you are SQL-writing-machine you'll notice this analogy between Excel and a SQL query breaks down.  But for now, let the above image comfort you in knowing the core functions of SQL are similar to those of a spreadsheet.  And you know these spreadsheet functions _well_.
 
@@ -186,7 +186,7 @@ LEFT JOIN employees
 ### Field Aliases
 Often you will want to export your results into a CSV to send to someone.  You may have noticed when you execute a query SQL returns the results in a neat spreadsheet.  I don't know if I've mentioned it, but you can export these results in a CSV by hitting the little disk button above the results.
 
-![mysql-workbench-export-to-csv](../images/data-analytics-series/mysql_setup_33.PNG)
+![mysql-workbench-export-to-csv](/images/data-analytics-series/mysql_setup_33.PNG)
 
 However, you may not like the machine formatted column names.  I mean, don't get us wrong, we're nerds! We read machine friendly words fine, but our bosses don't.
 
@@ -204,7 +204,7 @@ LEFT JOIN employees
 
 Now the column headers have "boss-friendly" names.
 
-![mysql-workbench-export-to-csv](../images/data-analytics-series/mysql_setup_34.PNG)
+![mysql-workbench-export-to-csv](/images/data-analytics-series/mysql_setup_34.PNG)
 
 You've probably noticed the first two aliases are written without quotation marks and the second two are surrounded by them.  The SQL program can get confused by spaces, so we wrap the new name in `"` marks.  When the SQL program sees these marks, it says to itself, "Oh, I bet the user is going to have one of those fancy human names, I'm going to assume everything between the first quotation mark and the next one I find is all one fancy human word.  Silly humans."
 
@@ -306,7 +306,7 @@ FROM employees
 ORDER BY employees.emp_no DESC
 ```
 
-![mysql-workbench-export-to-csv](../images/data-analytics-series/mysql_setup_35.PNG)
+![mysql-workbench-export-to-csv](/images/data-analytics-series/mysql_setup_35.PNG)
 
 ### ASC
 ```sql
@@ -317,7 +317,7 @@ FROM employees
 ORDER BY employees.emp_no ASC
 ```
 
-![mysql-workbench-export-to-csv](../images/data-analytics-series/mysql_setup_36.PNG)
+![mysql-workbench-export-to-csv](/images/data-analytics-series/mysql_setup_36.PNG)
 
 One note about `ASC`, if you do not specifcy what type of `ORDER BY` then it will default to `ASC`.
 
@@ -349,11 +349,11 @@ FROM employees
 ORDER BY employees.last_name ASC, employees.emp_no DESC 
 ```
 
-![mysql-workbench-export-to-csv](../images/data-analytics-series/mysql_setup_37.PNG)
+![mysql-workbench-export-to-csv](/images/data-analytics-series/mysql_setup_37.PNG)
 
 "Aamodt" is the first employee in the `last_name` field when the `ORDER BY` is set to `ASC`, however, there are many "Aamodt"s in this table.  This is where the second `ORDER BY` comes in.  The second `ORDER BY` is set on the `emp_no` field and is `DESC`, this is why all the numbers start at the highest values and move towards the lowest.  Of course, when the the `last_name` value changes the `emp_no` order will restart, still moving from highest to lowest.
 
-![mysql-workbench-export-to-csv](../images/data-analytics-series/mysql_setup_38.PNG)
+![mysql-workbench-export-to-csv](/images/data-analytics-series/mysql_setup_38.PNG)
 
 Alright, let's move on.  Just remember, `ORDER BY` is extremely useful for humans, but it makes it slower for computers to process.  Therefore, when you write a query, consider your audience.
 
@@ -372,7 +372,7 @@ ORDER BY employees.emp_no, employees.first_name
 This returns a single record, which makes sense.  We told the SQL program we want `emp_no`, `first_name`, `last_name` from the `employees` table where the `emp_no` is equal to `10006`.
 
 
-![mysql-workbench-export-to-csv](../images/data-analytics-series/mysql_setup_39.PNG)
+![mysql-workbench-export-to-csv](/images/data-analytics-series/mysql_setup_39.PNG)
 
 But, let's also look at the `Database Message`
 
@@ -399,7 +399,7 @@ WHERE employees.first_name = "Ramzi"
 ORDER BY employees.emp_no, employees.first_name
 ```
 
-![mysql-workbench-export-to-csv](../images/data-analytics-series/mysql_setup_40.PNG)
+![mysql-workbench-export-to-csv](/images/data-analytics-series/mysql_setup_40.PNG)
 
 But what if we want to include multiple different employees, but not all? That's where `IN` comes...in.
 
@@ -415,7 +415,7 @@ FROM employees
 WHERE employees.last_name IN ("Bamford", "Casley", "Benveniste")
 ORDER BY employees.last_name ASC, employees.first_name ASC;
 ```
-![mysql-workbench-export-to-csv](../images/data-analytics-series/mysql_setup_41.PNG)
+![mysql-workbench-export-to-csv](/images/data-analytics-series/mysql_setup_41.PNG)
 
 This can also be done with numbers
 ```sql
@@ -439,7 +439,7 @@ WHERE employees.emp_no > 40000
 ORDER BY employees.emp_no, employees.first_name;
 ```
 
-![mysql-workbench-export-to-csv](../images/data-analytics-series/mysql_setup_42.PNG)
+![mysql-workbench-export-to-csv](/images/data-analytics-series/mysql_setup_42.PNG)
 
 If you aren't familiar with the equalities, here's a breakdown.
 

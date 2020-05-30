@@ -6,7 +6,7 @@ series: Custom PCBs
 excerpt:
 tags: [robot, PCB, SMD, ATtiny84, HM-11, BLE]
 image: 
-    feature: Robber-T%20v01.PNG
+    feature: Robber-T_v01.PNG
 comments: true
 custom_css:
 custom_js: 
@@ -39,17 +39,17 @@ Not sure if I can pull it off; wish me luck.  And feel free to follow the code 
 
 [Lumi3](https://github.com/Ladvien/Lumi3)  
 
-![](../images/Robber_PCB_v1.JPG)
+![](/images/Robber_PCB_v1.JPG)
 
 ## Design Info
 
-[Robber_Schematic.pdf](http://ladvien.com../images/Robber_Schematic.pdf)  
+[Robber_Schematic.pdf](http://ladvien.com/images/Robber_Schematic.pdf)  
 
-![Robber v01 Schematic.PNG](../images/Robber%20v01%20Schematic.PNG)  
+![Robber v01 Schematic.PNG](/images/Robber_v01_Schematic.PNG)  
 
-![Robber v01 T Solder Guide.PNG](../images/Robber%20v01%20T%20Solder%20Guide.PNG)  
+![Robber v01 T Solder Guide.PNG](/images/Robber_v01_T_Solder_Guide.PNG)  
 
-![Robber v01 B Solder Guide.PNG](../images/Robber%20v01%20B%20Solder%20Guide.PNG)
+![Robber v01 B Solder Guide.PNG](/images/Robber_v01_B_Solder_Guide.PNG)
 
 ## HM-11 Setup
 
@@ -85,9 +85,9 @@ Circuits tested:
 | Vibration Motor | Yes | 100% | It doesn't work too well when powered by USB alone.  Probably need to get a lower powered vibration motor.  Also, I don't like the wire connections.  They get all tangled and pull off.  It'd be better with a PCB mounted vibration motor. |
 
 
-![IMG_1616_0.JPG](../images/IMG_1616_0.JPG)  
+![IMG_1616_0.JPG](/images/IMG_1616_0.JPG)  
 
-![IMG_1617_0.JPG](../images/IMG_1617_0.JPG)
+![IMG_1617_0.JPG](/images/IMG_1617_0.JPG)
 
 ## Debugging Wireless UART Connection
 
@@ -98,12 +98,12 @@ When the ATtiny84 and HM-11 combination were tested using Lumi the Robber board 
 
 Back to the Robber board issue.  I got wore out trying to do stuff like this:  
 
-![2017-01-22 14.16.09.jpg](../images/2017-01-22%2014.16.09.jpg)
+![2017-01-22 14.16.09.jpg](/images/2017-01-22_14.16.09.jpg)
 
 The wires kept popping off, they'd need to be resoldered, then pop off again.  Finally, I broke down and bought a [SOIC-14 AVR Programmer](http://www.ebay.com/itm/ATtiny24A-SSU-ATtiny24-ATtiny44-ATtiny84-SOIC14-150-mil-AVR-Programmer-Adapter-/250670056425?hash=item3a5d1983e9:g:ijAAAOxyyFhTdw1-).  _Dear lord,_ where has this thing been all of my life?  Instead of taking two hours of setting up a chip, wiring leads, and programming it, I was done in about 10 minutes.  If you like SOIC ATtiny85/84 chips, get one!   
 
 Here's an action shot!  
-![2017-02-01 08.56.38.jpg](../images/2017-02-01%2008.56.38.jpg)
+![2017-02-01 08.56.38.jpg](/images/2017-02-01_08.56.38.jpg)
 
 
 
@@ -112,7 +112,7 @@ Here's an action shot!
 There was trouble testing the SMD RGB LEDs.  During the solder-desoldering process the voltage traces for the green LED came off the board.  However, this shouldn't affect the second LED--but for some reason the green channel on the other LED is the only one working properly.  The red and blue do not seem to be lighting up.    
 
 I thought I'd take a moment and diagram the SMD RGBs I'm using, as I can't ever seem to get directionality correct.  
-![SMD_RGB_Closeup.jpg](../images/SMD_RGB_Closeup.jpg)
+![SMD_RGB_Closeup.jpg](/images/SMD_RGB_Closeup.jpg)
 
 # 2017-12-24 -- v3
 
@@ -124,5 +124,5 @@ I've added a special ISP header to the board.  It works with [Tiny AVR-ISP pogo-
 
 It's a bit of a pain to solder, but it's pretty darn sweet once it's in place.  Of course, the header is backwards.  More on that later.
 
-![](../images/isp-key.png)
+![](/images/isp-key.png)
 

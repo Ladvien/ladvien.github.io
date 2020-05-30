@@ -40,15 +40,15 @@ So, that brings us to my journal.  I've not written this out to impress anyone. 
 
 I ordered a few samples of the [ATtiny1634](http://www.atmel.com/Images/Atmel-8303-8-bit-AVR-Microcontroller-tinyAVR-ATtiny1634_Datasheet.pdf).
 
-![](../images/ATtiny_1634.jpg)
+![](/images/ATtiny_1634.jpg)
 
 A long time ago I bought an [AVR ISP MKII](http://store.atmel.com/PartDetail.aspx?q=p:10500054#tc:description) to program [these boards](http://letsmakerobots.com/node/36273)
 
-![](../images/AVR_ISP_MKII.jpg)
+![](/images/AVR_ISP_MKII.jpg)
 
 I wired up the 1634 and the ISP like so,
 
-![](../images/1634_to_ISP.jpg)
+![](/images/1634_to_ISP.jpg)
 
 What do you mean the silk-screen is mislabeled...shh.
 
@@ -69,7 +69,7 @@ I began to Google until I found an AVR Tutorial Series that looked like it would
 
 Luckily, I found the series put together by [Newbie Hack's](http://www.newbiehack.com/) series.
 
-[![](http://www.newbiehack.com../images/newbieHack_logo_04CroppedscaledTo200.jpg)](http://www.newbiehack.com/)
+* [Newbiehack](http://www.newbiehack.com/)
 
 So, I decided I would try to walk through all of his tutorials and see if I could apply them to the ATtiny1634. NOTE: The author of this series appears to be [Patrick Hood-Daniel](http://www.newbiehack.com/aboutus.aspx), a fellow Texan (don't hold that against us :P).
 
@@ -98,11 +98,11 @@ I got Newbie Hack's code going within 3 minutes
 
 I looked down at my breakout board, I had some "PBx" pins, so I figured I had a Port B.  I located pin PB0 (the the pin marked "1" in the above image) and I threw my LED and resistor on it.  
 
-![](../images/Fritz_1634_LED_img1.jpg)
+![](/images/Fritz_1634_LED_img1.jpg)
 
 I uploaded the program and got this:
 
-![](../images/6rxg5.gif)
+![](/images/6rxg5.gif)
 
 **But the purpose of this journal is to _understand_ what I'm doing**, not just copy it. So, the following is an explanation to myself, in case I forget stuff.
 
@@ -114,11 +114,9 @@ Now, Atmel chips are divided into **ports**, and thee ports have 8 pins (or less
 
 Newbie Hacks (NB) does a great job of explaining this.  He even draws out a picture;I like pictures.
 
-![](http://www.newbiehack.com../images/DDRB.JPG)
-
 I like to think in images, so I see each bit as an LED.  It makes sense, an LED has two-states ON/OFF; a bit has two states 0 or 1\.  So, a byte for me is 8 LEDs numbered 0-7.
 
-![](../images/LED_Bitwise_2_bb.jpg)
+![](/images/LED_Bitwise_2_bb.jpg)
 
 The above image could represent the following code:
 
@@ -152,13 +150,13 @@ I did have one modification I had to make to NH's program.  He uploads his progr
 
 So, I went to **Tools--->Device Programming**.  You then have to select your "Tool," for me the AVR ISP MKII; your device, ATtiny1634 for me; interface, ISP.  Then click "Apply."  Now, under "Device Signature" click "Read."  This should bring up the Device Programmer window.  Now, make sure you have your programmer wired to your chip correctly and you have a stable connection (might throw a .1uF radial capacitor between VCC and GND on the Tiny1634). Click on the "Fuses" tab.
 
-![](../images/ATtiny1634_Lesson_1_img2.jpg)
+![](/images/ATtiny1634_Lesson_1_img2.jpg)
 
 Uncheck the "CKDIV8."  It is the fuse that does exactly what it says, divides the clock by 8, reducing the chip from 8mhz to 1mhz. <span style="text-decoration: underline;">**Don't change any other fuses at this time.** Hit the "Program" button.  This will set the fuse.  If all goes well we didn't brick your chip.
 
 While we are under the device programming window, click on the "Memories" tab.  This is where you will actually upload your compiled program onto the chip.  Here, if you click on the ellipsis you can select the code you would like to upload.  This ends in ".elf" (unless you are using a chip besides an Tiny, then it'll end in .troll, hehe).  So, select your code and then hit "Program."
 
-![](../images/ATtiny1634_Lesson_1_img3.jpg)
+![](/images/ATtiny1634_Lesson_1_img3.jpg)
 
 Now, Atmel Studio is setup to automatically program your code using the last selected devices whenever you hit "F5."  Sadly, I found this rarely worked properly.  But I'm betting it's because I have no decoupling capacitor--yes, I confirmed this.  <span style="text-decoration: line-through;">I put a 1uF radial capacitor between VCC and GND, now the "F5" programming works as expected. I've no idea.  Seems to work if I manually program it though.  Shrug.
 
@@ -211,13 +209,13 @@ In English, "Whatever is in DDRB is equal to whatever is in DDRB **OR** 0b000000
 
 That looks like this,
 
-![](../images/LED_Bitwise_3_OR_bb.jpg)
+![](/images/LED_Bitwise_3_OR_bb.jpg)
 
 Bitwise operators, like OR'ing, are done on the entire byte.  That is, each bit, 0-7, are OR'd, so you have to keep in mind the operation isn't done _only_ on the bit you want to change.  This is where truth tables come in.  Below is a table describing the output of the OR operation.
 
 **OR (\|)**
 
-![](../images/Bitwise_Operators_OR_2.jpg)
+![](/images/Bitwise_Operators_OR_2.jpg)
 
 **The Left Shift <<:**
 
@@ -231,7 +229,7 @@ PORTB = DDRB | 1 << 3;
 
 The above takes the binary number assigned in DDRB and OR's it with a bit mask that is exactly the same, except the third pin, that pin is equal to 1\.  Therefore, **PORTB** would look like this after the operation,
 
-![](../images/LED_Bitwise_ShiftLeft_bb.jpg)
+![](/images/LED_Bitwise_ShiftLeft_bb.jpg)
 
 This seems more complex to me, but I understand it becomes very important when you start pulling apart the metal of an AVR.
 
@@ -255,11 +253,11 @@ The XOR (^) operator is much like the OR operation.  Except, if A and B are equa
 
 **XOR (^)**
 
-![](../images/Bitwise_Operators_XOR.jpg)
+![](/images/Bitwise_Operators_XOR.jpg)
 
 Going back to the LED example, here is the XOR operation.
 
-![](../images/LED_Bitwise_7_XOR_bb.jpg)
+![](/images/LED_Bitwise_7_XOR_bb.jpg)
 
 We use the XOR operation to turn the LED off and on.  Since a XOR operation on a bit is basically going to set it to the opposite it is in.  Therefore, if it is 0 it becomes 1, if it is 1, it becomes 0\.  This means we can actually shorten or blink code using the operation.
 
@@ -290,17 +288,17 @@ Robot Application Note #1: **SN754410 and ATtiny1634**
 
 First thing to do is wire up the H-Bridge.
 
-![](../images/ATtiny1634_SN754410_7.jpg)
+![](/images/ATtiny1634_SN754410_7.jpg)
 
 You may notice we wired both "EN" pins to 5v, I don't know how to generate PWM with AVR yet (but I hope to get there, so I'll revisit this).  Also, I used 5v as both my motor source and the Tiny1634 source.  The motors I used were [these little guys](http://www.ebay.com/itm/181121246372?ssPageName=STRK:MEWNX:IT&_trksid=p3984.m1439.l2649).  I figured since the drop voltage of the SN754410 is around 1.4-2v then I'd be pretty close to the target voltage of my motors (5v - 1.4v = 3.6v).  I kept everything approximate to the Tiny's voltage rating; I figured if I wired something wrong I'd be safer keeping the voltage sources low.  
 
 And good call, this is the wiring mess I ended up with...I thought I would start with one motor and move to two.
 
-![](../images/IMG_0388.jpg)
+![](/images/IMG_0388.jpg)
 
 I began thinking code.  I know the basics of the SN754410 and I wanted to be able to hit all the functions of its truth-table.
 
-![](../images/hbridge_labpinout.jpg)
+![](/images/hbridge_labpinout.jpg)
 
 So, I figured all I needed to do was get two of my IO pins to go HIGH and LOW to turn one direction, then switch them to go opposite.  This reminded me of the XOR (^) operator, since it did exactly that, turn a bit to its opposite.  This is the same operator we used to blink the LED.  I ended up with the following code:
 
@@ -331,7 +329,7 @@ int main(void)
 
 This code moved my motor one direction, then the other.  But there was no pause between the changes of directions.  I pulled it a part pretty quick, since I've generally had bad luck with instantaneous reversal of inductors.
 
-[![](../images/Play_Tiny1634_One_Motor.jpg)](http://youtu.be/YVd9ZZdimIw)
+[Video](http://youtu.be/YVd9ZZdimIw)
 
 Well, that wouldn't do.  But I realized another problem.  The XOR operator would flip the the pins from high to low, and back again.  But how would I set _both_ pins to low? Or both to high?  Now, in Arduino C it's pretty easy, you just write digitalWrite(pin#, HIGH), but in AVR we are controlling bits.
 
@@ -372,7 +370,7 @@ int main(void)
 
 This gave me the output I wanted.  The motor would turn one direction for 1.5 seconds, then stop, turn the other way, then stop, and start over.  Like this:
 
-[![](../images/Play_Tiny1634_One_Motor.jpg)](http://youtu.be/WAiDQo9F8Yk)
+[Video](http://youtu.be/WAiDQo9F8Yk)
 
 This code felt bloated to me.  And another problem was dawning: What if my LED was on PORTA?  That means I would need to keep track the state of three bits (1) bit controlling motor connection A, (2) bit controlling motor connection B, and (3) LED.  This means I would need to track 9 possible states (3 pins ^ 2 states = 9 pin states).  Now, I might be able to do this mentally, but it would be taxing, especially if my code is dynamically modifying the PORTA registry.  But what if all 8 pins were used? 8 pins ^ 2 sates = 64 pin states.  Ummm...no.  I can't do it.
 
@@ -387,21 +385,21 @@ We already know the bitwise operator (and mask) to set one bit high: **OR.**
 
 The **OR (\|)**operator sets the a pin HIGH:
 
-![](../images/LED_Bitwise_5_OR_bb.jpg)
+![](/images/LED_Bitwise_5_OR_bb.jpg)
 
 Sadly, clearing a bit while preserving the registry is _slightly_ more complicated.  To clear a bit we still use a bitmask, but we use two operators: **AND (&)** and **NOT (~)**.  Their truth-tables look like the following:
 
 **AND (&)**
 
-![](../images/Bitwise_Operators_AND_2_0.jpg)
+![](/images/Bitwise_Operators_AND_2_0.jpg)
 
 **NOT (~)** is unlike the other operators, it's simple.  It inverts the bit.  If 0, it becomes 1, if 1, it turns to 0.
 
-![](../images/Bitwise_Operators_NOT.jpg)
+![](/images/Bitwise_Operators_NOT.jpg)
 
 Instead of immediately modifying the PORT state we actually modify our bitmask with the NOT operator.  This gives us the inverse mask (00000001 becomes 11111110).  We then AND (&) the inverted mask with hte PORT's original state to clear PIN0 while preserving the other bit's state.  Here's the LED example for **NOT** and **AND** operation to clear a bit:
 
-![](../images/LED_Bitwise_1_AND_NOT_bb_2.jpg)
+![](/images/LED_Bitwise_1_AND_NOT_bb_2.jpg)
 
 Ok.  I _could_ wrap my head around this.  I developed the following code which did what I wanted:
 
@@ -617,6 +615,6 @@ Something else I realized.  I couldn't wire motors to a different PORT (my schem
 
 SO! Here's what we ended with:
 
-[![](../images/Play_Tiny1634_One_Motor.jpg)](http://youtu.be/N3AGEWW3jHU)
+[Video](http://youtu.be/N3AGEWW3jHU)
 
 Next up! Inputs...ooooohhhh...

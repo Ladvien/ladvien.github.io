@@ -14,7 +14,9 @@ custom_js:
 
 ## Hacker Introduction
 
-![](/../../images/Screenshot%202016-12-27%2007.39.30.png)I'm a _hacker_.  If you find errors, please leave comments below.  If you have an opinion I'll hear it, but I'm often not likely to agree without some argument.  
+![](/images/Screenshot_2016-12-27_07.39.30.png)
+
+I'm a _hacker_.  If you find errors, please leave comments below.  If you have an opinion I'll hear it, but I'm often not likely to agree without some argument.  
 
 ### Joins (Merging Data)
 

@@ -170,7 +170,7 @@ Use the Raspi-Config tool to enable I2C
 sudo raspi-config
 ```
 
-![](../images/rasp-config.png)
+![](/images/rasp-config.png)
 
 
 Select "Interfacing Options" and enable I2C.

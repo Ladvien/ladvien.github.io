@@ -12,7 +12,7 @@ image:
   thumb:
 comments: true
 ---
-![](../images/Lab%20Controller%20Board%20Top%20and%20Bottom(1).PNG)
+![](/images/Lab_Controller_Board_Top_and_Bottom.PNG)
 
 A little lab controller PCB I'm working on.  It centers around four high-power constant current circuits meant to be driven by an Atmega328's PWM.
 
@@ -34,21 +34,23 @@ The heart of the circuit is around a high-power constant current driver.  I rip
 
 Here is my go at adding the circuit to a controller board,
 
-[![](../images/Lab Controller Schem image.png)](https://github.com/Ladvien/ladvien.github.io/blob/master../images/Lab%20Controller%20Board%20v01.pdf)
+![](/images/Lab_Controller_Schem_image.png)
+
+[PDF](https://github.com/Ladvien/ladvien.github.io/blob/master/images/Lab%20Controller%20Board%20v01.pdf)
 
 Regarding how the circuit it works....black magic.  Well, at least, that's how I understand it.  I tried reading this excellent article but ended up deciding it was attempting to reason away what was obviously black magic.
 
 *   [The Transistor -- MOSFET Constant Current Driver](http://www.pcbheaven.com/userpages/LED_driving_and_controlling_methods/)
 
-![](../images/IMG_0133.JPG)
+![](/images/IMG_0133.JPG)
 
 I originally designed a minimal PCB to hold the circuit.  I was hoping a small little board would allow me to attach it wherever needed,
 
-![5V regulator](../images/5v_regulator_lab_controller_labeled.jpeg)
+![5V regulator](/images/5v_regulator_lab_controller_labeled.jpeg)
 
 Here's where it gets fun.  See that red alligator clip so neatly gripping the leg of the 5V regulator, well, just keep it in mind when looking at our next exhibit.
 
-![](../images/IMG_0134.jpeg)
+![](/images/IMG_0134.jpeg)
 
  Gross and note safe, right? _C'est la vie,_ it has been working for a about a year this way.
 

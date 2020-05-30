@@ -42,7 +42,7 @@ This article was not meant to be independent. The entire purpose of the this is 
 
 ## Step 1: Upload the ArduinoISP Sketch
 
-![](../images/2017-06-09-upload-arduino-or-avr-programs-attiny85-uart/02_img_2017-06-09-upload-arduino-or-avr-programs-attiny85-uart.jpg)
+![](/images/2017-06-09-upload-arduino-or-avr-programs-attiny85-uart/02_img_2017-06-09-upload-arduino-or-avr-programs-attiny85-uart.jpg)
 
 Upload the ArduinoISP Sketch
 There are several guides on how to use an Arduino as an ISP:
@@ -60,13 +60,13 @@ Then hit the Upload button. Wire up the ATtiny85 After the ArduinoISP sketch has
 
 ## Step 2: Wire Up the ATtiny85 and Arduino
 
-![](../images/2017-06-09-upload-arduino-or-avr-programs-attiny85-uart/02_img_2017-06-09-upload-arduino-or-avr-programs-attiny85-uart.jpg)
+![](/images/2017-06-09-upload-arduino-or-avr-programs-attiny85-uart/02_img_2017-06-09-upload-arduino-or-avr-programs-attiny85-uart.jpg)
 
 Now the ArduinoISP sketch has been uploaded it is time to burn our bootloader to the ATtiny85. Go ahead and wire your ATtiny85 to the Arduino Uno as shown in the image.
 
 ## Step 3: Install AVRDUDE
 
-![](../images/2017-06-09-upload-arduino-or-avr-programs-attiny85-uart/04_img_2017-06-09-upload-arduino-or-avr-programs-attiny85-uart.jpg)
+![](/images/2017-06-09-upload-arduino-or-avr-programs-attiny85-uart/04_img_2017-06-09-upload-arduino-or-avr-programs-attiny85-uart.jpg)
 
 Now, we will need to install WinAVR
 
@@ -74,7 +74,7 @@ Now, we will need to install WinAVR
 
 ## Step 4: Burn TinySafeBootloader on ATtiny85
 
-![](../images/2017-06-09-upload-arduino-or-avr-programs-attiny85-uart/05_img_2017-06-09-upload-arduino-or-avr-programs-attiny85-uart.jpg)
+![](/images/2017-06-09-upload-arduino-or-avr-programs-attiny85-uart/05_img_2017-06-09-upload-arduino-or-avr-programs-attiny85-uart.jpg)
 
 Burn TinySafeBootloader on ATtiny85
 Once AVRDUDE has successfully installed, open it by going to the Start Menu and typing
@@ -156,7 +156,7 @@ If you have any issues, please leave any questions in the comments below.
 
 ## Step 5: Setup Arduino for ATtiny Boards -- 1
 
-![](../images/2017-06-09-upload-arduino-or-avr-programs-attiny85-uart/06_img_2017-06-09-upload-arduino-or-avr-programs-attiny85-uart.jpg)
+![](/images/2017-06-09-upload-arduino-or-avr-programs-attiny85-uart/06_img_2017-06-09-upload-arduino-or-avr-programs-attiny85-uart.jpg)
 
 Setup Arduino for ATtiny Boards -- 1
 You will need to add ATtiny board support to the Arduino IDE. This may be done by going to:
@@ -169,7 +169,7 @@ Then enter the following into the box marked "Additional Boards Manager URLs:"
 
 ## Step 6: Setup Arduino for ATtiny Boards -- 2
 
-![](../images/2017-06-09-upload-arduino-or-avr-programs-attiny85-uart/07_img_2017-06-09-upload-arduino-or-avr-programs-attiny85-uart.jpg)
+![](/images/2017-06-09-upload-arduino-or-avr-programs-attiny85-uart/07_img_2017-06-09-upload-arduino-or-avr-programs-attiny85-uart.jpg)
 
 Then go to,
 
@@ -183,7 +183,7 @@ Install this package.
 
 ## Step 7: Select the ATtiny85
 
-![](../images/2017-06-09-upload-arduino-or-avr-programs-attiny85-uart/08_img_2017-06-09-upload-arduino-or-avr-programs-attiny85-uart.jpg)
+![](/images/2017-06-09-upload-arduino-or-avr-programs-attiny85-uart/08_img_2017-06-09-upload-arduino-or-avr-programs-attiny85-uart.jpg)
 
 Select the ATtiny85
 Now, you should have the ATtiny group listed under
@@ -211,7 +211,7 @@ Eventually, I'll probably re-write this app for Mac and iOS. But gotta get the b
 
 ## Step 9: Connect UART IC to ATtiny85
 
-![](../images/2017-06-09-upload-arduino-or-avr-programs-attiny85-uart/09_img_2017-06-09-upload-arduino-or-avr-programs-attiny85-uart.jpg)
+![](/images/2017-06-09-upload-arduino-or-avr-programs-attiny85-uart/09_img_2017-06-09-upload-arduino-or-avr-programs-attiny85-uart.jpg)
 
 Connect UART IC to ATtiny85
 Connect the UART IC to the ATtiny85 as shown.

@@ -1,0 +1,6 @@
+# Replace spaces with underscores
+for file in *; do mv "$file" `echo $file | tr ' ' '_'` ; done
+
+# ImageMagick needed more memory to finish.
+https://github.com/ImageMagick/ImageMagick/issues/396
+

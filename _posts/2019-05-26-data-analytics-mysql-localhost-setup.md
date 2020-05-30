@@ -27,15 +27,15 @@ First, download the MySQL MSI Installer.
 
 * [MySQL Server Windows Installer](https://dev.mysql.com/downloads/installer/)
 
-![mysql-windows-installer-download](../images/data-analytics-series/mysql_setup_43.PNG)
+![mysql-windows-installer-download](/images/data-analytics-series/mysql_setup_43.PNG)
 
 After you've downloaded it, open the the file.
 
-![mysql-windows-installer-download](../images/data-analytics-series/mysql_setup_44.PNG)
+![mysql-windows-installer-download](/images/data-analytics-series/mysql_setup_44.PNG)
 
 If you are prompted to "Upgrade" go ahead and say "Yes"
 
-![mysql-windows-installer-download](../images/data-analytics-series/mysql_setup_45.PNG)
+![mysql-windows-installer-download](/images/data-analytics-series/mysql_setup_45.PNG)
 
 The installer is a bit confusing, but don't worry, most everything is fine left on its default.
 
@@ -43,22 +43,22 @@ Click on MySQL Server then the Add button.  Add "MySQL Server" and "Connector/OB
 
 As I stated, most of the install wizard questions we will leave as default.
 
-![mysql-windows-installer-download](../images/data-analytics-series/mysql-server-install.gif)
+![mysql-windows-installer-download](/images/data-analytics-series/mysql-server-install.gif)
 
-![mysql-windows-installer-download](../images/data-analytics-series/mysql_setup_46.PNG)
+![mysql-windows-installer-download](/images/data-analytics-series/mysql_setup_46.PNG)
 
-![mysql-windows-installer-download](../images/data-analytics-series/mysql_setup_47.PNG)
+![mysql-windows-installer-download](/images/data-analytics-series/mysql_setup_47.PNG)
 
-![mysql-windows-installer-download](../images/data-analytics-series/mysql_setup_48.PNG)
+![mysql-windows-installer-download](/images/data-analytics-series/mysql_setup_48.PNG)
 
 On the "Accounts and Roles" section you will need to decide on your password for the SQL Server on your local PC.  I obviously didn't pick a great one.  MySQL Server will automatically setup a user with the name of `root` and a password you set here.  This `root` user will permissions to do anything to the server.
 
-![mysql-windows-installer-download](../images/data-analytics-series/mysql_setup_49.PNG)
+![mysql-windows-installer-download](/images/data-analytics-series/mysql_setup_49.PNG)
 
-![mysql-windows-installer-download](../images/data-analytics-series/mysql_setup_50.PNG)
+![mysql-windows-installer-download](/images/data-analytics-series/mysql_setup_50.PNG)
 
 Execute the installer and let it finish.
-![mysql-windows-installer-download](../images/data-analytics-series/mysql_setup_51.PNG)
+![mysql-windows-installer-download](/images/data-analytics-series/mysql_setup_51.PNG)
 
 Once it finishes you should now have MySQL Server installed on your local PC. Skip to the last section to test it out.
 
@@ -68,14 +68,14 @@ Mac's a bit simpler.
 * [MySQL Server Mac Installer](https://dev.mysql.com/downloads/mysql/)
 
 Download the `.dmg` installer.
-![mysql-windows-installer-download](../images/data-analytics-series/mysql_setup_56.PNG)
+![mysql-windows-installer-download](/images/data-analytics-series/mysql_setup_56.PNG)
 
 Click on "No thanks, just start my download" and when the download is finished, double click on it.
-![mysql-windows-installer-download](../images/data-analytics-series/mysql_setup_57.PNG)
+![mysql-windows-installer-download](/images/data-analytics-series/mysql_setup_57.PNG)
 
 Double click on the installer.  You will need to enter your system password for the installer to setup MySQL Server, but you will also need to provide the MySQL Server `root` user a password.  Don't consfuse the two, unless you plan for them to be the same.
 
-![mysql-windows-installer-download](../images/data-analytics-series/mysql-server-install-mac.gif)
+![mysql-windows-installer-download](/images/data-analytics-series/mysql-server-install-mac.gif)
 
 Once it finishes you should now have MySQL Server installed on your Mac. Skip to the last section to test it out.
 
@@ -83,7 +83,7 @@ Once it finishes you should now have MySQL Server installed on your Mac. Skip to
 Go ahead and open MySQL Workbench and let's connect to this new local server.
 
 Click on the "New Connection" icon and leave everything default, except the "Connection Name," here enter `localhost`.
-![mysql-windows-installer-download](../images/data-analytics-series/mysql_setup_52.PNG)
+![mysql-windows-installer-download](/images/data-analytics-series/mysql_setup_52.PNG)
 
 Double click on the new connection and enter the password you created during installation.  *Voila!*
 
@@ -92,7 +92,7 @@ Let's run a command to make sure everything is working.
 SHOW databases;
 ```
 You should see:
-![mysql-windows-installer-download](../images/data-analytics-series/mysql_setup_53.PNG)
+![mysql-windows-installer-download](/images/data-analytics-series/mysql_setup_53.PNG)
 
 # Loading CSV
 
@@ -113,7 +113,7 @@ Ultimately, a computer can't make sense of any human-words.  It has to convert e
 
 You may have encountered this in a spreadsheet.  If you open a spreadsheet and see something like
 
-![xkcd-types](../images/data-analytics-series/mysql_setup_59.png)
+![xkcd-types](/images/data-analytics-series/mysql_setup_59.png)
 
 The data I actually provided the spreadsheet were:
 

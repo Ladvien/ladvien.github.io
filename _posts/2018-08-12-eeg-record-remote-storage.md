@@ -29,7 +29,7 @@ To recap:
 
 The end result is a system which could allow a remote EEG analyst to examine samples nearly in real time.
 
-![eeg-visualization](../images/eeg_poc_tableau_viz.png)
+![eeg-visualization](/images/eeg_poc_tableau_viz.png)
 
 Below, I'm going to show how I was able to setup the system.  But, before that a few words of warning.
 

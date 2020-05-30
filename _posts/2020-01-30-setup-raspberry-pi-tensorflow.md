@@ -19,15 +19,15 @@ I will be focusing on the Raspberry Pi 3B+, but don't worry if you are using a d
 
 Step #1: Download [Raspbian Buster with desktop and recommended software](https://www.raspberrypi.org/downloads/raspbian/)
 
-![download-raspbian](../images/lego_classifier/download_raspbian.png)
+![download-raspbian](/images/lego_classifier/download_raspbian.png)
 
 Step #2: Write the image to a 8gb (or greater) SD card.  I use [Etcher](https://www.balena.io/etcher/).
 
-![write-raspbian-sd-card](../images/lego_classifier/etcher.png)
+![write-raspbian-sd-card](/images/lego_classifier/etcher.png)
 
 Step #3:  Once the image is finished, and before you plug the card into the Pi, open the SD card and create a file called `ssh`.  No extension and nothing inside.  This will enable `ssh` on boot.
 
-![enable-ssh-with-boot-file](../images/lego_classifier/ssh_file.png)
+![enable-ssh-with-boot-file](/images/lego_classifier/ssh_file.png)
 
 Step #4: Plug the card in to the Pi.
 Step #5: Plug a LAN cable into the Pi
@@ -35,7 +35,7 @@ Step #6: Attach your PiCam.
 
 Note, there are two plugs the PiCamera will mate with.  To save frustration:
 
-![pi-cam-connector](../images/lego_classifier/pi_cam_plug.jpg)
+![pi-cam-connector](/images/lego_classifier/pi_cam_plug.jpg)
 
 Step #7: Turn the Pi on.
 Step #8: Find the ip of your Pi and `ssh` into it with the following.  
@@ -70,7 +70,7 @@ My opinion, raise the Pi's screen resolution _just_ high enough to make it easy 
 Ok, if you still want to, here's how to raise the Pi's resolution.
 
 Still in `raspi-config` open `Advanced Options`.  Navigate to `Resolution` and change it to what you'd like.  (I'm going with the highest).
-![vnc-resolution-on-pi](../images/lego_classifier/rpi_vnc_resolution.png)
+![vnc-resolution-on-pi](/images/lego_classifier/rpi_vnc_resolution.png)
 
 Once you've finished setting these options, exit.  At the end it will ask if you want to reboot, say "Yes."
 
@@ -83,14 +83,14 @@ Step #12: RealVNC will warn you about singing into your Pi, as it's not a creden
 
 Note, if you're on a Mac, it's going to ask you to give RealVNC access to keys or something.  (Shesh, Mac, thank you for the security, but, well, shesh.)
 
-![enable-keys-vnc-mac](../images/lego_classifier/enable_keys_on_mac.png)
+![enable-keys-vnc-mac](/images/lego_classifier/enable_keys_on_mac.png)
 
 Step #13: Enter your credentials.  
 ```
 username: pi
 password: raspberry
 ```
-![vnc-to-raspberry-pi](../images/lego_classifier/real_vnc.png)
+![vnc-to-raspberry-pi](/images/lego_classifier/real_vnc.png)
 
 Step #14: This should open your Pi's desktop environment.  It will ask you a few setup questions, go ahead and take care of it.  Note, if you change your password, you will need to update RealVNC (if you had it "Remember My Password").
 
@@ -146,7 +146,7 @@ python3 eval_rpi.py
 ```
 If all goes well, it will take a minute or two to initialize and you should see something similar to the following:
 
-![tensorflow-predictions-rpi](../images/lego_classifier/tensorflow_on_rpi_success.png)
+![tensorflow-predictions-rpi](/images/lego_classifier/tensorflow_on_rpi_success.png)
 
 ### Troubleshooting
 

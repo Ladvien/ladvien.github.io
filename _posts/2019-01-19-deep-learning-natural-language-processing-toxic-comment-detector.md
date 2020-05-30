@@ -123,7 +123,7 @@ After this bit of code we should have three objects.
 1. `embedding_model` -- Pre-trained relationships between words, which is a matrix 300 x 400,000.
 2. `index2word` -- A dictionary containing `key-value` pairs, the key being the word as a string and value being the integer representing the word.  Note, these integers correspond with the index in the `embedding_model`.
 3. `word2idx` -- A list containing all the words.  The index corresponds to the word's position in the word embeddings.  Essentially, the reverse of the `index2word`.
-![](../images/embeddings_1.png)
+![](/images/embeddings_1.png)
 
 #### Code: Get Toxic Comments Labels
 ```python
@@ -214,7 +214,7 @@ Both arguments default to `pre`.
 
 Lastly, the `maxlen` argument controls where padding and truncation happen.  And we are setting it with our `MAX_SEQUENCE_LENGTH` variable.
 
-![padding-sequences-before-after](../images/embeddings_3.png)
+![padding-sequences-before-after](/images/embeddings_3.png)
 
 #### Code: Applying Embeddings
 ```python
@@ -291,7 +291,7 @@ Here's how the embedding matrix should look after the word "of" is added. (The f
 
 Also, for a deep visualization, check the image above.  The picture labeled "word embeddings" is _actually_ the output of our `embedding_matrix`.  The big difference? The word vectors in the `gensim` embedding_model which are not found anywhere in our corpus (all the text contained in the toxic_comments column) have been replaced with all zeroes. 
 
-![embedding-matrix](../images/embeddings_2.png)
+![embedding-matrix](/images/embeddings_2.png)
 
 #### Code: Creating Embedding Layer
 ```python

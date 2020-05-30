@@ -27,7 +27,7 @@ I'm going to write this **guide as a supplement to existing build guides.**  For
 
 **Purchasing the Kossel materials:**
 
-[![](http://s9.postimg.org/9qjf43ny7/IMG_0427.jpg)](http://postimg.org/image/ep6ximrqz/)
+![](/images/IMG_0427.jpg)
 
 I sourced a few parts from China and purchased the major parts from [www.builda3dprinter.eu](http://www.builda3dprinter.eu/).
 
@@ -45,7 +45,7 @@ I sourced a few parts from China and purchased the major parts from [www.builda3
 
 [J-head MK-V, 0.4MM Nozzle, 1.75MM](http://www.ebay.com/itm/301072807949?ssPageName=STRK:MEWNX:IT&_trksid=p3984.m1439.l2649): $36.99
 
-[![](http://s27.postimg.org/ts6ml4nur/IMG_0433.jpg)](http://postimg.org/image/uhpexhoe7/)
+![](/images/IMG_0433.jpg)
 
 For the rest, I bought several "kits" from www.builda3dprinter.eu.
 
@@ -65,7 +65,7 @@ Shipping: ~$50.00
 
 **Total for Essentials: $587.19**
 
-[![](http://s3.postimg.org/z25y3mxwj/IMG_0442.jpg)](http://postimg.org/image/ir5u7blen/)
+![](/images/IMG_0442.jpg)
 
 After purchasing all the essentials I bought a few things I felt would make the build neat.
 
@@ -81,7 +81,7 @@ After purchasing all the essentials I bought a few things I felt would make the 
 
 **Total Essetials and Neatness: $617.69**
 
-[![](http://s29.postimg.org/tzc1318hj/IMG_0443.jpg)](http://postimg.org/image/c9achzuwj/)
+![](/images/IMG_0443.jpg)
 
 **Regarding www.builda3dprinter.eu**
 
@@ -107,7 +107,7 @@ In fairness, I'm not done with the build, but writing this out, **I'd say I woul
 
 The bit it's difficult to put a price on is part precision and synergize.  Since the parts are meant to work together, calibration is much simplier (still not easy).  For instance, instead of having to measure out the length of rods, carriage offset, etc. B3DP provided a Marlin (firmware for delta) with these measurements already input.  In sum, **half of the calibration is already done by B3DP.**
 
-[![](http://s14.postimg.org/bvp3olxox/IMG_0447.jpg)](http://postimg.org/image/42yfwmrpp/)
+![](/images/IMG_0447.jpg)
 
 **Purchase "Doh"s!**
 
@@ -117,7 +117,7 @@ The bit it's difficult to put a price on is part precision and synergize.  Since
 
 B3DP provided me with a [MK V end effector](https://github.com/jcrocholl/kossel/blob/master/effector.stl) and I bought [MK IV J-Head](http://jheadnozzle.blogspot.com/) extruder that was advertised as an MK V.  Point to you eBay.  So far, this hasn't caused any problems, I simply pulled the brass end off my extruder and pushed it into place.  Not sure of the open area between the effector plastic and the PTFE tubing will cause me problems down the road, like filament bunching.
 
-[![](http://s18.postimg.org/6xyiwkm9l/IMG_0449.jpg)](http://postimg.org/image/92ivxnnw5/)
+![](/images/IMG_0449.jpg)
 
 **2\. Must have a _Geared_ Stepper motor for extruder:**
 
@@ -131,7 +131,7 @@ Like I stated, I'm no going into a lot of detail about the assembly, since there
 
 **1. [Jig Setup & Traxxas Ends](http://www.youtube.com/watch?v=odlyVY3Sziw)**
 
-[![](http://i1.ytimg.com/vi/odlyVY3Sziw/mqdefault.jpg)](http://www.youtube.com/watch?v=odlyVY3Sziw)
+[Assembly Video](http://www.youtube.com/watch?v=odlyVY3Sziw)
 
 The Blokemer guide states I should tap and drill the Traxxas ends and the carbon rods.  I bought a metric tap and die set from Harbor Freight, but when I examined the pieces I received from B3DP I noticed the headless bolts were too small to catch the inside of the carbon rods.  Also, I wasn't sure how to use my tap and die; this devolved into the realization I had the wrong thread sizes.  Makes sense, I was using a US tool and parts from everywhere else but the US.
 
@@ -143,7 +143,7 @@ Post-build note: **I found to "spare" objects in my plastic parts that came from
 
 **2. [Gluing Traxxas Ends (and a big F'up)](http://youtu.be/pO9BQj8K6RI)**
 
-[![](http://i1.ytimg.com/vi/pO9BQj8K6RI/mqdefault.jpg)](http://youtu.be/pO9BQj8K6RI)
+[Video](http://youtu.be/pO9BQj8K6RI)
 
 I bought some cheap slow setting epoxy from Harbor Freight.  I mixed it with a chop-stick (a favorite tool) and began to apply it to the Traxxas ends.  Then, **I f'ed up.**
 
@@ -153,21 +153,23 @@ One more note, **be sure to wipe excess epoxy from the Traxxas end and rod joint
 
 **3. [Bottom Triforce Assembly](http://youtu.be/_eOBF8TvbYg)**
 
-[![](https://i1.ytimg.com/vi/_eOBF8TvbYg/mqdefault.jpg)](http://youtu.be/_eOBF8TvbYg)
+[Video](http://youtu.be/_eOBF8TvbYg)
 
 I didn't like the name "Bottom Assembly" so, I renamed this step: Bottom Triforce assembly.  For the most part, smooth sailing.  Just make sure you _barely_ screw the nuts on.  If they are too tight you can't get the plastic lips to close around them.  Also, **they have a top and bottom.**
 
 Adding the shafts to the bottom Triforce was a little tricky.  First, it should be noted, there is an "up" and a "down" to the Triforce pieces:
 
-[![](http://s29.postimg.org/6r7g80hnb/BOTTOM_PLAS_TRI_Optimized.jpg)](http://s29.postimg.org/6r7g80hnb/BOTTOM_PLAS_TRI_Optimized.jpg) [![](http://s3.postimg.org/b87rmesv7/TOP_PLAS_TRI_Optimized.jpg)](http://s29.postimg.org/6r7g80hnb/BOTTOM_PLAS_TRI_Optimized.jpg)
+![](/images/BOTTOM_PLAS_TRI_Optimized.jpg)
 
-[![](http://s29.postimg.org/8iqedoqzb/IMG_0468.jpg)](http://s29.postimg.org/8iqedoqzb/IMG_0468.jpg)
+![](/images/TOP_PLAS_TRI_Optimized.jpg)
+
+![](/images/IMG_0468.jpg)]
 
 The little circular tabs on the bottom Triforce assembly are for printing purposes and may be removed with a sharp knife and steady hand.  In the absence of a steady hand, a lot of blood and an emergency-room visit will suffice.
 
 Also, **don't screw any bolts down too tight until you press all pieces together.**  I had reviewed the section in the [Blokmer ](http://blomker.com/Kossel_Mini_Assembly_Guide_V1.0.pdf)guide, pages 28-32, but I realized the need for give from all sides was greater than expected.  You'll notice towards the end of my video I was struggling not to look like a complete idiot trying to push all the pieces together.
 
-![](http://s13.postimg.org/rkex5gc7b/IMG_0490.jpg)
+![](/images/IMG_0490.jpg)
 
 Of course, I didn't realize this until I already had bolted the bottom Triforce down and started trying to shove the first shaft in place.  I quickly pulled the bottom apart, flipped the odd piece I had so _all_ my plastic pieces had the two-prong guide at the "top."
 
@@ -175,25 +177,25 @@ Now, I've seen half-dozen different ways to press the 1515 into printed plastic.
 
 To press the rods in, I started the rod into the first nut.  Then, when it started to get tight, I put a little bike oil (the green bottle) around the edges, flipped over the assembly, and put it in my lap.  I pressed the end of the rod I had started against the tile floor and beat on the receiving end (assembly) with a balled fist.
 
-[![](http://s29.postimg.org/53rn2m7o7/Beat_the_Rod.jpg)](http://s29.postimg.org/53rn2m7o7/Beat_the_Rod.jpg)
+![](/images/Beat_the_Rod.jpg)
 
 Well, this worked great.  A little too great.  The rod slipped past being flush.  This is where the screwdriver and hammer came in.  I simply left the assembly in my lap, but raised the rod off the floor.  Then with the tip of the screwdriver against the end of the 1515 rod, I tapped against the screwdriver with the hammer.  This allowed me to align the 1515 rod flush with the bottom plastic of the Triforce assembly.
 
 **4. [Carriage Assembly](http://youtu.be/_vCunTe3lPg)**
 
-[![](http://i1.ytimg.com/vi/_vCunTe3lPg/mqdefault.jpg)](http://youtu.be/_vCunTe3lPg)
+[Video](http://youtu.be/_vCunTe3lPg)
 
 Carriages assembly went pretty well.  I had to tap the holes for most of the bolts on the carriages, since there was printer-webs still in the holes.  But after the holes were clear it was pretty straight forward.  I followed the guide from [B3DP](http://www.builda3dprinter.eu/build-manuals/kossel_mini/start-building/build-carriage/).  
 
 A few notes:  **If you haven't sorted your bolts, might be a good idea to do it now.  If all your bolts are lumped together [digital-calipers](http://www.ebay.com/itm/Digital-Electronic-Gauge-Stainless-Steel-Vernier-Caliper-150mm-6inch-Micrometer-/121118369552?pt=LH_DefaultDomain_0&hash=item1c3337a710) are a godsend.  You just measure from directly under the head, to the end of the shaft.**
 
-[![](http://s27.postimg.org/dtv7a4cg1/Carriage_Assembly_Nut_Sink.png)](http://s27.postimg.org/dtv7a4cg1/Carriage_Assembly_Nut_Sink.png)
+![](/images/Carriage_Assembly_Nut_Sink.png)
 
 There are three nuts that will need to be pressed into the plastic of the carriage assembly.  I used a heat gut to soften the plastic of the intended holes, then pressed the nut slightly in place by placing the tip of a flat-head screwdriver over the nut and tapping it with a hammer.  This method worked well.  **One exception,** there are three nuts, but two of the bolts are 25mm and one is 16mm.  **The 16mm bolt is not long enough to catch the threads of the nut unless you tap it deep into its hole.**  I hope this picture makes it clear:
 
 **5. [Motors and Endstops](http://youtu.be/xpg4aCajRbI)**
 
-**[![](http://i1.ytimg.com/vi/xpg4aCajRbI/mqdefault.jpg)](http://youtu.be/xpg4aCajRbI)**
+![](/images/mqdefault.jpg)
 
 Bottom endstops and motors went smooth.  
 
@@ -204,21 +206,23 @@ Also, **don't tighten any bolts down until all your bolts are started _correctly
 
 
 
-![](../images/IMG_0510.jpg)Oh, one more bit, **purchase a long 2mm Balled Allen Key** for this process.  As you may notice at the beginning of my video I tried with a short, balless Allen key to no avail.
+![](/images/IMG_0510.jpg)
 
-![](../images/IMG_0513.jpg)
+Oh, one more bit, **purchase a long 2mm Balled Allen Key** for this process.  As you may notice at the beginning of my video I tried with a short, balless Allen key to no avail.
+
+![](/images/IMG_0513.jpg)
 
 **6. [Carriage Arms and Effector Assembly](http://youtu.be/URMOpAK5ZWI)**
 
-[![](https://i1.ytimg.com/vi/URMOpAK5ZWI/mqdefault.jpg)](http://youtu.be/URMOpAK5ZWI)
+[Video](http://youtu.be/URMOpAK5ZWI)
 
 A couple notes,
 
 The carriage assembly is pretty straight forward, just make sure you follow the instructions and don't get in a hurry.  But the effector I had a little difficulty putting together.  Mainly, the **round part of the J-head wouldn't fit into the hole.**   I've tried to avoid using a heatgun as much as possible, but here I used it to warm the plastic enough and pressed the J-head into place.
 
-**7. [Top Triforce, PSU, Ramps 1.4, and Attaching Effector](http://youtu.be/kvdlXrVaKeE)**
+7. [Top Triforce, PSU, Ramps 1.4, and Attaching Effector](http://youtu.be/kvdlXrVaKeE)
 
-**[![](https://i1.ytimg.com/vi/kvdlXrVaKeE/mqdefault.jpg)](http://youtu.be/kvdlXrVaKeE)**
+[Video](http://youtu.be/kvdlXrVaKeE)
 
 Here I become a little peeved at B3DP.  First, there are three parts **they do not include** in "[The Rest](http://www.builda3dprinter.eu/shop/kossel-kit/6-rest/)" kit, but also don't mention in the "[What's not included](http://www.builda3dprinter.eu/shop/kossel-kit/6-whats-included/)" section.  They are **the spring, safety pin, and Allen-key for the auto-level**.  
 
@@ -226,21 +230,21 @@ The auto-level bit is a little tricky to put together.  You will need to source 
 
 Now, I need to state, in my original blog I was a little unfair to B3DP.  I bitched about them sending a button-switch for the auto-probe.  The problem was they provided a button switch instead of an button _and_ arm switch.  
 
-![](http://www.builda3dprinter.eu/wp-content/uploads/2013/12/Microswitch-e1387892435677.jpg)
+![](/images/Microswitch-e1387892435677.jpg)
 
 **Arm and Button**
 
-![](../images/IMG_0600.jpg)
+![](/images/IMG_0600.jpg)
 
 **Button Switch**
 
-![](../images/IMG_0573.jpg)
+![](/images/IMG_0573.jpg)
 
 This should not have bothered me too much, since the three end-stops worked.  But when it came to the auto-level, the Allen-key crook was supposed to catch the metal arm of the above shown switches, guiding it down to the button.  Well, I found when the Allen-key came to sit on the button, instead of pressing it down it would slide either to the left or right.  And it didn't seem to matter how much tweaking I did, I couldn't get it to sit right.  In the end, I bought the "appropriate" switch at Radio Shack for $3.
 
 Here is what my auto-level looked like after tweaking.  When I tested it unmounted it worked.
 
-![](../images/IMG_0652.jpg)
+![](/images/IMG_0652.jpg)
 
 **But,** when I mounted the auto-probe and started using it, I found the arm would catch underneath the safety-pin bolt.  Hmm.  
 
@@ -250,7 +254,7 @@ I ended up using the switch I was sent, effectively, and I apologize for bitchin
 
 Regarding the power-supply.
 
-![](../images/IMG_0603.jpg)
+![](/images/IMG_0603.jpg)
 
 I tried buying a cheap computer-power cord from eBay.  But after I sliced the end off and found less copper than in telephone wire. I sacrificed one of my old computer power cords.  The powercord wasn't as long as I'd like, but it had enough copper to pull the possible 30A the PSU could source.
 
@@ -267,17 +271,17 @@ After wiring my PSU to the Ramps I turned it on and looked for blue-smoke.  Noth
 
 
 
-![](../images/IMG_0604_0.jpg)
+![](/images/IMG_0604_0.jpg)
 
 But I had another problem.  The Mega underneath wasn't getting power.  Well, I scratched my head for a bit and then actually read the [Ramps](http://reprap.org/wiki/RAMPS_1.4) manual. Apparently the diode that had been taped to the underbelly of my Ramps is what enabled it to be powered from a 12V PSU.  I soldered it in place.
 
 After soldering the diode everything _appeared_ to be working.  I continued to wire everything else up like proper.
 
-![](../images/IMG_0607.png)
+![](/images/IMG_0607.png)
 
 12V to Arduino Mega Diode placement
 
-![](../images/IMG_0653_-_Copy.jpg)
+![](/images/IMG_0653_-_Copy.jpg)
 
 Here, I switched gears and put the top Triforce together.  
 
@@ -285,11 +289,11 @@ One note I'll make.  Again, the top Triforce has a "bottom" and a "top."  It has
 
 After, I got a hankering to actually put the top on and the belts in place.  It took a little courage, since B3DP sent my timing belts in one role.  I had to make cuts and was worried they had given me _just_ enough belt and if I made a cut that was a little off would have to wait on another belt.  But it was in vain, I had enough.  
 
-![](../images/IMG_0588.jpg)
+![](/images/IMG_0588.jpg)
 
 To cut the belts I just strung them up as shown and left about four rubber-teeth past the end of the linker groove.  The little extra room can be adjusted when the top Triforce is put on.  There are three tension bolts for this purpose.
 
-![](../images/IMG_05792.jpg)
+![](/images/IMG_05792.jpg)
 
 This is what the belt should look like in place, **_except_ the should go below the carriage or it will knock into the end-stops before carriage.**
 
@@ -299,11 +303,13 @@ I then tightened the top Triforce and quickly hooked up the Ramps.  I uploaded t
 
 Apparently, the power control [FETs on the Ramps were bad](http://letsmakerobots.com/node/40734)?
 
-![](http://letsmakerobots.com../images/800px-RAMPS1-3_mosfet.jpg)I found out later (Brassfly and Bdk6 actually figured it out) that it was not bad FETs.  It was a trace-short somewhere on the first 12V power rail.  Oh well.  I ordered another Ramps board for $14 and took a break from the build for 18 days while it found its way to me.
+![](/images/800px-RAMPS1-3_mosfet.JPG)
+
+I found out later (Brassfly and Bdk6 actually figured it out) that it was not bad FETs.  It was a trace-short somewhere on the first 12V power rail.  Oh well.  I ordered another Ramps board for $14 and took a break from the build for 18 days while it found its way to me.
 
 8\. [It's Alive!](http://youtu.be/z67Q4nY6NBk)
 
-[![](https://i1.ytimg.com/vi/z67Q4nY6NBk/mqdefault.jpg)](http://youtu.be/z67Q4nY6NBk)
+[Video](http://youtu.be/z67Q4nY6NBk)
 
 The evening I received the new Ramps board I wired everything up.  Sure enough, I powered the thing on and all the blue-fairies stayined in their Silicon homes.  I then ran the Blink sketch to check the power FETs on pins 8, 9, 10\.  They all powered on like expected, spitting out 12Vs.  
 
@@ -320,7 +326,7 @@ Before I move on though, I'd like to go over wiring.
 
 Here is the B3DP wiring chart:
 
-![](http://www.builda3dprinter.eu/wp-content/uploads/2013/12/Wiring_3Dprinter_000.jpg)
+![](/images/Wiring_3Dprinter_000.jpg)
 
 Of course, my stepper-motors had different color wires, but I guessed and got it right.  Really, I figure they would either move up or down, then I could switch them if needed.  A word of caution, **make sure you wire each stepper to its corresponding end-stop. If not, when you home the end-stops for the first time one or two of the motors will stop, but the other two or one will continue because their end stop hasn't been triggered, resulting in your belt(s) coming loose.  E.g., motor X will hit end-stop Z, but not turn off because the X end-stop hasn't been switched.  And the X end-stop wont switch off because motor Z has stopped because its end-stop has be triggered.**
 

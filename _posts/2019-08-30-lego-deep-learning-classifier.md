@@ -13,7 +13,9 @@ custom_css:
 custom_js: 
 ---
 
-[![](../images/lego_classifier/lego_classifier_comic.png){: .float-right}](https://ladvien.com/lego_classifier/lego_classifier_comic.png) I've a robot friend.  To be clear, the friend is not a robot, rather, we build robots together.  One of the projects we tossed about is building a LEGO sorting machine.  Rockets is the friends name--again, not a robot--teaches robotics to kids.  For their designs, LEGOs are the primary component.  Unfortunately, this results in much time spent to preparing for an event.
+![](/images/lego_classifier/lego_classifier_comic.png) 
+
+I've a robot friend.  To be clear, the friend is not a robot, rather, we build robots together.  One of the projects we tossed about is building a LEGO sorting machine.  Rockets is the friends name--again, not a robot--teaches robotics to kids.  For their designs, LEGOs are the primary component.  Unfortunately, this results in much time spent to preparing for an event.
 
 He mentioned to me, "What I really need is a sorting machine."  And proceeded to explain his plain for building one.  
 
@@ -68,7 +70,7 @@ As I stated before, I didn't like any datasets but Paco's.  It was real images a
 
 The first attempt creating training images was by rendering images from `.stl` files found on the internet using the Python version of [Visualization Toolkit](https://vtk.org/).  I won't cover it here since it was a fail and as I'll create an article later about the stuff we tried and didn't work.
 
-![](../images/lego_classifier/rockets_contraption.jpg){: .float-left} Anyway, while I was working on it Rockets had a brilliant plan.  He created an instrument to take pictures of a LEGO on a spin plate.  It used a Raspberry Pi, Pi Cam, and stepper motor, and unicorn farts.
+![](/images/lego_classifier/rockets_contraption.jpg){: .float-left} Anyway, while I was working on it Rockets had a brilliant plan.  He created an instrument to take pictures of a LEGO on a spin plate.  It used a Raspberry Pi, Pi Cam, and stepper motor, and unicorn farts.
 
 Then Rockets began taking pictures of 10 classes of LEGOs. Not sure how long this took , but shortly he pinged me saying he had 19,000 images. (Ok, ok, he might be _part_ robot.) 
 
@@ -82,7 +84,7 @@ Alright! Now I needed to get my butt in gear and fix up the software.
 Before we could start training a CNN on Rockets's images we needed to do some preprocessing.  First, the images came in at full resolution, but we needed to crop them, as the CNN train better on square image.  Of course, the image would need to be cropped as not to lose the target data (the LEGO).
 
 For example
-![preprocess-image-for-cnn](../images/lego_classifier/crop_and_resize.png)
+![preprocess-image-for-cnn](/images/lego_classifier/crop_and_resize.png)
 
 Also, the trainer would be expecting a file structure something like this:
 

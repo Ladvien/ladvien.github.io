@@ -45,7 +45,7 @@ Then, I have an Arduino Motor Shield.  I originally was determined to build my o
 
 http://cthomasbrittain.wordpress.com/2013/01/27/design-a-motor-driver-for-lsn-bot/
 
-![](../../images/IMG_1035.jpg){: class="ll-image-fl"}
+![](/images/IMG_1035.jpg){: class="ll-image-fl"}
 
 Next, I have a little 5v Linear Regulator (I found out the hard way that if voltage is provided to the Arduino through the vin that apparently a short-circuit is created when you try to draw current from the 5v pin, send it through a sensor, and feed it back into an analog pin. Pfft.  And magic smoke from Arduino number #1\.  It was pretty blue.)
 
@@ -61,12 +61,12 @@ And, of course, a feedback LED.
 <iframe width="560" height="315" src="https://www.youtube.com/embed/jElQulP4eYY" frameborder="0" allowfullscreen></iframe>
 </div>
 
-![](../../images/IMG_0423.jpg){: class="ll-image-fr"}
+![](/images/IMG_0423.jpg){: class="ll-image-fr"}
 **The Build v2.x:**
 
 I felt I had finally assembled the "kit."  But I wanted to own it.  I wanted to get rid of the electrical tape holding the whole thing down.  I made this little mess.  I took some plexi and cut a hole in the middle, then put a slit down some poly-flex tubing and hot glued around the edge as bumper.  I used a medium servo and threaded through the hole for the MaxSonar.  I found some flexible wire that had enough give to keep from the wire breaking down.  Last, hot glue and semi-firm putty held the other bits in place.  I felt like I "owned" it a little more now--and the whole thing worked pretty great, except how I chose to mount the servo.  The MaxSonar sensor stuck over the edge and would bump into things first.
 
-![](../../images/IMG_0980.jpg){: class="ll-image-fl"}
+![](/images/IMG_0980.jpg){: class="ll-image-fl"}
 
 Another thing I noticed, the plateform I had created worked nicely as a handle for Silas, my son.  This led him to play with the bot a little more--even "saving" him a few times.
 
@@ -94,16 +94,16 @@ Another thing I noticed, the plateform I had created worked nicely as a handle f
 
 I wanted to own more of my build; I procceeded to cut plates using Home Depot grade Plexiglass and long ago I bought a pair of Xbees to be used in a projects. I decided that until I had the kinks worked out in my platform, I would make a simple Xbee controller using Processing 2.0\. I removed all the electric tape and pulled out LSN's guts.  I cut several Plexiglass plates to act as component holders.  
 
-![](../../images/IMG_1502.jpg){:class="ll-image-fr"}
+![](/images/IMG_1502.jpg){:class="ll-image-fr"}
 
 One plate to cover the base, which I glued two 3 AA battery holders.  I put these in parellel, using 3 LiFePo4 600 mAh batteries.  I ended up with 9.6v at 1200 mAh LiFePo4\.  I had found the batteries at Wal-Mart on sale and bought them with the intention of learning how to make my own battery packs.  Unfortantely, it has been more of a challenge than I expected; no easy charger setup, so I found some chips to charge them in series and I bought the chips thinking I could etch a board real easy like and make my own chargable pack.  Well, I didn't check what chip I was getting and ended up with a DFN that was approaching singularity in size (http://ww1.microchip.com/downloads/en/AppNotes/01276a.pdf).  I didn't give up on a charger board--but I knew it was going to take me longer than I wanted (I've included my current board verzion, a little more work and I'll send it off to OshPark).
 
-![](../../images/IMG_1507.jpg){: class="ll-image-fl"}
+![](/images/IMG_1507.jpg){: class="ll-image-fl"}
 
 Next, I cut a plexiglass template for the Arduino and Motor Shield, lastly, I cut a plexiglass template and cut out where the pins from the an Arduino Wireless Shield could sit down into the Motor Shield. I secured all this down with some 3 inch aluminimum stand offs and some plastic screw knobs (obtained from Alliedelec.com).  I screwed the stand offs into the closure mounting holes.
 
 As I mentioned wanting to earlier, I removed the servo and MaxSensor; in place, I put a breadboard for testing sensors.  
-![](../../images/IMG_1503.jpg){: class="ll-image-fr"}
+![](/images/IMG_1503.jpg){: class="ll-image-fr"}
 
 To power the sensors, I replaced the 5v linear voltage regulator with this neat little DC-DC regulator (LM2596).  The little trim pot lets you set the output 1.5v to 35v, 2A (input is 4.5v-40v).  And it made me happy at $1.56 on eBay.  I also notched out the plexi and put a little two-state switch for turning the bot on and off.
 

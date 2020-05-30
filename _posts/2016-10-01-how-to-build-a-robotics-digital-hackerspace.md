@@ -15,7 +15,9 @@ custom_js:
 
 <u>Why the Hell?</u>
 
-![LeavingLMR.jpg](/../images/LeavingLMR.jpg)Wow, it's been awhile since I've actually written anything in Drupal based text editor.  Feels like home.
+![LeavingLMR.jpg](/images/LeavingLMR.jpg)
+
+Wow, it's been awhile since I've actually written anything in Drupal based text editor.  Feels like home.
 
 Honestly, I'm not going to go into the "Why" of building this site.  Maybe I'll do that later.  Let's just say, there was an impetus to recreate the home we were forced to leave.
 
@@ -36,25 +38,31 @@ Here are the walkthroughs I used (in order) to spin up this server:
 
 This almost all the information needed to create this site's based.  A couple of caveats:
 
-    sudo apt-get install php5 php-pear sudo apt-get install php5-mysql
+```
+sudo apt-get install php5 php-pear sudo apt-get install php5-mysql
+```
 
 Needs to be replaced with:
-
-    sudo apt-get install php php-pear sudo apt-get install php-mysql
+```
+sudo apt-get install php php-pear sudo apt-get install php-mysql
+```
 
 This will install the latest version of PHP, for me, that was PHP7.
 
 Also, the install directory is different for PHP7\.  This is important, since the php.ini file needs to be edited.  In 7 it may be found:
 
-    /etc/php/7.0/cli
+```
+/etc/php/7.0/cli
+```
 
 The last thing to do was relocate the Drupal 7 files to the directory where Apache can serve them up.
-
-    cd /var/www/html sudo wget https://ftp.drupal.org/files/projects/drupal-7.50.zip
+```
+cd /var/www/html sudo wget https://ftp.drupal.org/files/projects/drupal-7.50.zip
+```
 
 If all the script-blogs are followed correctly, then when entering the web IP of the site in the browser you should see the following:
 
-![Drupal_On_Linode.PNG](/../images/Drupal_On_Linode.PNG)
+![Drupal_On_Linode.PNG](/images/Drupal_On_Linode.PNG)
 
 Design Goals:
 
@@ -88,11 +96,11 @@ There are three layers to the theme: 
 3.  [FooTheme](https://www.drupal.org/project/footheme) went over it.
 
 In the /var/www/html/sites/all/themes/corolla/ directory there is a file called corolla.info inside a referenced was added for css/corolla_overrides.css.  
-![Screenshot 2016-10-10 18.59.30.png](/../images/Screenshot%202016-10-10%2018.59.30.png)  
+![Screenshot 2016-10-10 18.59.30.png](/images/Screenshot_2016-10-10_18.59.30.png)  
 Then, in the /var/www/html/sites/all/themes/corolla/css directory the corolla_override.css file was made which includes several hackish css snippets:  
 
 
-{% highlight css %}
+```css
     /* The title was originally set to -5px (weird) */
     #site-name a {
       letter-spacing: 0px;
@@ -111,11 +119,11 @@ Then, in the /var/www/html/sites/all/themes/corolla/css directory the corolla_
       visibility: hidden;
       display:none;
     }
-{% endhighlight  %}
+```
 
 Regarding the color scheme.  The palettee can be edited in the Footheme "Color" section.  This requires th Color (Drupal Core) module be enabled.  The palettee was selected by using [Pictaculous](http://www.pictaculous.com/) taking an image of Russian revolutionary art.  This was meant to capture the feeling palette selected by an artist with a better understanding of [color-emotion](https://designshack.net/articles/graphics/the-science-behind-color-and-emotion/) connections.  
 
-![](http://3.bp.blogspot.com/-UNUkZH4wSVg/UMQieV7p8bI/AAAAAAAAO6g/gk-z_yAnkIA/s640/a1.JPG)  
+![](/images/a1.JPG)  
 
 Fonts  
 Logo selection  
@@ -144,15 +152,15 @@ Allows a block design of the UI.
 
 This is a dependency for other modules (a lot of others).
 
-[CKEditor](https://www.drupal.org/project/ckeditor)![Screenshot 2016-09-24 20.49.03.png](/../images/Screenshot%202016-09-24%2020.49.03.png)
+[CKEditor](https://www.drupal.org/project/ckeditor)![Screenshot 2016-09-24 20.49.03.png](/images/Screenshot_2016-09-24_20.49.03.png)
 
 The CKEditor is the core of the Drupal blogging package.  It is the editor used to create this post.  However, it put up the most fight when trying to install.  Actually, that's not fair.  It wasn't the CKEditor it was the code highlighting which was such a pain.  The code highlighting allows this:  
 
-{% highlight c %}
+```c
     for(int i = 0; i < marioTouchesRobots; i++){
         aHackerSpiritDies();
     }
-{% endhighlight %}
+```
 
 I'm going to list out the steps used to setup the CKEditor used for this article, but then discuss some of the pitfalls, which ended up costing a lot of development time.  
 
@@ -163,7 +171,7 @@ Steps to Setup CKEditor with CodeSnippets and HighlightingJS:
 3.  Go to Configuration-->CKEditor-->Edit CKEditor Global Profile
 4.  Set the "Path to CKEditor" to //cdn.ckeditor.com/4.5.4/full-all. This will use the content delivery network to serve up the CKEditor JavaScript.  It also lets you access a lot of plugins without having to manage them.  The other option is to pull a copy on the local server--it's a lot more hassle managing.
 5.  Go to Configuration-->CKEditor-->Profile X-->Edit (note, X = Text Editing profiles users will be able to select when blogging.  These can be managed under content Content Authoring --> Text Formats).
-6.  Go to Basic Setup.  Here, add all the Text Formats this particular CKEditor profile should affect.![Screenshot 2016-10-02 10.43.11.png](/../images/Screenshot%202016-10-02%2010.43.11.png)
+6.  Go to Basic Setup.  Here, add all the Text Formats this particular CKEditor profile should affect.![Screenshot 2016-10-02 10.43.11.png](/images/Screenshot_2016-10-02_10.43.11.png)
 7.  Under Security make sure "Always run security filters for CKEditor" is Enabled (should default).
 8.  Under Editor Appearance go straight to the check-box title "Plugin for inserting Code Snippets" and enable it.
 9.  Also, enable what other CKEditor Plugins needed.  Note, there are more plugins then this, but these are the ones provided through the Content Delivery Network.
@@ -181,23 +189,25 @@ Steps to Setup CKEditor with CodeSnippets and HighlightingJS:
 21.  Type sudo nano ckeditor.config.js
 22.  Add each HighlightJS language you would like to show in the dropdown box in the CKEditor.  The part on the left of the colon is should match the HighlighJS language code.  The part between the ' 's will be what is displayed in the CKEditor dropdown.  When adding supported languages, here's a good reference -- [Supported HighlightJS languages](http://highlightjs.readthedocs.io/en/latest/css-classes-reference.html) (but it doesn't include custom languages, like Arduino).  Don't forget to save when done.
 
-{% highlight js %}
+```js
         config.codeSnippet_languages = {
             php: 'PHP',
             python: 'Python',
             arduino: 'Arduino',
             c: 'C'
         };
-{% endhighlight %}
+```
 
-23.  ![Overflow.png](/../images/Overflow.png)There is an issue with the HighlightJS module where the text escapes the divs.  It took a long time to find the culprit.  Apparently, the HighlightJS modules causes this whenever it renders HTML produced by CKEditor.  
-24.  Go to /var/www/html/sites/all/modules/highlightjs
-25.  Type sudo nano highlight_js.css
-26.  Enter the following style and save:
+1.   ![Overflow.png](/images/Overflow.png)There is an issue with the HighlightJS module where the text escapes the divs.  It took a long time to find the culprit.  Apparently, the HighlightJS modules causes this whenever it renders HTML produced by CKEditor.  
+2.   Go to /var/www/html/sites/all/modules/highlightjs
+3.   Type sudo nano highlight_js.css
+4.   Enter the following style and save:
 
-        .field-items {
-          width: 100%;
-        }
+```css
+    .field-items {
+        width: 100%;
+    }
+```
 
 And that should be it.  A couple words of warning.  Make sure you don't enable the HighlightJS Filter.  This will essentially double encode the HTML entities inside the <code> block.  This causes >, <, and & to show as "&gt;, &lt, &amp;" respectively.  This simple little issue took a lot of development time to solve--given the manual was lacking.  
 

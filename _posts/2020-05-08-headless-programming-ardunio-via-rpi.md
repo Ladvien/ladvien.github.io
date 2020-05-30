@@ -18,7 +18,7 @@ The answer is obvious, right? A conveyor belt.  They are ubiquitous in manufactu
 
 After a month and a half of failed attempts, I've eventually created a working prototype.
 
-![](../images/lego_classifier/conveyor_belt/2020-05-03%2017.45.38.jpg)
+![](/images/lego_classifier/conveyor_belt/2020-05-03_17.45.38.jpg)
 
 The system consists of 5 parts:
 
@@ -33,7 +33,7 @@ Covering all parts will be too much for one article, so **in this article I'll f
 ## Remote VSCode (sshfs)
 I hate trying to program on computers other than my workstation; I've also found it problematic to write a program for a Raspberry Pi on a PC.  To get the best of both worlds I use `sshfs`.  It lets me mount Raspberry Pi folders as local folder, enabling editing Raspberry Pi files from my workstation. Nice!
 
-![](../images/lego_classifier/conveyor_belt/sshfs_rpi.png)
+![](/images/lego_classifier/conveyor_belt/sshfs_rpi.png)
 
 The setup is pretty simple, depending on your workstation's OS.
 
@@ -55,7 +55,7 @@ If all goes well, you should be able to open your Raspberry Pi files in Visual S
 
 To run files, you still have to `ssh` into the Pi.  I usually do this by creating an integrated terminal in Visual Studio Code.
 
-![ssh-to-raspberry-pi-from-vscode](../images/lego_classifier/conveyor_belt/ssh_pi_vscode.png)
+![ssh-to-raspberry-pi-from-vscode](/images/lego_classifier/conveyor_belt/ssh_pi_vscode.png)
 
 ## Arduino CLI Setup
 Now I had a way to edit Raspberry Pi files on my PC, but I still needed to be able to connect my Arduino to the Pi and program it from my workstation.  The route people seem to use for remote programming is using a VNC program, like RealVNC, to access the Pi's desktop remotely.  Gross.  Give my command line back.
@@ -119,11 +119,11 @@ os.system(command_str)
 ```
 Feel free to hack the script for other projects.  You can replace the `arduino:avr:mega` with other chipsets and program tons of different devices using the same method.  And the `ramps_sketch` refers to the program you want to upload.  It is a folder containing and `.ino` file of the same name, which is the program you want to upload to the Arduino
 
-![arduino-sketch-folder-for-cli](../images/lego_classifier/conveyor_belt/arduino_sketch_folder_for_cli.png)
+![arduino-sketch-folder-for-cli](/images/lego_classifier/conveyor_belt/arduino_sketch_folder_for_cli.png)
 
 Here's an action shot:
 
-![upload-to-arduino-from-raspberry-pi-command-line](../images/lego_classifier/conveyor_belt/arduino-cli-install-script.gif)
+![upload-to-arduino-from-raspberry-pi-command-line](/images/lego_classifier/conveyor_belt/arduino-cli-install-script.gif)
 
 A couple of notes, if you have trouble running the install script here are two issues I ran into:
 

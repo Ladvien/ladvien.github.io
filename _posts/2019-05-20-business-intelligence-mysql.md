@@ -72,7 +72,7 @@ At this point you might be saying, "That's great? I've no idea what any of this 
 
 * **One last note**, if you're going into a job interview it's a good trick to wait until you hear how they pronounce "SQL" and then say it how they do.  As the "correct" pronunciation is "Ess-cue-ell," however, most professionals I know pronounce it "sequel" (as do I).
 
-![sql-pronunciation](../images/pronounce-sq-camps.png)
+![sql-pronunciation](/images/pronounce-sq-camps.png)
 
 
 # Setting up MySQL
@@ -85,11 +85,11 @@ If you are using Windows you need to install software MySQL Workbench uses on Wi
 
 * [Visual C++ Redistributable for Visual Studio 2015](https://www.microsoft.com/en-us/download/details.aspx?id=48145)
 
-![connecting-to-mysql-server](../images/data-analytics-series/downloading_prereqs.gif)
+![connecting-to-mysql-server](/images/data-analytics-series/downloading_prereqs.gif)
 
 Click on the link above.  Select the `vc_redist_x64.exe` file and click "Download."  Once the file has finished downloading, install it.
 
-![install-vcpp-restributable](../images/data-analytics-series/mysql_setup_9.PNG)
+![install-vcpp-restributable](/images/data-analytics-series/mysql_setup_9.PNG)
 
 ## MySQL Workbench
 Ok! Now we are ready to download and install MySQL.  Visit the link below, select your operating system, and choose "Download."
@@ -97,17 +97,17 @@ Ok! Now we are ready to download and install MySQL.  Visit the link below, selec
 * [MySQL Workbench Download](https://dev.mysql.com/downloads/workbench/)
 
 Select your operating system and hit "Download"
-![download-mysql-workbench](../images/data-analytics-series/mysql_setup_1.png)
+![download-mysql-workbench](/images/data-analytics-series/mysql_setup_1.png)
 
 Once the file has finished downloading, run it and follow the install prompts.  All choices are fine left on default.
 
 ## Connecting to the Server
 Once you've installed MySQL Workbench, open it.  When it comes up you should see the main screen, which looks something like:
-![mysql-workbench-welcome-screen](../images/data-analytics-series/mysql_setup_12.PNG)
+![mysql-workbench-welcome-screen](/images/data-analytics-series/mysql_setup_12.PNG)
 
 Before we can start querying a database we need to create a database connection.  A "connection" here is all the information MySQL Workbench needs to find the database and what permissions you have regarding data access.
 
-![connect-mysql-workbench](../images/data-analytics-series/connecting_to_server.gif)
+![connect-mysql-workbench](/images/data-analytics-series/connecting_to_server.gif)
 
 We will be connecting to a database I've setup on a remote computer.  Connecting to a remote computers is the most common way to interact with a SQL database, however, later I'll show you how to build your own database using CSVs.  This will be hosted on your local PC.
 
@@ -122,18 +122,18 @@ Username: the username I've provided you
 Please don't be shy, if you need a username email me at cthomasbrittain at yahoo dot com.  I'll gladly make you one.
 
 Once you've entered the connection information hit "Ok".  You should be brought back to the "Welcome" screen, but now, there will be a connection listed called "maddatum.com".
-![our-sql-connection](../images/data-analytics-series/mysql_setup_17.PNG)
+![our-sql-connection](/images/data-analytics-series/mysql_setup_17.PNG)
 
 Double click on it.  You will most likely get the following warning.
-![sql-connection-warning](../images/data-analytics-series/mysql_setup_15.PNG)
+![sql-connection-warning](/images/data-analytics-series/mysql_setup_15.PNG)
 Click "Continue Anyway" (and if there's an option, check "Dont Show this Message Again").
 
 If the connection was successful you should see a screen like:
-![our-sql-connection](../images/data-analytics-series/mysql_setup_18.PNG)
+![our-sql-connection](/images/data-analytics-series/mysql_setup_18.PNG)
 
 ## Show / Use Databases
 Alright! Let's get into the action.  Before we start executing queries let me point out a few things in the user interface:
-![mysql-workbench-interface](../images/data-analytics-series/mysql_setup_26.PNG)
+![mysql-workbench-interface](/images/data-analytics-series/mysql_setup_26.PNG)
 
 ### Write Query
 This area is where you will write queries.  Each query should end with a `;`, or the MySQL Workbench will get confused and try to jumble two queries together.
@@ -150,10 +150,10 @@ Let's send a query to the database.  In the query area type:
 SHOW databases;
 ```
 Now, select those text with your mouse and hit the lighting (execute) icon above it.
-![show-databases-command](../images/data-analytics-series/mysql_setup_27.PNG)
+![show-databases-command](/images/data-analytics-series/mysql_setup_27.PNG)
 
 This will return a list of all the databases found on this server.  You should see this in the `View Results` area.  Each SQL server can have multiple databases on it, and they often do.  For right now we want to focus on the `employees` database.
-![show-databases-command](../images/data-analytics-series/mysql_setup_28.PNG)
+![show-databases-command](/images/data-analytics-series/mysql_setup_28.PNG)
 
 To select a database type `USE` and then the name of the database.  In our case it will be:
 ```sql
@@ -161,7 +161,7 @@ USE employees;
 ```
 Now, highlight the text and hit the execute button.
 
-![show-databases-command](../images/data-analytics-series/mysql_setup_29.PNG)
+![show-databases-command](/images/data-analytics-series/mysql_setup_29.PNG)
 
 This will show the following in the database messages:
 
@@ -178,7 +178,7 @@ To see all the tables this database contains execute the command:
 SHOW tables;
 ```
 This should return the following table names
-![show-databases-command](../images/data-analytics-series/mysql_setup_30.PNG)
+![show-databases-command](/images/data-analytics-series/mysql_setup_30.PNG)
 
 By now, you know the next question, "But how do I know what's in a table?"
 
@@ -190,7 +190,7 @@ DESCRIBE departments;
 ```
 This should return:
 
-![show-databases-command](../images/data-analytics-series/mysql_setup_31.PNG)
+![show-databases-command](/images/data-analytics-series/mysql_setup_31.PNG)
 The `Field` column here gives you the names of all the `fields` in the `departments` table.  What's a field?  As with table, we will go into them with more depth later.  But for now, think of a field as a named column in a spreadsheet.
 
 
@@ -203,7 +203,7 @@ SELECT departments.dept_no, departments.dept_name
 FROM departments
 ```
 This will return all the entries for the fields (columns) `dept_no` and `dept_name` for the table (spreadsheet) called `departments`.  You did it! You're a SQL'er. 
-![show-databases-command](../images/data-analytics-series/mysql_setup_32.PNG)
+![show-databases-command](/images/data-analytics-series/mysql_setup_32.PNG)
 
 # What Comes Next?
 Lot's to come! We will learn a bit more about SQL, it's parts, their proper names.  We'll also dive into the "proper" SQL names for different data parts.  And we'll write tons more queries.

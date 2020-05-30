@@ -54,7 +54,7 @@ Here's the toolchains:
 
 Alright, now we've got R going!  
 
-![](/../../images/Screenshot%202016-12-26%2007.46.49.png)  
+![](/images/Screenshot_2016-12-26_07.46.49.png)  
 
 Ok, let's dig into some code.  
 

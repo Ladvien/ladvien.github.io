@@ -48,7 +48,7 @@ Most 3D printer firmware operates on a standard set of instructions called G-Cod
 
 *   [G-Code wiki](http://reprap.org/wiki/G-code)
 
-![](../images/G-Code.png)
+![](/images/G-Code.png)
 
 2\. **Check, re-check End-Stops connection before testing motors**
 
@@ -70,7 +70,7 @@ Now that we've read up on G-Code, we know the code to check and see if the End-s
 
 It is important to have these trigger correctly, otherwise, your hot-end will go crashing into something.  For example, if one the end-stops isn't triggering then the connected carriage will continue trying to pull past the end-stop, which will result in the your belt-link coming apart.
 
-![](../images/Link_Info.jpg)
+![](/images/Link_Info.jpg)
 
 Expect for your links to come apart a few times as you make adjustments.  
 
@@ -78,13 +78,13 @@ Being forthright and humble, I made so many mistakes calibrating my Kossel that 
 
 I was able to bend them back into place by clamping them with pliers while heating the bottom side with a lighter.
 
-![](../images/IMG_0738.jpg)
+![](/images/IMG_0738.jpg)
 
 3\. **Fans**
 
 The Kossel Mini has a small 40x40mm fan that blows directly on the hot-end, _all the time_.  
 
-![](../images/IMG_0679.png)
+![](/images/IMG_0679.png)
 
 This is required because the hot-end holder is actually a printed part, meaning it is plastic, therefore, if the hot-end exterior isn't constantly cooled, it will melt the holder and come crashing down on your print plate in a neat heap of defeat.
 
@@ -94,7 +94,7 @@ I chose the Ramps.  Don't ask me, probably because I intuitively find a way to d
 
 Anyway, here is how I have all my fans, (1) on the hotend, (2) cooling my extruder stepper, (3) an 80mm cooling the print bed.
 
-![](../images/Ramps_14_D9.png)**I then connected all these fans to D9.**
+![](/images/Ramps_14_D9.png)**I then connected all these fans to D9.**
 
 I'd like to take a sidetrail a moment.  Power terminals D8, D9, D10 are simply high-power N-Channel MOSFETs controlled by PWM from the Arduino Mega's D8, D9, and D10 pins.  If you'd like the exact specs, here's the [datasheet](http://www.st.com/web/en/resource/technical/document/datasheet/CD00002690.pdf).
 
@@ -120,7 +120,7 @@ Now, some people who know Marlin better than me will probably point out the opti
 
 The number is the number of milliseconds to drive the fan at full speed before switching to a temperature based PWM.  Now, I tried tweaking this number a bit, but I found my fan would still lock up during times it would slow.  Eh.  That is one reason I write this, if others have solutions, please add them in comments. :)
 
-![](../images/Auto_Fan_Config2.png)What I ended up doing was finding the option to have my D9 channel to run at full power all the time.
+![](/images/Auto_Fan_Config2.png)What I ended up doing was finding the option to have my D9 channel to run at full power all the time.
 
 Under the **Configuration_adv.h** file I found the options to define the extruder fan's behavior.  First, I setup the D9 channel as our fan channel by setting
 
@@ -144,7 +144,7 @@ After going through many posts I pieced together my own method for calibration. 
 
 Before we begin calibration, let's define and agree on what we will be calibrating.
 
-![](../images/Calibration_Variables_v01.png)
+![](/images/Calibration_Variables_v01.png)
 
 (Image shamelessly, and maybe illegally? Copied from [Blokmer's Kossel Build](http://blomker.com/Kossel_Mini_Assembly_Guide_V1.0.pdf) guide)
 
@@ -176,22 +176,22 @@ The printer will respond with the current value for the X, Y, Z, and E (extruder
 
 Now, there is a way to set the center of your build plate in your Marlin firmware, but it is better only to tweak it there _after_ you have the physical part set pretty damn close to center.  This is what I did.
 
-![](../images/IMG_0781.jpg)I used Eagle Cad to make a 170mm diameter circle, with exact center marked (provided below).  Then, I printed it to scale on a piece of paper.  I cut this paper out and centered it on my build plate, then taped it down.  
+![](/images/IMG_0781.jpg)I used Eagle Cad to make a 170mm diameter circle, with exact center marked (provided below).  Then, I printed it to scale on a piece of paper.  I cut this paper out and centered it on my build plate, then taped it down.  
 
-![](../images/IMG_0782.jpg)
+![](/images/IMG_0782.jpg)
 
-*   [170mm Diameter Circle Template](../images/Kossel_Calibration.pdf)
+*   [170mm Diameter Circle Template](/images/Kossel_Calibration.pdf)
 
 Next, I lowered my hotend until it was near to center.
 
 Using the controls, I attempted to center the hot-end above the circle the best I could.  It helps to change your angle several times before each move.  Once it is center we are going to take a measurement, but something important to know before we do.  The stepper motors will timeout from their held position, going into an idle position.  Be careful not to let them timeout on the next two steps, since you'll lose a little time by needing to start over.  To keep them engaged, simply micro step one direction, then right back.
 
-**![](../images/IMG_0783.jpg)**Ok, measure from the top of one of the carriages to the bottom of the plastic on an end-stop, basically, where the end-stop button would be if it was pressed.   Also, the end-stop doesn't matter since our goal is to get them all the same.
+**![](/images/IMG_0783.jpg)**Ok, measure from the top of one of the carriages to the bottom of the plastic on an end-stop, basically, where the end-stop button would be if it was pressed.   Also, the end-stop doesn't matter since our goal is to get them all the same.
 
 
 Alright, at this part you need a saw that will give you a square cut.  I used a speed-square and a circular saw.  Also, smaller board, like a piece of trim board.  Cut a piece of wood the same length as you measured.
 
-![](../images/IMG_0786.jpg)Take the piece of wood to the printer.  Lower the hot-end to Z0\.  Then, re-center using the target-template.  Now, take the cut wood and put it between each end-stop and the top of its respective carriage, being careful not to let the motors go idle.  If the end-stop is too high, lower it until it is flush against the wood.  If the wood will not fit, raise the end-stop until it does, making sure it is flush.  In this manner you are assuring each arm is equidistant from the print bed, while maintaining the hot-end centeredness.
+![](/images/IMG_0786.jpg)Take the piece of wood to the printer.  Lower the hot-end to Z0\.  Then, re-center using the target-template.  Now, take the cut wood and put it between each end-stop and the top of its respective carriage, being careful not to let the motors go idle.  If the end-stop is too high, lower it until it is flush against the wood.  If the wood will not fit, raise the end-stop until it does, making sure it is flush.  In this manner you are assuring each arm is equidistant from the print bed, while maintaining the hot-end centeredness.
 
 **After this is complete, you must repeat Step 1\.  This sets centeredness _and_ Z-Offset.**
 
@@ -207,9 +207,9 @@ Even after all this, we still aren't done. There is another variable to calibrat
 
 We have already calibrated the Kossel's print volume height.  This means if we send the command **G X0 Y0 Z0** then the hotend-should come to rest at the center of the print bed, about .1mm above the surface.  But, delta printers have an additional variable of **flatness.** Consider the two following images:
 
-![](../images/Concave.png)
+![](/images/Concave.png)
 
-![](../images/Convex.png)In this image the blue line is the print surface according to the Marlin firmware.
+![](/images/Convex.png)In this image the blue line is the print surface according to the Marlin firmware.
 
 Do you see how this could create a problem?  The center Z offset may be correct, but as the hot-end moves towards the edges, it gradually rises until the hot-end is resting 2-10mm away from the print surface.
 
@@ -223,7 +223,7 @@ Well, that's sort of a lie.  To correct for flatness we are going to adjust the 
 
 Ok, the adjustment is pretty straight forward, but requres tinkering to get it right.  But before we make an adjustment we need to know what direction to go.  We can determine this by visually comparing difference between the distance between the hotend and the print surface when the hotend is at the center, and the distance between the hotend and the print surface when near one of the towers.  Let's go back to pictures.
 
-![](../images/Kossel_Flatness.png)
+![](/images/Kossel_Flatness.png)
 
 This image is to give you an idea what points we want to compare for flatness.  For instance, if Kossel passes the paper-test at point A, then it should at points B, C, and D.  
 
@@ -272,7 +272,7 @@ Alright, as the rest of this article, I don't plan to re-hash stuff that has alr
 
 **This I feel is the most important omission from the calibration guides**.  G28 is the G-Code to home the tower end-stops, just know whenever you do this, it will cancel the readings you took from the auto-probe.  **And beware, Slic3r adds a G28 command before every print.**
 
-![](../images/Auto-probe_reset2.png)To remove this from Slic3r,
+![](/images/Auto-probe_reset2.png)To remove this from Slic3r,
 
 1.  Go to "Printer Settings"
 2.  Under "Start G-Code" delete "G28; home all axes" line.
@@ -288,7 +288,7 @@ And yes, I spent 20 hours or so adjusting my auto-level and scratching my head e
 
 The Z-probe doesn't sit directly over the tip of the hot-end, so we have to adjust for this offset.  To find this number, I did the following.
 
-1.  Place and center the [paper-template](../images/Kossel_Calibration.pdf).
+1.  Place and center the [paper-template](/images/Kossel_Calibration.pdf).
 2.  Send the command: **G X0 Y0 Z10**
 3.  Put the auto-probe in its active position (as if to take readings).
 4.  Using Repetier or Pronterface, move the effector from the hotend being centered, until the tip of the Z-probe is centered.
@@ -320,28 +320,28 @@ _Buuut_, I don't have MATLAB and I'm not currently tied to a university, so I ha
 
 **1\. Run Auto-Probe.**  Once auto-probe is done, it'll send back a set of points.  Copy them.
 
-![](../images/Excel_auto_probe1.png)
+![](/images/Excel_auto_probe1.png)
 
 2\. **Paste the points into Excel.**  It'll complain about formatting, press OK.
 
-![](../images/Excel_auto_probe2.png)
+![](/images/Excel_auto_probe2.png)
 
 **3\. If you click on the formating options and select "Text Import Wizard."**  You can then select a "Space Delimited" pasting option.  Basically, this will cause Excel to translate th
 
-![](../images/Excel_auto_probe3.png)
+![](/images/Excel_auto_probe3.png)
 
 **4\. Once you have your data in Excel correctly, let's make a graph. Select your data set then go to the graph type "Surface."**
 
-![](../images/Excel_auto_probe4.png)
+![](/images/Excel_auto_probe4.png)
 
 
 **5\. There's the graph.**
 
-![](../images/Excel_auto_probe5.png)
+![](/images/Excel_auto_probe5.png)
 
 6\. There are several things you can do with this data, but only if you have a point of orientation.  That is, what area on the graph represent the area on the print surface.  To find the auto-probe data orientation, I built a lump on my print surface near one of the towers, like this:
 
-![](../images/IMG_0792.jpg)
+![](/images/IMG_0792.jpg)
 
 Be careful, if your Z-probe doesn't retract far enough, it'll knock your lump into the belt.  
 

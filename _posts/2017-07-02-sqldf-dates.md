@@ -60,7 +60,7 @@ Ok, let's make this more relevant to HMIS work.  The way to help a computer unde
 
 In R you can see what datatype a column of your dataframe is by clicking the blue button next to the dataframe name in the Global Environment variables.
 
-![](../images/r-datatypes.png)
+![](/images/r-datatypes.png)
 
 We will be dealing with the following:
 
@@ -171,7 +171,7 @@ Alright, now we have a way to select one column from our dataframe we can attemp
 dataframe$zipCodes <- as.character(dataFrame$zipCodes)
 {% endhighlight %}
 
-![](../images/zip-codes-number-to-string.png)
+![](/images/zip-codes-number-to-string.png)
 
 This will convert the zipCode column from a number into a string, then, it assigns it back to the column zipCodes.  Boom! We've told the computer to stop trying to make a ZIP code a number.  Instead, treat it as a string.  And with that, we will tell the computer later how to use ZIP codes.
 

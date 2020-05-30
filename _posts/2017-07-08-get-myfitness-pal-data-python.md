@@ -31,7 +31,7 @@ And c'mon, opening a webpage is _a lot_ easier than tapping twice.
 
 Well, after a few hours of coding, I've got the first step of the project complete.
 
-{% highlight python %}
+```python
 import myfitnesspal
 import csv, sys, os
 from datetime import datetime
@@ -126,11 +126,11 @@ for yearIndex in range(beginningYear, currentYear+1):
         f.close()
     else:
         print((str(yearIndex)+": Exists and is complete."))
-{% endhighlight %}
+```
 
 And then we add some R to join the data together and automate plotting, and saving the plots as images.
 
-{% highlight r%}
+```r
 library(ggplot2)
 library(scales)
 
@@ -185,11 +185,11 @@ cat("*******************************************************\n")
 cat("* Finished R Script                                   *\n")
 cat("*******************************************************\n")
 cat("\n")
-{% endhighlight %}
+```
 
 Lastly, let's write a bash script to run the Python and R code, then copy the images to Ladvien.com
 
-{% highlight bash %}
+```bash
 #!/bin/sh
 PASSWORD=("$(keyring get system ladvien.com)")
 
@@ -208,16 +208,16 @@ ECHO ""
 
 sshpass -p "$PASSWORD" scp ladviens_weight.png ladviens_calories.png root@ladvien.com:/usr/share/nginx/html/images
 
-{% endhighlight %}
+```
 
 And here's the result:
 
 My weight:
 
-![](../images/ladviens_weight.png)
+![](/images/ladviens_weight.png)
 
 And my calories:
 
-![](../images/ladviens_calories.png)
+![](/images/ladviens_calories.png)
 
 Next, I'll probably tweak ggplot2 to make the graphs a little prettier.  Also, I'll setup a Raspberry Pi or something to run the bash script once a night. Why? Lolz.

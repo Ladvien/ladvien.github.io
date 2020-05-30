@@ -264,24 +264,24 @@ Head over to the Chrome app store:
 
 * [Postman Chrome App](https://chrome.google.com/webstore/detail/postman/fhbjgbiflinjbdggehcddcbncdddomop?hl=en)
 
-![add-postman-chrome-app](../images/postman-1.png)
+![add-postman-chrome-app](/images/postman-1.png)
 
 After you add the Postman app it should redirect you to your Chrome applications.  Click on the Postman icon.
 
-![run-postman-chrome-app](../images/postman-2.png)
+![run-postman-chrome-app](/images/postman-2.png)
 
 Your choice, but I skipped the sign-up option for now.
 
-![skipped-signup-postman-chrome-app](../images/postman-3.png)
+![skipped-signup-postman-chrome-app](/images/postman-3.png)
 
 Select `Create a Request`
-![skipped-signup-postman-chrome-app](../images/postman-4.png)
+![skipped-signup-postman-chrome-app](/images/postman-4.png)
 
 The purpose of Postman, in a nutshell, we are going to use it to create POST requests and send them to the `mind-wave-journal-server` to make sure it's ready for the iOS app to start making POST requests, saving the EEG data to our Mongo server.
 
 Let's create our first test POST request.  Start by naming the request `Test eegsamples`.  Create a folder to put the new request in, I named it `mind-wave-journal-server`.  Then click
 
-![create-request-postman-chrome-app](../images/postman-5.png)
+![create-request-postman-chrome-app](/images/postman-5.png)
 
 You will need to set the type as `POST`.  The url will be
 
@@ -289,11 +289,11 @@ You will need to set the type as `POST`.  The url will be
 http://your_ip_address:8080/eegsamples
 ```
 
-![create-request-postman-chrome-app](../images/postman-6.png)
+![create-request-postman-chrome-app](/images/postman-6.png)
 
 No select the `Headers` section and add the `Content Type: application/json`
 
-![create-request-postman-chrome-app](../images/postman-7.png)
+![create-request-postman-chrome-app](/images/postman-7.png)
 
 Lastly, select `Body`, then `raw` and enter the following JSON into the text area:
 {% highlight json %}
@@ -314,11 +314,11 @@ Lastly, select `Body`, then `raw` and enter the following JSON into the text are
 
 And then! Hit `Send`
 
-![create-request-postman-chrome-app](../images/postman-8.png)
+![create-request-postman-chrome-app](/images/postman-8.png)
 
 If all goes well, then you should get a similar response in the Postman response section
 
-![create-request-postman-chrome-app](../images/postman-9.png)
+![create-request-postman-chrome-app](/images/postman-9.png)
 
 Notice, the response is similar to what we sent.  However, there is the additional `_id`.  This is great.  It is the id assigned to the by MongoDB when the data is entered.  In short, it means it successfully saved to the database.
 

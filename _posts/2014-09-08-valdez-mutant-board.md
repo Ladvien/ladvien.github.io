@@ -25,7 +25,7 @@ This toolchain is amazing.  Really, if you are wanting to break away from Arduin
 
 **The Valdez Mutant v04**
 
-![](../images/Valdez_Mutant_v04_Explained_1.jpg)
+![](/images/Valdez_Mutant_v04_Explained_1.jpg)
 
 The chip has ROM boot loader.  This allows you to program the chip right out of the box.  The programming is done over the traditional serial line.  Most ARM chips require a JTAG programmer, which are usually a $50 investment.  This leads into a few of my design goals.
 
@@ -63,8 +63,6 @@ Passives are 0402:
 
 After doing a bit of [AVR programming](http://letsmakerobots.com/node/39996) I toyed with the idea of getting into the Atmel ARM chips.  One barrier to entry is cost, and now that we are down to one income this is a Hannibal to Rome grade barrier.  Not only were most of the chips in the $6-20 range, they required a JTAG connector to program.  Ultimately, price kept me from building a board around an Atmel ARM chip.
 
-![](https://cdn.sparkfun.com//assets/parts/3/6/2/9/09716-02.jpg)
-
 But then [Mr. Bdk6 introduced me to the LPC1114.](http://letsmakerobots.com/node/39035)  Not only was the chip [sub $3 in single quantities](http://www.digikey.com/product-search/en/integrated-circuits-ics/embedded-microcontrollers/2556109?k=lpc1114) (cheaper than the Atmega328P), but it was also programmable with a typical serial-USB interface.  I figured, if it was programmable by serial then I could program it with my Arduino Pro Mini FTDI Breakout, which I bought from SparkFun long ago.  I did this selfishly, but I assumed a lot of Arduino roboticists here have also switched to the APM as their go to board.  I further assumed most would probably have a APM FTDI connector.  I took this into account because my goal was to reduce as many barriers in switching from Arduino to the LPC1114, short of writing simple and opaque support libraries.
 
 I'm going to take a brief moment and explain the LPC1114's ISP ROM.  The LPC1114 has a built in bootloader, which resides in a ROM block on the chip.  When the chip is provided power, either on initial or reset, it runs this bootloader.  The bootloader polls PIN 1 on PORT 0 (PIO0_1), if this pin is high or floating, then the bootloader executes whatever is in the program memory blocks. If PIO0_1 is low, then the LPC1114 enters [in-system programming mode](http://en.wikipedia.org/wiki/In-system_programming).
@@ -85,7 +83,7 @@ I started [re-rolling my own bootloader](http://letsmakerobots.com/lpc1114-usb-s
 
 **A-3. _Almost _the same size as the Arduino Pro Mini, but with Mounting holes.**
 
-![](../images/IMG_0921.jpg)I love the Arduino Pro Mini (APM) for robot building.  It is small, powerful, robust, it's just good stuff all around.  When I decided to build an LPC board I wanted it to copy it in design.
+![](/images/IMG_0921.jpg)I love the Arduino Pro Mini (APM) for robot building.  It is small, powerful, robust, it's just good stuff all around.  When I decided to build an LPC board I wanted it to copy it in design.
 
 Here are the features I pulled:
 
@@ -107,7 +105,7 @@ I've always dreamed of hooking up a Bluetooth module to an Arduino and uploading
 
 I therefore set out to design a board that would allow for wireless uploading of programs.
 
-![](../images/HM-11_BLE_Module_03.jpg)
+![](/images/HM-11_BLE_Module_03.jpg)
 
 Instead of using my traditional go-to [HM-10](http://letsmakerobots.com/content/bluetooth-40-arduino), I decided to switch it up and attempt using the [HM-11](http://www.fasttech.com/products/0/10008268/1740900-hm-11-bluetooth-v4-0-transceiver-ble-module).
 
@@ -132,11 +130,11 @@ In theory, this is how the wireless uploading would work.
 13.  HM-11-**A **sends "AT+PIO21"
 14.  HM-11-**B **PIO2 goes HIGH and the LPC runs the uploaded program.
 
-![](../images/FTDI_HM-11_LPC_Layout_2.jpg)
+![](/images/FTDI_HM-11_LPC_Layout_2.jpg)
 
 **B-1\. Testing**
 
-![](../images/Valdez_Mutant_--_Board_v04.png)
+![](/images/Valdez_Mutant_--_Board_v04.png)
 
 Testing this board was a bit of a bitch.  The first version (v02) I printed had several major flaws:
 
@@ -184,7 +182,7 @@ Some of my work with the LPC1114
 
 Here are some files specific to the Valdez Mutant:
 
-1.  [Valdez Mutant Schematic v04](http://letsmakerobots.com../images/Valdez_Mutant_v04_Schematic.pdf)
+1.  [Valdez Mutant Schematic v04](http://letsmakerobots.com/images/Valdez_Mutant_v04_Schematic.pdf)
 2.  [Eagle Files -- Valdez Mutant v04](http://letsmakerobots.com/files/Valdez_Mutant_v04.zip)
 3.  Pinout Valdez_Mutant_Pins.h (working on).
 

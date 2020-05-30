@@ -41,7 +41,10 @@ Alright, enough self-loathing and belaboring.
 
 **Pulse Sensor Attempt 1:**
 
-![](../images/PulseSensor_1.jpg)For a awhile now I've been interested biometrics. I figure if my wife ever finishes graduate school and becomes my sugar-momma, then, I'll pursue my pin-headed dope in Experimental Psychology. Developing my own sensors, or at least having an intimate knowledge of how they work would probably help me getting into a program (damn education inflation). So, I've been watching out for open-hardware sensors for a bit, and it seems these [**guys**](http://pulsesensor.com/open-hardware/)' pulse-sensor was ever increasing in popularity.
+![](/images/PulseSensor_1.jpg) 
+
+For a awhile now I've been interested biometrics. I figure if my wife ever finishes graduate school and becomes my sugar-momma, then, I'll pursue my pin-headed dope in Experimental Psychology. Developing my own sensors, or at least having an intimate knowledge of how they work would probably help me getting into a program (damn education inflation). So, I've been watching out for open-hardware sensors for a bit, and it seems these [**guys**](http://pulsesensor.com/open-hardware/) pulse-sensor was ever increasing in popularity.
+
 
  As always, I still believe the best way for a dumb-guy like myself to learn smart stuff, is by taking apart stuff the real smart-people make.  But being a non-conformist, I avoided trying to re-make their sensor. Still, after viewing other schematics I found ([**1**](http://embedded-lab.com/blog/?p=7336), [**2**](http://www.seeedstudio.com/wiki/Grove_-_Heart_rate_ear_clip_kit), [**3**](http://www.youtube.com/watch?v=qNBTlvJr8vE), [**4**](http://www.radiolocman.com/shem/schematics.html?di=144220), [**5**](http://www.jamesrosko.com/2012/01/arduino-pulse-monitor.html)), I decided I'd be such a non-conformist I'd conform and go with the popular sensor.
 
@@ -51,7 +54,11 @@ Come to find out there is no easy way to export Eagle files from Design Spark.
 
 New plan, I'll just follow the Pulse-Sensor [**schematic** ](http://pulse-sensor.googlecode.com/files/PulseSensorAmpd%20-%20Schematic.pdf)and re-create the entire board in Eagle (all half inch of it). And that's what I did. I'd post those Eagle files, but, they suck and don't work. I had made several major mistakes.
 
-![](../images/Pulse_Sensor_1_--_Top.jpg)![](../images/Pulse_Sensor_1_--_Bottom.jpg)To begin, I had to create several Eagle components for the board. The op-amp, LED, and light-sensor. Respectively, [**MCP6001**](http://ww1.microchip.com/downloads/en/DeviceDoc/21733j.pdf), [**AM2520ZGC09**](http://pulsesensor.myshopify.com/pages/open-hardware), and [**APDS-9008**](http://www.avagotech.com/docs/AV02-1169EN). None were a real threat. I made each part according to the datasheets. Then, I strung together the schematic in Eagle, switched to the PCB layout, and threw my pieces down. But for some reason I thought, "I should replace the 0603 passives on this board with 0402s."
+![](/images/Pulse_Sensor_1_--_Top.jpg)
+
+![](/images/Pulse_Sensor_1_--_Bottom.jpg)
+
+To begin, I had to create several Eagle components for the board. The op-amp, LED, and light-sensor. Respectively, [**MCP6001**](http://ww1.microchip.com/downloads/en/DeviceDoc/21733j.pdf), [**AM2520ZGC09**](http://pulsesensor.myshopify.com/pages/open-hardware), and [**APDS-9008**](http://www.avagotech.com/docs/AV02-1169EN). None were a real threat. I made each part according to the datasheets. Then, I strung together the schematic in Eagle, switched to the PCB layout, and threw my pieces down. But for some reason I thought, "I should replace the 0603 passives on this board with 0402s."
 
 I figured, if I could shrink the board even more I'd be happier, right? I mean, smaller is better--so the women say. Well, it was the only thing on this board version I didn't regret.
 
@@ -59,13 +66,13 @@ In the end, the board was sent off to OshPark for a $2.00.
 
 When the post came, as my friends across the lake say, I was excited about the itty-bitty board. Unfortunately, I started my string of disappointments after I populated the board.
 
-<span style="mso-no-proof: yes;">![](../images/IMG_0569.jpg)Like I said, I didn't regret the 0402s at all. They all soldered on pretty easy. Though, I think my primary beef with 0402s over 0802 is when it comes to tweezerless soldering. See, when I go to solder 0802s I have this process of tapping one pad with a bit of solder, and taking a resistor for example, hold the 0802's body with tweezers in my left hand while my right hand keeps the solder warm. Then, I simply run one end of the resistor into the pool of solder, move the iron away, then, when the solder cools, let go with the tweezers. To get the other end, I'll put the tweezers down and simply tap the other end with solder. _Voila_.
+<span style="mso-no-proof: yes;">![](/images/IMG_0569.jpg)Like I said, I didn't regret the 0402s at all. They all soldered on pretty easy. Though, I think my primary beef with 0402s over 0802 is when it comes to tweezerless soldering. See, when I go to solder 0802s I have this process of tapping one pad with a bit of solder, and taking a resistor for example, hold the 0802's body with tweezers in my left hand while my right hand keeps the solder warm. Then, I simply run one end of the resistor into the pool of solder, move the iron away, then, when the solder cools, let go with the tweezers. To get the other end, I'll put the tweezers down and simply tap the other end with solder. _Voila_.
 
 I'd try to get a picture of this process, but, I don't have a third hand yet. Though,[ **these folk** ](http://www.kickstarter.com/projectss/antonyevans/glowing-plants-natural-lighting-with-no-electricit)are working on it.
 
 This doesn't work with 0402s. One, holding the body of a 0402 with tweezers is like a giant trying to tight-rope-walk a piece of dental-floss. But the problem really begins in the second step, when I set the tweezers down to tap the other end, the heat from my iron shots through the little 0402 to the other end, loosening the hardened side, as soon as this happens, the entire 0402 stands on end, hugging my iron. Of course, this ends with me quickly pulling the little guy off with my fingers (not smart, but each 0402 is like $.20).
 
-![](../images/IMG_8776.jpg)A few notes:
+![](/images/IMG_8776.jpg)A few notes:
 
 **The LED fit through the hole in the PCB, but I was worried the drill wouldn't be wide enough (I guessed a bit).**
 
@@ -75,9 +82,7 @@ This doesn't work with 0402s. One, holding the body of a 0402 with tweezers is l
 
 **The only piece that couldn't be soldered with a solder-iron was the light-sensor. All of it's pads are tucked under the actual component. So, I used the good ole' overturned clothes-iron.**
 
-
-
-![](../images/IMG_0673.jpg)Anyways, once I had all the components in place? I threw on a few wires, attached it to the Arduino, uploaded the sketch, turned it on. _And_...**smoke.**
+Anyways, once I had all the components in place? I threw on a few wires, attached it to the Arduino, uploaded the sketch, turned it on. _And_...**smoke.**
 
 **Waah-waaah.**
 
@@ -179,7 +184,9 @@ I ordered several samples of the chip from TI. While I waited on the post I bega
 
 **Hardware:**
 
-![](../images/500px-CC2541_Breakout_Board.jpg)Here's a [**complete PCB**](http://processors.wiki.ti.com/index.php/CC2541_Breakout_Board) for the [**CC2541**](http://www.ti.com/lit/ds/symlink/cc2541.pdf), which seems to be optimized for low-power consumption. I will say, the entire chip is pretty well documented on the TI forums, but overall, the hardware aspects are the least.
+![](/images/500px-CC2541_Breakout_Board.jpg)
+
+Here's a [**complete PCB**](http://processors.wiki.ti.com/index.php/CC2541_Breakout_Board) for the [**CC2541**](http://www.ti.com/lit/ds/symlink/cc2541.pdf), which seems to be optimized for low-power consumption. I will say, the entire chip is pretty well documented on the TI forums, but overall, the hardware aspects are the least.
 
 I downloaded the Eagle files and began ripping off all the unnecessary circuits. (I think there is a lipo charger circuit?) The goal was to bring the board size small enough it would be cheap to print.
 
@@ -187,7 +194,7 @@ But as I got to ripping pieces of close to the antennae noticed how easily it wo
 
 
 
-![](../images/cc2541_Breakout_PCB.jpg)This realization on top of all the 0402s and the DFN package, well, I decided I wanted to play with the chip on a completed board, with already installed firmware before I sunk time into a personal development (fancy words for: **I got lazy**).
+![](/images/cc2541_Breakout_PCB.jpg)This realization on top of all the 0402s and the DFN package, well, I decided I wanted to play with the chip on a completed board, with already installed firmware before I sunk time into a personal development (fancy words for: **I got lazy**).
 
 I won't cover the firmware or software, since I took another route and didn't thoroughly Google-search them. But do know, within the collective in the Texas Instrument's cc2500 forums there is almost everything you'd want. Although, be prepared, if you desire to create your own firmware you'll need to brush up on your C and AVR programming.
 
@@ -199,7 +206,7 @@ I noticed one day they had these [**HM-10s**](http://www.fasttech.com/products/0
 
 Well, a week later I got these little guys.
 
-![](../images/HM-10-2.jpg)They aren't bad little boards. But, they were little. I tried soldering on jumpers to the ant sized grooves, it didn't go well. I knew to really start playing with the board I needed a breakout.
+![](/images/HM-10-2.jpg)They aren't bad little boards. But, they were little. I tried soldering on jumpers to the ant sized grooves, it didn't go well. I knew to really start playing with the board I needed a breakout.
 
 So I made one:
 
@@ -209,13 +216,11 @@ When the breakout boards came in I was surprised they worked (I'm usually surpri
 
  They straddled my breadboard nicely. <span style="mso-no-proof: yes;"> And it allowed me to play with all the bits of the board I wanted: V, GND, Rx, Tx, and PIO1 (pin for connection-status LED).
 
-![](../images/IMG_0666.jpg)Since the little HM-10 operated on 3.3v I carefulIy put it in the breadboard and pulled out my [**Sparkfun Lilypad FTDI**](https://www.sparkfun.com/products/10275) (first huge mistake) to interface with the board's serial.
+![](/images/IMG_0666.jpg)
 
-
+Since the little HM-10 operated on 3.3v I carefulIy put it in the breadboard and pulled out my [**Sparkfun Lilypad FTDI**](https://www.sparkfun.com/products/10275) (first huge mistake) to interface with the board's serial.
 
 Well, I couldn't figure out what was wrong; the board would not respond to AT commands (I was using [**Realterm**](http://realterm.sourceforge.net/)). I mean, I had plugged the 3.3v into the HM-10's power, so I know it wasn't getting too much voltage. I even checked it with a multi-meter (about a hundred times).
-
-
 
 Well, as those of you who are smarter than me (so all of you?) probably already know: The Sparkfun's Lilypad FTDI is designed to provide the Lilypad with 3.3v, but the Atmega-328-P on the Lilypad is actually 5v tolerant. So why drop the voltage on the Rx and Tx lines? Of course, this wasn't a conclusion I came to for many hours, really, until I started randomly probing the boards with the multi-meter.
 
@@ -291,7 +296,7 @@ Eventually, I found the current English manual
 
 
 
-![](../images/IMG_8991_2.jpg)The manual answered a lot of my questions. It came with a complete pinout (even a schematic!). After playing with the commands I was re-naming the module, resetting it and running many other needed commands.
+![](/images/IMG_8991_2.jpg)The manual answered a lot of my questions. It came with a complete pinout (even a schematic!). After playing with the commands I was re-naming the module, resetting it and running many other needed commands.
 
 Now for a live test.
 
@@ -301,7 +306,9 @@ I got my work phone, iPhone 4S, which is equipped with Bluetooth 4.0\. I tried u
 
 I thought I was on my way to slapping these little HM-10s on a robot, plugging a Bluetooth 4.0 dongle on my PC, sitting back and letting magic happen. That's not quite how it worked out. I ordered [**this** ](http://www.fasttech.com/products/0/10000148/1018901-ultra-mini-bluetooth-csr-40-usb-dongle-adapter)Bluetooth dongle and when it came in quickly discovered that the drivers needed to provide it with magic powers were not available. I tried it all, TI's tool pack, random internet drivers, shady internet drivers. It simply wasn't going to happen with that dongle.
 
- ![](../images/IMG_0063.png)I figured that's what you get buying the cheapest dongle you can find. So, I switched over to Newegg and bought [**this** ](http://www.newegg.com/Product/Product.aspx?Item=N82E16833139027)dongle, making sure it came with supported drivers.
+ ![](/images/IMG_0063.png)
+ 
+ I figured that's what you get buying the cheapest dongle you can find. So, I switched over to Newegg and bought [**this** ](http://www.newegg.com/Product/Product.aspx?Item=N82E16833139027)dongle, making sure it came with supported drivers.
 
 
 
@@ -436,7 +443,7 @@ After reading the manual some more, and tinkering with the AT commands, I sent a
 
 
 
-![](../images/IMG_9017.jpg)So, no chance on getting older firmware. I started preparing to implement my Atmega & HM-10 team. I strung up the HM-10 on the backpack breadboard of Silas' bot (my son's bot).
+![](/images/IMG_9017.jpg)So, no chance on getting older firmware. I started preparing to implement my Atmega & HM-10 team. I strung up the HM-10 on the backpack breadboard of Silas' bot (my son's bot).
 
 I was beginning to get really frustrated with the level conversion problem. I had tried the [**CD4050**](http://www.fairchildsemi.com/ds/CD/CD4049UBC.pdf), but found it was uni-directional, meaning I still had to have a converter for the Rx bus (HM-10 and Arduino), or, unplug the HM-10 from the Rx bus every time I wanted to upload a sketch to the Arduino. In the end, I started doing that and used a voltage divider for the Tx line.
 
@@ -468,7 +475,7 @@ I thought as long as I was going to have the boards printed again, I'd go ahead 
 
 This design was cheap, scalable, and required little layout room.  It was fairly simple, voltage divider from high-to-low, and a tricky little N-Channel MOSFET on the low-to-high.  The low-to-high circuit is actually bi-directional (up to a certain speed) but I'm simply using it to raise Tx voltage from the HM-10 to the Arduino, while protecting the HM-10 from uploading a sketch.
 
-**![](../images/Logic_Converter_Schem.jpg)
+**![](/images/Logic_Converter_Schem.jpg)
 **
 
 
@@ -479,11 +486,11 @@ I've already got my [BSS138s](http://www.ebay.com/itm/261117507960?ssPageName=ST
 
 **The LED and Heatsink**
 
+![](/images/IMG_0589.jpg)
 
+A bit ago I realized I needed to start documenting better and figured a picture was worth a thousand words, so at a 32fps x 1,000, well, in short video documentation should kick-ass (I submit for further evidence [chickenparmi](http://www.youtube.com/user/chickenparmi)'s works :).  Well, I got to trying to figure out how I was going to make these videos.  That's when I came up with the idea of a piece of wood hanging from the ceiling--feel free to copy this design, it is open-design.
 
-![](../images/IMG_0589.jpg)A bit ago I realized I needed to start documenting better and figured a picture was worth a thousand words, so at a 32fps x 1,000, well, in short video documentation should kick-ass (I submit for further evidence [chickenparmi](http://www.youtube.com/user/chickenparmi)'s works :).  Well, I got to trying to figure out how I was going to make these videos.  That's when I came up with the idea of a piece of wood hanging from the ceiling--feel free to copy this design, it is open-design.
-
-![](../images/IMG_8868_513x768.jpg)
+![](/images/IMG_8868_513x768.jpg)
 
 Well, I attached a board with a hole on it so my iPhone could lie there and take videos of whatever my hands were doing.  But I noticed there simply wasn't enough light in the hacking hours (after the wife's asleep) to do a proper video.  That's when I began looking into cheap high-powered LEDs.  They aren't too difficult to work with, the items I ended up needing were.
 
@@ -500,7 +507,7 @@ As many other projectss, this one isn't done.  The original plan was to add an a
 
 But I jump ahead.  When I first started this little projects I had no idea how to work with high-power LEDs.  My little ignorant self assumed they were like 20ma LEDs--right?  Well, I quickly figured out that heat displacement was the single most important issue. Which is why I ordered a 800 lumen LED 3 weeks before I ordered a heatsink and paste.  
 
-![](../images/IMG_8829_2.jpg)
+![](/images/IMG_8829_2.jpg)
 
 Then, it came to the problem of finding out of my heat sinking was adequate to the massive LED. (I think a 60 watt tungsten produces 800 lume as well?  And I know they can cook little cakes--what? It was my sister's [Easy Bake](http://www.ebay.com/itm/Working-Vintage-Easy-Bake-Oven-The-Original-27th-Year-Kenner-/330948535794?pt=Pretend_Play_Preschool_US&hash=item4d0e11e5f2), oven not mine.)  I digress, so being [dyscalculia ](https://dopasolution.com/dyscalculia/)I was trying to find out if I was heat-sinking proper without delving into higher math.  That's when I remembered I had my [thermocoupler](http://www.adafruit.com/products/269) together from the coffee roaster I built.  I strung the coupler together with an Arduino and i2c LCD, giving me a pretty accurate and robust temperature sensor.
 
@@ -508,12 +515,12 @@ I looked for a bit, but I couldn't find the information on the theremal breakdow
 
 The LED was on 1.5 seconds before it blew up to around 180*F.  Uh, ya, I broke out the heatsink.  This time, I attached the LED to the heatsink with a bit of thermal paste.  I think attached the two screws, which further pressed the LED against the heatsink.  Then, I put coupler probe against the face of the LED.  I bit off the last of my finger nails and flipped the LED back on.  This time, the temperature sensor went up _much slower_.  And after a few minutes stuck around 112*F.  Of course, I didn't know if this was beyond the point of thermal breakdown, but I assumed since my own body temperature wasn't far off, and I wasn't exploding, then it would probably be ok.  I also touched the face of the LED and was able to leave my finger own for longer than 30 seconds.  This I've found to be the most empirically reliable test.  With mounting evidence I decided to cut another hole in my board-from-the-ceiling...thing and attach the light.  And there we have it.  I'll report when I've added the light-sensor arrays.
 
-![](../images/IMG_0593.jpg)![](../images/IMG_0592.jpg)
+![](/images/IMG_0593.jpg)![](/images/IMG_0592.jpg)
 
 **XL4432 Breakout** -- **Telemetry is Voodoo**
 
 
-![](../images/XL4432.jpg)
+![](/images/XL4432.jpg)
 
 While I was reading about telemetry I discovered [these](http://www.fasttech.com/p/1214300) little boards for $3.98 and grew curious if I could do anything with them, other than bricking them.  I was very curious about the claim on range, "1000 meters."  Even with the BS de-modifier bringing the range down to around 500 meters, that was still something I would love.  So I ordered two and made breakout boards for them.
 
@@ -523,7 +530,9 @@ I stopped what I was doing and re-made the breakout board to include a [TXB0108]
 
 [**XL4432 Breakout**](http://www.ubermentis.com/files/XL4432_Breakout.rar) Eagle Files **(****<span style="font-size: 10pt; line-height: 1.231;">not yet tested)**
 
-![](../images/677px-224049mvmueuee2ise9mu3.png)That's really the whole story here, well, except I've been trying to find information on hooking these little guys up with Arduinos for when I do get them wired with a voltage translator.  I've found much thus far, but [this](http://www.electrodragon.com/w/index.php?title=SI4432_433M-Wireless_Transceiver_Module_(1.5KM_Range,_Shield-Protected)) seems promising.  Sadly, I can't figure out how he's got the XL4432 wired up by his poorly drawn schematic(?).  Anyone care to give an opinion as to whether those grounds are connected? Logic and CtC both state, "Always, _always_, connect all grounds."  And if I remember my EE schematic lingo, isn't dot on connections most often used when there is an [extraordinary node](http://books.google.com/books?id=vJk_d2dxO30C&pg=PA40&lpg=PA40&dq=extraordinary+node&source=bl&ots=4H9vAKxvns&sig=VAb-yba-SUZpoUkeGy9OLhwhgyY&hl=en&sa=X&ei=kibzUZv9FYmK9gSi14CoAg&ved=0CDUQ6AEwAQ#v=onepage&q=extraordinary%20node&f=false)?
+![](/images/677px-224049mvmueuee2ise9mu3.png)
+
+That's really the whole story here, well, except I've been trying to find information on hooking these little guys up with Arduinos for when I do get them wired with a voltage translator.  I've found much thus far, but [this](http://www.electrodragon.com/w/index.php?title=SI4432_433M-Wireless_Transceiver_Module_(1.5KM_Range,_Shield-Protected)) seems promising.  Sadly, I can't figure out how he's got the XL4432 wired up by his poorly drawn schematic(?).  Anyone care to give an opinion as to whether those grounds are connected? Logic and CtC both state, "Always, _always_, connect all grounds."  And if I remember my EE schematic lingo, isn't dot on connections most often used when there is an [extraordinary node](http://books.google.com/books?id=vJk_d2dxO30C&pg=PA40&lpg=PA40&dq=extraordinary+node&source=bl&ots=4H9vAKxvns&sig=VAb-yba-SUZpoUkeGy9OLhwhgyY&hl=en&sa=X&ei=kibzUZv9FYmK9gSi14CoAg&ved=0CDUQ6AEwAQ#v=onepage&q=extraordinary%20node&f=false)?
 
 Oh well.
 
@@ -534,8 +543,9 @@ Oh well.
 
 **Atmega Fuse Doctor & Pogo Board**
 
+![](/images/Board_Layout.jpg)
 
-![](../images/Board_Layout.jpg)I'm not patient.  At all.  Which lead me to brick a few Atmega boards ([1](http://letsmakerobots.com/node/36273), [2](http://letsmakerobots.com/node/36763)).  This upset me, especially since one of those chips was ~$12-17\.  I had bricked the chips trying to set their fuses in Atmel Studio.  Due to the price of these chips I feel it was natural for me to begin looking for a solution.  And apparently the [Fuse Doctor](http://mdiy.pl/atmega-fusebit-doctor-hvpp/?lang=en) is one such solution.  In essence, it uses the high-voltage programming functions built into Atmel chip.
+I'm not patient.  At all.  Which lead me to brick a few Atmega boards ([1](http://letsmakerobots.com/node/36273), [2](http://letsmakerobots.com/node/36763)).  This upset me, especially since one of those chips was ~$12-17\.  I had bricked the chips trying to set their fuses in Atmel Studio.  Due to the price of these chips I feel it was natural for me to begin looking for a solution.  And apparently the [Fuse Doctor](http://mdiy.pl/atmega-fusebit-doctor-hvpp/?lang=en) is one such solution.  In essence, it uses the high-voltage programming functions built into Atmel chip.
 
 I thought, "Great.  A way to save my chips!"  But...I ran into a problem when I saw the board build, it was an etch a home design.  And I still do not have pant free of ferric chloride stains.  So, I set to re-designing the board into a version I could send off to OSHPark.
 
@@ -543,11 +553,13 @@ I found out the designer had a [SMD version](http://mdiy.pl/wp-content/uploads/2
 
 [**Remade SMD schematic**](http://www.ubermentis.com/files/Brick_Doc_02.pdf)
 
-![](../images/IMG_8980.jpg)
+![](/images/IMG_8980.jpg)
 
 In the end, I printed a board for around $12\.  But like the rest of the items here, it didn't work as expected.  The problem had to do with an extra node I missed, which led to a short-circuit around the voltage regulator.  So, I just sliced the trace and was able to at least get pulled up in Atmel Studio and the hex file written to the chip.  So, in theory, if I can correct short-circuit, supply it with 12vs, and connect it to the Atmel chips, I should be able to restore them.
 
-![](../images/IMG_0054.jpg)**[](http://www.ubermentis.com/files/Atmega_Fuse_Doc_BOM.pdf)**
+![](/images/IMG_0054.jpg)
+
+**[](http://www.ubermentis.com/files/Atmega_Fuse_Doc_BOM.pdf)**
 
 You might see in this image where I'm providing the board with a pre-regulated 5vs through a via.  This was to circumvent the short-circuit around the on-board regulator.  Also, I had to attach my AVR wires on the other side of the 1k resistors to get the board signature read in Atmel studio.
 
@@ -559,13 +571,15 @@ Kariloy--who has a complete [Fuse Doctor](http://letsmakerobots.com/node/35100) 
 
 Then, I remembered [Pogo Pins](http://en.wikipedia.org/wiki/Pogo_pin).  I jumped on eBay to see if I could find any pins with a small enough head to fit against a TFQP lead on chips I used.  These are the [pins](http://www.ebay.com/itm/160926992225?ru=http%3A%2F%2Fwww.ebay.com%2Fsch%2Fi.html%3F_from%3DR40%26_sacat%3D0%26_nkw%3D160926992225%26_rdc%3D1) I ended up ordering.
 
-![OddBot's Drill Press](../images/IMG_1655.jpg)When they came in I was pleased to find they would probably be small enough to fit against a single lead without touching its neighbors.  I then started looking for a way to create a jig.  I settled on using HDPE (cutting board) I had left-over.  I figure I could drill holes in it using the [bits](https://www.drillbitcity.com/catalogue/10_piece.asp) I had left over from the Hunter S. Thompson board debacle using OddBot's old drill-press.
+![OddBot's Drill Press](/images/IMG_1655.jpg)
+
+When they came in I was pleased to find they would probably be small enough to fit against a single lead without touching its neighbors.  I then started looking for a way to create a jig.  I settled on using HDPE (cutting board) I had left-over.  I figure I could drill holes in it using the [bits](https://www.drillbitcity.com/catalogue/10_piece.asp) I had left over from the Hunter S. Thompson board debacle using OddBot's old drill-press.
 
 <----- OddBot's drill press (thank you OddBot ;).
 
 When I got ready to drill the holes, I got into Eagle and printed out the footprint of a 32-TFQP chip.  I cut that out and then cut my HDPE to the same size, making two pieces with enough room for the drill guide in the center.  I then drilled two holes in adjacent corners from the other.  I put a couple of 4-40 screws and nuts to clinch the two pieces of HDPE together.  The idea being, I could spacers between them later and slip the pogo pins through the top, solder the wire on its bottom, then let them rest on the bottom piece of HDPE.  Not sure why I state all that....the picture I think explains it.
 
-![](../images/IMG_0642.jpg)
+![](/images/IMG_0642.jpg)
 
 After I had the hole thing screwed, tapped, and clinched, I ran out to OddBot's drill press, fitted it with the smallest bit I had and tap over one of the pads.  I then pulled out one of the small pins and was surprised to find it fit snuggly.
 
@@ -575,7 +589,7 @@ And that's where I stopped, the main reason was not wanting to have to lookup th
 
 
 
-![](../images/IMG_0663.jpg)I'm not going to write this up until I do something different then the guy I stole it has done.
+![](/images/IMG_0663.jpg)I'm not going to write this up until I do something different then the guy I stole it has done.
 
 My wife, Bek, asked me awhile back to make her a smart thermostat, which I replied, "I'm only at the dumb-thermostat skill-level. Will that do?"  She glared, so I Googled for some planes.
 
@@ -591,7 +605,7 @@ I found this guy's [Arduino thermostat](http://www.modsbyus.com/diy-arduino-ther
 
 -- Dallas 1-wire Temperature (<span style="font-family: Arial; font-size: small; line-height: normal;">DS18B20)
 
-![](../images/IMG_0653.jpg)
+![](/images/IMG_0653.jpg)
 
 The idea is pretty simple, the voltage line is tied together on all the legs of the relay shield and the Arduino connects to it.  The Arduino reads the temperature from the sensor, checks the time on the I2C RTC, and prints both to the I2C LCD.  Also, if the time is correct (after 4:00 PM) it will automatically kick on the AC.  I've got it all together and working, just not tied to the AC lines. I was trying to find a way to power it, since all the AC lines are 24v and there is no ground.  So, I bought:
 
@@ -805,7 +819,7 @@ Sadly, it wasn't until I read the manual (hey, it's a long damn manual) did I di
 
 
 
-![](../images/Distcc_3_2.jpg)
+![](/images/Distcc_3_2.jpg)
 
 If the symlink to Distcc comes up first in the $PATH, it calls it as the pre-compiler, then removes it from the $PATH variable. Distcc then calls the the next compiler in the $PATH variable, this time, to it should be the remote compiler.
 
@@ -819,7 +833,7 @@ This caused me to get errors stating there was no compiler found.
 
 
 
-![](../images/Distcc_4_2.jpg)I discovered all this waiting on one of my clients to finish a mental-health screening. It definitely confused him when I hit my head against the wall and said, "Son-of-a..."
+![](/images/Distcc_4_2.jpg)I discovered all this waiting on one of my clients to finish a mental-health screening. It definitely confused him when I hit my head against the wall and said, "Son-of-a..."
 
 
 

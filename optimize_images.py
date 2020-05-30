@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-import os, sys
+import os, sys, shutil
 from datetime import date
 import glob
 from PIL import Image
@@ -12,11 +12,15 @@ root_path = os.environ['HOME']
 input_directory = f'{root_path}/ladvien.github.io/raw_images'
 output_directory = f'{root_path}/ladvien.github.io/images'
 
-max_size                = 1920
+max_size                = 1080
 max_file_size_kb        = 300 
 compression_quality     = 85
 
-ignore_existing         = True 
+ignore_existing         = False 
+
+#########################
+# Move non-compressables
+#########################
 
 ############
 # Transforms
@@ -80,13 +84,26 @@ for image_path in image_paths:
         image = resize(image, max_size)
 
     if file_size_kb > max_file_size_kb:
-        image.save(image_output_file_path, optimize = True, quality = compression_quality)
-    else:
-        image.save(image_output_file_path)
-    
-    file_size_kb_new = os.stat(output_file_path).st_size / 1000
+        if file_size_kb < 400:
+            print('Optimizing level 1')
+            image.save(image_output_file_path, optimize = True, quality = 95)
+        elif file_size_kb < 500:
+            print('Optimizing level 2')
+            image.save(image_output_file_path, optimize = True, quality = 85)
+        elif file_size_kb < 600:
+            print('Optimizing level 3')
+            image.save(image_output_file_path, optimize = True, quality = 80)
+        elif file_size_kb < 700:
+            print('Optimizing level 4')
+            image.save(image_output_file_path, optimize = True, quality = 75)
+        
+        file_size_kb_new = os.stat(output_file_path).st_size / 1000
+        print(f'{image_index} / {image_count} = {round((image_index / image_count) * 100, 2)}% -- File size before {file_size_kb}kb and after {file_size_kb_new}kb')
 
-    print(f'{image_index} / {image_count} = {round((image_index / image_count) * 100, 2)}% -- File size before {file_size_kb}kb and after {file_size_kb_new}kb')
+    else:
+        print('Already optimized.')
+        image.save(image_output_file_path)
+        
     image_index += 1
 
 

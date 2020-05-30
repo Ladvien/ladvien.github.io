@@ -70,7 +70,7 @@ sass:
 permalink:   /:title/
 
 # Amount of post to show on home page
-paginate: 5
+paginate: 2
 
 plugins_dir: ./_plugins
 

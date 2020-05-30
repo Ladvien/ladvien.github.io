@@ -1,6 +1,14 @@
-{% capture srcset %}
-    {% for i in resized %}
-{{ site.url }}/{{ i.path }} {{ i.width }}w,
-    {% endfor %}
-{% endcapture %}
+
+{% if    path contains ".png" 
+      or path.contains ".PNG"
+      or path.contains ".jpg"
+      or path.contains ".JPG"
+      
+%}
+    {% capture srcset %}
+        {% for i in resized %}
+            {{ site.url }}/{{ i.path }} {{ i.width }}w,
+        {% endfor %}
+    {% endcapture %}
+{% endif %}
 <img src="{{ site.url }}/{{ path }}" alt="{{ alt }}" srcset="{{ srcset | strip_newlines | strip }}">

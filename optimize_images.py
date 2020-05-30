@@ -14,9 +14,9 @@ output_directory = f'{root_path}/ladvien.github.io/images'
 
 max_size                = 1920
 max_file_size_kb        = 300 
-compression_quality     = 95 
+compression_quality     = 85
 
-ignore_existing         = False 
+ignore_existing         = True 
 
 ############
 # Transforms
@@ -25,10 +25,10 @@ print('')
 print('*******************************************************')
 print('* Moving raw_images into images                       *')
 print('*******************************************************')
-image_paths = glob.glob(f'{root_path}/**/*.jpg', recursive = True) +\
-              glob.glob(f'{root_path}/**/*.JPG', recursive = True) +\
-              glob.glob(f'{root_path}/**/*.png', recursive = True) +\
-              glob.glob(f'{root_path}/**/*.PNG', recursive = True)
+image_paths = glob.glob(f'{input_directory}/**/*.jpg', recursive = True) +\
+              glob.glob(f'{input_directory}/**/*.JPG', recursive = True) +\
+              glob.glob(f'{input_directory}/**/*.png', recursive = True) +\
+              glob.glob(f'{input_directory}/**/*.PNG', recursive = True)
 
 
 def resize(image, max_size):
@@ -51,38 +51,44 @@ for image_path in image_paths:
     image_file_name = image_path.split('/')[-1]
 
     # Get output directory for file.
-    image_dir = input_directory.split('/')[-1]
-    image_output_dir = output_directory + image_path.split(image_dir)[-1].replace(image_file_name, '')
+    input_image_dir = input_directory.split('/')[-1]
+    output_image_dir = output_directory.split('/')[-1]
 
-    # Ensure the output directory exists.
-    if not os.path.exists(image_output_dir):
-        os.mkdir(image_output_dir)
+    image_output_file = image_path.split('/')[-1]
+    image_output_dir = image_path.replace(input_image_dir, output_image_dir).replace(image_output_file, '')
+    image_output_file_path = image_output_dir + image_output_file
 
-    # Get the output file path.
-    output_file_path = f'{image_output_dir}{image_file_name}'
-
-    if os.path.exists(output_file_path) and ignore_existing:
-        image_index += 1
-        continue
-
-    # Determine the starting file size.
-    file_size_kb = os.stat(image_path).st_size / 1000
-
-    image = Image.open(image_path)
-    img_width, img_height = image.size
+    print(image_output_file_path)
     
-    # Resize images too large.
-    if img_width > max_size:
-        image = resize(image, max_size)
+    # # Ensure the output directory exists.
+    # if not os.path.exists(image_output_dir):
+    #     os.mkdir(image_output_dir)
 
-    if file_size_kb > max_file_size_kb:
-        image.save(output_file_path, optimize = True, quality = compression_quality)
-    else:
-        image.save(output_file_path)
+    # # Get the output file path.
+    # output_file_path = f'{image_output_dir}{image_file_name}'
+
+    # if os.path.exists(output_file_path) and ignore_existing:
+    #     image_index += 1
+    #     continue
+
+    # # Determine the starting file size.
+    # file_size_kb = os.stat(image_path).st_size / 1000
+
+    # image = Image.open(image_path)
+    # img_width, img_height = image.size
     
-    file_size_kb_new = os.stat(output_file_path).st_size / 1000
-    print(f'{image_index} / {image_count} = {round((image_index / image_count) * 100, 2)}% -- File size before {file_size_kb}kb and after {file_size_kb_new}kb')
-    image_index += 1
+    # # Resize images too large.
+    # if img_width > max_size:
+    #     image = resize(image, max_size)
+
+    # if file_size_kb > max_file_size_kb:
+    #     image.save(output_file_path, optimize = True, quality = compression_quality)
+    # else:
+    #     image.save(output_file_path)
+    
+    # file_size_kb_new = os.stat(output_file_path).st_size / 1000
+    # print(f'{image_index} / {image_count} = {round((image_index / image_count), 2) * 100}% -- File size before {file_size_kb}kb and after {file_size_kb_new}kb')
+    # image_index += 1
 
 
     

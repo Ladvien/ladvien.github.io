@@ -176,3 +176,13 @@ responsive_image:
   # images. This is useful for resizing images which will be referenced from stylesheets.
   extra_images:
     - uploads/*/*/*/*.{jpeg,jpg}
+
+compress_html:
+  clippings: all
+  comments: ["<!-- ", " -->"]
+  endings: all
+  ignore:
+    envs: [local]
+  blanklines: false
+  profile: true
+  startings: [html, head, body]

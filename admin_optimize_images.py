@@ -16,7 +16,7 @@ max_size                = 1080
 max_file_size_kb        = 300 
 compression_quality     = 85
 
-ignore_existing         = False 
+ignore_existing         = True 
 
 #########################
 # Move non-compressables
@@ -53,6 +53,9 @@ for image_path in image_paths:
 
     # Get the file name.
     image_file_name = image_path.split('/')[-1]
+
+    # Replace spaces with underscores.
+    image_file_name = image_file_name.replace(' ', '_')
 
     # Get output directory for file.
     input_image_dir = input_directory.split('/')[-1]
@@ -93,11 +96,11 @@ for image_path in image_paths:
         elif file_size_kb < 600:
             print('Optimizing level 3')
             image.save(image_output_file_path, optimize = True, quality = 80)
-        elif file_size_kb < 700:
+        elif file_size_kb >= 600 :
             print('Optimizing level 4')
             image.save(image_output_file_path, optimize = True, quality = 75)
         
-        file_size_kb_new = os.stat(output_file_path).st_size / 1000
+        file_size_kb_new = os.stat(image_output_file_path).st_size / 1000
         print(f'{image_index} / {image_count} = {round((image_index / image_count) * 100, 2)}% -- File size before {file_size_kb}kb and after {file_size_kb_new}kb')
 
     else:

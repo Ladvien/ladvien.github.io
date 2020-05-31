@@ -1,4 +1,3 @@
-#!/usr/bin/python3
 import os, sys, shutil
 from datetime import date
 import glob
@@ -21,6 +20,7 @@ ignore_existing         = True
 #########################
 # Move non-compressables
 #########################
+os.system(f'rsync -h -v -r -P -t --ignore-existing --exclude="*.jpg" --exclude="*.JPG" --exclude="*.png" --exclude="*.PNG" {root_path}/ladvien.github.io/_site/raw_images/ {root_path}/ladvien.github.io/_site/images/')
 
 ############
 # Transforms

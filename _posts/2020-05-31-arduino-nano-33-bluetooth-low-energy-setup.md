@@ -13,40 +13,48 @@ custom_js:
 ---
 Bluetooth Low Energy and I go way back.  I was one of the first people using the HM-10 module back in the day.  Recently, my mentor introduced me to the [Arduino Nano 33 BLE Sense](https://store.arduino.cc/usa/nano-33-ble-sense-with-headers).  Great little board--_packed_ with sensors!
 
-Shortly after firing it up, I got excited.  I've been wanting to start creating my own smartwatch for a long time (basically, as long the Apple watch has blown chunks).  And this one board had many of the sensors I was looking to add, all neatly in one small little package.
+Shortly after firing it up, I got excited.  I've been wanting to start creating my own smartwatch for a long time (basically, as long the Apple watch has blown chunks).  And this one board had many of the sensors I was looking to add, all neatly in one small little package. The thing is a researcher's nocturnal emission.
 
-Here are the specifications provided by Arduino:
+Of course, my excitement was a little tamed when I realized there weren't really any good tutorials on how to get the Bluetooth LE portion of the board working.  So, after a bit of hacking something together I figured I'd share.
+
+## How to Install the Arduino Nano 33 BLE Board
+After getting your Arduino Nano 33 BLE board there's a little setup to do.  First, open up the Arduino IDE.  Navigate to the "Boards
+
+![open-arduinos-manage-libraries](/images/arduino_nano_ble_board_installation.png)
 
 
-|-----------------------------|----------------------------------| 
-| Microcontroller             | nRF52840 ([datasheet](https://content.arduino.cc/assets/Nano_BLE_MCU-nRF52840_PS_v1.1.pdf))             | 
-| Operating Voltage           | 3.3V                             | 
-| Input Voltage (limit)       | 21V                              | 
-| DC Current per I/O Pin      | 15 mA                            | 
-| Clock Speed                 | 64MHz                            | 
-| CPU Flash Memory            | 1MB (nRF52840)                   | 
-| SRAM                        | 256KB (nRF52840)                 | 
-| EEPROM                      | none                             | 
-| Digital Input / Output Pins | 14                               | 
-| PWM Pins                    | all digital pins                 | 
-| UART                        | 1                                | 
-| SPI                         | 1                                | 
-| I2C                         | 1                                | 
-| Analog Input Pins           | 8 (ADC 12 bit 200 ksamples)      | 
-| Analog Output Pins          | Only through PWM (no DAC)        | 
-| External Interrupts         | all digital pins                 | 
-| LED_BUILTIN                 | 13                               | 
-| USB                         | Native in the nRF52840 Processor | 
-| IMU                         | LSM9DS1 ([datasheet](https://content.arduino.cc/assets/Nano_BLE_Sense_lsm9ds1.pdf))              | 
-| Microphone                  | MP34DT05 ([datasheet](https://content.arduino.cc/assets/Nano_BLE_Sense_mp34dt05-a.pdf))             | 
-| Gesture, light, proximity   | APDS9960 ([datasheet](https://content.arduino.cc/assets/Nano_BLE_Sense_av02-4191en_ds_apds-9960.pdf))             | 
-| Barometric pressure         | LPS22HB ([datasheet](https://content.arduino.cc/assets/Nano_BLE_Sense_lps22hb.pdf))              | 
-| Temperature, humidity       | HTS221 ([datasheet](https://content.arduino.cc/assets/Nano_BLE_Sense_HTS221.pdf))               | 
-| Length                      | 45 mm                            | 
-| Width                       | 18 mm                            | 
-| Weight                      | 5 gr (with headers)              | 
+## How to Install the ArduinoBLE Library
+The key to working with Bluetooth LE for the official Arduino boards is the stock library:
 
-Note, the specifications don't list it, but there is actually very small RGB LED on the board too (though, the pins are swapped--more later).  Giving the board 4 individually addressable LEDs.  The thing is a researcher's nocturnal emission.
+* [ArduinoBLE](https://www.arduino.cc/en/Reference/ArduinoBLE)
+
+It works pretty well, though, the documentation is a bit spotty.
+
+To get started you'll need to fire up the Arduino IDE and got to `Tools` then `Manager Libraries...`
+
+![open-arduinos-manage-libraries](/images/ardino_ble_manage_libraries.png)
+
+In the search box that comes up type `ArduinoBLE` and then select `Install` next to the library:
+
+![install-arduino-ble-library](/images/install_arduino_ble_lbirary.png)
+
+That's pretty much it, we can now include the library at the top of our sketch:
+```cpp
+#include <ArduinoBLE.h>
+```
+
+## UART versus Bluetooth LE
+Usually, when I'm working with a Bluetooth LE (BLE) device I'm trying to get it to send and receive data.  And that's what I'll be focusing on in this article.  
+
+I've seen this send-n-receive'ing data from BLE as "UART emulation."  I think that's fair, it's a classic communication protocol for a reason.  I've also the comparison as a great mental framework for understanding how our BLE will work.  
+
+We will have a `rx` property, where we can get data from a remote device and a `tx` property, where we can send data.  Throughout my Arduino program you'll see my naming convention following this analog. That stated, there are clear differences between BLE communication and UART.  BLE is much more complex and versatile.
+
+## Data from the Arduino Microphone
+To demonstrate sending and receiving data we probably need to have some data to send.  For the sending end (`tx`) we are going to grab information from the microphone on the Arduino Sense and send it to remote connected device.
+
+The Arduino BLE core
+
 
 
 ```cpp
@@ -213,9 +221,10 @@ void connectedLight() {
 }
 
 
-void disconnectedLig
+void disconnectedLight() {
   digitalWrite(LEDR, HIGH);
   digitalWrite(LEDG, LOW);
 }
 
 ```
+

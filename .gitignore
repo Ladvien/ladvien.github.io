@@ -1,5 +1,6 @@
-/.jekyll-cache/*
+/.jekyll-cache
 .jekyll-cache/*
+images
 _site
 .DS_Store
 *.sublime-project
@@ -10,5 +11,3 @@ Gemfile.lock
 .sass-cache
 .jekyll-metadata
 lad-u
-/images/*.sketch
-/images/*.zip

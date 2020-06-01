@@ -1,6 +1,6 @@
 /.jekyll-cache
 .jekyll-cache/*
-images
+/images
 _site
 .DS_Store
 *.sublime-project

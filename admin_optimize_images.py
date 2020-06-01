@@ -15,7 +15,7 @@ max_size                = 1080
 max_file_size_kb        = 300 
 compression_quality     = 85
 
-ignore_existing         = True 
+ignore_existing         = False 
 
 #########################
 # Move non-compressables

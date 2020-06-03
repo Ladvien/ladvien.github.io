@@ -29,7 +29,7 @@ print('******************************')
 # -r = recurse into directories
 # -P = progress
 # -t = preserve modification times
-os.system(f'rsync -h -v -r -P -t {root_path}/ladvien.github.io/_site/* root@ladvien.com:/usr/share/nginx/html')
+os.system(f'rsync -h -v -r -t --delete {root_path}/ladvien.github.io/_site/* root@ladvien.com:/usr/share/nginx/html')
 
 os.system(f'cd {root_path}/ladvien.github.io')
 os.system('git add .')

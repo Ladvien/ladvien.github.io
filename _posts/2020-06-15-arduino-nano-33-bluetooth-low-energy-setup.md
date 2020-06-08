@@ -11,16 +11,22 @@ comments: true
 custom_css:
 custom_js: 
 ---
-Bluetooth Low Energy and I go way back.  I was one of the first people using the HM-10 module back in the day.  Recently, my mentor introduced me to the [Arduino Nano 33 BLE Sense](https://store.arduino.cc/usa/nano-33-ble-sense-with-headers).  Great little board--_packed_ with sensors!
+Bluetooth Low Energy and I go way back.  I was one of the first using the HM-10 module back in the day.  Recently, my mentor introduced me to the [Arduino Nano 33 BLE Sense](https://store.arduino.cc/usa/nano-33-ble-sense-with-headers).  Great little board--_packed_ with sensors!
 
-Shortly after firing it up, I got excited.  I've been wanting to start creating my own smartwatch for a long time (basically, as long the Apple watch has blown chunks).  And this one board had many of the sensors I was looking to add, all neatly in one small little package. The thing is a researcher's nocturnal emission.
+Shortly after firing it up, I got excited.  I've been wanting to start creating my own smartwatch for a long time (basically, as long the Apple watch has sucked).  This one board had many of the sensors I wanted, all in one little package. The board is a researcher's nocturnal emission.
 
-Of course, my excitement was a little tamed when I realized there weren't really any good tutorials on how to get the Bluetooth LE portion of the board working.  So, after a bit of hacking something together I figured I'd share.
+Of course, my excitement was a little tamed when I realized there weren't really any good tutorials on how to get the Bluetooth LE portion of the board working.  So, after a bit of hacking I figured I'd share.
 
 ## How to Install the Arduino Nano 33 BLE Board
-After getting your Arduino Nano 33 BLE board there's a little setup to do.  First, open up the Arduino IDE.  Navigate to the "Boards
+After getting your Arduino Nano 33 BLE board there's a little setup to do.  First, open up the Arduino IDE and navigate to the "Boards Manager."
 
 ![open-arduinos-manage-libraries](/images/arduino_nano_ble_board_installation.png)
+
+Search for `Nano 33 BLE` and install the board `Arduino nRF528xBoards (MBed OS)`.
+
+![arduino-install-nrf528-board](/images/arduino-install-nrf528-board.png)
+
+
 
 
 ## How to Install the ArduinoBLE Library

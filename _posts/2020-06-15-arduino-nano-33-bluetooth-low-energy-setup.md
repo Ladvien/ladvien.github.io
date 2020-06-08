@@ -13,9 +13,13 @@ custom_js:
 ---
 Bluetooth Low Energy and I go way back.  I was one of the first using the HM-10 module back in the day.  Recently, my mentor introduced me to the [Arduino Nano 33 BLE Sense](https://store.arduino.cc/usa/nano-33-ble-sense-with-headers).  Great little board--_packed_ with sensors!
 
-Shortly after firing it up, I got excited.  I've been wanting to start creating my own smartwatch for a long time (basically, as long the Apple watch has sucked).  This one board had many of the sensors I wanted, all in one little package. The board is a researcher's nocturnal emission.
+Shortly after firing it up, I got excited.  I've been wanting to start creating my own smartwatch for a long time (basically, as long the Apple watch has sucked).  And it looks like I wasn't the only one:
 
-Of course, my excitement was a little tamed when I realized there weren't really any good tutorials on how to get the Bluetooth LE portion of the board working.  So, after a bit of hacking I figured I'd share.
+* [The B&ND](https://create.arduino.cc/projecthub/ankurverma608/the-b-nd-e190dc)
+
+This one board had many of the sensors I wanted, all in one little package. The board is a researcher's nocturnal emission.
+
+Of course, my excitement was tamed when I realized there weren't really any good tutorials on how to get the Bluetooth LE portion of the board working.  So, after a bit of hacking I figured I'd share.
 
 ## How to Install the Arduino Nano 33 BLE Board
 After getting your Arduino Nano 33 BLE board there's a little setup to do.  First, open up the Arduino IDE and navigate to the "Boards Manager."
@@ -24,19 +28,20 @@ After getting your Arduino Nano 33 BLE board there's a little setup to do.  Firs
 
 Search for `Nano 33 BLE` and install the board `Arduino nRF528xBoards (MBed OS)`.
 
-![arduino-install-nrf528-board](/images/arduino-install-nrf528-board.png)
+![arduino-install-nrf528-board](/images/bluetooth_le/arduino-install-nrf528-board.png)
 
-
-
+Now your Arduino should be ready work with the Nano 33 boards.  One last bit, getting the libraries to work with BLE.
 
 ## How to Install the ArduinoBLE Library
-The key to working with Bluetooth LE for the official Arduino boards is the stock library:
+There are are a few different Arduino libraries for Bluetooth LE--usually, respective to the hardware.  Unfortunately for us, this means we would need an entirely different library to work with the Bluetooth LE on a ESP32, for example.  Oh well. Back to the problem at hand.
+
+The official library for working with the Arduino boards equipped with BLE is:
 
 * [ArduinoBLE](https://www.arduino.cc/en/Reference/ArduinoBLE)
 
 It works pretty well, though, the documentation is a bit spotty.
 
-To get started you'll need to fire up the Arduino IDE and got to `Tools` then `Manager Libraries...`
+To get started you'll need to fire up the Arduino IDE and go to `Tools` then `Manager Libraries...`
 
 ![open-arduinos-manage-libraries](/images/ardino_ble_manage_libraries.png)
 
@@ -48,38 +53,66 @@ That's pretty much it, we can now include the library at the top of our sketch:
 ```cpp
 #include <ArduinoBLE.h>
 ```
+And access the full API in our code.
 
-## UART versus Bluetooth LE
-Usually, when I'm working with a Bluetooth LE (BLE) device I'm trying to get it to send and receive data.  And that's what I'll be focusing on in this article.  
+## Project Description
+If you are eager, feel free to skip this information and jump to the code.
 
-I've seen this send-n-receive'ing data from BLE as "UART emulation."  I think that's fair, it's a classic communication protocol for a reason.  I've also the comparison as a great mental framework for understanding how our BLE will work.  
+CODE LINK HERE
+
+Before moving on, if the following terms are confusing:
+
+* Peripheral
+* Central
+* Master
+* Slave
+* Server
+* Client
+
+You might check out EmbeddedFM's explanation:
+
+* [BLE Terms](https://embedded.fm/blog/ble-roles)
+
+That said, I'll be focusing on getting the Arduino 33 BLE Sense to act as a peripheral BLE device.  As a peripheral, it'll advertise itself as having services, one for reading and one for writing.
+
+### UART versus Bluetooth LE 
+Usually, when I'm working with a Bluetooth LE (BLE) device I want it to send and receive data.  And that'll be the focus of this article.  
+
+I've seen this send-n-receive'ing data from BLE referred to as "UART emulation."  I think that's fair, UART is a classic communication protocol for a reason.  I've also see the comparison as a good mental framework for how our BLE code will work.
 
 We will have a `rx` property, where we can get data from a remote device and a `tx` property, where we can send data.  Throughout my Arduino program you'll see my naming convention following this analog. That stated, there are clear differences between BLE communication and UART.  BLE is much more complex and versatile.
 
-## Data from the Arduino Microphone
-To demonstrate sending and receiving data we probably need to have some data to send.  For the sending end (`tx`) we are going to grab information from the microphone on the Arduino Sense and send it to remote connected device.
+### Data from the Arduino Microphone
+To demonstrate sending and receiving data we probably need to have some data to send.  For the sending end (`tx`) we are going to grab information from the microphone on the Arduino Sense and send it to remote connected device.  I'll not cover the microphone code here, as I don't understand it well enough to explain.  However, here's a few good reads:
 
-The Arduino BLE core
+* [Pulse-Density Modulation](https://en.wikipedia.org/wiki/Pulse-density_modulation) (data type output)
+* [Arduino Pulse-Density Modulation Library docs](https://www.arduino.cc/en/Reference/PDM)
 
+## Code
+Time to code.  Below is what I hacked together, with annotations from the "gotchas" I ran into.
+
+One last caveat, I used `Jithin`'s code as a base of my project:
+
+* [Arduino BLE Example Explained Step by Step](https://rootsaid.com/arduino-ble-example/)
+
+Although, I'm not sure any of the original code is left.
+
+### Initialization
+We load in the BLE and the PDM libraries to access the APIs to work with the microphone and the radio hardware.
+```cpp
+
+#include <ArduinoBLE.h>
+#include <PDM.h>
+```
+
+Let's create the service.  The argument will control the service identifier.
+```cpp
+// BLE Service
+BLEService microphoneService("1101");
+```
 
 
 ```cpp
-// https://rootsaid.com/arduino-ble-example/
-#include <ArduinoBLE.h>
-#include <PDM.h>
-
-// This device's MAC:
-// C8:5C:A2:2B:61:86
-//#define LEDR        (23u)
-//#define LEDG        (22u)
-//#define LEDB        (24u)
-
-// BLE Service
-BLEService microphoneService("1101");
-
-// Characteristic info.
-// https://www.arduino.cc/en/Reference/ArduinoBLEBLECharacteristicBLECharacteristic
-
 // Setup the incoming data characteristic (RX).
 const int WRITE_BUFFER_SIZE = 256;
 bool WRITE_BUFFER_FIXED_LENGTH = false;

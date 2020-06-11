@@ -105,11 +105,28 @@ We load in the BLE and the PDM libraries to access the APIs to work with the mic
 #include <PDM.h>
 ```
 
-Let's create the service.  The argument will control the service identifier.
+Let's create the service.  First, we create name which will show up in the advertizing packet, making it easy for a user to identify our Arduino.
+
+We also create a [Service](https://www.bluetooth.com/specifications/gatt/services/) called `microphoneService`, passing it the full Universally Unique ID (UUID) as a string. Now, when it comes to setting the UUID there are two options.  Either a short, 16-bit or a 128-bit version.  
+
+If you use one of the standard Bluetooth LE Services the 16-bit version is good.  However, if you are looking to create a custom service, you will need to explore creating a full 128-bit UUID.
+
+If you want to understand UUID's more fully, I highly recommend Nordic's article:
+
+* [Bluetooth low energy Services, a beginner's tutorial](https://devzone.nordicsemi.com/nordic/short-range-guides/b/bluetooth-low-energy/posts/ble-services-a-beginners-tutorial)
+
+Anyway, we are going to use the following Services UUIDs:
+* `0x181a` -- [Environmental Sensing](https://www.bluetooth.com/xml-viewer/?src=https://www.bluetooth.com/wp-content/uploads/Sitecore-Media-Library/Gatt/Xml/Services/org.bluetooth.service.environmental_sensing.xml) (Microphone)
+* 
+
+
 ```cpp
+// Device name
+const char* nameOfPeripheral = "MicrophoneMonitor";
 // BLE Service
-BLEService microphoneService("1101");
+BLEService microphoneService("1800");
 ```
+
 
 
 ```cpp

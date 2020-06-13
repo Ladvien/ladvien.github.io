@@ -8,8 +8,8 @@ root_path = os.environ['HOME']
 ############
 # Parameters
 ############
-input_directory = f'{root_path}/ladvien.github.io/raw_images'
-output_directory = f'{root_path}/ladvien.github.io/images'
+raw_images_dir = f'{root_path}/ladvien.github.io/raw_images'
+images_dir = f'{root_path}/ladvien.github.io/images'
 
 max_size                = 1080
 max_file_size_kb        = 300 
@@ -20,7 +20,11 @@ ignore_existing         = True
 #########################
 # Move non-compressables
 #########################
-os.system(f'rsync -h -v -r -P -t --ignore-existing --exclude="*.jpg" --exclude="*.JPG" --exclude="*.png" --exclude="*.PNG" {root_path}/ladvien.github.io/_site/raw_images/ {root_path}/ladvien.github.io/_site/images/')
+
+if not ignore_existing:
+    os.system(f'rm -rf {images_dir}')
+
+os.system(f'rsync -h -v -r -t --ignore-existing --exclude="*.jpg" --exclude="*.JPG" --exclude="*.png" --exclude="*.PNG" {raw_images_dir}/* {images_dir}')
 
 ############
 # Transforms
@@ -29,10 +33,10 @@ print('')
 print('*******************************************************')
 print('* Moving raw_images into images                       *')
 print('*******************************************************')
-image_paths = glob.glob(f'{input_directory}/**/*.jpg', recursive = True) +\
-              glob.glob(f'{input_directory}/**/*.JPG', recursive = True) +\
-              glob.glob(f'{input_directory}/**/*.png', recursive = True) +\
-              glob.glob(f'{input_directory}/**/*.PNG', recursive = True)
+image_paths = glob.glob(f'{raw_images_dir}/**/*.jpg', recursive = True) +\
+              glob.glob(f'{raw_images_dir}/**/*.JPG', recursive = True) +\
+              glob.glob(f'{raw_images_dir}/**/*.png', recursive = True) +\
+              glob.glob(f'{raw_images_dir}/**/*.PNG', recursive = True)
 
 
 def resize(image, max_size):
@@ -58,8 +62,8 @@ for image_path in image_paths:
     image_file_name = image_file_name.replace(' ', '_')
 
     # Get output directory for file.
-    input_image_dir = input_directory.split('/')[-1]
-    output_image_dir = output_directory.split('/')[-1]
+    input_image_dir = raw_images_dir.split('/')[-1]
+    output_image_dir = images_dir.split('/')[-1]
 
     image_output_file = image_path.split('/')[-1]
     image_output_dir = image_path.replace(input_image_dir, output_image_dir).replace(image_output_file, '')

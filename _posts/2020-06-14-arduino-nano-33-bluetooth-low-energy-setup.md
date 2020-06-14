@@ -69,7 +69,7 @@ And access the full API in our code.
 ## Project Description
 If you are eager, feel free to skip this information and jump to the code.
 
-CODE LINK HERE
+* [Jump to Code](https://ladvien.com/arduino-nano-33-bluetooth-low-energy-setup/#code)
 
 Before moving on, if the following terms are confusing:
 

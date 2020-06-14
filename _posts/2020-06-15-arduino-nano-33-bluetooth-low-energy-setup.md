@@ -11,6 +11,12 @@ comments: true
 custom_css:
 custom_js: 
 ---
+
+## TL;DR
+How-to on programming the Arduino Nano BLE 33 devices to use Bluetooth LE.
+![sending-string-from-pc-to-arduino-nano-33-ble-sense](/images/bluetooth_le/arduino_ble_python_bleak.gif)
+
+## Introduction
 Bluetooth Low Energy and I go way back.  I was one of the first using the HM-10 module back in the day.  Recently, my mentor introduced me to the [Arduino Nano 33 BLE Sense](https://store.arduino.cc/usa/nano-33-ble-sense-with-headers).  Great little board--_packed_ with sensors!
 
 Shortly after firing it up, I got excited.  I've been wanting to start creating my own smartwatch for a long time (basically, as long the Apple watch has sucked).  And it looks like I wasn't the only one:
@@ -20,6 +26,11 @@ Shortly after firing it up, I got excited.  I've been wanting to start creating 
 This one board had many of the sensors I wanted, all in one little package. The board is a researcher's nocturnal emission.
 
 Of course, my excitement was tamed when I realized there weren't really any good tutorials on how to get the Bluetooth LE portion of the board working.  So, after a bit of hacking I figured I'd share.
+
+## Blue on Everything
+Before I share the code written for the Arduino Nano 33 BLE Sense, I want to note this article will be part of a series.  Here, we will be building a Bluetooth LE Peripheral from the Nano 33, but it's hard to debug without having a Central device to find and connect to the Peripheral.
+
+The next article in this series will show how to use use Python to connect to Bluetooth LE peripherals (see gif at top).  This should allow one to connect to the Nano 33 from a PC.  In short, stick with me.  I've a lot more Bluetooth LE content coming.
 
 ## How to Install the Arduino Nano 33 BLE Board
 After getting your Arduino Nano 33 BLE board there's a little setup to do.  First, open up the Arduino IDE and navigate to the "Boards Manager."
@@ -80,7 +91,7 @@ Usually, when I'm working with a Bluetooth LE (BLE) device I want it to send and
 
 I've seen this send-n-receive'ing data from BLE referred to as "UART emulation."  I think that's fair, UART is a classic communication protocol for a reason.  I've also see the comparison as a good mental framework for how our BLE code will work.
 
-We will have a `rx` property, where we can get data from a remote device and a `tx` property, where we can send data.  Throughout my Arduino program you'll see my naming convention following this analog. That stated, there are clear differences between BLE communication and UART.  BLE is much more complex and versatile.
+We will have a `rx` property, where we can get data from a remote device and a `tx` property, where we can send data.  Throughout the Arduino program you'll see my naming convention using this analog. That stated, there are clear differences between BLE communication and UART.  BLE is much more complex and versatile.
 
 ### Data from the Arduino Microphone
 To demonstrate sending and receiving data we probably need to have some data to send.  For the sending end (`tx`) we are going to grab information from the microphone on the Arduino Sense and send it to remote connected device.  I'll not cover the microphone code here, as I don't understand it well enough to explain.  However, here's a few good reads:
@@ -107,44 +118,115 @@ We load in the BLE and the PDM libraries to access the APIs to work with the mic
 
 Let's create the service.  First, we create name which will show up in the advertizing packet, making it easy for a user to identify our Arduino.
 
-We also create a [Service](https://www.bluetooth.com/specifications/gatt/services/) called `microphoneService`, passing it the full Universally Unique ID (UUID) as a string. Now, when it comes to setting the UUID there are two options.  Either a short, 16-bit or a 128-bit version.  
+### Service and Characteristics
+We also create a [Service](https://www.bluetooth.com/specifications/gatt/services/) called `microphoneService`, passing it the full Universally Unique ID (UUID) as a string. Now, when it comes to setting the UUID there are two options.  Either a short, 16-bit or a 128-bit version.  If you use one of the standard Bluetooth LE Services the 16-bit version is good.  However, if you are looking to create a custom service, you will need to explore creating a full 128-bit UUID.
 
-If you use one of the standard Bluetooth LE Services the 16-bit version is good.  However, if you are looking to create a custom service, you will need to explore creating a full 128-bit UUID.
+Here, I'm using the full UUIDs, as it makes it easier to connect other hardware to our ptototype, as the full UUID is known.
 
 If you want to understand UUID's more fully, I highly recommend Nordic's article:
 
 * [Bluetooth low energy Services, a beginner's tutorial](https://devzone.nordicsemi.com/nordic/short-range-guides/b/bluetooth-low-energy/posts/ble-services-a-beginners-tutorial)
 
-Anyway, we are going to use the following Services UUIDs:
-* `0x181a` -- [Environmental Sensing](https://www.bluetooth.com/xml-viewer/?src=https://www.bluetooth.com/wp-content/uploads/Sitecore-Media-Library/Gatt/Xml/Services/org.bluetooth.service.environmental_sensing.xml) (Microphone)
-* 
+Anyway, we are going to use the following UUIDs:
+* `Microphone` Service = `0x1800` -- [Generic Access](https://www.bluetooth.com/xml-viewer/?src=https://www.bluetooth.com/wp-content/uploads/Sitecore-Media-Library/Gatt/Xml/Services/org.bluetooth.service.generic_access.xml)
+* `rx` Characteristic = `0x2A3D` -- [String](https://www.bluetooth.com/xml-viewer/?src=https://www.bluetooth.com/wp-content/uploads/Sitecore-Media-Library/Gatt/Xml/Characteristics/org.bluetooth.characteristic.string.xml)
+* `tx` Characteristic = `0x2A58` -- [Analog](https://www.bluetooth.com/xml-viewer/?src=https://www.bluetooth.com/wp-content/uploads/Sitecore-Media-Library/Gatt/Xml/Characteristics/org.bluetooth.characteristic.analog.xml)
 
+You may notice, according to the Bluetooth specifications, there are two mandatory characteristics we should be implementing:
 
+* [Device Name](https://www.bluetooth.com/xml-viewer/?src=https://www.bluetooth.com/wp-content/uploads/Sitecore-Media-Library/Gatt/Xml/Characteristics/org.bluetooth.characteristic.gap.device_name.xml)
+* [Appearance](https://www.bluetooth.com/xml-viewer/?src=https://www.bluetooth.com/wp-content/uploads/Sitecore-Media-Library/Gatt/Xml/Characteristics/org.bluetooth.characteristic.gap.appearance.xml)
+
+For the sake of simplicity, I'll leave these up to the reader.  But they must be implemented for a proper `Generic Access` service.
+
+Right, back to the code.
+
+Here we define the name of the device as it should show up to remote devices.  Then, the service and two characteristics, one for sending, the other, receiving.
 ```cpp
 // Device name
-const char* nameOfPeripheral = "MicrophoneMonitor";
-// BLE Service
-BLEService microphoneService("1800");
+const char* nameOfPeripheral = "Microphone";
+const char* uuidOfService = "0000181a-0000-1000-8000-00805f9b34fb";
+const char* uuidOfRxChar = "00002A3D-0000-1000-8000-00805f9b34fb";
+const char* uuidOfTxChar = "00002A58-0000-1000-8000-00805f9b34fb";
 ```
 
-
+Now, we actually instatiate the `BLEService` object called `microphoneService`.
 
 ```cpp
+// BLE Service
+BLEService microphoneService(uuidOfService);
+```
+The characteristic responsible for receiving data, `rxCharacteristic`, has a couple of parameters which tell the Nano 33 how the characteristic should act. 
+```cpp
 // Setup the incoming data characteristic (RX).
-const int WRITE_BUFFER_SIZE = 256;
-bool WRITE_BUFFER_FIXED_LENGTH = false;
+const int RX_BUFFER_SIZE = 256;
+bool RX_BUFFER_FIXED_LENGTH = false;
+```
+ `RX_BUFFER_SIZE` will be how much space is reserved for the `rx` buffer.  And `RX_BUFFER_FIXED_LENGTH` will be, well, honestly, I'm not sure.  Let me take a second and try to explain my ignorance.
 
-BLECharacteristic rxChar("1142", BLEWriteWithoutResponse | BLEWrite, WRITE_BUFFER_SIZE, WRITE_BUFFER_FIXED_LENGTH);
+When looking for the correct way to use the ArduinoBLE library, I referred to the documentation:
 
-// Setup the outgoing data characteristic (TX).
-BLEByteCharacteristic txChar("1143", BLERead | BLENotify | BLEBroadcast);
+* [BLECharacteristic()](https://www.arduino.cc/en/Reference/ArduinoBLEBLECharacteristicBLECharacteristic)
 
+There are several different ways to initialize a characteristic, as a single value (e.g., `BLEByteCharacteristic`, `BLEFloatCharacteristic`, etc.) or as buffer.  I decided on the buffer for the `rxCharacteristic`.  And that's where it got problematic.  
+
+Here's what the documentation states regarding initializing a `BLECharacteristic` with a buffer.
+
+```txt
+BLECharacteristic(uuid, properties, value, valueSize)
+BLECharacteristic(uuid, properties, stringValue)
+...
+uuid: 16-bit or 128-bit UUID in string format
+properties: mask of the properties (BLEBroadcast, BLERead, etc)
+valueSize: (maximum) size of characteristic value
+stringValue: value as a string
+```
+Cool, makes sense.  Unfortunately, I never could get a `BLECharacteristic` to work initializing it with those arguments.  I finally dug into the _actual_ [BLECharacteristic](https://github.com/arduino-libraries/ArduinoBLE/blob/5d10cba0083ca56033e9dd47e9e7bea34a6c286d/src/BLECharacteristic.cpp#L50-L58) source and discovered their are two ways to intialize a `BLECharacteristic`:
+```cpp
+BLECharacteristic(new BLELocalCharacteristic(uuid, properties, valueSize, fixedLength))
+BLECharacteristic(new BLELocalCharacteristic(uuid, properties, value))
+```
+I hate misinformation.
+
+Ok, that tale aside, back to our code.
+
+Let's actually declare the `rx` and `tx` characteristics.
+
+Notice, we are using a buffered characteristic for our `rx` and a single byte value characteristic for our `tx`.  This may not be optimal, but it's what worked.
+```cpp
+// RX / TX Characteristics
+BLECharacteristic rxChar(uuidOfRxChar, BLEWriteWithoutResponse | BLEWrite, RX_BUFFER_SIZE, RX_BUFFER_FIXED_LENGTH);
+BLEByteCharacteristic txChar(uuidOfTxChar, BLERead | BLENotify | BLEBroadcast);
+```
+
+Note, the second argument is where you define how the characteristic should behave.  Each property should be seperated by the `|` as they are constants which are being `OR`ed together into a single value (masking).
+
+Here is a list of available behaviors:
+
+* `BLEBroadcast` -- will cause the characteristic to be advertized
+* `BLERead` -- allows remote devices to read the characteristic value
+* `BLEWriteWithoutResponse` -- allows remote devices to write to the device without expecting an ackknowledgement
+* `BLEWrite` -- allows remote devices to write, while expecting an acknowledgement the write was succesful
+* `BLENotify` -- allows a remote device to be notified anytime the characteristic's value is update
+* `BLEIndicate` -- the same as BLENotify, but we expect a response the remote device read the value
+
+
+### Microphone 
+There are two global variables which keep track of the microphone data.  They first is a small buffer called `sampleBuffer`, it will hold up to 256 values from the mic.
+
+The `volatile int samplesRead` is the variable which will hold the immediate value from the mic sensor.  It is used in the interrupt routine vector (ISR) function.  The `volatile` keyword tells the Arduino's C++ compiler the value in the variable may change at any time and it should check the value when referenced, rather than relying on a cached value in the processor ([more on volatiles](https://arduino.stackexchange.com/a/20998)).
+
+```cpp
 // Buffer to read samples into, each sample is 16-bits
 short sampleBuffer[256];
 
 // Number of samples read
 volatile int samplesRead;
+```
 
+
+### Setup()
+```cpp
 /*
  *  MAIN
  */
@@ -171,17 +253,36 @@ void setup() {
   startBLE();
 
   // Create BLE service and characteristics.
-  BLE.setLocalName("MicrophoneMonitor");
+  BLE.setLocalName(nameOfPeripheral);
   BLE.setAdvertisedService(microphoneService);
   microphoneService.addCharacteristic(rxChar);
   microphoneService.addCharacteristic(txChar);
   BLE.addService(microphoneService);
 
+  // Bluetooth LE connection handlers.
+  BLE.setEventHandler(BLEConnected, onBLEConnected);
+  BLE.setEventHandler(BLEDisconnected, onBLEDisconnected);
+  
   // Event driven reads.
   rxChar.setEventHandler(BLEWritten, onRxCharValueUpdate);
   
   // Let's tell devices about us.
   BLE.advertise();
+  
+  // Print out full UUID and MAC address.
+  Serial.println("Peripheral advertising info: ");
+  Serial.print("Name: ");
+  Serial.println(nameOfPeripheral);
+  Serial.print("MAC: ");
+  Serial.println(BLE.address());
+  Serial.print("Service UUID: ");
+  Serial.println(microphoneService.uuid());
+  Serial.print("rxCharacteristic UUID: ");
+  Serial.println(uuidOfRxChar);
+  Serial.print("txCharacteristics UUID: ");
+  Serial.println(uuidOfTxChar);
+  
+
   Serial.println("Bluetooth device active, waiting for connections...");
 }
 
@@ -192,9 +293,6 @@ void loop()
   
   if (central)
   {
-    Serial.print("Connected to central: ");
-    Serial.println(central.address());
-
     // Only send data if we are connected to a central device.
     while (central.connected()) {
       connectedLight();
@@ -223,7 +321,6 @@ void startBLE() {
   {
     Serial.println("starting BLE failed!");
     while (1);
-    disconnectedLight();
   }
 }
 
@@ -239,6 +336,18 @@ void onRxCharValueUpdate(BLEDevice central, BLECharacteristic characteristic) {
   Serial.println();
   Serial.print("Value length = ");
   Serial.println(rxChar.valueLength());
+}
+
+void onBLEConnected(BLEDevice central) {
+  Serial.print("Connected event, central: ");
+  Serial.println(central.address());
+  connectedLight();
+}
+
+void onBLEDisconnected(BLEDevice central) {
+  Serial.print("Disconnected event, central: ");
+  Serial.println(central.address());
+  disconnectedLight();
 }
 
 

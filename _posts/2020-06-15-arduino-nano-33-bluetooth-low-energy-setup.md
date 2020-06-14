@@ -218,7 +218,7 @@ The `volatile int samplesRead` is the variable which will hold the immediate val
 
 ```cpp
 // Buffer to read samples into, each sample is 16-bits
-short sampleBuffer[256];
+volatile short sampleBuffer[256];
 
 // Number of samples read
 volatile int samplesRead;
@@ -226,10 +226,8 @@ volatile int samplesRead;
 
 
 ### Setup()
+We initialize the `Serial` port, used for debugging.
 ```cpp
-/*
- *  MAIN
- */
 void setup() {
 
   // Start serial.
@@ -237,18 +235,46 @@ void setup() {
 
   // Ensure serial port is ready.
   while (!Serial);
+```
 
+To see when the BLE actually is connected, we initialize the pins connected to the built-in RGB LEDs.
+```cpp
   // Prepare LED pins.
   pinMode(LED_BUILTIN, OUTPUT);
   pinMode(LEDR, OUTPUT);
   pinMode(LEDG, OUTPUT);
+```
 
+**Note, there is a bug in the source code where the `LEDR` and the `LEDG` are backwards**. You can fix tihs by searching your computer for `ARDUINO_NANO33BLE` folder and editting the file `pins_arduino.h` inside.
+
+Change the following:
+```cpp
+#define LEDR        (22u)
+#define LEDG        (23u)
+#define LEDB        (24u)
+```
+To
+```cpp
+#define LEDR        (23u)
+#define LEDG        (22u)
+#define LEDB        (24u)
+```
+And save.  That should fix the mappings.
+
+
+The `onPDMdata()` as an `ISR` everytime the microphone gets new data.  And `startPDM()` start the microphone.
+```cpp
   // Configure the data receive callback
   PDM.onReceive(onPDMdata);
 
   // Start PDM
   startPDM();
+```
 
+Now the Bluetooth LE setup.  
+
+First, first we ensure the Bluetooth LE hardware has been powered-on within the Nano 33.  We set the device namd and begin advertizing the service.  Then, add the `rx` and `tx` characteristics to the `microphoneService`. Lastly, add the `microphoneService` to the `BLE` object.
+```cpp
   // Start BLE.
   startBLE();
 
@@ -258,17 +284,28 @@ void setup() {
   microphoneService.addCharacteristic(rxChar);
   microphoneService.addCharacteristic(txChar);
   BLE.addService(microphoneService);
+```
 
+Now the Bluetooth LE hardware is turned on, we add callbacks which will fire when the device connects or disconnects.  Those callbacks are great places to add notifications, setup, and teardown.
+
+We also add a callback which will fire everytime the Bluetooth LE hardware has a characteristic written.  This allows us to receive and handle data as it streams in.
+```cpp
   // Bluetooth LE connection handlers.
   BLE.setEventHandler(BLEConnected, onBLEConnected);
   BLE.setEventHandler(BLEDisconnected, onBLEDisconnected);
-  
+
   // Event driven reads.
   rxChar.setEventHandler(BLEWritten, onRxCharValueUpdate);
-  
+```
+
+Lastly, we command the Bluetooth LE hardware to begin advertiziing its services and characteristics to the world.  Well, at least +/-30ft of the world.
+```cpp
   // Let's tell devices about us.
   BLE.advertise();
-  
+```
+
+Before beginning the main loop, I like sptting out all of the hardware information we setup.  This makes it easy to add it into whatever other applications we are developing which will be connecting to the newly initialized peripheral.
+```cpp
   // Print out full UUID and MAC address.
   Serial.println("Peripheral advertising info: ");
   Serial.print("Name: ");
@@ -285,8 +322,15 @@ void setup() {
 
   Serial.println("Bluetooth device active, waiting for connections...");
 }
+```
 
+### Loop()
+The mainly loop is pretty straightfoward.  It grabs a reference to the `central` property from the `BLE` object.  It checks if `central` exists and then it checks if `central` is connected`.  If it is, it calls the `connectedLight()` which will cause the green LED to come on, letting us know the hardware has made a connection.
 
+Then, it checks if there are data in the `sampleBuffer` array, if so, it writes them to the `txChar`.  After it has written all data, it resets the `samplesRead` variable to `0`.  
+
+Lastly, if the device is not connected or not intialized, the loop turns on the disconnected light by calling `disconnectedLight()`.
+```cpp
 void loop()
 {
   BLEDevice central = BLE.central();
@@ -307,12 +351,22 @@ void loop()
         samplesRead = 0;
       }
     }
+    disconnectedLight();
   } else {
     disconnectedLight();
   }
 }
+```
+Some of you may have noticed there is probably an issue with how I'm pulling the data from teh `sampleBuffer`, as I've just noticed writing this article, it may have a condition where the microphone's `ISR` is called 
 
 
+Ok, hard part's over, let's move on to the helper methods.
+
+### Helper Methods
+
+#### startBLE()
+The `startBLE()` function intializes the Bluetooth LE hardware by calling the [begin()](https://www.arduino.cc/en/Reference/ArduinoBLEBLEbegin) function.  If it is unable to start the hardware, it will say via the serial port and then stick forever.
+```cpp
 /*
  *  BLUETOOTH
  */
@@ -323,21 +377,31 @@ void startBLE() {
     while (1);
   }
 }
+```
 
+#### onRxCharValueUpdate()
+This method should be called whenever new data is received from a connected device. It grabs the data from the `rxChar` by calling `readValue` and providing a buffer for the data and long the buffer is. The `readValue` method returns how many bytes were read.  We then loop over each of the bytes in our `tmp` buffer, cast them to `char`, and print them to the serial terminal.  This is pretty helpful when debugging.
+
+Before ending, we also print out how many bytes were read, just in case we've received data which can't be converted to `ASCII`.  Again, helpful for debugging.
+```cpp
 void onRxCharValueUpdate(BLEDevice central, BLECharacteristic characteristic) {
   // central wrote new value to characteristic, update LED
   Serial.print("Characteristic event, read: ");
-  byte test[256];
-  int dataLength = rxChar.readValue(test, 256);
+  byte tmp[256];
+  int dataLength = rxChar.readValue(tmp, 256);
 
   for(int i = 0; i < dataLength; i++) {
-    Serial.print((char)test[i]);
+    Serial.print((char)tmp[i]);
   }
   Serial.println();
   Serial.print("Value length = ");
   Serial.println(rxChar.valueLength());
 }
+```
 
+#### LED Indicators
+Not much to see here.  These functions are called when our device connects or disconnects, respectively.
+```cpp
 void onBLEConnected(BLEDevice central) {
   Serial.print("Connected event, central: ");
   Serial.println(central.address());
@@ -349,33 +413,6 @@ void onBLEDisconnected(BLEDevice central) {
   Serial.println(central.address());
   disconnectedLight();
 }
-
-
-/*
- *  MICROPHONE
- */
-void startPDM() {
-  // initialize PDM with:
-  // - one channel (mono mode)
-  // - a 16 kHz sample rate
-  if (!PDM.begin(1, 16000)) {
-    Serial.println("Failed to start PDM!");
-    while (1);
-  }
-}
-
-
-void onPDMdata() {
-  // query the number of bytes available
-  int bytesAvailable = PDM.available();
-
-  // read into the sample buffer
-  PDM.read(sampleBuffer, bytesAvailable);
-
-  // 16-bit, 2 bytes per sample
-  samplesRead = bytesAvailable / 2;
-}
-
 
 /*
  * LEDS
@@ -390,6 +427,35 @@ void disconnectedLight() {
   digitalWrite(LEDR, HIGH);
   digitalWrite(LEDG, LOW);
 }
-
 ```
+
+#### Microphone
+I stole this code from Arduino provided example.  I think it initializes the `PDM` hardware (microphone) with a `16khz` sample rate.
+```cpp
+/*
+ *  MICROPHONE
+ */
+void startPDM() {
+  // initialize PDM with:
+  // - one channel (mono mode)
+  // - a 16 kHz sample rate
+  if (!PDM.begin(1, 16000)) {
+    Serial.println("Failed to start PDM!");
+    while (1);
+  }
+}
+```
+
+Lastly, the `onPDMData` callback is fired whenever their are data available to be read.  It checks how many bytes their are available by calling `available()` and reads that number of bytes into the buffer.  Lastly, given the data are `int16`, it divides the number of bytes by `2` as this is the number of samples read.
+```cpp
+void onPDMdata() {
+  // query the number of bytes available
+  int bytesAvailable = PDM.available();
+
+  // read into the sample buffer
+  int bytesRead = PDM.read(sampleBuffer, bytesAvailable);
+
+  // 16-bit, 2 bytes per sample
+  samplesRead = bytesRead / 2;
+}
 

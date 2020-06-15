@@ -12,25 +12,24 @@ custom_css:
 custom_js: 
 ---
 
-## TL;DR
-How-to on programming the Arduino Nano BLE 33 devices to use Bluetooth LE.
+This article will show you how to program the Arduino Nano BLE 33 devices to use Bluetooth LE.
 ![sending-string-from-pc-to-arduino-nano-33-ble-sense](/images/bluetooth_le/arduino_ble_python_bleak.gif)
 
 ## Introduction
 Bluetooth Low Energy and I go way back.  I was one of the first using the HM-10 module back in the day.  Recently, my mentor introduced me to the [Arduino Nano 33 BLE Sense](https://store.arduino.cc/usa/nano-33-ble-sense-with-headers).  Great little board--_packed_ with sensors!
 
-Shortly after firing it up, I got excited.  I've been wanting to start creating my own smartwatch for a long time (basically, as long the Apple watch has sucked).  And it looks like I wasn't the only one:
+Shortly after firing it up, I got excited.  I've been wanting to start creating my own smartwatch for a long time (as long the Apple watch has sucked really).  And it looks like I wasn't the only one:
 
 * [The B&ND](https://create.arduino.cc/projecthub/ankurverma608/the-b-nd-e190dc)
 
 This one board had many of the sensors I wanted, all in one little package. The board is a researcher's nocturnal emission.
 
-Of course, my excitement was tamed when I realized there weren't really any good tutorials on how to get the Bluetooth LE portion of the board working.  So, after a bit of hacking I figured I'd share.
+Of course, my excitement was tamed when I realized there weren't tutorials on how to use the Bluetooth LE portion.  So, after a bit of hacking I figured I'd share what I've learned.
 
 ## Blue on Everything
-Before I share the code written for the Arduino Nano 33 BLE Sense, I want to note this article will be part of a series.  Here, we will be building a Bluetooth LE Peripheral from the Nano 33, but it's hard to debug without having a Central device to find and connect to the Peripheral.
+This article will be part of a series.  Here, we will be building a Bluetooth LE peripheral from the Nano 33, but it's hard to debug without having a central device to find and connect to the peripheral.
 
-The next article in this series will show how to use use Python to connect to Bluetooth LE peripherals (see gif at top).  This should allow one to connect to the Nano 33 from a PC.  In short, stick with me.  I've a lot more Bluetooth LE content coming.
+The next article in this series will show how to use use Python to connect to Bluetooth LE peripherals (above gif).  This should allow one to connect to the Nano 33 from a PC.  In short, stick with me.  I've more Bluetooth LE content coming.
 
 ## How to Install the Arduino Nano 33 BLE Board
 After getting your Arduino Nano 33 BLE board there's a little setup to do.  First, open up the Arduino IDE and navigate to the "Boards Manager."
@@ -41,10 +40,10 @@ Search for `Nano 33 BLE` and install the board `Arduino nRF528xBoards (MBed OS)`
 
 ![arduino-install-nrf528-board](/images/bluetooth_le/arduino-install-nrf528-board.png)
 
-Now your Arduino should be ready work with the Nano 33 boards.  One last bit, getting the libraries to work with BLE.
+Your Arduino should be ready work with the Nano 33 boards, except BLE. For that, we need another library.
 
 ## How to Install the ArduinoBLE Library
-There are are a few different Arduino libraries for Bluetooth LE--usually, respective to the hardware.  Unfortunately for us, this means we would need an entirely different library to work with the Bluetooth LE on a ESP32, for example.  Oh well. Back to the problem at hand.
+There are are a few different Arduino libraries for Bluetooth LE--usually, respective to the hardware.  Unfortunate, as this means we would need a different library to work with the Bluetooth LE on a ESP32, for example.  Oh well. Back to the problem at hand.
 
 The official library for working with the Arduino boards equipped with BLE is:
 
@@ -84,17 +83,17 @@ You might check out EmbeddedFM's explanation:
 
 * [BLE Terms](https://embedded.fm/blog/ble-roles)
 
-That said, I'll be focusing on getting the Arduino 33 BLE Sense to act as a peripheral BLE device.  As a peripheral, it'll advertise itself as having services, one for reading and one for writing.
+I'll be focusing on getting the Arduino 33 BLE Sense to act as a peripheral BLE device.  As a peripheral, it'll advertise itself as having services, one for reading, the other for writing.
 
 ### UART versus Bluetooth LE 
-Usually, when I'm working with a Bluetooth LE (BLE) device I want it to send and receive data.  And that'll be the focus of this article.  
+Usually when I'm working with a Bluetooth LE (BLE) device I want it to send and receive data.  And that'll be the focus of this article.  
 
-I've seen this send-n-receive'ing data from BLE referred to as "UART emulation."  I think that's fair, UART is a classic communication protocol for a reason.  I've also see the comparison as a good mental framework for how our BLE code will work.
+I've seen this send-n-receive'ing data from BLE referred to as "UART emulation."  I think that's fair, UART is a classic communication protocol for a reason.  I've like the comparison as a mental framework for our BLE code.
 
-We will have a `rx` property, where we can get data from a remote device and a `tx` property, where we can send data.  Throughout the Arduino program you'll see my naming convention using this analog. That stated, there are clear differences between BLE communication and UART.  BLE is much more complex and versatile.
+We will have a `rx` property to get data from a remote device and a `tx` property where we can send data.  Throughout the Arduino program you'll see my naming scheme using this analog. That stated, there are clear differences between BLE communication and UART.  BLE is arguably more complex and versatile.
 
 ### Data from the Arduino Microphone
-To demonstrate sending and receiving data we probably need to have some data to send.  For the sending end (`tx`) we are going to grab information from the microphone on the Arduino Sense and send it to remote connected device.  I'll not cover the microphone code here, as I don't understand it well enough to explain.  However, here's a few good reads:
+To demonstrate sending and receiving data we need to data to send.  We are going to grab information from the microphone on the Arduino Sense and send it to remote connected device.  I'll not cover the microphone code here, as I don't understand it well enough to explain.  However, here's a couple reads:
 
 * [Pulse-Density Modulation](https://en.wikipedia.org/wiki/Pulse-density_modulation) (data type output)
 * [Arduino Pulse-Density Modulation Library docs](https://www.arduino.cc/en/Reference/PDM)
@@ -106,7 +105,7 @@ One last caveat, I used `Jithin`'s code as a base of my project:
 
 * [Arduino BLE Example Explained Step by Step](https://rootsaid.com/arduino-ble-example/)
 
-Although, I'm not sure any of the original code is left.
+Although, I'm not sure any of the original code is left.  Cite your sources.
 
 And if you'd rather look at the full code, it can be found at:
 
@@ -120,12 +119,12 @@ We load in the BLE and the PDM libraries to access the APIs to work with the mic
 #include <PDM.h>
 ```
 
-Let's create the service.  First, we create name which will show up in the advertizing packet, making it easy for a user to identify our Arduino.
-
 ### Service and Characteristics
-We also create a [Service](https://www.bluetooth.com/specifications/gatt/services/) called `microphoneService`, passing it the full Universally Unique ID (UUID) as a string. Now, when it comes to setting the UUID there are two options.  Either a short, 16-bit or a 128-bit version.  If you use one of the standard Bluetooth LE Services the 16-bit version is good.  However, if you are looking to create a custom service, you will need to explore creating a full 128-bit UUID.
+Let's create the service.  First, we create the name displayed in the advertizing packet, making it easy for a user to identify our Arduino.
 
-Here, I'm using the full UUIDs, as it makes it easier to connect other hardware to our prototype, as the full UUID is known.
+We also create a [Service](https://www.bluetooth.com/specifications/gatt/services/) called `microphoneService`, passing it the full Universally Unique ID (UUID) as a string. When setting the UUID there are two options.  A 16-bit or a 128-bit version.  If you use one of the standard Bluetooth LE Services the 16-bit version is good.  However, if you are looking to create a custom service, you will need to explore creating a full 128-bit UUID.
+
+Here, I'm using the full UUIDs but with a standard service and characteristic, as it makes it easier to connect other hardware to our prototype, as the full UUID is known.
 
 If you want to understand UUID's more fully, I highly recommend Nordic's article:
 
@@ -136,16 +135,16 @@ Anyway, we are going to use the following UUIDs:
 * `rx` Characteristic = `0x2A3D` -- [String](https://www.bluetooth.com/xml-viewer/?src=https://www.bluetooth.com/wp-content/uploads/Sitecore-Media-Library/Gatt/Xml/Characteristics/org.bluetooth.characteristic.string.xml)
 * `tx` Characteristic = `0x2A58` -- [Analog](https://www.bluetooth.com/xml-viewer/?src=https://www.bluetooth.com/wp-content/uploads/Sitecore-Media-Library/Gatt/Xml/Characteristics/org.bluetooth.characteristic.analog.xml)
 
-You may notice, according to the Bluetooth specifications, there are two mandatory characteristics we should be implementing:
+You may notice reading the Bluetooth specifications, there are two mandatory characteristics we should be implementing for `Generic Access`:
 
 * [Device Name](https://www.bluetooth.com/xml-viewer/?src=https://www.bluetooth.com/wp-content/uploads/Sitecore-Media-Library/Gatt/Xml/Characteristics/org.bluetooth.characteristic.gap.device_name.xml)
 * [Appearance](https://www.bluetooth.com/xml-viewer/?src=https://www.bluetooth.com/wp-content/uploads/Sitecore-Media-Library/Gatt/Xml/Characteristics/org.bluetooth.characteristic.gap.appearance.xml)
 
-For the sake of simplicity, I'll leave these up to the reader.  But they must be implemented for a proper `Generic Access` service.
+For simplicity, I'll leave these up to the reader.  But they must be implemented for a proper `Generic Access` service.
 
 Right, back to the code.
 
-Here we define the name of the device as it should show up to remote devices.  Then, the service and two characteristics, one for sending, the other, receiving.
+Here we define the name of the device as it should show to remote devices.  Then, the service and two characteristics, one for sending, the other, receiving.
 ```cpp
 // Device name
 const char* nameOfPeripheral = "Microphone";
@@ -155,11 +154,11 @@ const char* uuidOfTxChar = "00002A58-0000-1000-8000-00805f9b34fb";
 ```
 
 Now, we actually instantiate the `BLEService` object called `microphoneService`.
-
 ```cpp
 // BLE Service
 BLEService microphoneService(uuidOfService);
 ```
+
 The characteristic responsible for receiving data, `rxCharacteristic`, has a couple of parameters which tell the Nano 33 how the characteristic should act. 
 ```cpp
 // Setup the incoming data characteristic (RX).
@@ -185,44 +184,40 @@ properties: mask of the properties (BLEBroadcast, BLERead, etc)
 valueSize: (maximum) size of characteristic value
 stringValue: value as a string
 ```
-Cool, makes sense.  Unfortunately, I never could get a `BLECharacteristic` to work initializing it with those arguments.  I finally dug into the _actual_ [BLECharacteristic](https://github.com/arduino-libraries/ArduinoBLE/blob/5d10cba0083ca56033e9dd47e9e7bea34a6c286d/src/BLECharacteristic.cpp#L50-L58) source and discovered their are two ways to intialize a `BLECharacteristic`:
+Cool, makes sense.  Unfortunately, I never got a `BLECharacteristic` to work initializing it with those arguments.  I finally dug into the _actual_ [BLECharacteristic](https://github.com/arduino-libraries/ArduinoBLE/blob/5d10cba0083ca56033e9dd47e9e7bea34a6c286d/src/BLECharacteristic.cpp#L50-L58) source and discovered their are two ways to initialize a `BLECharacteristic`:
 ```cpp
 BLECharacteristic(new BLELocalCharacteristic(uuid, properties, valueSize, fixedLength))
 BLECharacteristic(new BLELocalCharacteristic(uuid, properties, value))
 ```
-I hate misinformation.
+I hate misinformation. Ok, that tale aside, back to our code.
 
-Ok, that tale aside, back to our code.
-
-Let's actually declare the `rx` and `tx` characteristics.
-
-Notice, we are using a buffered characteristic for our `rx` and a single byte value characteristic for our `tx`.  This may not be optimal, but it's what worked.
+Let's actually declare the `rx` and `tx` characteristics. Notice, we are using a buffered characteristic for our `rx` and a single `byte` value characteristic for our `tx`.  This may not be optimal, but it's what worked.
 ```cpp
 // RX / TX Characteristics
 BLECharacteristic rxChar(uuidOfRxChar, BLEWriteWithoutResponse | BLEWrite, RX_BUFFER_SIZE, RX_BUFFER_FIXED_LENGTH);
 BLEByteCharacteristic txChar(uuidOfTxChar, BLERead | BLENotify | BLEBroadcast);
 ```
 
-Note, the second argument is where you define how the characteristic should behave.  Each property should be separated by the `|` as they are constants which are being `OR`ed together into a single value (masking).
+The second argument is where you define how the characteristic should behave.  Each property should be separated by the `|` as they are constants which are being `OR`ed together into a single value (masking).
 
-Here is a list of available behaviors:
+Here is a list of available properties:
 
 * `BLEBroadcast` -- will cause the characteristic to be advertized
 * `BLERead` -- allows remote devices to read the characteristic value
 * `BLEWriteWithoutResponse` -- allows remote devices to write to the device without expecting an acknowledgement
 * `BLEWrite` -- allows remote devices to write, while expecting an acknowledgement the write was successful
 * `BLENotify` -- allows a remote device to be notified anytime the characteristic's value is update
-* `BLEIndicate` -- the same as BLENotify, but we expect a response the remote device read the value
+* `BLEIndicate` -- the same as BLENotify, but we expect a response from the remote device indicating it read the value
 
 
 ### Microphone 
-There are two global variables which keep track of the microphone data.  They first is a small buffer called `sampleBuffer`, it will hold up to 256 values from the mic.
+There are two global variables which keep track of the microphone data.  The first is a small buffer called `sampleBuffer`, it will hold up to 256 values from the mic.
 
 The `volatile int samplesRead` is the variable which will hold the immediate value from the mic sensor.  It is used in the interrupt routine vector (ISR) function.  The `volatile` keyword tells the Arduino's C++ compiler the value in the variable may change at any time and it should check the value when referenced, rather than relying on a cached value in the processor ([more on volatiles](https://arduino.stackexchange.com/a/20998)).
 
 ```cpp
 // Buffer to read samples into, each sample is 16-bits
-volatile short sampleBuffer[256];
+short sampleBuffer[256];
 
 // Number of samples read
 volatile int samplesRead;
@@ -241,7 +236,7 @@ void setup() {
   while (!Serial);
 ```
 
-To see when the BLE actually is connected, we initialize the pins connected to the built-in RGB LEDs.
+To see when the BLE actually is connected, we set the pins connected to the built-in RGB LEDs as `OUTPUT`.
 ```cpp
   // Prepare LED pins.
   pinMode(LED_BUILTIN, OUTPUT);
@@ -266,7 +261,7 @@ To
 And save.  That should fix the mappings.
 
 
-The `onPDMdata()` as an `ISR` everytime the microphone gets new data.  And `startPDM()` start the microphone.
+The `onPDMdata()` is an `ISR` which fires every time the microphone gets new data.  And `startPDM()` starts the microphone integrated circuit.
 ```cpp
   // Configure the data receive callback
   PDM.onReceive(onPDMdata);
@@ -275,9 +270,7 @@ The `onPDMdata()` as an `ISR` everytime the microphone gets new data.  And `star
   startPDM();
 ```
 
-Now the Bluetooth LE setup.  
-
-First, first we ensure the Bluetooth LE hardware has been powered-on within the Nano 33.  We set the device name and begin advertizing the service.  Then, add the `rx` and `tx` characteristics to the `microphoneService`. Lastly, add the `microphoneService` to the `BLE` object.
+Now Bluetooth LE is setup, we ensure the Bluetooth LE hardware has been powered-on within the Nano 33.  We set the device name and begin advertizing the service.  Then, add the `rx` and `tx` characteristics to the `microphoneService`. Lastly, add the `microphoneService` to the `BLE` object.
 ```cpp
   // Start BLE.
   startBLE();
@@ -292,7 +285,7 @@ First, first we ensure the Bluetooth LE hardware has been powered-on within the 
 
 Now the Bluetooth LE hardware is turned on, we add callbacks which will fire when the device connects or disconnects.  Those callbacks are great places to add notifications, setup, and teardown.
 
-We also add a callback which will fire every time the Bluetooth LE hardware has a characteristic written.  This allows us to receive and handle data as it streams in.
+We also add a callback which will fire every time the Bluetooth LE hardware has a characteristic written.  This allows us to handle data as it streams in.
 ```cpp
   // Bluetooth LE connection handlers.
   BLE.setEventHandler(BLEConnected, onBLEConnected);
@@ -308,7 +301,7 @@ Lastly, we command the Bluetooth LE hardware to begin advertizing its services a
   BLE.advertise();
 ```
 
-Before beginning the main loop, I like spiting out all of the hardware information we setup.  This makes it easy to add it into whatever other applications we are developing which will be connecting to the newly initialized peripheral.
+Before beginning the main loop, I like spiting out all of the hardware information we setup.  This makes it easy to add it into whatever other applications we are developing., which will connect to the newly initialized peripheral.
 ```cpp
   // Print out full UUID and MAC address.
   Serial.println("Peripheral advertising info: ");
@@ -329,7 +322,7 @@ Before beginning the main loop, I like spiting out all of the hardware informati
 ```
 
 ### Loop()
-The mainly loop is pretty straightforward.  It grabs a reference to the `central` property from the `BLE` object.  It checks if `central` exists and then it checks if `central` is connected`.  If it is, it calls the `connectedLight()` which will cause the green LED to come on, letting us know the hardware has made a connection.
+The main loop grabs a reference to the `central` property from the `BLE` object.  It checks if `central` exists and then it checks if `central` is connected.  If it is, it calls the `connectedLight()` which will cause the green LED to come on, letting us know the hardware has made a connection.
 
 Then, it checks if there are data in the `sampleBuffer` array, if so, it writes them to the `txChar`.  After it has written all data, it resets the `samplesRead` variable to `0`.  
 
@@ -361,7 +354,8 @@ void loop()
   }
 }
 ```
-Some of you may have noticed there is probably an issue with how I'm pulling the data from teh `sampleBuffer`, as I've just noticed writing this article, it may have a condition where the microphone's `ISR` is called 
+
+Some may have noticed there is probably an issue with how I'm pulling the data from the `sampleBuffer`, as I've just noticed it myself writing this article, it may have a condition where the microphone's `ISR` is called in the middle of writing the buffer to the `txChar`.  If I've need to fix this, I'll update this article.
 
 
 Ok, hard part's over, let's move on to the helper methods.
@@ -369,7 +363,7 @@ Ok, hard part's over, let's move on to the helper methods.
 ### Helper Methods
 
 #### startBLE()
-The `startBLE()` function initializes the Bluetooth LE hardware by calling the [begin()](https://www.arduino.cc/en/Reference/ArduinoBLEBLEbegin) function.  If it is unable to start the hardware, it will say via the serial port and then stick forever.
+The `startBLE()` function initializes the Bluetooth LE hardware by calling the [begin()](https://www.arduino.cc/en/Reference/ArduinoBLEBLEbegin).  If it is unable to start the hardware, it will state so via the serial port, and then stick forever.
 ```cpp
 /*
  *  BLUETOOTH
@@ -384,7 +378,7 @@ void startBLE() {
 ```
 
 #### onRxCharValueUpdate()
-This method should be called whenever new data is received from a connected device. It grabs the data from the `rxChar` by calling `readValue` and providing a buffer for the data and long the buffer is. The `readValue` method returns how many bytes were read.  We then loop over each of the bytes in our `tmp` buffer, cast them to `char`, and print them to the serial terminal.  This is pretty helpful when debugging.
+This method is called when new data is received from a connected device. It grabs the data from the `rxChar` by calling `readValue` and providing a buffer for the data and how many bytes are available in the buffer. The `readValue` method returns how many bytes were read.  We then loop over each of the bytes in our `tmp` buffer, cast them to `char`, and print them to the serial terminal.  This is pretty helpful when debugging.
 
 Before ending, we also print out how many bytes were read, just in case we've received data which can't be converted to `ASCII`.  Again, helpful for debugging.
 ```cpp
@@ -465,5 +459,4 @@ void onPDMdata() {
 ```
 
 ## Final Thoughts
-Bluetooth LE is powerful--but tough to get right.  To be clear, not saying I've gotten it right here, but I'm striving for it.  If you find any issues please leave me a comment or send me an email and I'll get them corrected as quick as I'm able.
-
+Bluetooth LE is powerful--but tough to get right.  To be clear, not saying I've gotten it right here, but I'm hoping I'm closer.  If you find any issues please leave me a comment or send me an email and I'll get them corrected as quick as I'm able.

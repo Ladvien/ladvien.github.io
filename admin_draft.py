@@ -14,6 +14,16 @@ print('')
 print('*******************************************************')
 print('* Syncing files to Ladvien.com Jekyll build directory *')
 print('*******************************************************')
+if not os.path.exists(f"{root_path}/ladvien.github.io/_site"):
+    os.mkdir(f"{root_path}/ladvien.github.io/_site")
+
+if not os.path.exists(f"{root_path}/ladvien.github.io/_site/assets/"):
+    os.mkdir(f"{root_path}/ladvien.github.io/_site/assets/")
+
+if not os.path.exists(f"{root_path}/ladvien.github.io/_site/images/"):
+    os.mkdir(f"{root_path}/ladvien.github.io/_site/images/")
+
+
 os.system(f'bundle exec jekyll build --future --source {root_path}/ladvien.github.io --destination {root_path}/ladvien.github.io/_site')
 
 # Move the prepared images to the server.

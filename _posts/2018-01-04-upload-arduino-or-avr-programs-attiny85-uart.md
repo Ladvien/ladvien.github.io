@@ -8,6 +8,7 @@ excerpt:
 tags: [Arduino, ATtiny84, ATtiny85, tutorial, UART]
 image: 
     feature: C_ARD.png
+    teaser: 2017-06-09-upload-arduino-or-avr-programs-attiny85-uart/02_img_2017-06-09-upload-arduino-or-avr-programs-attiny85-uart.jpg
 comments: true
 custom_css: 
 custom_js: 

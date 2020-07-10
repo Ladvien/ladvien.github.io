@@ -2,8 +2,6 @@ import os
 import pandas as pd
 from gspread_pandas import Spread, Client
 
-
-print(os.getcwd())
 project_md_path = f"{os.getcwd()}/_posts/2012-01-01-projects.md"
 
 
@@ -29,7 +27,7 @@ with open(project_md_path, "r+") as f:
     # Get article and project list.
     article, project_list = get_header(f.readlines())
     df = get_df_from_gsheets(
-        "sheets", "tech_projects", "tech_projects", cols_to_preserve=["Description"]
+        "sheets", "tech_projects", "tech_projects", cols_to_preserve=[]
     )
     md = df.to_markdown()
     # Recompile the article with project list. article[:-1] removes an extra '\n'.

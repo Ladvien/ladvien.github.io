@@ -3,44 +3,48 @@ from datetime import date
 import glob
 from PIL import Image
 
-root_path = os.environ['HOME']
+root_path = os.environ["HOME"]
 
 ############
 # Parameters
 ############
-raw_images_dir = f'{root_path}/ladvien.github.io/raw_images'
-images_dir = f'{root_path}/ladvien.github.io/images'
+raw_images_dir = f"{root_path}/ladvien.github.io/raw_images"
+images_dir = f"{root_path}/ladvien.github.io/images"
 
-max_size                = 1080
-max_file_size_kb        = 300 
-compression_quality     = 85
+max_size = 1080
+max_file_size_kb = 300
+compression_quality = 85
 
-ignore_existing         = True 
+ignore_existing = True
 
 #########################
 # Move non-compressables
 #########################
 
 if not ignore_existing:
-    os.system(f'rm -rf {images_dir}')
+    os.system(f"rm -rf {images_dir}")
 
-os.system(f'rsync -h -v -r -t --ignore-existing --exclude="*.jpg" --exclude="*.JPG" --exclude="*.png" --exclude="*.PNG" {raw_images_dir}/* {images_dir}')
+os.system(
+    f'rsync -h -v -r -t --ignore-existing --exclude="*.jpg" --exclude="*.JPG" --exclude="*.png" --exclude="*.PNG" {raw_images_dir}/* {images_dir}'
+)
 
 ############
 # Transforms
 ############
-print('')
-print('*******************************************************')
-print('* Moving raw_images into images                       *')
-print('*******************************************************')
-image_paths = glob.glob(f'{raw_images_dir}/**/*.jpg', recursive = True) +\
-              glob.glob(f'{raw_images_dir}/**/*.JPG', recursive = True) +\
-              glob.glob(f'{raw_images_dir}/**/*.png', recursive = True) +\
-              glob.glob(f'{raw_images_dir}/**/*.PNG', recursive = True)
+print("")
+print("*******************************************************")
+print("* Moving raw_images into images                       *")
+print("*******************************************************")
+image_paths = (
+    glob.glob(f"{raw_images_dir}/**/*.jpg", recursive=True)
+    + glob.glob(f"{raw_images_dir}/**/*.JPG", recursive=True)
+    + glob.glob(f"{raw_images_dir}/**/*.png", recursive=True)
+    + glob.glob(f"{raw_images_dir}/**/*.PNG", recursive=True)
+)
 
 
 def resize(image, max_size):
-    print('Resizing image...')
+    print("Resizing image...")
 
     width, height = image.size
     ratio = max_size / width
@@ -50,23 +54,26 @@ def resize(image, max_size):
 
     return image.resize((new_width, new_height))
 
+
 image_index = 0
 image_count = len(image_paths)
 
 for image_path in image_paths:
 
     # Get the file name.
-    image_file_name = image_path.split('/')[-1]
+    image_file_name = image_path.split("/")[-1]
 
     # Replace spaces with underscores.
-    image_file_name = image_file_name.replace(' ', '_')
+    image_file_name = image_file_name.replace(" ", "_")
 
     # Get output directory for file.
-    input_image_dir = raw_images_dir.split('/')[-1]
-    output_image_dir = images_dir.split('/')[-1]
+    input_image_dir = raw_images_dir.split("/")[-1]
+    output_image_dir = images_dir.split("/")[-1]
 
-    image_output_file = image_path.split('/')[-1]
-    image_output_dir = image_path.replace(input_image_dir, output_image_dir).replace(image_output_file, '')
+    image_output_file = image_path.split("/")[-1]
+    image_output_dir = image_path.replace(input_image_dir, output_image_dir).replace(
+        image_output_file, ""
+    )
     image_output_file_path = image_output_dir + image_output_file
 
     # Ensure the output directory exists.
@@ -74,7 +81,7 @@ for image_path in image_paths:
         os.mkdir(image_output_dir)
 
     # Get the output file path.
-    output_file_path = f'{image_output_dir}{image_file_name}'
+    output_file_path = f"{image_output_dir}{image_file_name}"
 
     if os.path.exists(output_file_path) and ignore_existing:
         image_index += 1
@@ -85,33 +92,32 @@ for image_path in image_paths:
 
     image = Image.open(image_path)
     img_width, img_height = image.size
-    
+
     # Resize images too large.
     if img_width > max_size:
         image = resize(image, max_size)
 
     if file_size_kb > max_file_size_kb:
         if file_size_kb < 400:
-            print('Optimizing level 1')
-            image.save(image_output_file_path, optimize = True, quality = 95)
+            print("Optimizing level 1")
+            image.save(image_output_file_path, optimize=True, quality=95)
         elif file_size_kb < 500:
-            print('Optimizing level 2')
-            image.save(image_output_file_path, optimize = True, quality = 85)
+            print("Optimizing level 2")
+            image.save(image_output_file_path, optimize=True, quality=85)
         elif file_size_kb < 600:
-            print('Optimizing level 3')
-            image.save(image_output_file_path, optimize = True, quality = 80)
-        elif file_size_kb >= 600 :
-            print('Optimizing level 4')
-            image.save(image_output_file_path, optimize = True, quality = 75)
-        
+            print("Optimizing level 3")
+            image.save(image_output_file_path, optimize=True, quality=80)
+        else:
+            print("Optimizing level 4")
+            image.save(image_output_file_path, optimize=True, quality=75)
+
         file_size_kb_new = os.stat(image_output_file_path).st_size / 1000
-        print(f'{image_index} / {image_count} = {round((image_index / image_count) * 100, 2)}% -- File size before {file_size_kb}kb and after {file_size_kb_new}kb')
+        print(
+            f"{image_index} / {image_count} = {round((image_index / image_count) * 100, 2)}% -- File size before {file_size_kb}kb and after {file_size_kb_new}kb"
+        )
 
     else:
-        print('Already optimized.')
+        print("Already optimized.")
         image.save(image_output_file_path)
-        
+
     image_index += 1
-
-
-    

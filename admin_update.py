@@ -4,6 +4,7 @@ from datetime import date
 
 root_path = os.environ["HOME"]
 
+os.system("python3 admin_build_projects_list.py")
 
 print("")
 print("*******************************************************")
@@ -13,7 +14,6 @@ os.system(
     f"bundle exec jekyll build --source {root_path}/ladvien.github.io --destination {root_path}/ladvien.github.io/_site"
 )
 
-os.system("python3 admin_build_projects_list.py")
 
 print("")
 print("*******************************************************")

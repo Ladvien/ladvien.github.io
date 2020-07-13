@@ -12,32 +12,47 @@ custom_css:
 custom_js: 
 ---
 
+This article will show how to connect your Arduino Nano 33 BLE to a PC using Python and an open source Bluetooht LE library called `bleak`.  Before diving in a few things to know,
+
+* Bleak is underdevlopment.  It _will_ have issues.
+* Although Bleak is multi-OS library, Windows support is still rough
+
+Also, I'm going to ramble a bit, but if you want to jump right to the code just click 
+
+* Take me to the Code, dude!
+
+# Bluetooth LE on PC
+
 > [Bluetooth is] like a mating dance between scorpions in the middle of a freeway. High chance something gets messed up. --bjt2n3904
 
 
 * [Bleak Documentation](https://bleak.readthedocs.io/en/latest/)
 * [Bleak Github](https://github.com/hbldh/bleak)
 
-# Why is Connecting a PC and Device by Bluetooth LE Important?
-Head's up, below is not researched.  It's just my opinion.
+## Why I Think PCs Suck at Bluetooth LE
+Head's up, below is not researched, it's conjecture.
 
-You will find Bluetooth LE ubiquitous among mobile devices.  Whether you have an Android, iPhone, or even a Pixel, your phone is most likely equipped with Bluetooth LE and uses it regularly to interact with peripherals.  In fact, I'd assert Bluetooth LE is to mobile what USB is to PCs.
+You will find Bluetooth LE ubiquitous among mobile devices.  Whether you have an Android, iPhone, or even a Pixel, your phone is most likely equipped with Bluetooth LE and uses it regularly.  In fact, I'd assert Bluetooth LE is to mobile what USB is to PCs.
 
-Why bring it up?  Well, mobile companies were early adopters of Bluetooth LE.  It made a lot of sense, they didn't have to pay the USB licensing fees, it didn't require a physical cable connected to a small device and multiple devices could connect without a physical interfaces, let alone multiple--as the case with USB.  Unfortunately, PC manufacturers didn't adopt Bluetooth LE as whole-heartily.  They already had USB, why invest in all of the complexities of Bluetooth LE.  When they did start adding Bluetooth LE hardware as stock, it was much later than mobile. 
+Why bring it up?  Well, mobile device providers were early adopters of Bluetooth LE.  It made a lot of sense, they didn't have to pay the USB licensing fees, it didn't require a physical cable connected to a small device, and multiple devices could connect without a physical interfaces.  
 
-Even with the hardware being added, it only solved half of the problem.  There was also the "Bluetooth stack" which was needed to drive the hardware.  And therein was the real problem.
+Unfortunately, PC manufacturers didn't adopt Bluetooth LE as whole-heartily.  They already had USB, why invest in all of the complexities of Bluetooth LE.  When they did start adding Bluetooth LE hardware as stock, it was much later than mobile.  With the hardware being added, it only solved half of the problem.  There was also the "Bluetooth stack" which was needed to drive the hardware.  And therein was the real problem.
 
-Operating systems did not provide a general abstraction of the many Bluetooth LE chipsets for a long time.  For example, Windows didn't support Bluetooth LE as part of their CLR until Windows 8.  And even though, it wasn't reliable until--well, still not sure it is.  I can attest to this, as I was working on a [Windows Bluetooth LE app](https://www.microsoft.com/en-us/p/lumi-uploader/9nblggh4wxfw?activetab=pivot:overviewtab) in 2017 and there were serious holes in the API (e.g., no in app scanning or connection, hidden "features" like 20-byte TX buffer).
+Operating systems did not provide an abstraction of the many Bluetooth LE chipsets for years.  For example, Windows didn't support Bluetooth LE as part of their common language runtime (CLR) until Windows 8.  And even then it wasn't reliable until--well, still not sure it is.  I can attest to lack of reliability, as I was working on a [Windows Bluetooth LE app](https://www.microsoft.com/en-us/p/lumi-uploader/9nblggh4wxfw?activetab=pivot:overviewtab) in 2017 and there were serious holes in the API (e.g., no in app scanning or connection, hidden "features" like 20-byte TX buffer).
 
-Now, I stated PC hardware and OS'es did not provide generalized support early on--there's one exception, Apple.  They added BLE to everything. My theory, Apple knew early on their users prized fewer wires and low energy consumption.  Apple saw Bluetooth LE as the answer and they added to their mobile devices _and_ their PCs.
+Now, I stated PC hardware and OS'es did not provide generalized support early on--there's one exception, Apple.  They added BLE to everything. My theory is Apple knew early on their users prized fewer wires and low energy peripherals.  Apple saw Bluetooth LE as a greart answer and they added to all their devices, whether it be mobile or PC.  And create CoreBluetooth, a developer's abstraction of the Bluetooth LE stacks. 
 
-Alright, you suspect ramblings.  And you might be right.  But I mention it to emphasize why Bluetooth LE on PCs is not a solved problem.  Now let me risk a bit more goodwill and state why I feel it's a problem worth solving.
+Alright, I suspect I'm rambling.  But I mention it to emphasize why Bluetooth LE on PCs is not a solved problem.  Now let me risk a bit more goodwill and state why I feel it's a problem worth solving.
 
-I'm a data engineer by day and one of the biggest problems I see with data is pesky humans.  If humans are involved in the data collection process they introduce tons of noise along with the signal.  In short, I'm in favor of passive data collection.  I love the idea of sensors being embedded in everything--though, I've even stronger opinions about where those data should go once collected--yes, I'm looking at you Facebook and Google.  And Bluetooh LE loves was built for passive data collection.  Literally.  A sensor can tell a Bluetooth LE chipset about its data and a central device can request those data at its leisure--they whole process is extremely passive and low maintenance.
+## Importance of Connecting a PC and Device by Bluetooth LE
 
-But, as I hinted at above, I believe collected data should be _extremely_ accessible to the person who has generated those data.  And it shouldn't require an act of God to acquire those data for personal use.  Unfortunately, having poor support of Bluetooth LE on PC means one has to jump through all the hoops of learning iOS and Android programming--and pray Apple and Google are ok with you routing data collected by your phone into a personal repository.
+I'm a data engineer by day.  One of the biggest problems I see with data is pesky humans.  If humans are involved in the data collection process they introduce tons of noise along with the signal.  As an advocate of good data, I'm in favor of passive data collection.  
 
-To recap my mad theory, I believe having a reliable way to access Bluetooth LE from a PC is important for the ownership of one's own sensor data.
+I love the idea of sensors being embedded in everything.  Of course, I've even stronger opinions about where those data should go once collected--yes, I'm looking at you Facebook and Google. Bluetooh LE was built for passive data collection.  Literally.  A sensor can use Bluetooth LE to push data to a bigger device at infrequent intervals, making sensor batteries last a long time.  With long lasting sensor batteries, it means the data collection process becomes passive.  That is, it takes very little human interaction for data to continue flowing to a central device.
+
+But, as I hinted at above, I believe collected data should be accessible to the person who generated those data primarily.  And it shouldn't require an act of God to acquire those data for personal use.  Bring it back full circle, having poor support of Bluetooth LE on PC means one has to jump through all the hoops of learning iOS or Android programming--and pray Apple and Google are ok with you routing data collected by your phone into a personal repository.
+
+In summary. I believe having a reliable way to access Bluetooth LE devices from a PC is important for the ownership of one's own sensor data.
 
 # BlueZ
 * http://www.bluez.org/development/git/

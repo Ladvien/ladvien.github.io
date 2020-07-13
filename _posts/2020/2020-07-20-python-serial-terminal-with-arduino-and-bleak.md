@@ -12,6 +12,9 @@ custom_css:
 custom_js: 
 ---
 
+> [Bluetooth is] like a mating dance between scorpions in the middle of a freeway. High chance something gets messed up. --bjt2n3904
+
+
 * [Bleak Documentation](https://bleak.readthedocs.io/en/latest/)
 * [Bleak Github](https://github.com/hbldh/bleak)
 
@@ -35,6 +38,9 @@ I'm a data engineer by day and one of the biggest problems I see with data is pe
 But, as I hinted at above, I believe collected data should be _extremely_ accessible to the person who has generated those data.  And it shouldn't require an act of God to acquire those data for personal use.  Unfortunately, having poor support of Bluetooth LE on PC means one has to jump through all the hoops of learning iOS and Android programming--and pray Apple and Google are ok with you routing data collected by your phone into a personal repository.
 
 To recap my mad theory, I believe having a reliable way to access Bluetooth LE from a PC is important for the ownership of one's own sensor data.
+
+# BlueZ
+* http://www.bluez.org/development/git/
 
 
 # Install Packages
@@ -214,9 +220,10 @@ def write_to_csv(path, microphone_values, timestamps):
 # Linux Troubleshooting
 
 * Update BlueZ script
+* Physical distance
+* Interference
 * Bluetoothctl
   * Remove device
   * Pair device
-  * Power cycle
+  * [Power cycle](https://github.com/hbldh/bleak/issues/172#issuecomment-637351561) 
   * Set primary controller
-  

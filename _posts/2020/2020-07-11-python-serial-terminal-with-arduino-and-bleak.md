@@ -12,22 +12,27 @@ custom_css:
 custom_js: 
 ---
 
-This article will show how to connect your Arduino Nano 33 BLE to a PC using Python and an open source Bluetooht LE library called `bleak`.  Before diving in a few things to know,
+This article will show how to connect your Arduino Nano 33 BLE to a PC using Python and an open source Bluetooth LE library called `bleak`.  Before diving in a few things to know,
 
-* Bleak is underdevlopment.  It _will_ have issues.
+* Bleak is under-devlopment.  It _will_ have issues.
 * Although Bleak is multi-OS library, Windows support is still rough
 
 Also, I'm going to ramble a bit, but if you want to jump right to the code just click 
+
+## TL;DR
 
 * Take me to the Code, dude!
 
 # Bluetooth LE on PC
 
-> [Bluetooth is] like a mating dance between scorpions in the middle of a freeway. High chance something gets messed up. --bjt2n3904
+> [Bluetooth is] like a mating dance between scorpions in the middle of a freeway. High chance something gets messed up. --bjt2n3904, hackernew.com
 
 
 * [Bleak Documentation](https://bleak.readthedocs.io/en/latest/)
 * [Bleak Github](https://github.com/hbldh/bleak)
+
+## Why Does Bluetooth Suck?
+https://www.businessinsider.com/why-bluetooth-sucks-bad-problems-issues-disconnects-2018-2
 
 ## Why I Think PCs Suck at Bluetooth LE
 Head's up, below is not researched, it's conjecture.
@@ -54,17 +59,22 @@ But, as I hinted at above, I believe collected data should be accessible to the 
 
 In summary. I believe having a reliable way to access Bluetooth LE devices from a PC is important for the ownership of one's own sensor data.
 
-# BlueZ
+# Setup
+
+## BlueZ
 * http://www.bluez.org/development/git/
 
 
-# Install Packages
+## Install Packages
 
 ```bash
 pip install bleak aioconsole
 ```
 
-# Find Mac or CUID
+
+# Python Code
+
+## Find Mac or CUID
 
 ```
 python3 bleak_find_device.py 
@@ -78,9 +88,7 @@ Replace either the MAC address on PC or Linux, or CBUID on MacOS
         address = ('C8:5C:A2:2B:61:86')
 ```
 
-# Python Code
-
-## Setup
+## Imports
 
 ```py
 import os, sys

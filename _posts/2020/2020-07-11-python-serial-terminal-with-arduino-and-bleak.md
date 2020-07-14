@@ -11,11 +11,9 @@ comments: true
 custom_css:
 custom_js: 
 ---
+A how-to guide on connecting your PC to an Arduino using Bluetooth LE and Python.  To make it easier, we will use [bleak](https://pypi.org/project/bleak/) an open source BLE library for Python. The code provided should work for connecting your PC to any Bluetooth LE devices.
 
-
-> [Bluetooth is] like a mating dance between scorpions in the middle of a freeway. High chance something gets messed up. --bjt2n3904, hackernew.com
-
-A how-to guide on connecting your PC to a remote device using Python.  To make it easier, we will use [bleak](https://pypi.org/project/bleak/) an open source Bluetooth LE library for Python which makes interacting with Bluetooth LE devices much easier. 
+![sending-string-from-pc-to-arduino-nano-33-ble-sense](/images/bluetooth_le/arduino_ble_python_bleak.gif)
 
 Before diving in a few things to know
 
@@ -33,21 +31,24 @@ Bleak is a Python package written by [Henrik Blidh](https://www.youtube.com/watc
 * [Bleak Github](https://github.com/hbldh/bleak)
 
 # Setup
-
-## BlueZ
-* http://www.bluez.org/development/git/
-
-
-## Install Packages
-
+Getting started with BLE using `bleak` is straightforward.  You need to install bleak and I've also included library called [aioconsole](https://pypi.org/project/aioconsole/) for handling user input asynchronously
 ```bash
 pip install bleak aioconsole
 ```
-
+Once these packages are installed we should be ready to code.  If you have any issues, feel free to ask questions and the comments.  I'll respond when able.
 
 # Python Code
+If you are new to Python then the code I'm about to walk-through may look odd.  You'll see terms like `async`, `await`, `loop`, and `future`.  Don't let it scare you.  These keywords are Python's way of allowing a programmer to "easily" write asynchronous code in Python.
 
-## Find Mac or CUID
+If you're are struggling with using `asyncio`, the built in Python library allowing you to write asynchronous Python easily, I'd highly recommend Łukasz Langa's highly detailed video series; it definitely takes a time commitment, but is well worth it.
+
+* [Import asyncio](https://youtu.be/Xbl7XjFYsN4)
+
+If you are an experienced Python programmer, feel free to critique my async code, as I'm a bit new to Python's asynchronous implementation.
+
+Enough fluff.  Let's get started.
+
+## Find Mac or CBUUID
 
 ```
 python3 bleak_find_device.py 
@@ -55,7 +56,7 @@ python3 bleak_find_device.py
 
 Replace either the MAC address on PC or Linux, or CBUID on MacOS
 ```python
-    if os_name == 'darwin': # Mac uses CBID.
+    if os_name == 'darwin': # Mac uses CBUUID.
         address = ('46BFEB38-910C-4490-962E-CD60E52D7AF1')
     else:
         address = ('C8:5C:A2:2B:61:86')
@@ -216,6 +217,7 @@ def write_to_csv(path, microphone_values, timestamps):
 # Linux Troubleshooting
 
 * Update BlueZ script
+  *  http://www.bluez.org/development/git/
 * Physical distance
 * Interference
 * Bluetoothctl
@@ -230,6 +232,8 @@ https://www.businessinsider.com/why-bluetooth-sucks-bad-problems-issues-disconne
 
 
 ## Why I Think PCs Suck at Bluetooth LE
+> [Bluetooth is] like a mating dance between scorpions in the middle of a freeway. High chance something gets messed up. --[bjt2n3904](news.ycombinator.com/item?id=14753035)
+> 
 Head's up, below is not researched, it's conjecture.
 
 You will find Bluetooth LE ubiquitous among mobile devices.  Whether you have an Android, iPhone, or even a Pixel, your phone is most likely equipped with Bluetooth LE and uses it regularly.  In fact, I'd assert Bluetooth LE is to mobile what USB is to PCs.

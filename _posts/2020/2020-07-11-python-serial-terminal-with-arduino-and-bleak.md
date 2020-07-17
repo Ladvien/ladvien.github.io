@@ -21,6 +21,7 @@ Before diving in a few things to know
 * Although Bleak is multi-OS library, Windows support is still rough
 * PC operating systems suck at BLE
 * Bleak is asynchronous; in Python, this means a bit more complexity
+* The code provided is a proof-of-concept; it should be improved before use
 
 Ok, all warnings stated, let's jump in.
 
@@ -44,35 +45,33 @@ If you're are struggling with using `asyncio`, the built in Python library allow
 
 * [Import asyncio](https://youtu.be/Xbl7XjFYsN4)
 
-If you are an experienced Python programmer, feel free to critique my async code, as I'm a bit new to Python's asynchronous implementation.
+If you are an experienced Python programmer, feel free to critique my async code, as I'm a new to Python's asynchronous solutions.
 
 Enough fluff.  Let's get started.
 
 ## Find Mac or CBUUID
+Bleak is a multi-OS package, however, there are slight differences between the different operating-systems.  One of those is the address of your remote device.  Windows and Linux report the remote device by it's [MAC](MAC_address).  Mac's the odd duck, it uses a Universally Unique Identifier ([UUID](https://en.wikipedia.org/wiki/Universally_unique_identifier).  Specially, it uses a [CoreBluetooth](https://developer.apple.com/documentation/corebluetooth) UUID, or a [CBUUID](https://developer.apple.com/documentation/corebluetooth/cbuuid). 
 
+These identifiers are important because bleak uses them during its connection process.  These IDs are static, that is, they shouldn't change.  That stated, I've included a script which will help you identify your device.
+
+If you run
 ```
 python3 bleak_find_device.py 
 ```
+It should list any Bluetooth LE devices advertising services.  Once you've identified  your device then open the `bleak_app.py` script and replace either the MAC address or CBUUID shown below.
 
-Replace either the MAC address on PC or Linux, or CBUID on MacOS
 ```python
-    if os_name == 'darwin': # Mac uses CBUUID.
+    if os_name == 'darwin': 
+        # Mac.
         address = ('46BFEB38-910C-4490-962E-CD60E52D7AF1')
     else:
+        # Windows or Linux
         address = ('C8:5C:A2:2B:61:86')
 ```
 
-## Imports
+## Parameters
 
 ```py
-import os, sys
-import asyncio
-import platform
-from datetime import datetime
-
-from aioconsole import ainput
-from bleak import BleakClient
-
 root_path = os.environ['HOME']
 
 #############
@@ -86,13 +85,20 @@ write_characteristic    = '00001142-0000-1000-8000-00805f9b34fb'
 # Data
 dump_size               = 256
 column_names            = ['time', 'micro_secs_since_last', 'microphone_value']
+```
 
-#############
-# Subroutines
-#############
 
+## Initialization
+
+```py
+#################
+# Initialization
+#################
 connected = False
 last_packet_time = datetime.now()
+microphone_values = []
+timestamps = []
+delays = []
 ```
 
 ## Main
@@ -100,10 +106,6 @@ last_packet_time = datetime.now()
 #############
 # Main
 #############        
-microphone_values = []
-timestamps = []
-delays = []
-
 if __name__ == "__main__":
 
     # Get OS name.

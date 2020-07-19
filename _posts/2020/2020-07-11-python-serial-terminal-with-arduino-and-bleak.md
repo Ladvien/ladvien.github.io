@@ -13,7 +13,7 @@ custom_js:
 ---
 A how-to guide on connecting your PC to an Arduino using Bluetooth LE and Python.  To make it easier, we will use [bleak](https://pypi.org/project/bleak/) an open source BLE library for Python. The code provided should work for connecting your PC to any Bluetooth LE devices.
 
-![sending-string-from-pc-to-arduino-nano-33-ble-sense](/images/bluetooth_le/arduino_ble_python_bleak.gif)
+![sending-string-from-pc-to-arduino-nano-33-ble-sense](/images/python-serial-terminal-with-arduino-and-bleak/python_ble_to_arduino_demo_vert.gif)
 
 Before diving in a few things to know
 
@@ -32,11 +32,11 @@ Bleak is a Python package written by [Henrik Blidh](https://www.youtube.com/watc
 * [Bleak Github](https://github.com/hbldh/bleak)
 
 # Setup
-Getting started with BLE using `bleak` is straightforward.  You need to install bleak and I've also included library called [aioconsole](https://pypi.org/project/aioconsole/) for handling user input asynchronously
+Getting started with BLE using `bleak` is straightforward.  You need to install `bleak` and I've also included library called [aioconsole](https://pypi.org/project/aioconsole/) for handling user input asynchronously
 ```bash
 pip install bleak aioconsole
 ```
-Once these packages are installed we should be ready to code.  If you have any issues, feel free to ask questions and the comments.  I'll respond when able.
+Once these packages are installed we should be ready to code.  If you have any issues, feel free to ask questions in the comments.  I'll respond when able.
 
 # Python Code
 If you are new to Python then the code I'm about to walk-through may look odd.  You'll see terms like `async`, `await`, `loop`, and `future`.  Don't let it scare you.  These keywords are Python's way of allowing a programmer to "easily" write asynchronous code in Python.
@@ -60,160 +60,201 @@ python3 bleak_find_device.py
 ```
 It should list any Bluetooth LE devices advertising services.  Once you've identified  your device then open the `bleak_app.py` script and replace either the MAC address or CBUUID shown below.
 
-```python
-    if os_name == 'darwin': 
-        # Mac.
-        address = ('46BFEB38-910C-4490-962E-CD60E52D7AF1')
-    else:
-        # Windows or Linux
-        address = ('C8:5C:A2:2B:61:86')
-```
-
 ## Parameters
 
+
 ```py
-root_path = os.environ['HOME']
-
-#############
-# Parameters
-#############
-output_file             = f'{root_path}/Desktop/microphone_dump.csv'
-
-read_characteristic     = '00001143-0000-1000-8000-00805f9b34fb'
-write_characteristic    = '00001142-0000-1000-8000-00805f9b34fb'
-
-# Data
-dump_size               = 256
-column_names            = ['time', 'micro_secs_since_last', 'microphone_value']
-```
-
-
 ## Initialization
-
-```py
-#################
-# Initialization
-#################
-connected = False
-last_packet_time = datetime.now()
-microphone_values = []
-timestamps = []
-delays = []
+root_path = os.environ["HOME"]
+output_file = f"{root_path}/Desktop/microphone_dump.csv"
 ```
+
 
 ## Main
 ```py
 #############
-# Main
-#############        
+# App Main
+#############
+read_characteristic = "00001143-0000-1000-8000-00805f9b34fb"
+write_characteristic = "00001142-0000-1000-8000-00805f9b34fb"
+
 if __name__ == "__main__":
 
-    # Get OS name.
-    os_name = sys.platform
-
-    if os_name == 'darwin': # Mac uses CBID.
-        address = ('46BFEB38-910C-4490-962E-CD60E52D7AF1')
-    else:
-        address = ('C8:5C:A2:2B:61:86')
-    
     # Create the event loop.
     loop = asyncio.get_event_loop()
 
-    # Create the Bluetooth LE object.
-    client = BleakClient(address, loop = loop)
+    data_to_file = DataToFile(output_file)
+    connection = Connection(
+        loop, read_characteristic, write_characteristic, data_to_file.write_to_csv
+    )
     try:
-        asyncio.ensure_future(run(client))
-        asyncio.ensure_future(user_write(client))
+        asyncio.ensure_future(connection.manager())
+        asyncio.ensure_future(user_console_manager(connection))
         asyncio.ensure_future(main())
         loop.run_forever()
     except KeyboardInterrupt:
         print()
-        print('User stopped program.')
+        print("User stopped program.")
     finally:
-        print('Disconnecting...')
-        loop.run_until_complete(cleanup(client))
-
-
-
+        print("Disconnecting...")
+        loop.run_until_complete(connection.cleanup())
 ```
 
-## Loops
+## Save Incoming Data to File
+```py
+class DataToFile:
+
+    column_names = ["time", "delay", "data_value"]
+
+    def __init__(self, write_path):
+        self.path = write_path
+
+    def write_to_csv(self, times: [int], delays: [datetime], data_values: [Any]):
+
+        if len(set([len(times), len(delays), len(data_values)])) > 1:
+            raise Exception("Not all data lists are the same length.")
+
+        with open(self.path, "a+") as f:
+            if os.stat(self.path).st_size == 0:
+                print("Created file.")
+                f.write(",".join([str(name) for name in self.column_names]) + ",\n")
+            else:
+                for i in range(len(data_values)):
+                    f.write(f"{times[i]},{delays[i]},{data_values[i]},\n")
+```
+
+## Connection Management
+```py
+class Connection:
+    
+    client: BleakClient = None
+    
+    def __init__(
+        self,
+        loop: asyncio.AbstractEventLoop,
+        read_characteristic: str,
+        write_characteristic: str,
+        data_dump_handler: Callable[[str, Any], None],
+        data_dump_size: int = 256,
+    ):
+        self.loop = loop
+        self.read_characteristic = read_characteristic
+        self.write_characteristic = write_characteristic
+        self.data_dump_handler = data_dump_handler
+
+        self.last_packet_time = datetime.now()
+        self.dump_size = data_dump_size
+        self.connected = False
+        self.connected_device = None
+
+        self.rx_data = []
+        self.rx_timestamps = []
+        self.rx_delays = []
+
+    def on_disconnect(self, client: BleakClient):
+        self.connected = False
+        # Put code here to handle what happens on disconnet.
+        print(f"Disconnected from {self.connected_device.name}!")
+
+    async def cleanup(self):
+        if self.client:
+            await self.client.stop_notify(read_characteristic)
+            await self.client.disconnect()
+
+    async def manager(self):
+        print("Starting connection manager.")
+        while True:
+            if self.client:
+                await self.connect()
+            else:
+                await self.select_device()
+                await asyncio.sleep(15.0, loop=loop)       
+
+    async def connect(self):
+        if self.connected:
+            return
+        try:
+            await self.client.connect()
+            self.connected = await self.client.is_connected()
+            if self.connected:
+                print(F"Connected to {self.connected_device.name}")
+                self.client.set_disconnected_callback(self.on_disconnect)
+                await self.client.start_notify(
+                    self.read_characteristic, self.notification_handler,
+                )
+                while True:
+                    await asyncio.sleep(15.0, loop=loop)
+            else:
+                print(f"Failed to connect to {self.connected_device.name}")
+        except Exception as e:
+            print(e)
+
+    async def select_device(self):
+        print("Bluetooh LE hardware warming up...")
+        await asyncio.sleep(2.0, loop=loop) # Wait for BLE to initialize.
+        devices = await discover()
+
+        print("Please select device: ")
+        for i, device in enumerate(devices):
+            print(f"{i}: {device.name}")
+
+        response = -1
+        while True:
+            response = await ainput("Select device: ")
+            try:
+                response = int(response.strip())
+            except:
+                print("Please make valid selection.")
+            
+            if response > -1 and response < len(devices):
+                break
+            else:
+                print("Please make valid selection.")
+
+        print(f"Connecting to {devices[response].name}")
+        self.connected_device = devices[response]
+        self.client = BleakClient(devices[response].address, loop=self.loop)
+
+    def record_time_info(self):
+        present_time = datetime.now()
+        self.rx_timestamps.append(present_time)
+        self.rx_delays.append((present_time - self.last_packet_time).microseconds)
+        self.last_packet_time = present_time
+
+    def clear_lists(self):
+        self.rx_data.clear()
+        self.rx_delays.clear()
+        self.rx_timestamps.clear()
+
+    def notification_handler(self, sender: str, data: Any):
+        self.rx_data.append(int.from_bytes(data, byteorder="big"))
+        self.record_time_info()
+        if len(self.rx_data) >= self.dump_size:
+            self.data_dump_handler(self.rx_data, self.rx_timestamps, self.rx_delays)
+            self.clear_lists()
+```
+
+## App Loops
 
 ```py
-async def run(client):
-    global connected
+#############
+# Loops
+#############
+async def user_console_manager(connection: Connection):
     while True:
-        if not connected:
-            try:
-                await client.connect()
-                connected = await client.is_connected()
-                client.set_disconnected_callback(disconnect_callback)
-                await client.start_notify(read_characteristic, notification_handler)
-                while True:
-                    await asyncio.sleep(15.0, loop = loop)
-            except Exception as e:
-                print(e)
-
+        if connection.client and connection.connected:
+            input_str = await ainput("Enter string: ")
+            bytes_to_send = bytearray(map(ord, input_str))
+            await connection.client.write_gatt_char(write_characteristic, bytes_to_send)
+            print(f"Sent: {input_str}")
+        else:
+            await asyncio.sleep(2.0, loop=loop)
 
 
 async def main():
     while True:
-        # YOUR CODE WOULD GO HERE.
+        # YOUR APP CODE WOULD GO HERE.
         await asyncio.sleep(5)
-```
-
-## Callbacks
-
-```py
-def notification_handler(sender, data):
-    global last_packet_time
-    value = int.from_bytes(data, byteorder = 'big')
-    microphone_values.append(value)
-    present_time = datetime.now()
-    timestamps.append(present_time)
-    delays.append((present_time - last_packet_time).microseconds)
-    last_packet_time = present_time
-    if len(microphone_values) >= dump_size:
-        write_to_csv(output_file, microphone_values, timestamps)
-        microphone_values.clear()
-        delays.clear()
-        timestamps.clear()
-
-
-def disconnect_callback(client, future):
-    global connected
-    connected = False
-    print(f"Disconnected callback called on {client}!")
-```
-
-
-## Sending Data
-
-```py
-async def user_write(client):
-    global connected
-    while True:
-        if connected:
-            input_str = await ainput('Enter string: ')
-            bytes_to_send = bytearray(map(ord, input_str))
-            await client.write_gatt_char(write_characteristic,  bytes_to_send)
-            print(f'Sent: {input_str}')
-        else:
-            await asyncio.sleep(15.0, loop = loop)
-
-```
-
-## Getting Data
-
-```py
-def write_to_csv(path, microphone_values, timestamps):
-    with open(path, 'a+') as f:
-        if os.stat(path).st_size == 0:
-            print('Created file.')
-            f.write(','.join([str(name) for name in column_names]) + ',\n')  
-        else:
-            for i in range(len(microphone_values)):
-                f.write(f'{timestamps[i]},{delays[i]},{microphone_values[i]},\n')
 ```
 
 # Linux Troubleshooting

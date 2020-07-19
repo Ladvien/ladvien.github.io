@@ -32,20 +32,20 @@ Bleak is a Python package written by [Henrik Blidh](https://www.youtube.com/watc
 * [Bleak Github](https://github.com/hbldh/bleak)
 
 # Setup
-Getting started with BLE using `bleak` is straightforward.  You need to install `bleak` and I've also included library called [aioconsole](https://pypi.org/project/aioconsole/) for handling user input asynchronously
+Getting started with BLE using my starter application and `bleak` is straightforward.  You need to install `bleak` and I've also included library called [aioconsole](https://pypi.org/project/aioconsole/) for handling user input asynchronously
 ```bash
 pip install bleak aioconsole
 ```
 Once these packages are installed we should be ready to code.  If you have any issues, feel free to ask questions in the comments.  I'll respond when able.
 
-# Python Code
+# The Code
 Before we get started, if you'd rather see the full-code it can be found at:
 
 * [Bleak App](https://github.com/Ladvien/arduino_ble_sense/blob/master/app.py)
 
-If you are new to Python then the code I'm about to walk-through may look odd.  You'll see terms like `async`, `await`, `loop`, and `future`.  Don't let it scare you.  These keywords are Python's way of allowing a programmer to "easily" write asynchronous code in Python.
+If you are new to Python then following code may look odd.  You'll see terms like `async`, `await`, `loop`, and `future`.  Don't let it scare you.  These keywords are Python's way of allowing a programmer to "easily" write asynchronous code in Python.
 
-If you're are struggling with using `asyncio`, the built in Python library allowing you to write asynchronous Python easily, I'd highly recommend Łukasz Langa's highly detailed video series; it definitely takes a commitment, but is worth it.
+If you're are struggling with using `asyncio`, the built in asynchronous Python library, I'd highly recommend Łukasz Langa's detailed video series; it takes a time commitment, but is worth it.
 
 * [Import asyncio](https://youtu.be/Xbl7XjFYsN4)
 
@@ -53,12 +53,12 @@ If you are an experienced Python programmer, feel free to critique my code, as I
 
 Enough fluff.  Let's get started.
 
-## Parameters
-There's really only a few code changes needed for the script to work, at least, with the Arduino and firmware I've outlined in the previous article:
+## Application Parameters
+There are a few code changes needed for the script to work, at least, with the Arduino and firmware I've outlined in the previous article:
 
 * [Getting Started with Bluetooth LE on the Arduino Nano 33 Sense](https://ladvien.com/arduino-nano-33-bluetooth-low-energy-setup/)
 
-The incoming data will be dumped into a CSV.  One of the parameters is where you would like to save this CSV.  I'll be saving it to the Desktop.  I'm also retrieving the user's home folder from the `HOME` environment variable, which is only available on Mac and Linux OS (Unix systems).  If you are trying this project from Windows, you'll need to replace the `root_path` reference with the full path.
+The incoming microphone data will be dumped into a CSV; one of the parameters is where you would like to save this CSV.  I'll be saving it to the Desktop.  I'm also retrieving the user's home folder from the `HOME` environment variable, which is only available on Mac and Linux OS (Unix systems).  If you are trying this project from Windows, you'll need to replace the `root_path` reference with the full path.
 
 ```py
 root_path = os.environ["HOME"]
@@ -80,7 +80,9 @@ The main method is where all the async code is initialized.  Essentially, it cre
 * Connection Manager -- this is the heart of the `Connection` object I'll describe more in a moment.
 * User Console -- this loop gets data from the user and sends it to the remote device.
 
-You can imagine each of these loops as independent, however, they are really coordinating during I/O events.  Like I said, I won't go in depth on async Python, as Langa's video series is much better than my squawking explanations.
+You can imagine each of these loops as independent, however, what they are actually doing is pausing their execution when any of the loops encounter a blocking I/O event. For example, when input is requested from the user or waiting for data from the remote BLE device.  When one of these loops encounters an I/O event, they let one of the other loops take over until the I/O event is complete.
+
+That's far from an accurate explanation, but like I said, I won't go in depth on async Python, as Langa's video series is much better than my squawking.
 
 Though, it's important to know, the `ensure_future` is what tells Python to run a chunk of code asynchronously.  And I've been calling them "loops" because each of the 3 `ensure_future` calls have a `while True` statement in them.  That is, they do not return without error.
 
@@ -121,7 +123,7 @@ This class wrap the `bleak` library and makes it a bit easier to use.  Let me ex
 
 You may be asking, "Why create a wrapper around `bleak`, Thomas?" Well, two reasons. First, the `bleak` library is still in development and there are several aspects which do not work well.  Second, there are additional features I'd like my Bluetooth LE Python class to have.  For example, if you the Bluetooth LE connection is broken, I want my code to automatically attempt to reconnect.  This wrapper class allows me to add these capabilities.
 
-That stated, I did try to keep the code highly hackable.  That is, I want anybody to be able to use the code for their own applications, with a minimum time investment.
+I did try to keep the code highly hackable.  I want anybody to be able to use the code for their own applications, with a minimum time investment.
 
 ### Connection(): __init__
 
@@ -132,14 +134,6 @@ The `Connection` class has three required arguments and one optional.
 * `write_characteristic` -- the characteristic on the remote device which we can write data.
 * `data_dump_handler` -- this is the function to call when we've filled the `rx` buffer.
 * `data_dump_size` -- this is the size of the `rx` buffer.  Once it is exceeded, the `data_dump_handler` function is called and the `rx` buffer is cleared.
-
-Alongside the arguments are internal variables which track device state. 
-
-The variable `self.connected` tracks whether the `BleakClient` is connected to a remote device.  It is needed since the `await self.client.is_connected()` currently has an issue where it raises an exception if you call it and it's not connected to a remote device.  Have I mentioned `bleak` is in progress?
-
-`self.selected_device` hangs on to the device you selected when you started the `app`.  This is needed for reconnecting on disconnect.
-
-The rest of variables help track the incoming data.  Honestly, they'll probably be refactored into a [DTO](https://en.wikipedia.org/wiki/Data_transfer_object) at some point.
 
 ```py
 class Connection:
@@ -159,11 +153,23 @@ class Connection:
         self.write_characteristic = write_characteristic
         self.data_dump_handler = data_dump_handler
         self.data_dump_size = data_dump_size
+```
 
+Alongside the arguments are internal variables which track device state. 
+
+The variable `self.connected` tracks whether the `BleakClient` is connected to a remote device.  It is needed since the `await self.client.is_connected()` currently has an issue where it raises an exception if you call it and it's not connected to a remote device.  Have I mentioned `bleak` is in progress?
+
+```py
         # Device state
         self.connected = False
         self.connected_device = None
+```
 
+`self.selected_device` hangs on to the device you selected when you started the `app`.  This is needed for reconnecting on disconnect.
+
+The rest of variables help track the incoming data.  They'll probably be refactored into a [DTO](https://en.wikipedia.org/wiki/Data_transfer_object) at some point.
+
+```py
         # RX Buffer
         self.last_packet_time = datetime.now()
         self.rx_data = []
@@ -172,13 +178,25 @@ class Connection:
 ```
 
 ### Connection(): Callbacks
+There are two callbacks in the `Connection` class.  One to handle disconnections from the Bluetooth LE device.  And one to handle incoming data.
 
+Easy one first, the `on_disconnect` method is called whenever the `BleakClient` loses connection with the remote device.  All I'm doing with the callback is setting the `connected` flag to `False`.  This will cause the `Connection.connect()` to attempt to reconnect.
 ```py
     def on_disconnect(self, client: BleakClient):
         self.connected = False
         # Put code here to handle what happens on disconnet.
         print(f"Disconnected from {self.connected_device.name}!")
+```
 
+The `notification_handler` is called by the `BleakClient` any time the remote device updates a characteristic we are interested in.  The callback has two parameters, `sender`, which is the name of the device making the update, and `data`, which is a [bytearray](https://docs.python.org/3.1/library/functions.html#bytearray) containing the information received.
+
+I'm converting the data from two-bytes into a single `int` value using Python's [from_bytes()](https://docs.python.org/3/library/stdtypes.html#int.from_bytes).  The first argument is the bytearray and the the `byteorder` defines the [endianness](https://en.wikipedia.org/wiki/Endianness) (usually `big`).  The converted value is then appended to the `rx_data` list.
+
+The `record_time_info()` calls a method to save the current time and the number of microseconds between the current byte received and the previous byte.
+
+If the length of the `rx_data` list is greater than the `data_dump_size`, then the data are passed to the `data_dump_handler` function and the `rx_data` list is cleared, along with any time tracking information.
+
+```py
     def notification_handler(self, sender: str, data: Any):
         self.rx_data.append(int.from_bytes(data, byteorder="big"))
         self.record_time_info()

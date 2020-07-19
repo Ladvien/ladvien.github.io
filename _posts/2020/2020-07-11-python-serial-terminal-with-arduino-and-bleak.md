@@ -39,47 +39,54 @@ pip install bleak aioconsole
 Once these packages are installed we should be ready to code.  If you have any issues, feel free to ask questions in the comments.  I'll respond when able.
 
 # Python Code
+Before we get started, if you'd rather see the full-code it can be found at:
+
+* [Bleak App](https://github.com/Ladvien/arduino_ble_sense/blob/master/app.py)
+
 If you are new to Python then the code I'm about to walk-through may look odd.  You'll see terms like `async`, `await`, `loop`, and `future`.  Don't let it scare you.  These keywords are Python's way of allowing a programmer to "easily" write asynchronous code in Python.
 
-If you're are struggling with using `asyncio`, the built in Python library allowing you to write asynchronous Python easily, I'd highly recommend Łukasz Langa's highly detailed video series; it definitely takes a time commitment, but is well worth it.
+If you're are struggling with using `asyncio`, the built in Python library allowing you to write asynchronous Python easily, I'd highly recommend Łukasz Langa's highly detailed video series; it definitely takes a commitment, but is worth it.
 
 * [Import asyncio](https://youtu.be/Xbl7XjFYsN4)
 
-If you are an experienced Python programmer, feel free to critique my async code, as I'm a new to Python's asynchronous solutions.
+If you are an experienced Python programmer, feel free to critique my code, as I'm a new to Python's asynchronous solutions.  I've got my big kid britches on.
 
 Enough fluff.  Let's get started.
 
-## Find Mac or CBUUID
-Bleak is a multi-OS package, however, there are slight differences between the different operating-systems.  One of those is the address of your remote device.  Windows and Linux report the remote device by it's [MAC](MAC_address).  Mac's the odd duck, it uses a Universally Unique Identifier ([UUID](https://en.wikipedia.org/wiki/Universally_unique_identifier).  Specially, it uses a [CoreBluetooth](https://developer.apple.com/documentation/corebluetooth) UUID, or a [CBUUID](https://developer.apple.com/documentation/corebluetooth/cbuuid). 
-
-These identifiers are important because bleak uses them during its connection process.  These IDs are static, that is, they shouldn't change.  That stated, I've included a script which will help you identify your device.
-
-If you run
-```
-python3 bleak_find_device.py 
-```
-It should list any Bluetooth LE devices advertising services.  Once you've identified  your device then open the `bleak_app.py` script and replace either the MAC address or CBUUID shown below.
-
 ## Parameters
+There's really only a few code changes needed for the script to work, at least, with the Arduino and firmware I've outlined in the previous article:
 
+* [Getting Started with Bluetooth LE on the Arduino Nano 33 Sense](https://ladvien.com/arduino-nano-33-bluetooth-low-energy-setup/)
+
+The incoming data will be dumped into a CSV.  One of the parameters is where you would like to save this CSV.  I'll be saving it to the Desktop.  I'm also retrieving the user's home folder from the `HOME` environment variable, which is only available on Mac and Linux OS (Unix systems).  If you are trying this project from Windows, you'll need to replace the `root_path` reference with the full path.
 
 ```py
-## Initialization
 root_path = os.environ["HOME"]
 output_file = f"{root_path}/Desktop/microphone_dump.csv"
 ```
 
+You'll also need need to specify the [characteristics](https://www.bluetooth.com/specifications/gatt/characteristics/) which the Python app should try to subscribe to when connected to remote hardware.  Referring back to our previous project, you should be able to get this from the Arduino code.  Or the Serial terminal printout.
 
-## Main
 ```py
-#############
-# App Main
-#############
 read_characteristic = "00001143-0000-1000-8000-00805f9b34fb"
 write_characteristic = "00001142-0000-1000-8000-00805f9b34fb"
+```
 
+
+## Main
+The main method is where all the async code is initialized.  Essentially, it creates three different loops, which run asynchronously when possible.
+
+* Main -- you'd put your application's code in this loop.  More on it later
+* Connection Manager -- this is the heart of the `Connection` object I'll describe more in a moment.
+* User Console -- this loop gets data from the user and sends it to the remote device.
+
+You can imagine each of these loops as independent, however, they are really coordinating during I/O events.  Like I said, I won't go in depth on async Python, as Langa's video series is much better than my squawking explanations.
+
+Though, it's important to know, the `ensure_future` is what tells Python to run a chunk of code asynchronously.  And I've been calling them "loops" because each of the 3 `ensure_future` calls have a `while True` statement in them.  That is, they do not return without error.
+
+After creating the different futures, the `loop.run_forever()` is what causes them to run. 
+```py
 if __name__ == "__main__":
-
     # Create the event loop.
     loop = asyncio.get_event_loop()
 
@@ -88,9 +95,9 @@ if __name__ == "__main__":
         loop, read_characteristic, write_characteristic, data_to_file.write_to_csv
     )
     try:
+        asyncio.ensure_future(main())
         asyncio.ensure_future(connection.manager())
         asyncio.ensure_future(user_console_manager(connection))
-        asyncio.ensure_future(main())
         loop.run_forever()
     except KeyboardInterrupt:
         print()
@@ -100,30 +107,40 @@ if __name__ == "__main__":
         loop.run_until_complete(connection.cleanup())
 ```
 
-## Save Incoming Data to File
+Where does `bleak` come in?  You may have been wondering about the code directly before setting up the loops.
 ```py
-class DataToFile:
-
-    column_names = ["time", "delay", "data_value"]
-
-    def __init__(self, write_path):
-        self.path = write_path
-
-    def write_to_csv(self, times: [int], delays: [datetime], data_values: [Any]):
-
-        if len(set([len(times), len(delays), len(data_values)])) > 1:
-            raise Exception("Not all data lists are the same length.")
-
-        with open(self.path, "a+") as f:
-            if os.stat(self.path).st_size == 0:
-                print("Created file.")
-                f.write(",".join([str(name) for name in self.column_names]) + ",\n")
-            else:
-                for i in range(len(data_values)):
-                    f.write(f"{times[i]},{delays[i]},{data_values[i]},\n")
+    connection = Connection(
+        loop, read_characteristic, write_characteristic, data_to_file.write_to_csv
+    )
 ```
 
-## Connection Management
+This class wrap the `bleak` library and makes it a bit easier to use.  Let me explain.
+
+
+## Connection()
+
+You may be asking, "Why create a wrapper around `bleak`, Thomas?" Well, two reasons. First, the `bleak` library is still in development and there are several aspects which do not work well.  Second, there are additional features I'd like my Bluetooth LE Python class to have.  For example, if you the Bluetooth LE connection is broken, I want my code to automatically attempt to reconnect.  This wrapper class allows me to add these capabilities.
+
+That stated, I did try to keep the code highly hackable.  That is, I want anybody to be able to use the code for their own applications, with a minimum time investment.
+
+### Connection(): __init__
+
+The `Connection` class has three required arguments and one optional.
+
+* `loop` -- this is the loop established by `asyncio`, it allows the `connection` class to do async magic.
+* `read_characteristic` -- the characteristic on the remote device containing data we are interested in.
+* `write_characteristic` -- the characteristic on the remote device which we can write data.
+* `data_dump_handler` -- this is the function to call when we've filled the `rx` buffer.
+* `data_dump_size` -- this is the size of the `rx` buffer.  Once it is exceeded, the `data_dump_handler` function is called and the `rx` buffer is cleared.
+
+Alongside the arguments are internal variables which track device state. 
+
+The variable `self.connected` tracks whether the `BleakClient` is connected to a remote device.  It is needed since the `await self.client.is_connected()` currently has an issue where it raises an exception if you call it and it's not connected to a remote device.  Have I mentioned `bleak` is in progress?
+
+`self.selected_device` hangs on to the device you selected when you started the `app`.  This is needed for reconnecting on disconnect.
+
+The rest of variables help track the incoming data.  Honestly, they'll probably be refactored into a [DTO](https://en.wikipedia.org/wiki/Data_transfer_object) at some point.
+
 ```py
 class Connection:
     
@@ -141,26 +158,37 @@ class Connection:
         self.read_characteristic = read_characteristic
         self.write_characteristic = write_characteristic
         self.data_dump_handler = data_dump_handler
+        self.data_dump_size = data_dump_size
 
-        self.last_packet_time = datetime.now()
-        self.dump_size = data_dump_size
+        # Device state
         self.connected = False
         self.connected_device = None
 
+        # RX Buffer
+        self.last_packet_time = datetime.now()
         self.rx_data = []
         self.rx_timestamps = []
         self.rx_delays = []
+```
 
+### Connection(): Callbacks
+
+```py
     def on_disconnect(self, client: BleakClient):
         self.connected = False
         # Put code here to handle what happens on disconnet.
         print(f"Disconnected from {self.connected_device.name}!")
 
-    async def cleanup(self):
-        if self.client:
-            await self.client.stop_notify(read_characteristic)
-            await self.client.disconnect()
+    def notification_handler(self, sender: str, data: Any):
+        self.rx_data.append(int.from_bytes(data, byteorder="big"))
+        self.record_time_info()
+        if len(self.rx_data) >= self.data_dump_size:
+            self.data_dump_handler(self.rx_data, self.rx_timestamps, self.rx_delays)
+            self.clear_lists()
+```
 
+### Connection(): Connection Management
+```py
     async def manager(self):
         print("Starting connection manager.")
         while True:
@@ -189,6 +217,19 @@ class Connection:
         except Exception as e:
             print(e)
 
+    async def cleanup(self):
+        if self.client:
+            await self.client.stop_notify(read_characteristic)
+            await self.client.disconnect()
+```
+
+## Device Selection
+Bleak is a multi-OS package, however, there are slight differences between the different operating-systems.  One of those is the address of your remote device.  Windows and Linux report the remote device by it's [MAC](MAC_address).  Mac's the odd duck, it uses a Universally Unique Identifier ([UUID](https://en.wikipedia.org/wiki/Universally_unique_identifier).  Specially, it uses a [CoreBluetooth](https://developer.apple.com/documentation/corebluetooth) UUID, or a [CBUUID](https://developer.apple.com/documentation/corebluetooth/cbuuid). 
+
+These identifiers are important because bleak uses them during its connection process.  These IDs are static, that is, they shouldn't change.  
+It should list any Bluetooth LE devices advertising services.  Once you've identified  your device then open the `bleak_app.py` script and replace either the MAC address or CBUUID shown below.
+
+```py
     async def select_device(self):
         print("Bluetooh LE hardware warming up...")
         await asyncio.sleep(2.0, loop=loop) # Wait for BLE to initialize.
@@ -214,7 +255,10 @@ class Connection:
         print(f"Connecting to {devices[response].name}")
         self.connected_device = devices[response]
         self.client = BleakClient(devices[response].address, loop=self.loop)
+```
 
+## Utility Methods
+```py
     def record_time_info(self):
         present_time = datetime.now()
         self.rx_timestamps.append(present_time)
@@ -225,13 +269,29 @@ class Connection:
         self.rx_data.clear()
         self.rx_delays.clear()
         self.rx_timestamps.clear()
+```
 
-    def notification_handler(self, sender: str, data: Any):
-        self.rx_data.append(int.from_bytes(data, byteorder="big"))
-        self.record_time_info()
-        if len(self.rx_data) >= self.dump_size:
-            self.data_dump_handler(self.rx_data, self.rx_timestamps, self.rx_delays)
-            self.clear_lists()
+## Save Incoming Data to File
+```py
+class DataToFile:
+
+    column_names = ["time", "delay", "data_value"]
+
+    def __init__(self, write_path):
+        self.path = write_path
+
+    def write_to_csv(self, times: [int], delays: [datetime], data_values: [Any]):
+
+        if len(set([len(times), len(delays), len(data_values)])) > 1:
+            raise Exception("Not all data lists are the same length.")
+
+        with open(self.path, "a+") as f:
+            if os.stat(self.path).st_size == 0:
+                print("Created file.")
+                f.write(",".join([str(name) for name in self.column_names]) + ",\n")
+            else:
+                for i in range(len(data_values)):
+                    f.write(f"{times[i]},{delays[i]},{data_values[i]},\n")
 ```
 
 ## App Loops

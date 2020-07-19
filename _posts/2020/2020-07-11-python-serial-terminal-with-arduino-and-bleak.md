@@ -72,7 +72,6 @@ read_characteristic = "00001143-0000-1000-8000-00805f9b34fb"
 write_characteristic = "00001142-0000-1000-8000-00805f9b34fb"
 ```
 
-
 ## Main
 The main method is where all the async code is initialized.  Essentially, it creates three different loops, which run asynchronously when possible.
 
@@ -180,7 +179,7 @@ The rest of variables help track the incoming data.  They'll probably be refacto
 ### Connection(): Callbacks
 There are two callbacks in the `Connection` class.  One to handle disconnections from the Bluetooth LE device.  And one to handle incoming data.
 
-Easy one first, the `on_disconnect` method is called whenever the `BleakClient` loses connection with the remote device.  All I'm doing with the callback is setting the `connected` flag to `False`.  This will cause the `Connection.connect()` to attempt to reconnect.
+Easy one first, the `on_disconnect` method is called whenever the `BleakClient` loses connection with the remote device.  All we're doing with the callback is setting the `connected` flag to `False`.  This will cause the `Connection.connect()` to attempt to reconnect.
 ```py
     def on_disconnect(self, client: BleakClient):
         self.connected = False
@@ -190,7 +189,7 @@ Easy one first, the `on_disconnect` method is called whenever the `BleakClient` 
 
 The `notification_handler` is called by the `BleakClient` any time the remote device updates a characteristic we are interested in.  The callback has two parameters, `sender`, which is the name of the device making the update, and `data`, which is a [bytearray](https://docs.python.org/3.1/library/functions.html#bytearray) containing the information received.
 
-I'm converting the data from two-bytes into a single `int` value using Python's [from_bytes()](https://docs.python.org/3/library/stdtypes.html#int.from_bytes).  The first argument is the bytearray and the the `byteorder` defines the [endianness](https://en.wikipedia.org/wiki/Endianness) (usually `big`).  The converted value is then appended to the `rx_data` list.
+I'm converting the data from two-bytes into a single `int` value using Python's [from_bytes()](https://docs.python.org/3/library/stdtypes.html#int.from_bytes).  The first argument is the bytearray and the `byteorder` defines the [endianness](https://en.wikipedia.org/wiki/Endianness) (usually `big`).  The converted value is then appended to the `rx_data` list.
 
 The `record_time_info()` calls a method to save the current time and the number of microseconds between the current byte received and the previous byte.
 
@@ -206,6 +205,9 @@ If the length of the `rx_data` list is greater than the `data_dump_size`, then t
 ```
 
 ### Connection(): Connection Management
+The `Connection` class's primary job is to manage `BleakClient`'s connection with the remote device.  
+
+The `manager` function is one of the async loops.  It continually checks if the `Connection.client` exists, if it doesn't then it prompts the `select_device()` function to find a remote connection.  If it does exist, then it executes the `connect()`.
 ```py
     async def manager(self):
         print("Starting connection manager.")
@@ -215,7 +217,19 @@ If the length of the `rx_data` list is greater than the `data_dump_size`, then t
             else:
                 await self.select_device()
                 await asyncio.sleep(15.0, loop=loop)       
+```
 
+The `connect()` is responsible for ensuring the PC's Bluetooth LE device maintains a connection with the selected remote device.  
+
+First, the method checks if the the device is already connected, if it does, then it simply returns.  Remember, this function is in an async loop.
+
+If the device is not connected, it tries to make the connection by calling `self.client.connect()`.  This is awaited, meaning it will not continue to execute the rest of the method until this function call is returned.  Then, we check if the connection is was successful and update the `Connection.connected` property.
+
+If the `BleakClient` is indeed connected, then we add the `on_disconnect` and `notification_handler` callbacks.  Note, we only added a callback on the `read_characteristic`.  Makes sense, right?
+
+Lastly, we enter an infinite loop which checks every `5` seconds if the `BleakClient` is still connected, if it isn't, then it breaks the loop, the function returns, and the entire method is called again.
+
+```py
     async def connect(self):
         if self.connected:
             return
@@ -229,12 +243,17 @@ If the length of the `rx_data` list is greater than the `data_dump_size`, then t
                     self.read_characteristic, self.notification_handler,
                 )
                 while True:
-                    await asyncio.sleep(15.0, loop=loop)
+                    if not self.connected:
+                        break
+                    await asyncio.sleep(5.0, loop=loop)
             else:
                 print(f"Failed to connect to {self.connected_device.name}")
         except Exception as e:
             print(e)
+```
 
+Whenever we decide to end the connection, we can escape the program by hitting `CTRL+C`, however, before shutting down the `BleakClient` needs to free up the hardware.  The `cleanup` method checks if the `Connection.client` exists, if it does, it tells the remote device we no longer want notifications from the `read_characteristic`.   It also sends a signal to our PC's hardware and the remote device we want to disconnect.
+```py
     async def cleanup(self):
         if self.client:
             await self.client.stop_notify(read_characteristic)
@@ -242,11 +261,11 @@ If the length of the `rx_data` list is greater than the `data_dump_size`, then t
 ```
 
 ## Device Selection
-Bleak is a multi-OS package, however, there are slight differences between the different operating-systems.  One of those is the address of your remote device.  Windows and Linux report the remote device by it's [MAC](MAC_address).  Mac's the odd duck, it uses a Universally Unique Identifier ([UUID](https://en.wikipedia.org/wiki/Universally_unique_identifier).  Specially, it uses a [CoreBluetooth](https://developer.apple.com/documentation/corebluetooth) UUID, or a [CBUUID](https://developer.apple.com/documentation/corebluetooth/cbuuid). 
+Bleak is a multi-OS package, however, there are slight differences between the different operating-systems.  One of those is the address of your remote device.  Windows and Linux report the remote device by it's [MAC](MAC_address).  Of course, Mac has to be the odd duck, it uses a Universally Unique Identifier ([UUID](https://en.wikipedia.org/wiki/Universally_unique_identifier)).  Specially, it uses a [CoreBluetooth](https://developer.apple.com/documentation/corebluetooth) UUID, or a [CBUUID](https://developer.apple.com/documentation/corebluetooth/cbuuid). 
 
-These identifiers are important because bleak uses them during its connection process.  These IDs are static, that is, they shouldn't change.  
-It should list any Bluetooth LE devices advertising services.  Once you've identified  your device then open the `bleak_app.py` script and replace either the MAC address or CBUUID shown below.
+These identifiers are important as bleak uses them during its connection process.  These IDs are static, that is, they shouldn't change between sessions, yet they should be unique to the hardware.
 
+The `select_device` method calls the `bleak.discover` method, which returns a list of `BleakDevices` advertising their connections within range.  The code uses the `aioconsole` package to asynchronously request the user to select a particular device
 ```py
     async def select_device(self):
         print("Bluetooh LE hardware warming up...")
@@ -269,6 +288,9 @@ It should list any Bluetooth LE devices advertising services.  Once you've ident
                 break
             else:
                 print("Please make valid selection.")
+```
+After the user has selected a device then the `Connection.connected_device` is recorded (in case we needed it later) and the `Connection.client` is set to a newly created `BleakClient` with the address of the user selected device.
+```py
 
         print(f"Connecting to {devices[response].name}")
         self.connected_device = devices[response]
@@ -276,6 +298,8 @@ It should list any Bluetooth LE devices advertising services.  Once you've ident
 ```
 
 ## Utility Methods
+Not much to see here, these methods are used to handle timestamps on incoming Bluetooth LE data and clearing the `rx` buffer.
+
 ```py
     def record_time_info(self):
         present_time = datetime.now()
@@ -290,6 +314,7 @@ It should list any Bluetooth LE devices advertising services.  Once you've ident
 ```
 
 ## Save Incoming Data to File
+This is a small class meant to make it easier to record the incoming microphone data along with the time it was received and delay since the last bytes were received.
 ```py
 class DataToFile:
 
@@ -313,6 +338,9 @@ class DataToFile:
 ```
 
 ## App Loops
+I mentioned three "async loops," we've covered the first one inside the `Connection` class, but outside are the other two.
+
+The `user_console_manager()` checks to see if the `Connection` instance has a instantiated a `BleakClient` and it is connected to a device.  If so, it prompts the user for input in a non-blocking manner.  After the user enters input and hits return the string is converted into a `bytearray` using the `map()`.  Lastly, it is sent by directly accessing the `Connection.client`'s `write_characteristic` method.  Note, that's a bit of a code smell, it should be refactored (when I have time).
 
 ```py
 #############
@@ -327,8 +355,10 @@ async def user_console_manager(connection: Connection):
             print(f"Sent: {input_str}")
         else:
             await asyncio.sleep(2.0, loop=loop)
+```
 
 
+```py
 async def main():
     while True:
         # YOUR APP CODE WOULD GO HERE.

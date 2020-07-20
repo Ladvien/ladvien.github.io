@@ -237,7 +237,7 @@ Lastly, we enter an infinite loop which checks every `5` seconds if the `BleakCl
             await self.client.connect()
             self.connected = await self.client.is_connected()
             if self.connected:
-                print(F"Connected to {self.connected_device.name}")
+                print(f"Connected to {self.connected_device.name}")
                 self.client.set_disconnected_callback(self.on_disconnect)
                 await self.client.start_notify(
                     self.read_characteristic, self.notification_handler,

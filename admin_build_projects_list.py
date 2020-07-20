@@ -2,7 +2,7 @@ import os
 import pandas as pd
 from gspread_pandas import Spread, Client
 
-project_md_path = f"{os.getcwd()}/_posts/2012-01-01-projects.md"
+project_md_path = f"{os.getcwd()}/_posts/2012/2012-01-01-projects.md"
 
 
 def get_df_from_gsheets(

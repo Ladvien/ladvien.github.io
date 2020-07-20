@@ -343,9 +343,6 @@ I mentioned three "async loops," we've covered the first one inside the `Connect
 The `user_console_manager()` checks to see if the `Connection` instance has a instantiated a `BleakClient` and it is connected to a device.  If so, it prompts the user for input in a non-blocking manner.  After the user enters input and hits return the string is converted into a `bytearray` using the `map()`.  Lastly, it is sent by directly accessing the `Connection.client`'s `write_characteristic` method.  Note, that's a bit of a code smell, it should be refactored (when I have time).
 
 ```py
-#############
-# Loops
-#############
 async def user_console_manager(connection: Connection):
     while True:
         if connection.client and connection.connected:
@@ -357,7 +354,7 @@ async def user_console_manager(connection: Connection):
             await asyncio.sleep(2.0, loop=loop)
 ```
 
-
+The last loop is the one designed to take the application code.  Right now, it only simulates application logic by sleeping 5 seconds.
 ```py
 async def main():
     while True:
@@ -365,46 +362,5 @@ async def main():
         await asyncio.sleep(5)
 ```
 
-# Linux Troubleshooting
-
-* Update BlueZ script
-  *  http://www.bluez.org/development/git/
-* Physical distance
-* Interference
-* Bluetoothctl
-  * Remove device
-  * Pair device
-  * [Power cycle](https://github.com/hbldh/bleak/issues/172#issuecomment-637351561) 
-  * Set primary controller
-
-
-# Why Does Bluetooth Suck?
-https://www.businessinsider.com/why-bluetooth-sucks-bad-problems-issues-disconnects-2018-2
-
-
-## Why I Think PCs Suck at Bluetooth LE
-> [Bluetooth is] like a mating dance between scorpions in the middle of a freeway. High chance something gets messed up. --[bjt2n3904](news.ycombinator.com/item?id=14753035)
-> 
-Head's up, below is not researched, it's conjecture.
-
-You will find Bluetooth LE ubiquitous among mobile devices.  Whether you have an Android, iPhone, or even a Pixel, your phone is most likely equipped with Bluetooth LE and uses it regularly.  In fact, I'd assert Bluetooth LE is to mobile what USB is to PCs.
-
-Why bring it up?  Well, mobile device providers were early adopters of Bluetooth LE.  It made a lot of sense, they didn't have to pay the USB licensing fees, it didn't require a physical cable connected to a small device, and multiple devices could connect without a physical interfaces.  
-
-Unfortunately, PC manufacturers didn't adopt Bluetooth LE as whole-heartily.  They already had USB, why invest in all of the complexities of Bluetooth LE.  When they did start adding Bluetooth LE hardware as stock, it was much later than mobile.  With the hardware being added, it only solved half of the problem.  There was also the "Bluetooth stack" which was needed to drive the hardware.  And therein was the real problem.
-
-Operating systems did not provide an abstraction of the many Bluetooth LE chipsets for years.  For example, Windows didn't support Bluetooth LE as part of their common language runtime (CLR) until Windows 8.  And even then it wasn't reliable until--well, still not sure it is.  I can attest to lack of reliability, as I was working on a [Windows Bluetooth LE app](https://www.microsoft.com/en-us/p/lumi-uploader/9nblggh4wxfw?activetab=pivot:overviewtab) in 2017 and there were serious holes in the API (e.g., no in app scanning or connection, hidden "features" like 20-byte TX buffer).
-
-Now, I stated PC hardware and OS'es did not provide generalized support early on--there's one exception, Apple.  They added BLE to everything. My theory is Apple knew early on their users prized fewer wires and low energy peripherals.  Apple saw Bluetooth LE as a greart answer and they added to all their devices, whether it be mobile or PC.  And create CoreBluetooth, a developer's abstraction of the Bluetooth LE stacks. 
-
-Alright, I suspect I'm rambling.  But I mention it to emphasize why Bluetooth LE on PCs is not a solved problem.  Now let me risk a bit more goodwill and state why I feel it's a problem worth solving.
-
-## Importance of Connecting a PC and Device by Bluetooth LE
-
-I'm a data engineer by day.  One of the biggest problems I see with data is pesky humans.  If humans are involved in the data collection process they introduce tons of noise along with the signal.  As an advocate of good data, I'm in favor of passive data collection.  
-
-I love the idea of sensors being embedded in everything.  Of course, I've even stronger opinions about where those data should go once collected--yes, I'm looking at you Facebook and Google. Bluetooh LE was built for passive data collection.  Literally.  A sensor can use Bluetooth LE to push data to a bigger device at infrequent intervals, making sensor batteries last a long time.  With long lasting sensor batteries, it means the data collection process becomes passive.  That is, it takes very little human interaction for data to continue flowing to a central device.
-
-But, as I hinted at above, I believe collected data should be accessible to the person who generated those data primarily.  And it shouldn't require an act of God to acquire those data for personal use.  Bring it back full circle, having poor support of Bluetooth LE on PC means one has to jump through all the hoops of learning iOS or Android programming--and pray Apple and Google are ok with you routing data collected by your phone into a personal repository.
-
-In summary. I believe having a reliable way to access Bluetooth LE devices from a PC is important for the ownership of one's own sensor data.
+# Closing
+Well, that's it.  You _will_ have problems, especially if you are using the above code from Linux or Windows.  But, if you run into any issues I'll do my best to provide support.  Just leave me a comment below.

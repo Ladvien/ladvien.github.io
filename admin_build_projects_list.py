@@ -9,6 +9,7 @@ def get_df_from_gsheets(
     folder_name: str, workbook_name: str, worksheet_name: str, cols_to_preserve=[]
 ) -> pd.DataFrame:
     client = Client()
+    print("here")
     sheets = client.find_spreadsheet_files_in_folders(folder_name)
     sheet = Spread(workbook_name, worksheet_name)
     return sheet.sheet_to_df(formula_columns=cols_to_preserve)

@@ -34,7 +34,7 @@ If you would like all 6,000 of the sample images generated, here you go:
 ### Small Symbols (64x64)
 The following symbols were generated with a GAN using 128x128 dimensions as input and output.  These symbols were not post-processed.
 
-* [Ladvien's Deep Arcane GAN 128x128 Output (6k)](https://ladvien.com/raw_images/deep-arcane/128x128_cleaned/ladvien-deep-arcane-128x128_dirty.tar.gz)
+* [Ladvien's Deep Arcane GAN 128x128 Output (6k)](https://ladvien.com/raw_images/deep-arcane/128x128_dirty/ladvien-deep-arcane-128x128_dirty.tar.gz)
 
 ![machine-learning-created-magical-symbols-128x128](/raw_images/deep-arcane/deep-arcane-sample-128x128.png)
 

@@ -21,4 +21,8 @@ To change things up, I thought I'd mix my interest and profession.  I decided to
 
 
 
-![degan-searching-symbols-in-vampire-archive](/images/deep-arcane/thomas_ancient_archives.gif)
+![degan-searching-symbols-in-vampire-archive](../../images/deep-arcane/thomas_ancient_archives.gif)
+
+![machine-learning-created-magical-symbols-64x64](../../raw_images/deep-arcane/deep-arcane-sample-64x64.png)
+
+![machine-learning-created-magical-symbols-128x128](../../raw_images/deep-arcane/deep-arcane-sample-128x128.png)

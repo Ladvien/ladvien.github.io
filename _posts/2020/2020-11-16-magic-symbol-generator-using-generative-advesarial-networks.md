@@ -12,7 +12,7 @@ comments: true
 custom_css:
 custom_js: 
 ---
-Often, I'll get whims and spend far too long on bringing them to fruition.  This is one of those projects.  There isn't much reason other than lolz and learning.  I've scraped the internet for images of magic symbols, then used a generative adversarial network ([GAN](https://en.wikipedia.org/wiki/Generative_adversarial_network)).  The GAN is built using PyTorch.  Though, there are several other neural-nets I've used in the project which were written in Tensorflow.  A lot of the code has been borrowed from elsewhere and adapted; I'll do my best to give credit where it's due.
+Often, I'll get whims and spend far too long on bringing them to fruition.  This is one of those projects.  There isn't much reason other than lolz and learning.  I've scraped the internet for images of magic symbols, then used a deconvolutional generative adversarial network ([GAN](https://en.wikipedia.org/wiki/Generative_adversarial_network)).  The GAN is built using PyTorch.  Though, there are several other neural-nets I've used in the project which were written in Tensorflow.  A lot of the code has been borrowed from elsewhere and adapted; I'll do my best to give credit where it's due.
 
 ## What was in my Head
 I like folklore.  Of special interest is folklore dealing with magic.  Spells, witches, and summoning the dead, all pique my interests.  I'm guessing I love folklore because it is far removed from what I do every day, engineer data.  I know it might burst the aspirations of young data engineers reading this, but someone has to tell the truth, data engineering, on occasion, can get a bit boring.
@@ -39,4 +39,6 @@ The following symbols were generated with a GAN using 128x128 dimensions as inpu
 ![machine-learning-created-magical-symbols-128x128](/raw_images/deep-arcane/deep-arcane-sample-128x128.png)
 
 
-## How to Create Your Own
+## Create your own GAN
+
+Whether you are interested in making your own magic symbol generator, or you would like to 

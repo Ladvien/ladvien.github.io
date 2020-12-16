@@ -55,7 +55,7 @@ And examples of "used in traditional superstition."  The top-left symbol is the 
 ## Results
 Again, preliminary results.  I'm shopping for a way to scale up the size of the network, which should increase the articulation of the outputs.  Overall, the bigger the network the more interesting the results.
 
-![husband-convincing-girlfriend-to-buy-scalped-rtx-3090](/images/scalped_rtx_3090.jpg)
+![husband-convincing-girlfriend-to-buy-scalped-rtx-3090](/images/deep-arcane/scalped_rtx_3090.jpg)
 
 ### Small Symbols (64x64)
 The following symbols were generated with a DCGAN using 64x64 dimensions as output.  These symbols were then post-processed by using a deep denoising varational auto-encoder (DDVAE).  It was a fancy way of removing "[pepper](https://en.wikipedia.org/wiki/Salt-and-pepper_noise)" from the images.

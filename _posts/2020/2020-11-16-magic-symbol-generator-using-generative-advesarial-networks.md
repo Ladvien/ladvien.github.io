@@ -24,12 +24,12 @@ I've planned a series of articles, as there is too much to cover in one.  A lot 
 ![blade-ancient-vampire-symbols](/raw_images/deep-arcane/thomas_ancient_archives.gif)
  Let's start with current results first.  After getting the urge to teach a computer to make a magic sign, it took a couple days of hacking before I ended up with the images below.
 
- Keep in mind, these are preliminary results.  They were generated using my GTX 1060 6GB.  The GPU RAM limits the model a lot--at least, until I rewrite the training loop.  Why do I mention the the small GPU?  Well, GANs are an architecture which provide much better results with more neurons.  And the 6GB limits the network a lot for well performing GAN.
+ Keep in mind, **these are preliminary results**.  They were generated using my GTX 1060 6GB.  The GPU RAM limits the model a lot--at least, until I rewrite the training loop.  Why do I mention the the small GPU?  Well, GANs are an architecture which provide much better results with more neurons.  And the 6GB limits the network a lot for well performing GAN.
 
  Anyway, 'nuff caveats.  Let's dig in.
 
 ## Signal
-There are a few concepts I'll refer to a lot throughout these articles--let's define them before we dig in.
+There are a few concepts I'll refer to a lot throughout these articles--let's define real quick.
 
 First, "[signal](https://en.wikipedia.org/wiki/Signal)."  I like Wikipedia's definition, even if it is sleep inducing.
 
@@ -37,21 +37,25 @@ First, "[signal](https://en.wikipedia.org/wiki/Signal)."  I like Wikipedia's def
 
 One of the mistakes I made early in this project was not defining the desired signal.  In future projects, I'll lead with a written definition and modify it based on what I learn about the signal.  However, for this project, here was my eventual definition.
 
-The "magic symbol" signal had the following properties,
+The "magic symbol" signal had the following properties:
 * Used in traditional superstition
 * Defined
 
 These terms became my measuring stick for determining whether an image was included in the training data.  
 
-I decided each image should be defined.  Meaning, an image must be easily discernible at the resolution in which it was trained.  
+Given poorly defined training images seemed to produce extremely muddy outputs, I decided each image should be "defined."  Meaning, an image must be easily discernible at the resolution in which it was trained.  
 
-Here are examples of "defined,"
+Here are examples of what I see as "defined":
 ![example-of-defined-training-images](/images/deep-arcane/defined_example.png)
 
 And examples of "used in traditional superstition."  The top-left symbol is the [Leviathan Cross](https://symbolism.fandom.com/wiki/The_Leviathan_Cross) and bottom-left is the [Sigil of Bael](https://en.wikipedia.org/wiki/Bael_(demon)).
 
 ![example-of-superstitious-training-images](/images/deep-arcane/superstition_example.png)
 
+## Results
+Again, preliminary results.  I'm shopping for a way to scale up the size of the network, which should increase the articulation of the outputs.  Overall, the bigger the network the more interesting the results.
+
+![husband-convincing-girlfriend-to-buy-scalped-rtx-3090](/images/scalped_rtx_3090.jpg)
 
 ### Small Symbols (64x64)
 The following symbols were generated with a DCGAN using 64x64 dimensions as output.  These symbols were then post-processed by using a deep denoising varational auto-encoder (DDVAE).  It was a fancy way of removing "[pepper](https://en.wikipedia.org/wiki/Salt-and-pepper_noise)" from the images.

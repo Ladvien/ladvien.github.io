@@ -45,11 +45,11 @@ These terms became my measuring stick for determining whether an image was inclu
 I decided each image should be defined.  Meaning, an image must be easily discernible at the resolution in which it was trained.  
 
 Here are examples of "defined,"
-![example-of-defined-training-images](../../images/deep-arcane/defined_example.png)
+![example-of-defined-training-images](/images/deep-arcane/defined_example.png)
 
 And examples of "used in traditional superstition."  The top-left symbol is the [Leviathan Cross](https://symbolism.fandom.com/wiki/The_Leviathan_Cross) and bottom-left is the [Sigil of Bael](https://en.wikipedia.org/wiki/Bael_(demon)).
 
-![example-of-superstitious-training-images](../../images/deep-arcane/superstition_example.png)
+![example-of-superstitious-training-images](/images/deep-arcane/superstition_example.png)
 
 
 ### Small Symbols (64x64)
@@ -59,14 +59,14 @@ If you would like all 6,000 of the sample images generated, here you go:
 
 * [Ladvien's Deep Arcane GAN 64x64 Output (6k)](https://ladvien.com/raw_images/deep-arcane/64x64_cleaned/ladvien-deep-arcane-64x64_cleaned.tar.gz)
 
-![machine-learning-created-magical-symbols-64x64](../../images/deep-arcane/deep-arcane-sample-64x64.png)
+![machine-learning-created-magical-symbols-64x64](/images/deep-arcane/deep-arcane-sample-64x64.png)
 
 ### Large Symbols (128x128)
 The following symbols were generated with a GAN using 128x128 dimensions as input and output.  These symbols were **not** post-processed.
 
 * [Ladvien's Deep Arcane GAN 128x128 Output (6k)](https://ladvien.com../../raw_images/deep-arcane/128x128_dirty/ladvien-deep-arcane-128x128_dirty.tar.gz)
 
-![machine-learning-created-magical-symbols-128x128](../../images/deep-arcane/deep-arcane-sample-128x128.png)
+![machine-learning-created-magical-symbols-128x128](/images/deep-arcane/deep-arcane-sample-128x128.png)
 
 ### Assessment of Outputs
 Overall, I'm pleased with the output.  Looking at how muddy the outputs are on the 128x128 you may be wondering why.  Well, a few reasons.

@@ -1,12 +1,11 @@
 title:            Ladvien's Lab
-# description:      A hacker's journey
+description:      Data engineer, hardware hacker, machine learning practitioner, writer, and eternal hacker.
 disqus_shortname: ladvien
 reading_time:     true
 words_per_minute: 200
 # Your site's domain goes here (eg: https://mmistakes.github.io, http://yourdomain.com, etc)
 # When testing locally leave blank or use http://localhost:4000
 url: https://ladvien.com
-#url:
 
 # Good info on optimizing Jekyll.
 # https://wiredcraft.com/blog/make-jekyll-fast/

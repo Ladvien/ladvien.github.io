@@ -19,7 +19,7 @@ I thought, "I need a way write a script to sort these images--but, they need to 
 After using the classifier to sort the images, I ended with 6,000 training images.  Of course, I still had to comb through these images for a few occasional bits of noise.  But I tried to be smart about it, I moved the noise into my "garbage" category and retrained my CNN.  Then repeated the classification.  After a few iterations and only minimal amount of hand sorting, I had 5,200 pretty solid training images.  Huzzah!
 
 Here's a sample of the images I used
-![deep-convolutional-generative-adversarial-network-magic-symbol-training-data](../../images/deep-arcane/training-data-sampler2.png)
+![deep-convolutional-generative-adversarial-network-magic-symbol-training-data](/images/deep-arcane/training-data-sampler2.png)
 
 ## Training Method
 

@@ -35,7 +35,14 @@ image:
     {% endif %}
   </header>
   <div class="entry-content">
-    {{ post.content }}
+
+    <!-- Clip article to the hook. -->
+    {% if post.content contains "<!-- more -->" %}
+      {{ post.content | split:"<!-- more -->" | first }}
+    {% else %}
+      {{ post.content }}
+    {% endif %}
+    
   </div><!-- /.entry-content -->
 </article><!-- /.hentry -->
 {% endfor %}

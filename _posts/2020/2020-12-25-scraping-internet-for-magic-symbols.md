@@ -321,7 +321,7 @@ for term in search_terms:
 It may be blasphemy, but I prize my data engineering over machine learning skills.  Putting together a good training data set is tough. Scraping images resulted in a lot of garbage images (noise) along with my ideal training images.
 
 For example, out of all the images shown, I only wanted the image highlighted.
-![magic-symbol-training-data-collection-noise-sample](../../images/deep-arcane/training-data-garbage.png)
+![magic-symbol-training-data-collection-noise-sample](/images/deep-arcane/training-data-garbage.png)
 
 There was also the problem of lots of magic symbols as collections in one image, for example,
 

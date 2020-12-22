@@ -15,7 +15,7 @@ custom_js:
 Previously, I wrote about training a CNN to detect toxic comments from text alone.  But, I realized, even if one has a nice little NN to solve all the world's problems it doesn't help unless it is in production.
 
 This article is going to cover how to prepare a server and needed word embeddings to mechanize the NN in a Flask webservice.
-
+<!-- more -->
 ### Server Setup: Preamble
 For this project I'm using a small server from Linode--called a "Nanode."  At the time of writing these servers are only $5 a month.  The catch? They only have 1GB of RAM.  It's definitely going to be tricky to deploy our CNN there, but let's see it through.
 

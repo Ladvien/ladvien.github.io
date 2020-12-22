@@ -23,7 +23,7 @@ Or if you want to run the code locally:
 * [lego_sorter](https://github.com/Ladvien/lego_sorter)
 
 It's a WIP, so comment below if you run into any issues.
-
+<!-- more -->
 ## Classifier Code:
 Our code started with a notebook found on Kaggle:
 

@@ -21,7 +21,7 @@ This article is part of a series documenting an attempt to create a LEGO sorting
 
 ## Goal
 To move forward with the LEGO sorting machine I needed a way to drive a conveyor belt.  Stepper motors were a fairly obvious choice.  They provide plenty of torque and finite control.  This was great, as several other parts of the LEGO classifier system would need steppers motors as well-e.g.,turn table and dispensing hopper.  Of course, one of the overall goals of this project is to keep the tools accessible.  After some research I decided to meet both goals by purchasing an Ardunio / RAMPs combo package intended for 3D printers.
-
+<!-- more -->
 ![ramps-kits-on-amazon](/images/lego_classifier/conveyor_belt/ramps-kit.png)
 
 * [Amazon RAMPs Kits](https://www.amazon.com/s?k=CNC+3D+Printer+Kit+for+Arduino+Mega+2560+R3+RAMPS+1.4&ref=nb_sb_noss)

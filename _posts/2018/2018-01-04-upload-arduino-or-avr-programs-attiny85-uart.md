@@ -16,7 +16,7 @@ custom_js:
 
 Upload Arduino Sketches to ATtiny85 With UART
 This article will show you how use a two-wire interface (UART) to upload Arduino sketches to the ATtiny85. In short, we will burn the [TinySafeBootloader](http://jtxp.org/tech/tinysafeboot_en.htm) onto the ATtiny85 using an [Arduino Uno as an ISP programmer](https://www.arduino.cc/en/Tutorial/ArduinoISP). After the initial burning of the bootloader, we can then program the ATtiny85 with any FTDI compatible USB-to-UART. And very similar steps may be followed to do the same for an ATtiny84.
-
+<!-- more -->
 There are a few requirements and a lot of setup needed:
 
 #### Prerequisites:

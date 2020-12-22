@@ -13,7 +13,7 @@ custom_js:
 ---
 # Creating a List of Domestic Violence Victims
 In this first work challenge you will use R and SQL to get a by-name-list of those who are domestic violence victims from an HMIS data pull (5.1).
-
+<!-- more -->
 ## Data Needed
 The HMIS Data Pulls are simply a [relational database](https://en.wikipedia.org/wiki/Relational_database) which are broken into multiple CSVs.  These CSVs will change in formatting, as stipulated by HUD.  The current version of these CSVs is 5.1.  For this work challenge the focus will be on two CSVs.
 

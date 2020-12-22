@@ -13,7 +13,7 @@ custom_js:
 ---
 # Providing Chronically Homeless List
 With this work challenge we are going to take the concepts we've learned from the first challenge and build on them.  We will combine two dataframes derived from Client.csv and Enrollment.csv.  Then, we will apply HUD's formula to get a by-name-list of those who are chronically homeless.
-
+<!-- more -->
 ## Data Needed
 The current definition of chronically homeless is found in [HUD's federal register](https://www.federalregister.gov/documents/2015/12/04/2015-30473/homeless-emergency-assistance-and-rapid-transition-to-housing-defining-chronically-homeless):
 
@@ -58,7 +58,7 @@ This is skill of a Computational-Thinker, taking a definition like HUD provided 
 
 The next step is re-writing the paragraph in something called [pseudo-code](https://en.wikipedia.org/wiki/Pseudocode).
 
-{% highlight sql%}
+```sql
 Chronic Homeless Individual == 
                 
                     A person IS Disabled AND
@@ -69,13 +69,13 @@ Chronic Homeless Individual ==
                     A person IS Disabled AND
                     A person homeless > 4 times AND
                     A person > 12 months homeless within 3 years
-{% endhighlight %}
+```
 
 This helps us make sure everything is in place to feed to the computer.  The next step will be actually writing the SQL code.
 
 Below is the following code to get chronically homeless:
 
-{% highlight r %}
+```r
 #############################################
 ##### Get those with Disabling Condition ###
 #############################################
@@ -113,7 +113,7 @@ chronicallyHomeless <- sqldf("SELECT DISTINCT(a.PersonalID)
                               INNER JOIN disablingCondition b
                               ON a.PersonalID=b.PersonalID
                              ")
-{% endhighlight %}
+```
 
 This may look overwhelming, but that'll be the purpose of this week's Challenge, to demonstrate this is code is actually pretty simple when broke down into its basic parts.
 

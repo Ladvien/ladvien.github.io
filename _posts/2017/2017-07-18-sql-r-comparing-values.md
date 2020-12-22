@@ -17,7 +17,7 @@ Comparing two or more values is an extremely important concept when talking to c
 
 Take the following data:
 
-{% highlight r %}
+```r
 ######################### Data ###################################
 ###################### DO NOT CHANGE #############################
 peopleDf <- data.frame(PersonalID=c("ZP1U3EPU2FKAWI6K5US5LDV50KRI1LN7", "IA26X38HOTOIBHYIRV8CKR5RDS8KNGHV", "LASDU89NRABVJWW779W4JGGAN90IQ5B2"), 
@@ -26,7 +26,7 @@ peopleDf <- data.frame(PersonalID=c("ZP1U3EPU2FKAWI6K5US5LDV50KRI1LN7", "IA26X38
            DOB=c("2010-01-01", "1999-1-1", "1992-04-01"))
 ##################################################################
 ##################################################################
-{% endhighlight %}
+```
 
 If you run the above in R you should get a dataframe called `peopleDf` which looks like this:
 
@@ -93,10 +93,10 @@ Back to the problem.  How do we write a script which provides a dataframe of peo
 
 The code is actually pretty simple,
 
-{% highlight r %}
+```r
 library(sqldf)
 nonMillennialsDf <- sqldf("SELECT * FROM peopleDf WHERE DOB < '2000-01-01'")
-{% endhighlight %}
+```
 
 This should provide a `nonMillennialsDf` dataframe, which contains:
 
@@ -113,9 +113,9 @@ Another tricky part is trying to find if a date falls between two dates.  Let's 
 
 Here's the query.
 
-{% highlight r %}
+```r
 bornBetweenDf <- sqldf("SELECT * FROM peopleDf WHERE DOB > '1998-01-01' AND DOB < '2005-01-01'") 
-{% endhighlight %}
+```
 
 This should result in a table with only Fela:
 
@@ -131,9 +131,9 @@ There is one more critical command in writing robust date comparisons.  The `NOW
 Essentially, the `NOW()` asks the computer what today's date is when the script runs.
 
 In SQL-R it looks like this:
-{% highlight r %}
+```r
 nowDf <- sqldf("SELECT *, DATE('NOW') As 'TodaysDate' FROM peopleDf")
-{% endhighlight %}
+```
 
 This should provide:
 
@@ -152,9 +152,9 @@ As we discussed earlier, the computer looks at dates as the number of seconds si
 ## Age
 Let's get fancy.  We can use the `NOW()` function and our `peopleDf` to calculate everyone's age.
 
-{% highlight r %}
+```r
 peopleWithAgeDf <- sqldf("SELECT *, (DATE('NOW') - DOB) As 'Age' FROM peopleDf")
-{% endhighlight %}
+```
 
 This should provide:
 
@@ -173,7 +173,7 @@ The nerd-judo which can be done with dates in SQL-R is endless.  But this covers
 
 If you've missed the code bits throughout this article, here it is all at once:
 
-{% highlight r%}
+```r
 ######################### Data ###################################
 ###################### DO NOT CHANGE #############################
 peopleDf <- data.frame(PersonalID=c("ZP1U3EPU2FKAWI6K5US5LDV50KRI1LN7", "IA26X38HOTOIBHYIRV8CKR5RDS8KNGHV", "LASDU89NRABVJWW779W4JGGAN90IQ5B2"), 
@@ -187,4 +187,4 @@ nonMillennialsDf <- sqldf("SELECT * FROM peopleDf WHERE DOB < '2000-01-01'")
 bornBetweenDf <- sqldf("SELECT * FROM peopleDf WHERE DOB > '1998-01-01' AND DOB < '2005-01-01'") 
 nowDf <- sqldf("SELECT *, DATE('NOW') As 'TodaysDate' FROM peopleDf")
 peopleWithAgeDf <- sqldf("SELECT *, (DATE('NOW') - DOB) As 'Age' FROM peopleDf")
-{% endhighlight %}
+```

@@ -18,7 +18,7 @@ Well, bummer.  I really needed them.
 On top of it, I only had read access to the database without the ability to create a stored procedure.  Out of desperation, I found myself researching the possibility of creating my own functions using MySQL [User Variables](https://dev.mysql.com/doc/refman/5.7/en/user-variables.html).
 
 Slightly tweaking Dante, "Abandon all normal, ye who enter here."  User variables are weird.
-
+<!-- more -->
 I've spent some time researching on the interweb and about the best article I've found on the subject is:
 
 [Advanced MySQL User Variable Techniques](https://www.xaprb.com/blog/2006/12/15/advanced-mysql-user-variable-techniques/)

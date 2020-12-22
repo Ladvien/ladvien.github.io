@@ -23,7 +23,7 @@ I know it'll engender a lot of bad rep with the old-timers, but I prefer the one
 However, when working on a headless (no monitor) Raspberry Pi it felt like I was pretty much stuck with the `nano`.  
 
 Until! I discovered Visual Studio Code's `remote` extension.
-
+<!-- more -->
 * [Visual Studio Code Remote Extension](https://github.com/rafaelmaiolla/remote-vscode)
 
 This allowed me to edit my Raspberry Pi files from within Visual Studio Code.  So, I get all the joys of writing code directly on my Raspberry Pi, but with all the bells-and-whistles of Visual Studio Code (VSC).

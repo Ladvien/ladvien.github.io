@@ -20,7 +20,7 @@ Back then, I wasn't aware of being a hacker.  Now, I plan to throw all my hacker
 I signed up for MyFitnessPal.  Counting calories worked once, I figure if it aint broke.  But then I got to looking at how much work it would take to look at my improvement.  I mean, I'd have to actually open the app on my phone and click on the weight loss section.  Shesh--who designed that app?  Two actions to get where I needed--ain't no one got time for that.  
 
 Enter hacker skills.  I discovered there is a Python library which allows scraping of data.  
-
+<!-- more -->
 * [MyFitnessPal Python Library](https://github.com/coddingtonbear/python-myfitnesspal)
 
 This wonderful little library is written and provided by CoddingtonBear.

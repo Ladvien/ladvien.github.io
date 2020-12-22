@@ -15,7 +15,7 @@ custom_js:
 # The R and SQL Way
 
 Below is my attempt to describe the method I use to get at HMIS data.  In short, I'm mixing two powerful data languages to get answers from a data set quickly.
-
+<!-- more -->
 ## What is SQL?
 
 SQL stands for Structured Query Language.  Which can be translated as, "Asking a question a computer could understand." This computer language was designed to get data off a remote [relational database](https://en.wikipedia.org/wiki/Relational_database).

@@ -19,9 +19,9 @@ Again, simple, I used others hard work.  Specifically, Michael Hord with Sparkfu
 * [MiniMoto Arduino Library](https://github.com/sparkfun/SparkFun_MiniMoto_Arduino_Library/tree/V_1.1.0)
 
 Really, all I did was tweak the code a little bit to fit JavaScript syntax.
-
+<!-- more -->
 The result
-{% highlight js %}
+```js
 'use strict';
 var i2c = require('i2c-bus');
 var sleep = require('sleep');
@@ -153,7 +153,7 @@ module.exports = class Motor {
         }
     }
 }
-{% endhighlight %}
+```
 
 There's a lot left to do, but it works.
 

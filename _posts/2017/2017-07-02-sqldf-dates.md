@@ -14,7 +14,7 @@ custom_js:
 Mixing R and SQL is powerful.  One of the easiest ways to implement this combination is with the R library SQLdf.
 
 If TL;DR, skip to `Coerce Date Types into Strings before Passing to SQLdf` at bottom.
-
+<!-- more -->
 
 ## SQLdf
 The power of SQLdf comes from its ability to convert dataframes into SQLite databases on the fly.  To the user, it doesn't appear like anything special is going on, but under the hood R is working together with a SQLite client to create a table which can be queried and manipulated with ANSI SQL calls.

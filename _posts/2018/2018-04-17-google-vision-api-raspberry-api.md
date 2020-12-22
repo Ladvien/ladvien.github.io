@@ -18,7 +18,7 @@ This is a jumpstart guide to connecting a Raspberry Pi Zero W to the Google Visi
 Sadly, Google Vision API is not a completely free service.  At the time of writing an API account provides 1000 free Google Vision API calls a month.  Then, it's a $1.00 for each 1000 calls.
 
 I know, I know, not too bad.  But this isn't a commercial project.  I'm wanting to use it for a puttering little house bot.  If my wife gets a bill for $40 because I decided to stream images to the API, well, it'll be a dead bot. Anyway, I thought I'd still explore the service for poo-and-giggles.
-
+<!-- more -->
 To get an account visit
 
 * [Google Console](https://console.cloud.google.com/)

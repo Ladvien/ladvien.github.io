@@ -11,10 +11,8 @@ comments: true
 custom_css:
 custom_js: 
 ---
-
-
 Disclaimer:  The _easiest_ way to setup an SD card with Arch Linux for the Raspberry Pi Zero W (rp0w) is using Linux--and the following guide will assume you have access to Linux somewhere.  For Mac and Windows users, it is possible to setup an SD card using Linux inside of a virtual machine.  The interwebs will have more on the subject.
-
+<!-- more -->
 The hardest part of setting up Arch Linux for the rp0w is getting the WiFi working on boot.  This allows accessing the OS through ssh immediately.  This is known as a "headless setup."  I've created instructions on doing something similar in Kali.  However, I was lucky when I hit Arch--as there is a fine fellow who has already written a script to setup the WPA Supplicant needed for a headless build.
 
 * [Stasiana's instructions script for setting up wpa_supplicant](https://archlinuxarm.org/forum/viewtopic.php?f=31&t=11529)

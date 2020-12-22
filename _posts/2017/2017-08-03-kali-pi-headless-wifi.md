@@ -22,7 +22,7 @@ I also discovered the Sticky Fingers Kali Pi kernel and distros put together by 
 * [Kali Pi](https://whitedome.com.au/re4son/sticky-fingers-kali-pi/)
 
 It has worked well so far.  However, I've not fully tested the Bluetooth LE hardware on the custom kernel.
-
+<!-- more -->
 One of the issues I've had is not being able to connect to new hotspots headlessly.  Usually, you'd boot the rp0w connected to a monitor, keyboard, mouse, and edit wpa_supplicant.conf directly.  But what if you want to go into a new location with only your laptop and the rp0w.  How would you add the wifi credentials to the rp0w without a monitor, etc.
 
 For awhile, I tried to get the ethernet gadget setup to work on the rp0w without any luck.  I think the problems relates to trying to use the gadget hardware on a Mac rather than a Windows machine.

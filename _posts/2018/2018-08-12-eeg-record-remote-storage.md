@@ -17,7 +17,7 @@ custom_js:
 
 # Description
 This project takes brain wave readings from a MindWave Mobile 2+, transmits them to an iOS app via Bluetooth LE.  The iOS app makes  calls to a remote Node server, which is a minimal REST API, passing off the brain wave sample.  The Node server stores the data on a MongoDB server.  The MongoDB server is then exposed to business intelligence applications use with MongoDB BI Connector.  Lastly, using Tableau Professional Desktop, the data is accessed and visualizations created.
-
+<!-- more -->
 Whew.  
 
 To recap:

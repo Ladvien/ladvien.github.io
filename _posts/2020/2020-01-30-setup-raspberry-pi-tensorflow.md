@@ -6,7 +6,7 @@ series: LEGO Classifier
 excerpt:
 tags: [raspberry pi, tensorflow, cnn]
 image: 
-    feature: lego_mess.jpg
+    feature: lego_mess.png
     credit: Photo by Markus Spiske
 comments: true
 custom_css:

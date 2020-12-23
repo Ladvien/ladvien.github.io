@@ -13,7 +13,11 @@ custom_js:
 ---
 
 This article will show you how to program the Arduino Nano BLE 33 devices to use Bluetooth LE.
-![sending-string-from-pc-to-arduino-nano-33-ble-sense](/images/bluetooth_le/arduino_ble_python_bleak.gif)
+<video autoplay loop muted playsinline>
+  <source src="https://ladvien.com/images/movies/arduino_ble_python_bleak.mp4" 
+  title="Sending string from PC to Arduino using Bluetooth Low Energy and Python"
+  type="video/mp4">
+</video>
 
 ## Introduction
 Bluetooth Low Energy and I go way back.  I was one of the first using the HM-10 module back in the day.  Recently, my mentor introduced me to the [Arduino Nano 33 BLE Sense](https://store.arduino.cc/usa/nano-33-ble-sense-with-headers).  Great little board--_packed_ with sensors!

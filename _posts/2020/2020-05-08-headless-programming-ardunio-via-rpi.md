@@ -123,8 +123,11 @@ Feel free to hack the script for other projects.  You can replace the `arduino:a
 ![arduino-sketch-folder-for-cli](/images/lego_classifier/conveyor_belt/arduino_sketch_folder_for_cli.png)
 
 Here's an action shot:
-
-![upload-to-arduino-from-raspberry-pi-command-line](/images/lego_classifier/conveyor_belt/arduino-cli-install-script.gif)
+<video autoplay loop muted playsinline>
+  <source src="https://ladvien.com/images/movies/arduino-cli-install-script.mp4" 
+  title="Python script automatically installing sketch using the Arduino commandline interface."
+  type="video/mp4">
+</video>
 
 A couple of notes, if you have trouble running the install script here are two issues I ran into:
 

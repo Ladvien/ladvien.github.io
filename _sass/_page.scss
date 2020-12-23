@@ -28,11 +28,16 @@ body {
     }
 }
 
-//.entry-title {
-//	position: relative;
-//	top: 100px;
-//	margin-left: 20px;
-//}
+
+video {
+    left: 50%;
+    min-height: 100%;
+    min-width: 100%;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
 .entry-content {
     @include font-size($doc-font-size);
     p {
@@ -454,7 +459,6 @@ header .entry-meta {
 /* 
    Post index
    ========================================================================== */
-
 #post-index {
     #main {
         margin: 40px 2px 20px 2px;

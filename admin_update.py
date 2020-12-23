@@ -2,10 +2,16 @@
 
 """
 1. We build the website.
-2. We remove images and raw_images from the build.  These are created
-   
+2. We remove images and raw_images from the build.  These are updated seperately
+   to prevent having to update images with every build.  The update flag finds the 
+   images in _sites are newer than on the remote server and always re-uploads.
+3. Images are optimized for general use.
+4. ladvien/raw_images/ and ladvien/images/ are sync with the server.
+5. HTML is copied to remote website.  This is done using the --delete flag
+   which causes anything on the remote not matching local to be deleted.
+   This is why the images have to be sync before it is executed.
+6. The repo has a commit made as today's date and pushed to Github.
 """
-
 
 import os, sys
 from datetime import date
@@ -21,9 +27,9 @@ os.system(
 )
 
 # Remove images from build directory.  We move these manually.
-# os.system(
-#     f"rm -rf {root_path}/ladvien.github.io/_site/raw_images/ {root_path}/ladvien.github.io/_site/images/"
-# )
+os.system(
+    f"rm -rf {root_path}/ladvien.github.io/_site/raw_images/ {root_path}/ladvien.github.io/_site/images/"
+)
 
 
 print("")

@@ -45,7 +45,7 @@ As I stated, most of the install wizard questions we will leave as default.
 
 <video autoplay loop muted playsinline>
   <source src="https://ladvien.com/images/movies/mysql-server-install.mp4" 
-  title="Installing the MySQL server."
+  title="Installing the MySQL server"
   type="video/mp4">
 </video>
 

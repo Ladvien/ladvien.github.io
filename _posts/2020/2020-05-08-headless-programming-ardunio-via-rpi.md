@@ -125,7 +125,7 @@ Feel free to hack the script for other projects.  You can replace the `arduino:a
 Here's an action shot:
 <video autoplay loop muted playsinline>
   <source src="https://ladvien.com/images/movies/arduino-cli-install-script.mp4" 
-  title="Python script automatically installing sketch using the Arduino commandline interface."
+  title="Python script automatically installing sketch using the Arduino command-line interface"
   type="video/mp4">
 </video>
 

@@ -87,7 +87,7 @@ If you are using Windows you need to install software MySQL Workbench uses on Wi
 
 <video autoplay loop muted playsinline>
   <source src="https://ladvien.com/images/movies/downloading_prereqs.mp4" 
-  title="Downloading the prerequisites for MySQL server.."
+  title="Downloading the prerequisites for MySQL server"
   type="video/mp4">
 </video>
 

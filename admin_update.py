@@ -1,4 +1,12 @@
 #!/usr/bin/python3
+
+"""
+1. We build the website.
+2. We remove images and raw_images from the build.  These are created
+   
+"""
+
+
 import os, sys
 from datetime import date
 
@@ -13,9 +21,9 @@ os.system(
 )
 
 # Remove images from build directory.  We move these manually.
-os.system(
-    f"rm -rf {root_path}/ladvien.github.io/_site/raw_images/ {root_path}/ladvien.github.io/_site/images/"
-)
+# os.system(
+#     f"rm -rf {root_path}/ladvien.github.io/_site/raw_images/ {root_path}/ladvien.github.io/_site/images/"
+# )
 
 
 print("")
@@ -35,6 +43,7 @@ print("******************************")
 # -r = recurse into directories
 # -P = progress
 # -t = preserve modification times
+# --delete flag removes old website.
 os.system(
     f"rsync -h -v -r -t --delete {root_path}/ladvien.github.io/_site/* root@ladvien.com:/usr/share/nginx/html"
 )

@@ -22,7 +22,7 @@ He mentioned to me, "What I really need is a sorting machine."  And proceeded to
 I was skeptical for some time, but finally, I got drawn in he talked about incorporating a deep neural-network.  More specifically, a convolutional neural-network (CNN).  I'd been looking for an excuse to build a CNN.  This was a good one. 
 
 Anyway, these blog posts are our journal in build the LEGO sorter. 
-<!-- more -->
+
 Before we get started, a note about this series: I won't spend much time on explaining parts of the work where it is better documented elsewhere.  Instead, I'm going to focus on stuff I've found everyone else omitting.  Like, putting the neural-network to work. This one bugged me. Everyone loves to say, "Dude, my classifier has a validation accuracy of 99.999%!"  That's great, but as we found out, validation accuracy doesn't always translate into _production accuracy._
 
 ## TL;DR

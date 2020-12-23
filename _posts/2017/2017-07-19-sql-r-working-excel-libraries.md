@@ -16,7 +16,7 @@ We've worked a bit with Comma Separated Values (`.csv`) files, but it they aren'
 Excel is a program created by Microsoft to allow people to easily work with spreadsheets.  With it, they created a way of storing data which allows for formatting and other information to be included.  In fact, Excel documents have become so sophisticated programmers can include entire programs within the document.  This is the reason you'll often get the "Enable Content" button when open Excel document.  That means there is some code embedded in the Excel document which will run if you say "Enable".  (Be careful, malicious programmers can insert code which could royally blink up your computer.)
 
 When working with HMIS data being able to load and write Excel documents is necessary.  Unfortunately, it adds a lot of complexity.
-<!-- more -->
+
 There are several R libraries which will allow us to work with Excel documents in R.  They have different strengths, therefore, I'll focus on two libraries, rather than one.
 
 * [XLConnect](https://cran.r-project.org/web/packages/XLConnect/index.html)

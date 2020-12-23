@@ -32,7 +32,7 @@ A human sends machine learning job to the Boss.  A Job is JSON object containing
                 Order #1           Job #1
 
 ```
-<!-- more -->
+
 ## Worker
 The Worker uses [node-scheduler](https://www.npmjs.com/package/node-schedule) to fire an HTTP request to the Boss letting it know the Worker is "bored."  The Boss will then search through the Orders for the oldest unassigned Order, if it finds one, it will return this Order to the Worker as a JSON object.  At this point, the Boss updates the Order's status to "assigned."
 

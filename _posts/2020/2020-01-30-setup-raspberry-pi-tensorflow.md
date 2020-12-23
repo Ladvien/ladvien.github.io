@@ -13,7 +13,7 @@ custom_css:
 custom_js: 
 ---
 This post shows how to setup a Raspberry Pi 3B+ for operating a [Tensorflow](https://www.tensorflow.org/) CNN model using a [Pi Camera Module v2.0](https://www.raspberrypi.org/products/camera-module-v2/).
-<!-- more -->
+
 ## Raspberry Pi Setup
 I will be focusing on the Raspberry Pi 3B+, but don't worry if you are using a different Pi.  Just let me know in the comments below and I'll try to get instructions for your particular Pi added.  
 

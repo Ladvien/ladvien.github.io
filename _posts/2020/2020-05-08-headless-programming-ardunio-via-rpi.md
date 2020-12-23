@@ -19,7 +19,7 @@ The answer is obvious, right? A conveyor belt.  They are ubiquitous in manufactu
 After a month and a half of failed attempts, I've eventually created a working prototype.
 
 ![](/images/lego_classifier/conveyor_belt/2020-05-03_17.45.38.jpg)
-<!-- more -->
+
 
 The system consists of 5 parts:
 

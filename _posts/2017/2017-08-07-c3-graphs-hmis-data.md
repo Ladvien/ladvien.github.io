@@ -29,7 +29,7 @@ This graph shows the trend of those homeless in Tarrant County, week-to-week who
 3. Or the person was active in an Entry / Exit shelter program within the week of the count.
 
 Most likely the count is inflated approximately 33%, given there is a large known number of duplicates in the count.  The software used to generate the data has no administrator option to merge duplicates.  A request has been made for mass merger.
-<!-- more -->
+
 ### Active in Rapid Rehousing
 Another trend found in the graph is a week-to-week count of those homeless who are active in a Rapid Rehousing (RRH) project.
 

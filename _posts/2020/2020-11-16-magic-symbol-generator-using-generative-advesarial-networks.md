@@ -27,7 +27,7 @@ I've planned a series of articles, as there is too much to cover in one.  A lot 
  Keep in mind, **these are preliminary results**.  They were generated using my GTX 1060 6GB.  The GPU RAM limits the model a lot--at least, until I rewrite the training loop.  Why do I mention the the small GPU?  Well, GANs are an architecture which provide much better results with more neurons.  And the 6GB limits the network a lot for well performing GAN.
 
  Anyway, 'nuff caveats.  Let's dig in.
-<!-- more -->
+
 
 ## Signal
 There are a few concepts I'll refer to a lot throughout these articles--let's define real quick.

@@ -22,7 +22,7 @@ As stated above, the data needed are:
 3. A dataframe containg HMIS user contact info.
 
 The key to this challenge literally is at the end of every HMIS CSV.  Each exported CSV contains some [metadata](https://en.wikipedia.org/wiki/Metadata) which describes how the data were produced.
-<!-- more -->
+
 ![](/images/csv-meta-data.png)
 
 The `DateCreated` should represent when the respective row was actually entered into the HMIS.  `DateUpdated` is the last time that row was modified and saved in the HMIS.  The `UserID` is the case-manager who last modified these data.  Lastly, the ExportID is the number which identifies a collection of HMIS CSVs to be in the same batch.

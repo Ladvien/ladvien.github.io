@@ -13,7 +13,7 @@ custom_css:
 custom_js: 
 ---
 We're almost done.  In the previous articles we've used a local machine to train a CNN to detect toxic sentiment in text.  Also, we prepared a small (1GB RAM) server to use this pre-trained network to make predictions.  Now, let's finish it and create a webservice where anyone can access our awesome magical algorithm.
-<!-- more -->
+
 ### Prediction Service
 On your remote server, navigate to your `flask_app` folder and create a file called `nn_service.py`. The following code creates an HTTP request endpoint `/detect-toxic` and it exposes to other programs running on the server.  A bit more explanation after the code.
 

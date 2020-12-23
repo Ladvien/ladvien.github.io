@@ -15,7 +15,7 @@ A how-to guide on connecting your PC to an Arduino using Bluetooth LE and Python
 
 ![sending-string-from-pc-to-arduino-nano-33-ble-sense](/images/python-serial-terminal-with-arduino-and-bleak/python_ble_to_arduino_demo_vert.gif)
 
-<!-- more -->
+
 
 Before diving in a few things to know
 

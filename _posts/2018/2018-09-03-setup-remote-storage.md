@@ -17,7 +17,7 @@ custom_js:
 # Saving Brain Waves to Remote MongoDB by way of Node REST API
 
 In this section I'm going to focus getting a remote Linux server setup with MongoDB and NodeJS.  This will allow us to make POST requests to our Linux server, saving the EEG data.
-<!-- more -->
+
 I'm going to assume you are able to SSH into your Ubuntu 16 LTS server for this guide.  You don't have a server? No sweat.  I wrote a guide on setting up a blog post which explains how to get a cheap Linux server setup.
 
 * [Setting up Nginx on Linode](https://ladvien.com/creating-jekyll-website/)

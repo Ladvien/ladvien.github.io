@@ -18,7 +18,7 @@ Writing report code which can be reused is critical to being an effective report
 However, one problem remains, each task will usually have a _slight_ variation from the one before it.  This causes you to write 95% of the same code with a slight tweak for the current project.  And that doesn't save time at all.  In the programming world, the 95% code which is the same is known as [bolierplate code](https://en.wikipedia.org/wiki/Boilerplate_code).
 
 Ok, that's the problem.  The solution? Functions.
-<!-- more -->
+
 A function is nothing more than a section of code you save into a variable for easy reuse.  
 
 Defining a function looks like this:

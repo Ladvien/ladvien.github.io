@@ -15,7 +15,7 @@ custom_js:
 After having success with training a CNN on our initial dataset, we decided to up the game on generating training images.  My buddy Rockets built a nice little turntable and ordered a couple of NEMA17s for each of us.  His idea was we could both start generating training images.
 
 ![arduino-turn-table](/images/lego_classifier/turn_table.jpg)
-<!-- more -->
+
 I asked if he would be OK with me ordering some RAMPs boards and programming them to synchronize with the PiCamera.  I figured, it would probably be better for reproducibility if we had solid hardware, with custom firmware and software.
 
 After a few hours of coding over a couple of weeks I was able to control the RAMPs within a Python script from either the Raspberry Pi or a desktop computer.

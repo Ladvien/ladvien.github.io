@@ -24,7 +24,7 @@ This article builds off:
 [Upload Arduino Sketches to ATtiny85 with UART](https://ladvien.com/burning-tinysafeboot-using-arduino-isp/)
 
 The above article will need to be followed to prepare your ATtiny85 and Windows computer.
-<!-- more -->
+
 1. ATtiny85 (or any ATtiny or ATmega chip)
 2. Arduino Uno (or compatible, this will be used once to burn the bootloader to the ATtiny85).
 3. [FTDI](http://www.ebay.com/itm/NF-FTDI-FT232RL-USB-to-TTL-Serial-Converter-Adapter-Module-5V-3-3V-For-Arduino-/221847346354) (or compatible UART).

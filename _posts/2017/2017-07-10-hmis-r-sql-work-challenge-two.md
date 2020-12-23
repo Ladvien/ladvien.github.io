@@ -13,7 +13,7 @@ custom_js:
 ---
 # Providing Chronically Homeless List
 With this work challenge we are going to take the concepts we've learned from the first challenge and build on them.  We will combine two dataframes derived from Client.csv and Enrollment.csv.  Then, we will apply HUD's formula to get a by-name-list of those who are chronically homeless.
-<!-- more -->
+
 ## Data Needed
 The current definition of chronically homeless is found in [HUD's federal register](https://www.federalregister.gov/documents/2015/12/04/2015-30473/homeless-emergency-assistance-and-rapid-transition-to-housing-defining-chronically-homeless):
 

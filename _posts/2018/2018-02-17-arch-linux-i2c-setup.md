@@ -18,7 +18,7 @@ Let's not stop, let's get I2C going so we can interact with some cool hardware.
 
 ## 1. Installing sudo
 If you've followed my previous guide on installing Arch Linux on a Raspberry Pi then you'll have ended up with a bare bones system, which is good.  No unneeded fat.  But sometimes fat is needed, it's what gives us curves, and curves are beautiful....I feel this metaphor is breaking down.  In short, we need extra packages to get work done.
-<!-- more -->
+
 The first package we need is `sudo`
 
 * [Install Sudo on Arch Linux](https://wiki.archlinux.org/index.php/sudo#Installation)

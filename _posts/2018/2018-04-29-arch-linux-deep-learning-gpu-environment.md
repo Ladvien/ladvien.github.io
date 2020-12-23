@@ -22,7 +22,7 @@ This article logs a weekend of efforts to create a deep-learning environment whi
 * Main IDE being RStudio
 
 It was a tough one.
-<!-- more -->
+
 ## UPDATE: 2019-01-19
 It seems the Anaconda `conda` install tool now takes care of the gpu setup.
 

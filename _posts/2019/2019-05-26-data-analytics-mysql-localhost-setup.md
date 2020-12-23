@@ -15,7 +15,7 @@ custom_js:
 The last two articles have been getting oriented to SQL, however, the information in them will disappear quickly if we don't give you a way to practice on data meaningful to you.  Let's face it, as much fun as it is to find out random employees salaries, those don't mean anything to _you_.  
 
 This article will show you how to setup a copy of MySQL Server on your PC, connect to it, load data from a CSV, and query those data.  There's a lot to get done, so let's get started.
-<!-- more -->
+
 # Local MySQL Server Setup
 Each of the three operating systems are a little different on how you must go about setting up a local copy of MySQL Server.  Unfortunately, Windows is the most complex.  Anyway, feel free to skip to the appropriate section
 

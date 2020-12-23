@@ -47,7 +47,7 @@ When the data are presented like this, it appear similar to our traditional Exce
 Let's compare the SQL query and a spreadsheet.
 
 ![compare-excel-and-sql](/images/data-analytics-series/sql_to_excel_compare.png)
-<!-- more -->
+
 Now, here in a few weeks when you are SQL-writing-machine you'll notice this analogy between Excel and a SQL query breaks down.  But for now, let the above image comfort you in knowing the core functions of SQL are similar to those of a spreadsheet.  And you know these spreadsheet functions _well_.
 
 * Selecting columns

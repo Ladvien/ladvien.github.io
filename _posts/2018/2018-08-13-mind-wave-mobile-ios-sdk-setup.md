@@ -21,7 +21,7 @@ I'm going to assume you have Xcode installed.
 
 ### Step 1.1: Install CocoaPods
 [CocoaPods](https://guides.cocoapods.org/using/getting-started.html) is a package handler for Xcode.  We will be using it to install [Alamofire](https://github.com/Alamofire/Alamofire), which a Swift library for making HTTP requests.  We will need HTTP call support as we will call our server to store the EEG samples.
-<!-- more -->
+
 
 ```
 sudo gem install cocoapods

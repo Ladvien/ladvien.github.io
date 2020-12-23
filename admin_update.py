@@ -14,6 +14,11 @@ os.system(
     f"bundle exec jekyll build --source {root_path}/ladvien.github.io --destination {root_path}/ladvien.github.io/_site"
 )
 
+# Remove images from build directory.  We move these manually.
+os.system(
+    f"rm -rf {root_path}/ladvien.github.io/_site/raw_images/ {root_path}/ladvien.github.io/_site/images/"
+)
+
 
 print("")
 print("*******************************************************")

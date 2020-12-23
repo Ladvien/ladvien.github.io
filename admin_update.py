@@ -4,8 +4,6 @@ from datetime import date
 
 root_path = os.environ["HOME"]
 
-os.system("python3 admin_build_projects_list.py")
-
 print("")
 print("*******************************************************")
 print("* Syncing files to Ladvien.com Jekyll build directory *")

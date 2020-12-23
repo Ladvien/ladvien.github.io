@@ -43,7 +43,12 @@ Click on MySQL Server then the Add button.  Add "MySQL Server" and "Connector/OB
 
 As I stated, most of the install wizard questions we will leave as default.
 
-![mysql-windows-installer-download](/images/data-analytics-series/mysql-server-install.gif)
+<video autoplay loop muted playsinline>
+  <source src="https://ladvien.com/images/movies/mysql-server-install.mp4" 
+  title="Installing the MySQL server."
+  type="video/mp4">
+</video>
+
 
 ![mysql-windows-installer-download](/images/data-analytics-series/mysql_setup_46.PNG)
 
@@ -75,7 +80,11 @@ Click on "No thanks, just start my download" and when the download is finished, 
 
 Double click on the installer.  You will need to enter your system password for the installer to setup MySQL Server, but you will also need to provide the MySQL Server `root` user a password.  Don't consfuse the two, unless you plan for them to be the same.
 
-![mysql-windows-installer-download](/images/data-analytics-series/mysql-server-install-mac.gif)
+<video autoplay loop muted playsinline>
+  <source src="https://ladvien.com/images/movies/mysql-server-install-mac.mp4" 
+  title="Downloading the MySQL Window's installer."
+  type="video/mp4">
+</video>
 
 Once it finishes you should now have MySQL Server installed on your Mac. Skip to the last section to test it out.
 

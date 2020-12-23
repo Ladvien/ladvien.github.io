@@ -102,7 +102,11 @@ I looked down at my breakout board, I had some "PBx" pins, so I figured I had a 
 
 I uploaded the program and got this:
 
-![](/images/6rxg5.gif)
+<video autoplay loop muted playsinline>
+  <source src="https://ladvien.com/images/movies/6rxg5.mp4" 
+  title="ATTiny1634 blinking an LED"
+  type="video/mp4">
+</video>
 
 **But the purpose of this journal is to _understand_ what I'm doing**, not just copy it. So, the following is an explanation to myself, in case I forget stuff.
 

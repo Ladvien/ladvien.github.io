@@ -85,7 +85,13 @@ If you are using Windows you need to install software MySQL Workbench uses on Wi
 
 * [Visual C++ Redistributable for Visual Studio 2015](https://www.microsoft.com/en-us/download/details.aspx?id=48145)
 
-![connecting-to-mysql-server](/images/data-analytics-series/downloading_prereqs.gif)
+<video autoplay loop muted playsinline>
+  <source src="https://ladvien.com/images/movies/downloading_prereqs.mp4" 
+  title="Downloading the prerequisites for MySQL server.."
+  type="video/mp4">
+</video>
+
+
 
 Click on the link above.  Select the `vc_redist_x64.exe` file and click "Download."  Once the file has finished downloading, install it.
 
@@ -107,7 +113,12 @@ Once you've installed MySQL Workbench, open it.  When it comes up you should see
 
 Before we can start querying a database we need to create a database connection.  A "connection" here is all the information MySQL Workbench needs to find the database and what permissions you have regarding data access.
 
-![connect-mysql-workbench](/images/data-analytics-series/connecting_to_server.gif)
+<video autoplay loop muted playsinline>
+  <source src="https://ladvien.com/images/movies/connecting_to_server.mp4" 
+  title="Connecting to MySQL server."
+  type="video/mp4">
+</video>
+
 
 We will be connecting to a database I've setup on a remote computer.  Connecting to a remote computers is the most common way to interact with a SQL database, however, later I'll show you how to build your own database using CSVs.  This will be hosted on your local PC.
 

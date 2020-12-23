@@ -16,6 +16,7 @@ print("******************************")
 # -t = preserve modification times
 # -u = skip files that are newer on the receiver
 os.system("python3 admin_optimize_images.py")
+os.system("python3 admin_gif_to_movies.py")
 os.system(
     f"rsync -h -v -r -t -u {root_path}/ladvien.github.io/images/ root@ladvien.com:/usr/share/nginx/html/images/"
 )

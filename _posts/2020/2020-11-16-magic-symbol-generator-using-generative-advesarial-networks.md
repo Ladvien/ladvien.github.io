@@ -21,7 +21,12 @@ I've taken the "nothing but net" approach with this project.  Most of the data a
 I've planned a series of articles, as there is too much to cover in one.  A lot of the code has been borrowed and adapted; I'll do my best to give credit where it's due.
 
 ## What was in my Head
-![blade-ancient-vampire-symbols](/raw_images/deep-arcane/thomas_ancient_archives.gif)
+<!-- ![blade-ancient-vampire-symbols](/raw_images/deep-arcane/thomas_ancient_archives.gif) -->
+
+<video autoplay loop muted playsinline>
+  <source src="https://ladvien.com/images/movies/thomas_ancient_archives.mp4" type="video/mp4">
+</video>
+
  Let's start with current results first.  After getting the urge to teach a computer to make a magic sign, it took a couple days of hacking before I ended up with the images below.
 
  Keep in mind, **these are preliminary results**.  They were generated using my GTX 1060 6GB.  The GPU RAM limits the model a lot--at least, until I rewrite the training loop.  Why do I mention the the small GPU?  Well, GANs are an architecture which provide much better results with more neurons.  And the 6GB limits the network a lot for well performing GAN.

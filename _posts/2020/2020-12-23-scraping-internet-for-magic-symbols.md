@@ -6,8 +6,8 @@ series: Nothing but Neural Nets
 excerpt: A guide on  how to use the Google image search to collect images for training a deep convolutional generative adversarial network.  Or other neural networks.
 tags: [Python, Machine Learning, GAN, chromedriver, Deep Learning]
 image: 
-    feature: deep-arcane/scraping-internet-for-magic-symbols.png
-    thumbnail: deep-arcane/training-data-garbage.png
+    feature: scraping-internet-for-magic-symbols/scraping-internet-for-magic-symbols.png
+    thumbnail: scraping-internet-for-magic-symbols/training-data-garbage.png
     credit: Photo by Robert Anasch
 comments: true
 custom_css:
@@ -324,10 +324,10 @@ for term in search_terms:
 Scraping tehe images resulted in a lot of garbage images (noise) along with my ideal training images.
 
 For example, out of all the images shown, I only wanted the image highlighted:
-![magic-symbol-training-data-collection-noise-sample](/images/deep-arcane/training-data-garbage.png)
+![magic-symbol-training-data-collection-noise-sample](/images/scraping-internet-for-magic-symbols/training-data-garbage.png)
 
 There was also the problem of lots of magic symbols stored in a single image.  These "collection" images would need further processing to extract all of the symbols.  
-![collection-of-magic-symbols-in-google-search-results](/images/deep-arcane/collection_of_images.png)
+![collection-of-magic-symbols-in-google-search-results](/images/scraping-internet-for-magic-symbols/collection_of_images.png)
 
 However, even with a few rough edges, the script sure as hell beat manually downloading the 10k images I had in the end.
 

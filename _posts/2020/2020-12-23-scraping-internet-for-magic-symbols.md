@@ -86,7 +86,9 @@ The `number_of_images` tells the script how many images to search for per search
 
 
 ## Code: Search Terms
-Here is where the magic happens.  The `search_terms` array should include any terms which you think will get the sorts of images you are targeting.  Below is the exact set of terms I used to collect magic symbol images:
+Here is where the magic happens.  The `search_terms` array should include any terms which you think will get the sorts of images you are targeting.  
+
+Below are the exact set of terms I used to collect magic symbol images:
 ```python
 search_terms = [
     "black and white magic symbol icon",

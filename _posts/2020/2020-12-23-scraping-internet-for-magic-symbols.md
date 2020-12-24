@@ -28,6 +28,12 @@ As I've mentioned in my previous article, I needed a lot of images of magic symb
 
 To get my images, I used Chrome browser, Chromedriver, Selenium, and a Python script to slowly scrape images from Google's image search.  The scraping was done throttled to near human speed, but allowed automating the collection of a lot of images.
 
+<video class="post-video" autoplay loop muted playsinline>
+  <source src="https://ladvien.com/images/movies/running_magic_symbol_scrapper.mp4" 
+  title="Using Google, Chrome, Python, and Selenium to scrape magic symbol images off the internet."
+  type="video/mp4">
+</video>
+
 Regarding this process, I'll echo Bosler, **I'm in no way a legal expert.  I'm not a lawyer and nothing I state should be taking as legal advice.  I'm just some hack on the internet.**  However, from what I understand, scraping the SERPs (search engine results pages) is not illegal, at least, not for personal use.  But using Google's Image search for automated scraping of images **is** against their terms of service ([ToS](https://www.google.com/intl/en_ZZ/policies/terms/archive/20070416/)).  Replicate this project at your own risk.  I know when I adjusted my script to search faster Google banned my IP.  I'm glad it was temporary.
 
 ## Bosler's Modified Script

@@ -78,7 +78,7 @@ output_path = "/path/to/your/image/directory"
 ```
 The `number_of_images` tells the script how many images to search for per search term.  If the script runs out of images before reaching `number_of_images`, it will skip to the next term.
 
-`GET_IMAGE_TIMEOUT` determines how long the script should wait for a response from the server hosting the image to respond before skipping to the next image URL.
+`GET_IMAGE_TIMEOUT` determines how long the script should wait for a response before skipping to the next image URL.
 
 `SLEEP_BETWEEN_INTERACTIONS` is how long the script should delay before checking the URL of the next image.  In theory, this can be set low, as I don't think it makes any requests of Google.  But I'm unsure, adjust at your own risk.
 

@@ -16,7 +16,7 @@ The last two articles have been getting oriented to SQL, however, the informatio
 
 This article will show you how to setup a copy of MySQL Server on your PC, connect to it, load data from a CSV, and query those data.  There's a lot to get done, so let's get started.
 
-# Local MySQL Server Setup
+## Local MySQL Server Setup
 Each of the three operating systems are a little different on how you must go about setting up a local copy of MySQL Server.  Unfortunately, Windows is the most complex.  Anyway, feel free to skip to the appropriate section
 
 * [Windows](https://ladvien.com/data-analytics-mysql-localhost-setup/#windows)
@@ -88,7 +88,7 @@ Double click on the installer.  You will need to enter your system password for 
 
 Once it finishes you should now have MySQL Server installed on your Mac. Skip to the last section to test it out.
 
-# Testing your Local SQL Server
+## Testing your Local SQL Server
 Go ahead and open MySQL Workbench and let's connect to this new local server.
 
 Click on the "New Connection" icon and leave everything default, except the "Connection Name," here enter `localhost`.
@@ -103,7 +103,7 @@ SHOW databases;
 You should see:
 ![mysql-windows-installer-download](/images/data-analytics-series/mysql_setup_53.PNG)
 
-# Loading CSV
+## Loading CSV
 
 Create a database
 ```sql

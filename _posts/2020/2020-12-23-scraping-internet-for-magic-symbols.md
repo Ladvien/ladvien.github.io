@@ -34,7 +34,7 @@ Here are the modifications I made to Bosler's original script:
 * The script was getting stuck when it ran into the "Show More Results," I've fixed the issue.
 * The results are saved in directories associated with the search term.  If the script is interrupted and rerun it will look at what directories are created first, and remove those from the search terms.
 * I added a timeout feature; thanks to a user on [Stack Overflow](https://stackoverflow.com/a/22348885).
-* Lastly, I parameterized the number of images to look for per search term, sleep times, and timeout.
+* I parameterized the number of images to look for per search term, sleep times, and timeout.
 
 ## Code: Libraries
 You will need to install Chromedriver and Selenium--this is explained well in the original article.

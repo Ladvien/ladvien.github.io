@@ -144,7 +144,7 @@ search_terms = [term for term in search_terms if term not in dirs]
 ```
 
 ## Code: Chromedriver
-Before starting the script, we have to kick off a Chromedriver session.  Note, you must the `chromedriver` executable to a folder listed in your `PATH` variable for Selenium to find it.
+Before starting the script, we have to kick off a Chromedriver session.  Note, you must put the `chromedriver` executable to a folder listed in your `PATH` variable for Selenium to find it.
 
 For MacOS users, setting up Chromedriver for Selenium use is a bit tough to do manually.  But, using homebrew makes it easy.
 ```

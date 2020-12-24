@@ -327,7 +327,7 @@ For example, out of all the images shown, I only wanted the image highlighted:
 ![magic-symbol-training-data-collection-noise-sample](/images/deep-arcane/training-data-garbage.png)
 
 There was also the problem of lots of magic symbols stored in a single image.  These "collection" images would need further processing to extract all of the symbols.  
-![collection-of-magic-symbols-in-google-search-results](/images/deep_arcane/collection_of_images.png)
+![collection-of-magic-symbols-in-google-search-results](/images/deep-arcane/collection_of_images.png)
 
 However, even with a few rough edges, the script sure as hell beat manually downloading the 10k images I had in the end.
 

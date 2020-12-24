@@ -19,6 +19,10 @@ This articles relies on the code written by Fabian Bosler:
 
 I've only modified Bosler's code to make it a bit easier to pull images for multiple search terms.
 
+The full code can be found the series' Github repository:
+
+* [deep_arcane -- scrap.py](https://github.com/Ladvien/deep_arcane/blob/main/1_get_images/scrap.py)
+
 ## Magic Symbols
 As I've mentioned in my previous article, I needed a lot of images of magic symbols for training a deep convolutional generative adversarial network (DCGAN).  Luckily, I landed on Bosler's article early on.
 
@@ -176,7 +180,7 @@ class timeout:
 ```
 
 ## Code: Fetch Images
-As I've hope I made clear, the code below I did not write; I just polished it a bit.  I'll provide a brief explanation, but refer back to Bosler's article for more information.
+As I've hope I made clear, the code below I did not write; I just polished it.  I'll provide a brief explanation, but refer back to Bosler's article for more information.
 
 Essentially, the script:
 1. Creates a directory corresponding to a search term in the array.

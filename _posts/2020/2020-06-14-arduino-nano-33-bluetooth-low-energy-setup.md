@@ -4,7 +4,7 @@ title: Getting Started with Bluetooth LE on the Arduino Nano 33 Sense
 categories: robot
 series: Bluetooth Low Energy
 excerpt:
-tags: [ble, arduino, setup, bluetooth]
+tags: [ble, arduino, setup, bluetooth, low energy, nano sense 33]
 image: 
     feature: bluetooth_le/ble_loves_arduino.png
 comments: true

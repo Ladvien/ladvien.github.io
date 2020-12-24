@@ -4,7 +4,7 @@ title: How to Send Data between PC and Arduino using Bluetooth LE
 categories: robot
 series: Bluetooth Low Energy
 excerpt: A how-to on using Python with Bluetooth LE from your PC.  This guide uses bleak, an open-source Bluetooth LE library for Python to make connection and data transfer easy.
-tags: [uart, ble, bluetooth, pc, python, bleak]
+tags: [uart, ble, bluetooth, pc, python, bleak, low energy, arduino, nano sense 33]
 image: 
     feature: bluetooth_le/ble_loves_arduino.png
 comments: true

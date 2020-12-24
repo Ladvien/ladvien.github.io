@@ -4,7 +4,7 @@ title: Scraping Google Image Search for Deep Learning Training Images using Pyth
 categories: ml
 series: Nothing but Neural Nets
 excerpt: A guide on  how to use the Google image search to collect images for training a deep convolutional generative adversarial network.  Or other neural networks.
-tags: [Python, Machine Learning, GAN, chromedriver, Deep Learning]
+tags: [python, machine learning, chromedriver, selenium, web scraping, training images]
 image: 
     feature: scraping-internet-for-magic-symbols/scraping-internet-for-magic-symbols.png
     thumbnail: scraping-internet-for-magic-symbols/training-data-garbage.png

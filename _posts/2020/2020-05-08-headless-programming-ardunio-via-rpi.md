@@ -4,7 +4,7 @@ title: Programming Arduino from Raspberry Pi Command Line
 categories: robot
 series: LEGO Classifier
 excerpt:
-tags: [raspberry pi, arduino, ramps, stepper motor]
+tags: [raspberry pi, arduino, arduino cli, cli, headless arduino]
 image: 
     feature: lego_mess.png
     credit: Photo by Markus Spiske

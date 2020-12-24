@@ -6,7 +6,7 @@ series: Nothing but Neural Nets
 excerpt: A guide on  how to use the Google image search to collect images for training a deep convolutional generative adversarial network.  Or other neural networks.
 tags: [Python, Machine Learning, GAN, chromedriver, Deep Learning]
 image: 
-    feature: scraping-internet-for-magic-symbols/scraping-internet-for-magic-symbols.png
+    feature: deep-arcane/scraping-internet-for-magic-symbols.png
     thumbnail: deep-arcane/training-data-garbage.png
     credit: Photo by Robert Anasch
 comments: true

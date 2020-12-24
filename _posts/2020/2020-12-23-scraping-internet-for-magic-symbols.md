@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Scraping Google Image Search for Deep Learning Training Images using Python
+title: Scraping Google Image Search Images using Python
 categories: ml
 series: Nothing but Neural Nets
 excerpt: A guide on  how to use the Google image search to collect images for training a deep convolutional generative adversarial network.  Or other neural networks.

@@ -7,6 +7,7 @@ excerpt: A guide on  how to use the Google image search to collect images for tr
 tags: [Python, Machine Learning, GAN, chromedriver, Deep Learning]
 image: 
     feature: scraping-internet-for-magic-symbols/scraping-internet-for-magic-symbols.png
+    thumbnail: deep-arcane/training-data-garbage.png
     credit: Photo by Robert Anasch
 comments: true
 custom_css:
@@ -16,23 +17,19 @@ This articles relies on the code written by Fabian Bosler:
 
 * [Image Scraping with Python](https://towardsdatascience.com/image-scraping-with-python-a96feda8af2d)
 
-I've only modified Bosler's code to make it a bit easier to manage.
+I've only modified Bosler's code to make it a bit easier to pull images for multiple search terms.
 
 ## Magic Symbols
-As I've mentioned in my previous article in this series, I needed a lot of images of magic symbols for training my deep convolutional generative adversarial network (DCGAN).  Luckily, I landed on Bosler's article early on.
+As I've mentioned in my previous article, I needed a lot of images of magic symbols for training a deep convolutional generative adversarial network (DCGAN).  Luckily, I landed on Bosler's article early on.
 
-To get my images, I ended up using Chrome browser, Chromedriver, and a Python script to slowly scrape images from Google's image search.
+To get my images, I used Chrome browser, Chromedriver, Selenium, and a Python script to slowly scrape images from Google's image search.  The scraping was done throttled to near human speed, but allowed automating the collection of a lot of images.
 
-**I'm in no way a legal expert.  I'm not a lawyer and nothing I state should be taking as legal advice.  I'm just some hack on the internet.**  However, from what I understand, scraping the SERPs (search engine results pages) is not illegal, at least, not for personal use.  But using Google's Image search for automated scraping of images **is** against their terms of service ([ToS](https://www.google.com/intl/en_ZZ/policies/terms/archive/20070416/)).
-
-> 5.3 ...You specifically agree not to access (or attempt to access) any of the Services through any automated means (including use of scripts or web crawlers) and shall ensure that you comply with the instructions set out in any robots.txt file present on the Services.
-
-So, repeat this project at your own risk.  I know when I adjusted my script to search faster Google banned my IP.  I'm glad it was temporary.  Just, be cool.
+Regarding this process, I'll echo Bosler, **I'm in no way a legal expert.  I'm not a lawyer and nothing I state should be taking as legal advice.  I'm just some hack on the internet.**  However, from what I understand, scraping the SERPs (search engine results pages) is not illegal, at least, not for personal use.  But using Google's Image search for automated scraping of images **is** against their terms of service ([ToS](https://www.google.com/intl/en_ZZ/policies/terms/archive/20070416/)).  Replicate this project at your own risk.  I know when I adjusted my script to search faster Google banned my IP.  I'm glad it was temporary.
 
 ## Bosler's Modified Script
-Bosler's script is supposed to use Selenium and Chromedriver to automate searching for images using Google's Image Search.  Links to directly to the images are gathered and then downloaded.
+The script automatically searches for images and collects their underlying URL.  After searching, it uses the Python `requests` library to download all the images into a folder named respective to the search term.
 
-I've made a few modifications.
+Here are the modifications I made to Bosler's original script:
 * First, I've created a search term loop.  This allows the script to continue running past one search term.  
 * The script was getting stuck when it ran into the "Show More Results," I've fixed the issue.
 * The results are saved in directories associated with the search term.  If the script is interrupted and rerun it will look at what directories are created first, and remove those from the search terms.
@@ -40,18 +37,18 @@ I've made a few modifications.
 * Lastly, I parameterized the number of images to look for per search term, sleep times, and timeout.
 
 ## Code: Libraries
-You will need to install Chromedriver and Selenium--Bosler explains how in original article.
+You will need to install Chromedriver and Selenium--this is explained well in the original article.
 
 * [Image Scraping with Python](https://towardsdatascience.com/image-scraping-with-python-a96feda8af2d)
 
-You will also need to install Pillow.  You can install it with,
+You will also need to install [Pillow](https://pillow.readthedocs.io/en/stable/)--a Python library for managing images.  
 
+You can install it with:
 ```bash
 pip install pillow
 ```
 
-After installing all the needed libraries the following block of code should execute without error.
-
+After installing all the needed libraries the following block of code should execute without error:
 ```python
 import os
 import time
@@ -65,9 +62,11 @@ import requests
 from PIL import Image
 from selenium import webdriver
 ```
+If you have any troubles, revisit the original articles setup explanation or feel free to ask questions in the comments below.
+
 
 ## Code: Parameters
-There are just a few parameters which control the entire script:
+I've added a few parameters to the script to make use easier. 
 ```python
 number_of_images = 400
 GET_IMAGE_TIMEOUT = 2
@@ -77,15 +76,17 @@ IMAGE_QUALITY = 85
 
 output_path = "/path/to/your/image/directory"
 ```
-The `number_of_images` tells the script how many images to search for per search term.  If the script runs out of images before reach `number_of_images`, it will skip to the next term.
+The `number_of_images` tells the script how many images to search for per search term.  If the script runs out of images before reaching `number_of_images`, it will skip to the next term.
 
-`GET_IMAGE_TIMEOUT` determines how long the script should wait for a response from the server hosting the image to respond before skipping it and trying the next.
+`GET_IMAGE_TIMEOUT` determines how long the script should wait for a response from the server hosting the image to respond before skipping to the next image URL.
 
-`SLEEP_BETWEEN_INTERACTIONS` determines how long the script should wait before checking getting the URL of the next image.  In theory, this can be set low, as I don't think it makes any requests of Google.  But I'm sure, so try at your own risk.
+`SLEEP_BETWEEN_INTERACTIONS` is how long the script should delay before checking the URL of the next image.  In theory, this can be set low, as I don't think it makes any requests of Google.  But I'm unsure, adjust at your own risk.
 
-`SLEEP_BEFORE_MORE` is how long the script should wait before clicking on the "Show More Results" button.  This should _absolutely_ not be set lower than you can physically search.  Your IP will be banned.  Mine was.
+`SLEEP_BEFORE_MORE` is how long the script should wait before clicking on the "Show More Results" button.  This should **not** be set lower than you can physically search.  Your IP will be banned.  Mine was.
 
-Here is where the magic happens (heh).  The `search_terms` array should include any terms which you think will get the sorts of images you are targeting.  Below is the exact set of terms I used to collect magic symbol images.
+
+## Code: Search Terms
+Here is where the magic happens.  The `search_terms` array should include any terms which you think will get the sorts of images you are targeting.  Below is the exact set of terms I used to collect magic symbol images:
 ```python
 search_terms = [
     "black and white magic symbol icon",
@@ -131,9 +132,7 @@ search_terms = [
     "kali magic symbols",
 ]
 ```
-
-## Code: Search Terms
-Before searching, the script checks the image output directory to determine if images have already been gathered for a particular search term.  If it has, the script will exclude the term from the search.  This is part of my "be cool" policy.  We don't need to be downloading a bunch of images twice, just because the first time didn't complete.
+Before searching, the script checks the image output directory to determine if images have already been gathered for a particular term.  If it has, the script will exclude the term from the search.  This is part of my "be cool" code.  We don't need to be downloading a bunch of images twice.
 
 The code below grabs all the directories in our output path, then reconstructs the search term from the directory name (i.e., it replaces the "_"s with " "s.)
 ```python
@@ -143,17 +142,21 @@ search_terms = [term for term in search_terms if term not in dirs]
 ```
 
 ## Code: Chromedriver
-Before starting the script, we have to kick off a Chromedriver session.  Note, if you saved the `chromedriver` file besides the directory where the script is being executed _or_ have not added it to your `PATH` environment variable you may need to provide the `webdriver.Chrome()` a path to the `chromedriver` executable.
+Before starting the script, we have to kick off a Chromedriver session.  Note, you must the `chromedriver` executable to a folder listed in your `PATH` variable for Selenium to find it.
+
+For MacOS users, setting up Chromedriver for Selenium use is a bit tough to do manually.  But, using homebrew makes it easy.
+```
+brew install chromedriver
+``` 
+
 ```python
 wd = webdriver.Chrome()
 wd.get("https://google.com")
 ```
 
 ## Code: Chrome Timeout
-The timeout class below I ripped over Stack Overflow.  It is a dirty way of creating a timeout during a `GET` request during the image download.
+The timeout class below I borrowed from [Thomas Ahle at Stack Overflow](https://stackoverflow.com/a/22348885).  It is a dirty way of creating a timeout for the `GET` request to download the image.  Without it, the script can get stuck on unresponsive image downloads.
 ```python
-# Credit:
-# https://stackoverflow.com/a/22348885
 class timeout:
     def __init__(self, seconds=1, error_message="Timeout"):
         self.seconds = seconds
@@ -171,16 +174,15 @@ class timeout:
 ```
 
 ## Code: Fetch Images
-As I've hope I made clear, the code below I did not write.  Just polished a bit.  I'll provide a brief explanation as to what I see it doing, but refer back to Bosler's article for more information.
+As I've hope I made clear, the code below I did not write; I just polished it a bit.  I'll provide a brief explanation, but refer back to Bosler's article for more information.
 
-Essentially, the script,
-1. Creates a directory corresponding to the first search term in the array.
-2. It passes the search term to the `fetch_image_urls()`, this function drives the Chrome session, using Google search to find images relating to your search term.  It saves the image link in an array.  After it has searched through all the images or reached the `num_of_images` it returns an list (`res`) containing all the image URLs.
+Essentially, the script:
+1. Creates a directory corresponding to a search term in the array.
+2. It passes the search term to the `fetch_image_urls()`, this function drives the Chrome session.  The script navigates the Google to find images relating to the search term.  It stores the image link in an list.  After it has searched through all the images or reached the `num_of_images` it returns a list (`res`) containing all the image URLs.
 3. The list of image URLs is passed to the `persist_image()`, which then downloads each one of the images into the corresponding folder.
-4. Repeats
+4. It repeats steps 1-3 per search term.
 
-Instead of re-explaining Bosler's script, I've just added extra comments to try to guide readers through whats happening.
-
+I've added extra comments as a guide:
 ```python
 def fetch_image_urls(
     query: str,
@@ -241,6 +243,7 @@ def fetch_image_urls(
             print("Found:", len(image_urls), "image links, looking for more ...")
             time.sleep(SLEEP_BEFORE_MORE)
 
+            # Check for button signifying no more images.
             not_what_you_want_button = ""
             try:
                 not_what_you_want_button = wd.find_element_by_css_selector(".r0zKGf")
@@ -317,11 +320,16 @@ for term in search_terms:
     search_and_download(term, output_path, number_of_images)
 ```
 
-## Training Data
-It may be blasphemy, but I prize my data engineering over machine learning skills.  Putting together a good training data set is tough. Scraping images resulted in a lot of garbage images (noise) along with my ideal training images.
+## Results
+Scraping tehe images resulted in a lot of garbage images (noise) along with my ideal training images.
 
-For example, out of all the images shown, I only wanted the image highlighted.
+For example, out of all the images shown, I only wanted the image highlighted:
 ![magic-symbol-training-data-collection-noise-sample](/images/deep-arcane/training-data-garbage.png)
 
-There was also the problem of lots of magic symbols as collections in one image, for example,
+There was also the problem of lots of magic symbols stored in a single image.  These "collection" images would need further processing to extract all of the symbols.  
+![collection-of-magic-symbols-in-google-search-results](/images/deep_arcane/collection_of_images.png)
+
+However, even with a few rough edges, the script sure as hell beat manually downloading the 10k images I had in the end.
+
+
 

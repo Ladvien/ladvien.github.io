@@ -7,7 +7,7 @@ excerpt: Annotation on the process used to refine a raw image set into an image 
 tags: [data engineering, python, machine learning, gan, opencv]
 image: 
     feature: scraping-internet-for-magic-symbols/scraping-internet-for-magic-symbols.png
-    thumbnail: scraping-internet-for-magic-symbols/sm-scraping-internet-for-magic-symbols.png
+    thumbnail: scraping-internet-for-magic-symbols/scraping-internet-for-magic-symbols.png
     credit: Photo by Robert Anasch
 comments: true
 custom_css:

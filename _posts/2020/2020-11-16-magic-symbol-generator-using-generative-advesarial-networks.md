@@ -65,16 +65,10 @@ Again, preliminary results.  I'm shopping for a way to scale up the size of the 
 ### Small Symbols (64x64)
 The following symbols were generated with a DCGAN using 64x64 dimensions as output.  These symbols were then post-processed by using a deep denoising varational auto-encoder (DDVAE).  It was a fancy way of removing "[pepper](https://en.wikipedia.org/wiki/Salt-and-pepper_noise)" from the images.
 
-If you would like all 6,000 of the sample images generated, here you go:
-
-* [Ladvien's Deep Arcane GAN 64x64 Output (6k)](https://ladvien.com/raw_images/deep-arcane/64x64_cleaned/ladvien-deep-arcane-64x64_cleaned.tar.gz)
-
 ![machine-learning-created-magical-symbols-64x64](/images/deep-arcane/deep-arcane-sample-64x64.png)
 
 ### Large Symbols (128x128)
 The following symbols were generated with a GAN using 128x128 dimensions as input and output.  These symbols were **not** post-processed.
-
-* [Ladvien's Deep Arcane GAN 128x128 Output (6k)](https://ladvien.com../../raw_images/deep-arcane/128x128_dirty/ladvien-deep-arcane-128x128_dirty.tar.gz)
 
 ![machine-learning-created-magical-symbols-128x128](/images/deep-arcane/deep-arcane-sample-128x128.png)
 

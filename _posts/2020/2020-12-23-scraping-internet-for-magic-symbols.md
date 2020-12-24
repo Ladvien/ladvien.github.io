@@ -7,7 +7,7 @@ excerpt: A guide on  how to use the Google image search to collect images for tr
 tags: [python, machine learning, chromedriver, selenium, web scraping, training images]
 image: 
     feature: scraping-internet-for-magic-symbols/scraping-internet-for-magic-symbols.png
-    thumbnail: scraping-internet-for-magic-symbols/scraping-images-thumb.png
+    thumbnail: scraping-internet-for-magic-symbols/scraping-internet-for-magic-symbols.png
     credit: Photo by Robert Anasch
 comments: true
 custom_css:

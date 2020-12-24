@@ -13,7 +13,7 @@ custom_js:
 ---
 
 This article will show you how to program the Arduino Nano BLE 33 devices to use Bluetooth LE.
-<video autoplay loop muted playsinline>
+<video class="post-video" autoplay loop muted playsinline>
   <source src="https://ladvien.com/images/movies/arduino_ble_python_bleak.mp4" 
   title="Sending string from PC to Arduino using Bluetooth Low Energy and Python"
   type="video/mp4">

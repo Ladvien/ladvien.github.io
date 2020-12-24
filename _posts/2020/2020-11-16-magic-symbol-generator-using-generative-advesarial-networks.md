@@ -21,7 +21,7 @@ I've taken the "nothing but net" approach with this project.  Most of the data a
 I've planned a series of articles, as there is too much to cover in one.  A lot of the code has been borrowed and adapted; I'll do my best to give credit where it's due.
 
 ## What was in my Head
-<video autoplay loop muted playsinline>
+<video class="post-video" autoplay loop muted playsinline>
   <source src="https://ladvien.com/images/movies/thomas_ancient_archives.mp4" 
   title="Searching vampire runes like Deacon from Blade."
   type="video/mp4">

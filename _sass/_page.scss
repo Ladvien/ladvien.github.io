@@ -28,12 +28,6 @@ body {
     }
 }
 
-
-video {
-    width: 100%    !important;
-    height: auto   !important;
-}
-
 .entry-content {
     @include font-size($doc-font-size);
     p {
@@ -177,6 +171,17 @@ th {
         min-height: $feature-image-height; // match .entry-image min-height
         filter: brightness(70%);
     }
+    video {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        margin: auto;
+        min-width: 50%;
+        min-height: $feature-image-height; // match .entry-image min-height
+        filter: brightness(70%);
+    }
 }
 
 // Feature Image height on Front Page
@@ -289,6 +294,11 @@ header .entry-meta {
     @media #{$medium} {
         display: block;
     }
+}
+
+.post-video {
+    width: 100%    !important;
+    height: auto   !important;
 }
 
 #post,

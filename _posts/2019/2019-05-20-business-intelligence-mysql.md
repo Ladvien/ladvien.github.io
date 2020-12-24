@@ -85,7 +85,7 @@ If you are using Windows you need to install software MySQL Workbench uses on Wi
 
 * [Visual C++ Redistributable for Visual Studio 2015](https://www.microsoft.com/en-us/download/details.aspx?id=48145)
 
-<video autoplay loop muted playsinline>
+<video class="post-video" autoplay loop muted playsinline>
   <source src="https://ladvien.com/images/movies/downloading_prereqs.mp4" 
   title="Downloading the prerequisites for MySQL server"
   type="video/mp4">
@@ -113,7 +113,7 @@ Once you've installed MySQL Workbench, open it.  When it comes up you should see
 
 Before we can start querying a database we need to create a database connection.  A "connection" here is all the information MySQL Workbench needs to find the database and what permissions you have regarding data access.
 
-<video autoplay loop muted playsinline>
+<video class="post-video" autoplay loop muted playsinline>
   <source src="https://ladvien.com/images/movies/connecting_to_server.mp4" 
   title="Connecting to MySQL server."
   type="video/mp4">

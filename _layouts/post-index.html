@@ -17,7 +17,12 @@
   {% if page.image.credit %}<div class="image-credit">Image source: <a href="{{ page.image.creditlink }}">{{ page.image.credit }}</a></div><!-- /.image-credit -->{% endif %}
   {% if page.image.feature %}
     <div class="entry-image">
-      <img src="{{ site.url }}/images/{{ page.image.feature }}" alt="{{ page.title }}">
+      <!-- <img src="{{ site.url }}/images/{{ page.image.feature }}" alt="{{ page.title }}"> -->
+      <video autoplay loop muted playsinline>
+        <source src="{{ site.url }}/images/movies/{{ page.image.feature }}" 
+        title="{{ page.title }}"
+        type="video/mp4">
+      </video>
     </div><!-- /.entry-image -->
   {% endif %}
   <div class="header-title">

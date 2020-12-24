@@ -13,7 +13,7 @@ custom_js:
 ---
 A how-to guide on connecting your PC to an Arduino using Bluetooth LE and Python.  To make it easier, we will use [bleak](https://pypi.org/project/bleak/) an open source BLE library for Python. The code provided should work for connecting your PC to any Bluetooth LE devices.
 
-<video autoplay loop muted playsinline>
+<video class="post-video" autoplay loop muted playsinline>
   <source src="https://ladvien.com/images/movies/python_ble_to_arduino_demo_vert.mp4" 
   title="Connecting PC to Arduino using Bluetooth Low Energy and Python"
   type="video/mp4">

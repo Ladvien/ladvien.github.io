@@ -102,7 +102,7 @@ I looked down at my breakout board, I had some "PBx" pins, so I figured I had a 
 
 I uploaded the program and got this:
 
-<video autoplay loop muted playsinline>
+<video class="post-video" autoplay loop muted playsinline>
   <source src="https://ladvien.com/images/movies/6rxg5.mp4" 
   title="ATTiny1634 blinking an LED"
   type="video/mp4">

@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Training a Generative Adversarial Network to Generate Magic Symbols
+title: Train a Generative Adversarial Network to Create Magic Symbols
 categories: ml
 series: Nothing but Neural Nets
 excerpt: A guide on using PyTorch to train a GAN to generative images of magic symbols.

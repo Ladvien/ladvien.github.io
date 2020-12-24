@@ -30,7 +30,7 @@ Regarding this process, I'll echo Bosler, **I'm in no way a legal expert.  I'm n
 The script automatically searches for images and collects their underlying URL.  After searching, it uses the Python `requests` library to download all the images into a folder named respective to the search term.
 
 Here are the modifications I made to Bosler's original script:
-* First, I've created a search term loop.  This allows the script to continue running past one search term.  
+* Added a search term loop.  This allows the script to continue running past one search term.  
 * The script was getting stuck when it ran into the "Show More Results," I've fixed the issue.
 * The results are saved in directories associated with the search term.  If the script is interrupted and rerun it will look at what directories are created first, and remove those from the search terms.
 * I added a timeout feature; thanks to a user on [Stack Overflow](https://stackoverflow.com/a/22348885).

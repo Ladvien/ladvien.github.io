@@ -18,7 +18,7 @@ This articles relies on the code written by Fabian Bosler:
 
 I've only modified Bosler's code to make it a bit easier to manage.
 
-# Magic Symbols
+## Magic Symbols
 As I've mentioned in my previous article in this series, I needed a lot of images of magic symbols for training my deep convolutional generative adversarial network (DCGAN).  Luckily, I landed on Bosler's article early on.
 
 To get my images, I ended up using Chrome browser, Chromedriver, and a Python script to slowly scrape images from Google's image search.

@@ -4,7 +4,7 @@ title: Install Tensorflow and OpenCV on Raspberry Pi
 categories: robot
 series: LEGO Classifier
 excerpt:
-tags: [raspberry pi, tensorflow, cnn]
+tags: [raspberry pi, tensorflow, cnn, convolutional neural, network]
 image: 
     feature: lego_mess.png
     credit: Photo by Markus Spiske

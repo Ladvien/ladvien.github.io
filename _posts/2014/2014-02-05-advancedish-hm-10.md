@@ -114,7 +114,7 @@ Oh, one more bit.  You need to wire pin 4 on the Arduino to the HM-10 Master's r
 
 Then use the following code, changing your addresses respectively.
 
-{% highlight c %}
+```cpp
 // Crap code for HM-10 pseudo-Networking
 // By the crappy code Thomas Brittain, aka, Ladvien.
 
@@ -168,7 +168,7 @@ void serialEvent() {
 }
 
 }
-{% endhighlight %}
+```
 
 Not going to lie. I'm pretty dissapointed with how complicated the firmware makes it to switch between nodes.  Although, I've only begun to play with firmware versions greater than V303.
 

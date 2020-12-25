@@ -28,7 +28,7 @@ To setup the environment:
 
 4\. I modified the code as they suggested by including, in this order, the Windows compatibility files:
 
-{% highlight c%}
+```cpp
 #include <stdio.h>
 #include <stdarg.h>
 #include <windows.h>
@@ -38,12 +38,14 @@ To setup the environment:
 #include <string.h>
 #include <math.h>
 #include "ftd2xx.h"
-{% endhighlight %}
+```
 5\. I then used the rest of their code as a base: [Hack-a-Day's FTDI PWM Code](https://github.com/Ladvien/FTDI_Bitbangin_GCC/blob/master/ftdi_Test.c)
 
 I used this line to build it:
 
-**$ gcc -o ftdi_PWM ftdi_Test.c -L./ -lftd2xx**
+```sh
+gcc -o ftdi_PWM ftdi_Test.c -L./ -lftd2xx
+```
 
 You must have both the ftd2xx.h and ftd2xx.lib in the same directory as you attempt to build.
 

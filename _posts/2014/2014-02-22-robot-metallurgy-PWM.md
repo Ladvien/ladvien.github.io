@@ -97,7 +97,7 @@ We select this by setting WGM00 and WGM01 bits.
 
 So, setting things up, the code will look something like this,
 
-{% highlight c %}
+```cpp
 // Demonstration of PWM on an ATtiny1634.
 // C. Thomas Brittain
 
@@ -127,13 +127,13 @@ void pwm_init()
 	DDRC |= (1<<PINC0);
 
 }
-{% endhighlight %}
+```
 
 I left the assignment of the TCCR registers in a binary format.  This was just easier for me, but you could as easily use bitwise operations, e.g.,
 
-{% highlight c %}
+```cpp
 TCCR1A |= (1<<COM1A1)|(1<<WGM01)
-{% endhighlight %}
+```
 
 You notice we set the COM0A1 or COM1A1 bits, but later I'll change this so they are not set at initialization.  I found if you connect the pins to the timers at the beginning, then they'll constantly have a nominal voltage on them.  This is made clearer if you have an LED on the pin.  Therefore, unless you set the COM0A1 and COM1A1 bits low then the LED will never fully turn off.
 
@@ -141,7 +141,7 @@ Also, we have to set the data direction registers for the PWM pins to outputs.
 
 Now, that the initialization is done, let's look at the code I used to demonstrate PWM on the ATtiny1634.
 
-{% highlight c %}
+```cpp
 int main()
 {
 	uint8_t brightness;
@@ -181,7 +181,7 @@ int main()
 			TCCR1A = 0b00000011; // WORKS FOR OC0A, OC0B
 		}
 }
-{% endhighlight %}
+```
 
 You'll notice this is a modified "Fade" sketch from the Arduino world.  
 
@@ -243,7 +243,7 @@ had a lot of appeal to me.
 
 I played with it a bit and ended up with the following,
 
-{% highlight c %}
+```cpp
 #ifndef analogWrite1634
 #define analogWrite1634
 
@@ -334,7 +334,7 @@ void analogWrite(int PWM_PinSelect, int duty){
 }
 
 #endif
-{% endhighlight %}
+```
 
 A synopsis of the library,
 
@@ -346,7 +346,7 @@ A synopsis of the library,
 
 I saved this as **1634analogWrite.h** and then wrote a sketch to use
 
-{% highlight c %}
+```cpp
 // program to change brightness of an LED
 // demonstration of PWM
 //void Tiny1634_PWM(int PWM_PinSelect, int duty);
@@ -391,7 +391,7 @@ int main()
 
 	}
 }
-{% endhighlight %}
+```
 
 
 Ok.  I'll revisit this probably with a complete H-Bridge control library.

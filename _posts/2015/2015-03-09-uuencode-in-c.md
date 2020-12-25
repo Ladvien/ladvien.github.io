@@ -30,7 +30,7 @@ To setup the environment:
 
 2\. I added these **includes** to make the code go.
 
-{% highlight c %}
+```cpp
 #include <stdio.h>
 #include <stdarg.h>
 #include <stdlib.h>
@@ -43,7 +43,7 @@ To setup the environment:
 #include <stdbool.h>
 #include <stdint.h>
 #include <sys/time.h>
-{% endhighlight %}
+```
 
 I used this line to build it:
 
@@ -65,7 +65,7 @@ I will not spend a lot of time explaining **UUEncoding** since the [Wikipedia ar
 
 Have you written a program to look for a particular value?  Like this,
 
-{% highlight c %}
+```cpp
 int i;
 char tCollection[32];
 char c;``
@@ -78,7 +78,7 @@ else if (c == '\r')
 {
     exit();
 }
-{% endhighlight %}
+```
 
 You begin running your program and everything seems fine.  It is inspecting data looking for the letter T (0x54), but then, all of a sudden your program exits without reason.  You're upset, because the sensor sending you the data didn't send the exit code, which is a carriage return ('\r', or 0x13), but still, your program ended like it did.
 
@@ -226,7 +226,7 @@ The function takes several variables.
 3.  **hex_data_array** size is an integer representing how many bytes of data might be found in the **hex_data_array**.
 4.  After the function is complete, it returns how many ASCII UUE characters were created.  This is meant for parsing the UUE array at a later time.
 
-{% highlight c %}
+```cpp
 int UUEncode(uint8_t * UUE_data_array, uint8_t * hex_data_array, int hex_data_array_size)
 {
 	// 1. Add char for characters per line.
@@ -340,7 +340,7 @@ int check_sum(uint8_t * hex_data_array, int hex_data_array_size)
 	}
 	return check_sum;
 }
-{% endhighlight %}
+```
 
 
 *   3-8: Here, I outline in pseudo-code what I wanted to get done in this function.

@@ -79,7 +79,7 @@ Newbie Hack's [MCU First Program](http://www.newbiehack.com/MicrocontrollerWriti
 
 I started Newbie Hack's AVR Series after he had his programmer setup, his "First Program."  The uC's version of the "hello world," the LED blink.  In Arduino I'd accomplish this like so,
 
-{% highlight c %}
+```cpp
 int led = 13;
 
 void setup() {
@@ -92,7 +92,7 @@ void loop() {
   digitalWrite(led, LOW);    // turn the LED off by making the voltage LOW
   delay(1000);               // wait for a second
 }
-{% endhighlight %}
+```
 
 I got Newbie Hack's code going within 3 minutes
 
@@ -124,25 +124,25 @@ I like to think in images, so I see each bit as an LED.  It makes sense, an LED 
 
 The above image could represent the following code:
 
-{% highlight c %}
+```cpp
 DDRB = 0B00000001;
-{% endhighlight %}
+```
 
 The Atmel chips have different ports, which usually have an array of pins. So, the DDR stands for digital direction registry of port B.  Then, we assign a state to every pin on port B (PB0-PB7) by setting a bit to either 0 or 1\. So, according to the image and our code, we are setting ports B1-7 as INPUTS (0 = INPUT) and PB0 as an OUTPUT.
 
 But don't be confused, the LED we have connected isn't turned on yet.  The voltage on PB0 still equals 0\.  But, we could now change the voltage from 0 to 5\.  We do this by changing another registry.  The port state registry, PORTB.
 
-{% highlight c %}
+```cpp
 PORTB = 0B00000001;
-{% endhighlight %}
+```
 
 Actually sets pin 0 (PB0) on port B to 5 volts.  The other pins are still set as inputs, so you can't change the voltage.  
 
 That simple folks?  Well, we also have to insert a delay.  Delay's are really just telling the uC how many cycles to do nothing.  There is some math involved that divides the clock speed to get the exact time delay you would like in finite-ish numbers.  This math is locked away as a function in the <util/delay.h>  file.  So, for our sake, it is a simple matter of adding:
 
-{% highlight c %}
+```cpp
 _delay_ms(500);
-{% endhighlight %}
+```
 
 This tells our Tiny to sit idle for half a second, then continue.  Also, there is a _delay_us() function that will delay microseconds.
 
@@ -166,9 +166,9 @@ Now, Atmel Studio is setup to automatically program your code using the last sel
 
 Ok.  Now we have our Tiny running at 8mhz, we will need to adjust this in our code.
 
-{% highlight c %}
+```cpp
 #define F_CPU 8000000 // AVR clock frequency in Hz, used by util/delay.h</pre>
-{% endhighlight %}
+```
 
 Here we are telling the program our chip is running at 8mhz (8,000,000 [hertz](http://en.wikipedia.org/wiki/Hertz)).
 
@@ -193,21 +193,21 @@ So, I'll cover two that apply to our example and one bitwise helper: **OR,** **X
 
 We learned that the following sets pin PB0 as an OUTPUT.
 
-{% highlight c %}
+```cpp
 DDRB = 0b00000001;
-{% endhighlight %}
+```
 
 But we can use the bitwise operator, OR, to do the same,
 
-{% highlight c %}
+```cpp
 DDRB |= 0b00000001;
-{% endhighlight %}
+```
 
 The "\|=" is an abbreviated operation that represents the following,
 
-{% highlight c %}
+```cpp
 DDRB = DDRB | 0b0000001;
-{% endhighlight %}
+```
 
 In English, "Whatever is in DDRB is equal to whatever is in DDRB **OR** 0b0000001."
 
@@ -227,9 +227,9 @@ Bitwise operators, like OR'ing, are done on the entire byte.  That is, each bit,
 
 In electronics registers usually have a fixed width.  For example, the PORTB registry has the width of 8 bits (0-7).  The left-shift operator (<<) allows you to address a specific bit in a registry, it does this by moving the bits in the registry to the left.  The registry itself stays at a fixed width, so when this happens the new places introduced are zero.  The bits that get shifted past the width of the registry get detroyed.  Going back to the PORTB registry, you could address a different pin besides PB0 by using a shift-left operator.  The left-shift operator allows us to quickly create a bit-mask from a byte.  In code, this looks like the following:
 
-{% highlight c %}
+```cpp
 PORTB = DDRB | 1 << 3;
-{% endhighlight %}
+```
 
 The above takes the binary number assigned in DDRB and OR's it with a bit mask that is exactly the same, except the third pin, that pin is equal to 1\.  Therefore, **PORTB** would look like this after the operation,
 
@@ -239,15 +239,15 @@ This seems more complex to me, but I understand it becomes very important when y
 
 One last thing, the <avr/io.h> contains defined pin constants.  So, this operation,
 
-{% highlight c %}
+```cpp
 DDRB |= 0b00000001;
-{% endhighlight %}
+```
 
 Can be written like so,
 
-{% highlight c %}
+```cpp
 DDRB |= 1 << PINB0;
-{% endhighlight %}
+```
 
 They do exactly the same thing--and _I guess_ the latter is easier to read.  Pfft.
 
@@ -267,7 +267,7 @@ We use the XOR operation to turn the LED off and on.  Since a XOR operation on a
 
 So, our simplified code for Blinkin LED is,
 
-{% highlight c %}
+```cpp
 #define F_CPU 8000000    // AVR clock frequency in Hz, used by util/delay.h
 #include <avr/io.h>
 #include <util/delay.h>
@@ -284,7 +284,7 @@ int main(void)
 		_delay_ms(500);
 	}
 }
-{% endhighlight %}
+```
 
 And that's it.  That is as far as I've gotten.  Now, before I move forward I plan attempting to interface a [SN754410](http://www.ti.com/lit/ds/symlink/sn754410.pdf) and two small motors.  I figure, we know how to perform digital pin control and this should allow use to control motor direction, even if we can't yet control the speed.
 
@@ -306,7 +306,7 @@ I began thinking code.  I know the basics of the SN754410 and I wanted to be abl
 
 So, I figured all I needed to do was get two of my IO pins to go HIGH and LOW to turn one direction, then switch them to go opposite.  This reminded me of the XOR (^) operator, since it did exactly that, turn a bit to its opposite.  This is the same operator we used to blink the LED.  I ended up with the following code:
 
-{% highlight c %}
+```cpp
 #define F_CPU 8000000    // AVR clock frequency in Hz, used by util/delay.h
 #include <avr/io.h>
 #include <util/delay.h>
@@ -329,7 +329,7 @@ int main(void)
 		_delay_ms(500);
 	}
 }
-{% endhighlight %}
+```
 
 This code moved my motor one direction, then the other.  But there was no pause between the changes of directions.  I pulled it a part pretty quick, since I've generally had bad luck with instantaneous reversal of inductors.
 
@@ -339,7 +339,7 @@ Well, that wouldn't do.  But I realized another problem.  The XOR operator would
 
 I know I could accomplish this in long-hand, like so:
 
-{% highlight c %}
+```cpp
 #define F_CPU 8000000    // AVR clock frequency in Hz, used by util/delay.h
 #include <avr/io.h>
 #include <util/delay.h>
@@ -370,7 +370,7 @@ int main(void)
 		_delay_ms(1500);	 //Wait 1.5 seconds.
 	}
 }
-{% endhighlight %}
+```
 
 This gave me the output I wanted.  The motor would turn one direction for 1.5 seconds, then stop, turn the other way, then stop, and start over.  Like this:
 
@@ -407,7 +407,7 @@ Instead of immediately modifying the PORT state we actually modify our bitmask w
 
 Ok.  I _could_ wrap my head around this.  I developed the following code which did what I wanted:
 
-{% highlight c %}
+```cpp
 #define F_CPU 8000000    // AVR clock frequency in Hz, used by util/delay.h
 #include <avr/io.h>
 #include <util/delay.h>
@@ -446,7 +446,7 @@ int main(void)
 		}
 
 }
-{% endhighlight %}
+```
 
 Code to NOT a PIN looks like this ``PORTA &= ~ (1 << PINA1);.`` In plain English and in order of operation, "Set PORTA PIN1 to HIGH, create a bitmask of PORTA, then NOT that bitmask.  After, take the NOT'ed bitmask and AND it with PORTA's original state."  
 
@@ -456,7 +456,7 @@ But this is good.  We now can dynamically change the state of one PIN without de
 
 Alright, let's go for broke; now that I understand how to set pins HIGH or LOW, I wanted an easy way to control a motor with AVR.  I wrote five functions.  Four control the states of the motor (HH, LL, LH, HL) and one is a delay function that will accept a variable.  The functions can be called from the main loop.  Each one expects three parameters, two pin numbers and the number of milliseconds you wish the function to run.  
 
-{% highlight c %}
+```cpp
 #define F_CPU 8000000    // AVR clock frequency in Hz, used by util/delay.h
 #include <avr/io.h>
 #include <util/delay.h>
@@ -527,7 +527,7 @@ int main()
 	}
 
 }
-{% endhighlight %}
+```
 
 Nifty, eh?  Now all we need to do is add a second motor and then we can pass the functions the second motor pins and we can use the same set of code to control both motors.  Aren't we efficient!
 
@@ -537,7 +537,7 @@ Well, that didn't not work as I wanted.  I'm tired and didn't think through how 
 
 Yes, this could be rewritten a hundred ways to salvage it.  But! Right now I'm tired, so here's our working code.
 
-{% highlight c %}
+```cpp
 #define F_CPU 8000000    // AVR clock frequency in Hz, used by util/delay.h
 #include <avr/io.h>
 #include <util/delay.h>
@@ -613,7 +613,7 @@ int main()
 	}
 
 }
-{% endhighlight %}
+```
 
 Something else I realized.  I couldn't wire motors to a different PORT (my schematic shows PB3 and PC0) since my functions call upon PORTA specifically.  Eh, oh well.  I'm tired.  I'm sure I'll clean this up over the next few days.
 

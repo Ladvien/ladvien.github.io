@@ -31,7 +31,7 @@ To setup the environment:
 
 2\. I added these **includes** to make the code go.
 
-{% highlight c linenos %}
+```cpp
 #include <stdio.h>
 #include <stdarg.h>
 #include <stdlib.h>
@@ -44,7 +44,7 @@ To setup the environment:
 #include <stdbool.h>
 #include <stdint.h>
 #include <sys/time.h>
-{% endhighlight %}
+```
 
 I used this line to build it:
 
@@ -63,7 +63,7 @@ To load data from an [Intel HEX format file](http://en.wikipedia.org/wiki/Intel_
 
 **main.c**
 
-{% highlight c linenos %}
+```cpp
 MAIN.C
 
 int main(int argc, char *argv[])
@@ -90,7 +90,7 @@ int main(int argc, char *argv[])
 
 
 } // END PROGRAM
-{% endhighlight %}
+```
 
 *   6:  Let's check the number of arguments passed in by the user.  If there is no file name, then we exit.
 *   11: Declare a unsigned array for the data.  I've set it arbitrarily, but it will need to be large enough for the amount of data to be extracted from the hexfile.
@@ -102,7 +102,7 @@ int main(int argc, char *argv[])
 
 This function takes the name of a file and the [mode](http://www.c4learn.com/c-programming/c-file-open-modes/) under which to open it, then attempts to open a file pointer to this file.  If it is is successful, it returns the pointer to the now open file.  If it it fails, the program exits with an error code.
 
-{% highlight c linenos %}
+```cpp
 MAIN.C
 
 //Open file for reading, function.
@@ -117,7 +117,7 @@ FILE *open_file ( uint8_t *file, uint8_t *mode )
 
   return fileOpen;
 }
-{% endhighlight %}
+```
 
 To understand this function it pays to understand well the Intel HEX file format.
 
@@ -147,7 +147,7 @@ One bit to understand about hex files is the data is actually stored as ASCII ch
 
 The function takes three parameters: the file pointer, a uint8_t pointer for storing the complete byte, and the total_chars_read, which allows us to track how far we are into the file.
 
-{% highlight c linenos %}
+```cpp
 DATA.C
 
 uint8_t read_byte_from_file(FILE * file, uint8_t * char_to_put, int * total_chars_read)
@@ -171,7 +171,7 @@ uint8_t read_byte_from_file(FILE * file, uint8_t * char_to_put, int * total_char
 
 	return hexValue;
 }
-{% endhighlight %}
+```
 
 *   6: Declaring a 8-bit unsinged integer to hold the finished byte.
 *   8: Get an ASCII character from the file pointer.
@@ -185,7 +185,7 @@ uint8_t read_byte_from_file(FILE * file, uint8_t * char_to_put, int * total_char
 
 The clear special character function is simply meant to remove the ':', '\n', and '\r' characters from the data stream.  It simply looks through the character pulled from the data stream.  If it is not a special character, it does nothing.  If it is, it increments the character counter and discards the character.
 
-{% highlight c linenos %}
+```cpp
 DATA.C
 
 void clear_special_char(FILE * file, uint8_t * charToPut, int * totalCharsRead)
@@ -196,13 +196,13 @@ void clear_special_char(FILE * file, uint8_t * charToPut, int * totalCharsRead)
 		*totalCharsRead++;
 	}
 }
-{% endhighlight %}
+```
 
 **Ascii2Hex()**
 
 Another fairly simple function.  Here, we simply find the numeric value of the ASCII character and convert it to its binary equivalent.
 
-{% highlight c linenos %}
+```cpp
 DATA.C
 
 //Copied in from lpc21isp.c
@@ -223,11 +223,11 @@ uint8_t Ascii2Hex(uint8_t c)
 
 	return 0;  // this "return" will never be reached, but some compilers give a warning if it is not present
 }
-{% endhighlight %}
+```
 
 This function is pretty simple, if you keep in mind each character is actually an integer.  For example, the if-statements could be re-written as follows,
 
-{% highlight c linenos %}
+```cpp
 if (c >= 0 && c <= 9)
    { return (uint8_t)(c - 0) }
 
@@ -236,7 +236,7 @@ if (c >= 65 && c <= 70)
 
 if (c >= 97 && c <= 102)
    {return (uint8_t)(c - 97 + 10)}
-{% endhighlight %}
+```
 
 
 You can use an [ASCII reference table](http://www.bibase.com/images/ascii.gif) to determine how a character read will be interpreted.  For instance, 'D' or 'd' would be 68 or 100\.  68 - 65 + 10 = 13\.  We know D is hexadecimal for 13 (0 = 0, 1 = 1, 1 = 2, etc... A = 10, B, = 11, C = 12, **D = 13**, E = 14, F = 15).
@@ -245,7 +245,7 @@ This brings us to the main function,
 
 **read_line_from_hex_file()**
 
-{% highlight c linenos %}
+```cpp
 DATA.C
 
 bool read_line_from_hex_file(FILE * file, uint8_t line_of_data[], long int * combined_address, int * bytes_this_line)
@@ -294,7 +294,7 @@ bool read_line_from_hex_file(FILE * file, uint8_t line_of_data[], long int * com
 
 		return true;
 }
-{% endhighlight %}
+```
 
 The above code parses exactly one line of hex data from the file pointer.
 
@@ -313,7 +313,7 @@ The above code parses exactly one line of hex data from the file pointer.
 
 To properly parse the hexfile we need to know how many lines are found in the the file.  We can find this information several ways, but I counted the number of line start characters ':'.
 
-{% highlight c linenos %}
+```cpp
 MAIN.C
 
 int hex_file_line_count(FILE * file_to_count)
@@ -329,7 +329,7 @@ int hex_file_line_count(FILE * file_to_count)
 	rewind(file_to_count);
 	return line_count;
 }
-{% endhighlight %}
+```
 
 *   8: Loops until the end-of-file character is reached.
 *   10: Gets a ASCII character from the file pointer.
@@ -339,7 +339,7 @@ int hex_file_line_count(FILE * file_to_count)
 
 **hex_file_to_array()**
 
-{% highlight c linenos %}
+```cpp
 DATA.C
 
 int hex_file_to_array(FILE * file, uint8_t hex_data[])
@@ -407,7 +407,7 @@ int hex_file_to_array(FILE * file, uint8_t hex_data[])
 
 	return total_chars_read;
 } // End hex_file_to_array
-{% endhighlight %}
+```
 
 
 *   23: We count the number of lines in the file we wish to extract data.

@@ -37,7 +37,7 @@ The following code sets the baud rate on the ATtiny 1634 using the UBBR chart fr
 
 **UART Code v01**
 
-{% highlight c %}
+```cpp
 //
 // UART Example on the ATtiny1634 using UART0.
 // C. Thomas Brittain
@@ -80,7 +80,7 @@ int main()
 	}
 }
 
-{% endhighlight %}
+```
 
 
 *   **Line 10:** This creates a macro for the UART Baud Rate Register (UBBR).  This number can be calculated using the formula on page 148 of the [datasheet](http://www.atmel.com/Images/Atmel-8303-8-bit-AVR-Microcontroller-tinyAVR-ATtiny1634_Datasheet.pdf).  It should be: UBBR = ((CPU_SPEED)/16*DESIRED_BAUD)-1\.  For me, I wanted to set my rate to 9600, therefore: UBBR = (8,000,000/16*9600)-1; Or: UBBR = (8,000,000/153,600)-1 = **51.083\.  **It can have a slight margin of error, and since we can't use a float, I rounded to 51.![](/images/BAUD_CALC.png)
@@ -179,7 +179,7 @@ int main(void)
 		if (receiveData == 0b11110000) PORTB ^= (1 << PINB0);
 	}
 }
-{% endhighlight %}
+```
 
 This code receives data and turns on/off a LED if anything was received.  It doesn't concern itself with the values received, just whether _something_ was received.  
 
@@ -283,7 +283,7 @@ Functions numbered 0 relate to serial lines 0, which are pins PA7 (Rx0) and PB0 
 
 This is the library code: **[1634_UART.h](https://github.com/Ladvien/ATtiny1634_AVR_Code/blob/master/1634analogWrite.h)**
 
-{% highlight c %}
+```cpp
 #ifndef	UART_1634
 #define UART_1634
 
@@ -524,7 +524,7 @@ ISR(USART1_RX_vect){
 }
 
 #endif
-{% endhighlight %}
+```
 
 Really, it is all the functions moved over to a header file (.h).  One thing I'll point out, the #ifndef makes sure the header file is not included twice, but I was getting an error with it for awhile, come to find out, you **cannot** start #define name for #ifndef with a number, e.g.,
 
@@ -537,7 +537,7 @@ Ok, here is a program that utilizes the library.
 
 **[Code v07](https://github.com/Ladvien/ATtiny1634_AVR_Code/blob/master/UART_Example.c)**
 
-{% highlight c %}
+```cpp
 // UART Example on the ATtiny1634 using UART0.
 // C. Thomas Brittain
 // letsmakerobots.com
@@ -597,7 +597,7 @@ int main()
 
 	}
 }
-{% endhighlight %}
+```
 
 
 This program is the same as above, but using the library.  It simply takes data receiving from one UART and send its out the other.

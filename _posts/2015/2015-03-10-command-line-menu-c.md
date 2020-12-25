@@ -34,7 +34,7 @@ To setup the environment:
 
 2\. I added these **includes** to make the code go.
 
-{% highlight c linenos %}
+```cpp
 #include <stdio.h>
 #include <stdarg.h>
 #include <stdlib.h>
@@ -47,7 +47,7 @@ To setup the environment:
 #include <stdbool.h>
 #include <stdint.h>
 #include <sys/time.h>
-{% endhighlight %}
+```
 
 I used this line to build it:
 
@@ -65,7 +65,7 @@ There really isn't much to the code here.  Basically, it it prints out the optio
 
 Hmm.  **Not really much to it, not sure it deserves its own post.  But what the hell.**
 
-{% highlight c linenos %}
+```cpp
 void main_menu()
 {
 	char char_choice[3];
@@ -121,18 +121,18 @@ void main_menu()
 		}
 	}while(int_choice !=99);
 }
-{% endhighlight %}
+```
 
 6 and 54: This is the beginning and the end of the [do-while loop](http://en.wikipedia.org/wiki/Do_while_loop).  Basically, the do-while is a fancy loop which says to do everything in the brackets over and over, until the boolean variable is met (line 54).
 
 The do-while loop if the equivalent in effect to the follow code,
 
-{% highlight c linenos %}
+```cpp
 while (true) {
    do_work();
    if (!condition) break;
 }
-{% endhighlight %}
+```
 
 *   8: Clears the screen.  This removes the command prompt; giving a clean slate to paint our menu.
 *   9: I put a function in to paint my menu header.  This allows me easily change the header for a menu.  It also makes the menu code easier to read.
@@ -146,7 +146,7 @@ And that's it.  You simply put the functions you want to be called in the approp
 
 You can also make limit a selection to showing by doing something like the following,
 
-{% highlight c linenos %}
+```cpp
 bool connected_flag = false;
 	do
 	{
@@ -191,7 +191,7 @@ bool connected_flag = false;
 		}
 	}while(int_choice !=99);
 }
-{% endhighlight %}
+```
 
 Here, option "3\. Connect Device" doesn't show until option "2\. Device List" is run.  On line 34 the connect_device() function sets the connected_flag variable to true if the function was successful.  Then, after the break is hit and the menu is repainted the option "3\. Connect Device" will show.  Also, '3' will become a valid user selection.
 

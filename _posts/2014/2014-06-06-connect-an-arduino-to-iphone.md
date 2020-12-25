@@ -211,9 +211,9 @@ This doesn't mean our bot cant receive data or iOS device can't send data, it si
 
 To access the Bluetooth 4.0 functionality of compatible iOS devices, Apple provide the [CoreBluetooth Framework](https://developer.apple.com/library/ios/documentation/NetworkingInternetWeb/Conceptual/CoreBluetooth_concepts/AboutCoreBluetooth/Introduction.html#//apple_ref/doc/uid/TP40013257).  This framework is brought into your app code in the typical C fashion, by importing it in**bleApp.h**
 
-{% highlight objective-c %}
+```objc
 #import <CoreBluetooth/CoreBluetooth.h>
-{% endhighlight %}
+```
 
 Once the framework is imported we have access to the API methods.  
 
@@ -226,10 +226,10 @@ Alright, I'm going to attempt explaining something I poorly understand, Objectiv
 
 I believe a delegate is a collection of services your code can subscribe.  I think of them much like interrupts in Arduino.  Each time a specific event happens a method is called.  You setup the delegates you wish to subscribe at the top of your**bleApp.h**:
 
-{% highlight objective-c %}
+```objc
 @interface ViewController : UIViewController <CBPeripheralDelegate,
 CBCentralManagerDelegate, UITableViewDelegate, UITableViewDataSource>
-{% endhighlight %}
+```
 
 Here we are calling on subscribing to four delegates:
 
@@ -257,7 +257,7 @@ Here are the major methods we will be using to control the iOS BLE hardware:
 
 Next, we declare the properties we will need.  If you know as little about Objective-C properties as I did here's a [good tutorial](http://rypress.com/tutorials/objective-c/properties.html).
 
-{% highlight objective-c %}
+```objc
 //
 //  ViewController.h
 //  Carduino
@@ -287,7 +287,7 @@ CBCentralManagerDelegate, UITableViewDelegate, UITableViewDataSource>
 // Stores the advertising data of a peripheral.
 @property (strong, nonatomic) NSMutableData *data;
 @end
-{% endhighlight %}
+```
 
 That should be all the code we need in our header file.
 
@@ -318,7 +318,7 @@ Ok.  So, we need to connect up all of our UI elements.  I'll simply refer back t
 
 Either way, we need to end up with code that looks something like this:
 
-{% highlight objective-c %}
+```objc
 #import "ViewController.h"
 @interface ViewController ()
 
@@ -364,13 +364,13 @@ Either way, we need to end up with code that looks something like this:
 // Menu
 - (IBAction)menuButtonTouchUp:(id)sender;
 @end
-{% endhighlight %}
+```
 
 **1\. CBCentralManager**
 
 Ok, let's get our Bluetooth going.  Objective-C has a method that runs once if the UI loads,**-(void)viewDidLoad** method.
 
-{% highlight objective-c %}
+```objc
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -378,7 +378,7 @@ Ok, let's get our Bluetooth going.  Objective-C has a method that runs once if t
     // Allocates and initializes an instance of the CBCentralManager.
     _centralManager = [[CBCentralManager alloc] initWithDelegate:self queue:nil];
 }
-{% endhighlight %}
+```
 
 We will add more code in this method later, but for now this will work.  Here, we are simply allocating and initializing an instance of the CBCentralManager object.  It has two arguments,**initWithDelegate**, we set this to self and the queue we set to nil.  This allows us to inherit the CBDelegate from the ViewController.h.  The queue being set to nil simply means we are going to allow the CentralManager to manage our data.
 
@@ -392,7 +392,7 @@ This method is called each time the BLE hardware on the iOS device changes state
 
 The**centralManagerDidUpdateState** is a method called by the CoreBluetooth (CB) Central Manager Delegate whenever the BLE hardware in your device changes state.  Here, it is being called when our app first begins.  It will also be called each time the iOS Bluetooth is turned on or off.
 
-{% highlight objective-c %}
+```objc
 // Make sure iOS BT is on.  Then start scanning.
 - (void)centralManagerDidUpdateState:(CBCentralManager *)central {
     // You should test all scenarios
@@ -406,7 +406,7 @@ The**centralManagerDidUpdateState** is a method called by the CoreBluetooth (CB)
         [_centralManager scanForPeripheralsWithServices:nil options:nil];
     }
 }
-{% endhighlight %}
+```
 
 The [central.state](https://developer.apple.com/library/ios/documentation/CoreBluetooth/Reference/CBCentralManager_Class/translated_content/CBCentralManager.html) property is set by the CBCentralManager Delegate.  It has six states:
 
@@ -441,7 +441,7 @@ When iDevice scans the HM-10 it'll report back the FFE1 characteristic, which is
 
 The centralManager didDiscoverPeripheral method executes every time a new service has been discovered.  It provides several bits of information about the discovered peripheral.  First, the peripheral information itself, this includes its name, UUID, etc.  Further information can be pulled from the advertisementData dictionary.  Lastly, which is a neat attribute of BLE, you can access the RSSI of the discovered device before ever connecting.
 
-{% highlight objective-c %}
+```objc
 
 // Report what devices have been found.
 - (void)centralManager:(CBCentralManager *)central
@@ -465,7 +465,7 @@ The centralManager didDiscoverPeripheral method executes every time a new servic
     [self.tableView reloadData];
 
 }
-{% endhighlight %}
+```
 
 **9:**Our code set an instance variable**_discoveredPeripheral** to the most recent discovered peripheral.
 
@@ -479,7 +479,7 @@ The centralManager didDiscoverPeripheral method executes every time a new servic
 
 We are going to store the last six peripherals discovered.
 
-{% highlight objective-c %}
+```objc
 - (NSMutableDictionary *)devices
 {
     // Make sure the device dictionary is empty.
@@ -491,7 +491,7 @@ We are going to store the last six peripherals discovered.
     // Return a dictionary of devices.
     return _devices;
 }
-{% endhighlight %}
+```
 
 **4:** We check to see if we've initialized the dictionary. **7:** If we haven't then we setup the dictionary with a six device slots, then, we set a slot to the last discovered device.
 
@@ -505,7 +505,7 @@ The devices method will be called many times throughout our program.  Eventually
 
 The centralManager didConnect method executes whenever your app connects to a specific BLE device.
 
-{% highlight objective-c %}
+```objc
 // Run this whenever we have connected to a device.
 - (void)centralManager:(CBCentralManager *)central didConnectPeripheral:(CBPeripheral *)peripheral {
 
@@ -515,7 +515,7 @@ The centralManager didConnect method executes whenever your app connects to a sp
     // this searches for all services, its slower but inclusive.
     [peripheral discoverServices:nil];
 }
-{% endhighlight %}
+```
 
 **5:**Once we've connected we activate the peripheral delegate methods.
 
@@ -529,7 +529,7 @@ The centralManager didConnect method executes whenever your app connects to a sp
 
 Here, we enumerate through all the services on the connected peripheral.  This is a slow way to discover services, but it's inclusive and easy.  And since the HM-10 only has two services, and only one service active at a time, we don't lose any time.
 
-{% highlight objective-c %}
+```objc
 - (void)peripheral:(CBPeripheral *)peripheral didDiscoverServices:(NSError *)error
 {
     // Enumerate through all services on the connected peripheral.
@@ -539,7 +539,7 @@ Here, we enumerate through all the services on the connected peripheral.  This i
         [_selectedPeripheral discoverCharacteristics:nil forService:service];
     }
 }
-{% endhighlight %}
+```
 
 **4:** This is a fancy for-loop called enumeration.  It goes through all the services listed in the**(CBPeripheral *)peripheral**, which is a small list on the HM-10\.  If it is in the peripheral role, which is default, it only has one service.
 
@@ -551,7 +551,7 @@ Here, we enumerate through all the services on the connected peripheral.  This i
 
 For each service, we enumerate each of its characteristics.
 
-{% highlight objective-c %}
+```objc
 - (void)peripheral:(CBPeripheral *)peripheral
 didDiscoverCharacteristicsForService:(CBService *)service
              error:(NSError *)error
@@ -563,7 +563,7 @@ didDiscoverCharacteristicsForService:(CBService *)service
         [_selectedPeripheral discoverDescriptorsForCharacteristic:character];
     }
 }
-{% endhighlight %}
+```
 
 **4:** We go through each characteristic of each service on the connected peripheral.
 
@@ -583,7 +583,7 @@ We are accomplishing two things in this method.  First, we are getting the chara
 
 **12-23**: We do a quick enumeration through the services and characteristics.  For each characteristic, for each service, we call the selectedPeripheral setter method.  We pass the**setNotifyValue** argument to**true**.  This automatically receives serial data.  Each time serial data is received the method
 
-{% highlight objective-c %}
+```objc
 -(void)peripheral:(CBPeripheral *)peripheral didUpdateValueForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error
 
 {
@@ -591,13 +591,13 @@ We are accomplishing two things in this method.  First, we are getting the chara
     //Put RX data collection here.
 
 }
-{% endhighlight %}
+```
 
 We'll write our RX method when we get to UI, since we'll set our rxDataLabel to automatically update with incoming data.
 
 Also, the we are setting up an automatic RX notification method.  But, another way to do this is by setting the**setNotifyValue** to false.  Then, each time you want to get RX data you can call the**didUpdateValueForCharacteristic** method manually.
 
-{% highlight objective-c %}
+```objc
 - (void)peripheral:(CBPeripheral *)peripheral
 didDiscoverDescriptorsForCharacteristic:(CBCharacteristic *)characteristic
              error:(NSError *)error
@@ -621,7 +621,7 @@ didDiscoverDescriptorsForCharacteristic:(CBCharacteristic *)characteristic
         }
     }
 }
-{% endhighlight %}
+```
 
 **![](/images/Msg_sir_3.jpg)**
 
@@ -635,7 +635,7 @@ Regarding the direction, using the same switch array,**controlByte**, we**set a 
 
 Ok! Let's step through the code.
 
-{% highlight objective-c %}
+```objc
 - (void)sendValue:(NSString *) str
 {
     for (CBService * service in [_selectedPeripheral services])
@@ -719,7 +719,7 @@ Ok! Let's step through the code.
         }
     }
 }
-{% endhighlight %}
+```
 
 **3-6:**Like before, we are enumerating through all services and characteristics on our connected peripheral.
 

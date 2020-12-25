@@ -156,7 +156,7 @@ Receiving data is a little more complex..._a little._
 
 I started by reviewing Newbie Hack's code [One Way Communication from Chip-to-Chip](http://newbiehack.com/UART-OneWay-ChipToChip.aspx), more specifically, his code about the receiving chip.  I skipped the part about intilization, since I'd already done that and went straight to his receiving code,
 
-{% highlight c linenos%}
+```cpp
 include <avr/io.h>
 int main(void)
 {
